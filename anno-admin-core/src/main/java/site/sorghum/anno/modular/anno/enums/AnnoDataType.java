@@ -1,14 +1,20 @@
 package site.sorghum.anno.modular.anno.enums;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
+import lombok.SneakyThrows;
+import org.noear.solon.Solon;
+import org.noear.wood.DbContext;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import site.sorghum.anno.util.DbContextUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Anno数据类型
@@ -40,17 +46,28 @@ public enum AnnoDataType {
     private final String showCode;
 
 
+    @SneakyThrows
     public static void editorExtraInfo(JSONObject item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getCode());
         if (annoDataType.equals(OPTIONS)) {
             List<JSONObject> options = new ArrayList<>();
             AnnoOptionType annoOptionType = annoField.optionType();
-            for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                JSONObject option = new JSONObject();
-                option.put("label", optionData.label());
-                option.put("value", optionData.value());
-                options.add(option);
+            if (StrUtil.isNotBlank(annoOptionType.sql())){
+                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
+                for (Map<String, Object> map : mapList) {
+                    JSONObject option = new JSONObject();
+                    option.put("label", map.get("label"));
+                    option.put("value", map.get("value"));
+                    options.add(option);
+                }
+            }else {
+                for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
+                    JSONObject option = new JSONObject();
+                    option.put("label", optionData.label());
+                    option.put("value", optionData.value());
+                    options.add(option);
+                }
             }
             item.put("options",options);
             return;
