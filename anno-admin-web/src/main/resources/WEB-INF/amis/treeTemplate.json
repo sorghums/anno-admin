@@ -1,0 +1,174 @@
+{
+  "type": "page",
+  "title": "",
+  "body": [
+    {
+      "type": "button-group",
+      "buttons": [
+        {
+          "type": "button",
+          "label": "新增",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "componentId": "tree-form-reload",
+                  "args": {},
+                  "actionType": "clear"
+                },
+                {
+                  "componentId": "tree-form-reload-delete",
+                  "actionType": "hidden"
+                }
+              ]
+            }
+          },
+          "block": false,
+          "level": "info"
+        },
+        {
+          "type": "button",
+          "label": "新增下级",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "componentId": "tree-form-reload",
+                  "args": {},
+                  "actionType": "clear"
+                },
+                {
+                  "componentId": "tree-form-reload",
+                  "args": {
+                    "value": {
+                      "pid": "${_cat}"
+                    }
+                  },
+                  "actionType": "setValue"
+                },
+                {
+                  "componentId": "tree-form-reload-delete",
+                  "actionType": "hidden"
+                }
+              ]
+            }
+          },
+          "block": false,
+          "level": "light"
+        }
+      ],
+      "vertical": false,
+      "size": "lg",
+      "className": "p-sm",
+      "tiled": false,
+      "btnLevel": "default"
+    },
+    {
+      "type": "form",
+      "title": "表单",
+      "id": "tree-form-reload",
+      "mode": "normal",
+      "api": {
+        "url": "/system/anno/${clazz}/saveOrUpdate",
+        "method": "post",
+        "messages": {
+          "success": "保存成功",
+          "failed": "保存失败"
+        }
+      },
+      "initApi": {
+        "url": "/system/anno/${clazz}/queryById?_cat=${_cat}",
+        "method": "post"
+      },
+      "reload": "aside-input-tree, parent-tree-select",
+      "actions": [
+        {
+          "type": "submit",
+          "label": "提交",
+          "id": "tree-form-reload-submit",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "componentId": "tree-form-reload-delete",
+                  "actionType": "show"
+                }
+              ]
+            }
+          },
+          "block": false
+        },
+        {
+          "type": "button",
+          "label": "删除",
+          "id": "tree-form-reload-delete",
+          "hidden": true,
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "args": {
+                    "options": {},
+                    "api": {
+                      "url": "/system/anno/${clazz}/removeById?id=${id}",
+                      "method": "post",
+                      "messages": {
+                        "success": "删除成功",
+                        "failed": "删除失败"
+                      }
+                    }
+                  },
+                  "outputVar": "responseResult",
+                  "actionType": "ajax"
+                },{
+                  "componentId": "tree-form-reload",
+                  "args": {},
+                  "actionType": "clear"
+                },
+                {
+                  "componentId": "aside-input-tree",
+                  "actionType": "reload"
+                },
+                {
+                  "componentId": "parent-tree-select",
+                  "actionType": "reload"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "body": [
+
+      ],
+      "onEvent": {
+        "broadcast_aside_change": {
+          "actions": [
+            {
+              "componentId": "tree-form-reload-delete",
+              "actionType": "show"
+            },
+            {
+              "componentId": "tree-form-reload",
+              "actionType": "reset"
+            },
+            {
+              "componentId": "tree-form-reload",
+              "actionType": "reload"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "regions": [
+    "body",
+    "aside"
+  ],
+  "asideResizor": true,
+  "pullRefresh": {
+    "disabled": true
+  },
+  "asideMinWidth": 170,
+  "asideMaxWidth": 350
+}

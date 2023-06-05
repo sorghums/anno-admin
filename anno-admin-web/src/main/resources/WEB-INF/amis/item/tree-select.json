@@ -1,0 +1,11 @@
+{
+  "type": "tree-select",
+  "id" : "parent-tree-select",
+  "name": "tree",
+  "label": "Tree",
+  "searchable": true,
+  "source": {
+    "url": "/system/anno/${treeClazz}/annoTrees",
+    "method": "get"
+  }
+}

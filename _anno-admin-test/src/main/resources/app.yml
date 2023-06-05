@@ -1,0 +1,46 @@
+server.port: 8080
+solon.serialization.json:
+  dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
+  dateAsTimeZone: 'GMT+8'
+solon.app:
+  name: 'anno-admin'
+  group: 'DEFAULT'
+solon.mime:
+  yml: "text/html"
+solon.logging.appender:
+  console:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(${PID:-}) --- %-15([%15.15thread]) %-56(%cyan(%-40.40logger{39}%L)) : %msg%n"
+  file:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} --- %-15([%15.15thread]) %-56(%-40.40logger{39}%L) : %msg%n"
+# 记录器级别的配置示例
+solon.logging.logger:
+  "root":  #默认记录器配置
+    level: info
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: anno-token
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: false
+  is-print: false
+db.main:
+  schema: anno-admin
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno-admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: 123456
+redis.main:
+  config: |
+    singleServerConfig:
+      address: "redis://127.0.0.1:6379"
+      database: 8

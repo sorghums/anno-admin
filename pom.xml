@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.3.2</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>site.sorghum</groupId>
+    <artifactId>anno-admin</artifactId>
+    <version>0.0.1</version>
+
+    <packaging>pom</packaging>
+
+    <description>
+        Anno-Admin是一个开源项目，它通过注解生成后台管理系统。这个项目的目的是为了让开发者能够更加轻松地创建一个功能强大的后台管理系统，而不需要手动编写大量的代码。使用Anno-Admin，开发者只需要在代码中添加一些注解，就可以自动生成后台管理系统的各种功能，包括用户管理、权限管理、数据管理等等。这个项目非常适合那些需要快速开发后台管理系统的开发者，同时也非常适合那些想要学习注解和代码生成技术的开发者。
+    </description>
+    <modules>
+        <!-- 核心包 -->
+        <module>anno-admin-core</module>
+        <!-- 静态资源的WEB包 -->
+        <module>anno-admin-web</module>
+        <!-- 测试类 -->
+        <module>_anno-admin-test</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <erupt.version>1.11.6</erupt.version>
+        <mysql.ver>8.0.32</mysql.ver>
+        <jboss.version>3.4.3.Final</jboss.version>
+        <xnio.version>3.8.9.Final</xnio.version>
+        <java.version>8</java.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>site.sorghum</groupId>
+                <artifactId>anno-admin-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum</groupId>
+                <artifactId>anno-admin-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum</groupId>
+                <artifactId>_anno-admin-test</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit5.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-core</artifactId>
+                <version>${undertow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.xnio</groupId>
+                <artifactId>xnio-api</artifactId>
+                <version>${xnio.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.xnio</groupId>
+                <artifactId>xnio-nio</artifactId>
+                <version>${xnio.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>tencent</id>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+</project>

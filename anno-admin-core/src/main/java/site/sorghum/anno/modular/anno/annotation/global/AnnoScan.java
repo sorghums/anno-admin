@@ -1,0 +1,21 @@
+package site.sorghum.anno.modular.anno.annotation.global;
+
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
+
+import java.lang.annotation.*;
+
+/**
+ * AnnoMain注解
+ * 用于标注主要的模板类
+ *
+ * @author sorghum
+ * @since 2023/05/20
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+@Documented
+public @interface AnnoScan {
+   String[] scanPackage() default {};
+}
