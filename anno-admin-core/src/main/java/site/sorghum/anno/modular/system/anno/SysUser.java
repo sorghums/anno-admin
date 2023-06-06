@@ -51,7 +51,10 @@ public class SysUser extends BaseMetaModel implements Serializable {
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
             dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(sql = "select id as value,name as label from sys_user"),
+            optionType = @AnnoOptionType(value = {
+                    @AnnoOptionType.OptionData(label = "正常", value = "1"),
+                    @AnnoOptionType.OptionData(label = "封禁", value = "0")
+            }),
             edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     private Integer enable;
 

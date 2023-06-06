@@ -1,6 +1,7 @@
 package site.sorghum.anno.modular.system.anno;
 
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;

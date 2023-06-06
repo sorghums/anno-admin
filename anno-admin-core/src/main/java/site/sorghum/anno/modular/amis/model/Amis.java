@@ -249,7 +249,7 @@ public class Amis extends JSONObject {
                                     put("required", edit.notNull());
                                     put("placeholder", edit.placeHolder());
                                 }};
-                                AnnoDataType.displayExtraInfo(item, annoField);
+                                AnnoDataType.editorExtraInfo(item, annoField);
                                 add(item);
                             }
                         }

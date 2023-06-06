@@ -22,13 +22,6 @@ public @interface AnnoSearch {
     boolean notNull() default false;
 
     /**
-     * 是否显示
-     *
-     * @return boolean
-     */
-    boolean show() default true;
-
-    /**
      * 启用
      *
      * @return boolean
