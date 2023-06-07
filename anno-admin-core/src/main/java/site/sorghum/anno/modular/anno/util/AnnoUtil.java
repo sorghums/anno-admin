@@ -8,6 +8,7 @@ import cn.hutool.core.util.ReflectUtil;
 
 import org.noear.solon.Solon;
 import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
@@ -155,6 +156,27 @@ public class AnnoUtil {
             Field[] declaredFields = ClassUtil.getDeclaredFields(aClass);
             for (Field declaredField : declaredFields) {
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoField.class);
+                if (annotation != null) {
+                    annoFieldFields.add(declaredField);
+                }
+            }
+        }
+        return annoFieldFields;
+    }
+
+    /**
+     * 获取表字段
+     *
+     * @param clazz 类
+     * @return {@link List<String>}
+     */
+    public static List<Field> getAnnoButtonFields(Class<?> clazz) {
+        List<Field> annoFieldFields = CollUtil.newArrayList();
+        List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
+        for (Class<?> aClass : allClass) {
+            Field[] declaredFields = ClassUtil.getDeclaredFields(aClass);
+            for (Field declaredField : declaredFields) {
+                AnnoButton annotation = AnnotationUtil.getAnnotation(declaredField, AnnoButton.class);
                 if (annotation != null) {
                     annoFieldFields.add(declaredField);
                 }

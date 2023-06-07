@@ -42,6 +42,8 @@ public class TemplateUtil {
         amis.addCrudDeleteButton(clazz);
         // 添加编辑信息
         amis.addCrudEditInfo(clazz);
+        // 添加自定义按钮信息
+        amis.addCrudColumnButtonInfo(clazz);
         // 添加新增信息
         amis.addCrudAddInfo(clazz);
         // 添加树边栏

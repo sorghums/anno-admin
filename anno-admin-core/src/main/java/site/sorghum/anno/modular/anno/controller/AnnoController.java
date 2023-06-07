@@ -9,7 +9,7 @@ import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.reponse.AnnoResult;
+import site.sorghum.anno.response.AnnoResult;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;

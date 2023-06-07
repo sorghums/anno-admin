@@ -1,4 +1,4 @@
-package site.sorghum.anno.reponse;
+package site.sorghum.anno.response;
 
 import lombok.Data;
 import org.noear.solon.annotation.Note;

@@ -10,7 +10,11 @@
     "syncLocation": false,
     "api": {
       "method": "post",
-      "url": "/system/anno/${clazz}/page?_cat=${_cat}"
+      "url": "/system/anno/${clazz}/page",
+      "data": {
+        "&": "$$",
+        "_cat": "${_cat}"
+      }
     },
     "keepItemSelectionOnPageChange": true,
     "headerToolbar": [

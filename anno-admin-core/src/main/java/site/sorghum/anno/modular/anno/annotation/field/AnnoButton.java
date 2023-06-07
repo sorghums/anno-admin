@@ -48,7 +48,7 @@ public @interface AnnoButton {
      *
      * @return {@link JoinButton}
      */
-    JoinButton joinButton() default @JoinButton;
+    JoinButton joinButton() default @JoinButton(enable = false);
 
 
     @interface JoinButton {
@@ -73,6 +73,13 @@ public @interface AnnoButton {
          * @return {@link String}
          */
         String joinAnnoMainClazzField() default "";
+
+        /**
+         * 启用
+         *
+         * @return boolean
+         */
+        boolean enable() default true;
     }
 
 }

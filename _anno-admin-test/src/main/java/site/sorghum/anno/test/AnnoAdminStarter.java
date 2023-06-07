@@ -3,9 +3,8 @@ package site.sorghum.anno.test;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.SolonMain;
-import org.noear.wood.DbContext;
 import org.noear.wood.WoodConfig;
-import org.noear.wood.annotation.Db;
+import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
 
 /**
  * Ano 管理入门
@@ -15,7 +14,7 @@ import org.noear.wood.annotation.Db;
  */
 @SolonMain
 @Slf4j
-@Db
+@AnnoScan(scanPackage = "site.sorghum.anno")
 public class AnnoAdminStarter {
     public static void main(String[] args) {
         Solon.start(AnnoAdminStarter.class, args, app ->{

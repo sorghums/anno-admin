@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.system.controller;
 
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
-import site.sorghum.anno.reponse.AnnoResult;
+import site.sorghum.anno.response.AnnoResult;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;

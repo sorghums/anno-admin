@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.amis.model;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
@@ -9,6 +10,7 @@ import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
@@ -319,5 +321,37 @@ public class Amis extends JSONObject {
         Amis.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject(){{
             put(parentPk,"${_cat}");
         }});
+    }
+
+    public void addCrudColumnButtonInfo(Class<?> clazz) {
+        List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz);
+        // 读取现有的列
+        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        for (JSONObject columnJson : columns) {
+            if ("操作".equals(columnJson.getString("label"))) {
+                for (Field buttonField : buttonFields) {
+                    AnnoButton annoButton = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
+                    JSONObject buttonJson = new JSONObject();
+                    AnnoButton.JoinButton joinButton = annoButton.joinButton();
+                    if (joinButton.enable()){
+                        buttonJson.put("label", annoButton.name());
+                        buttonJson.put("type", "button");
+                        buttonJson.put("actionType", "dialog");
+                        buttonJson.put("dialog",new JSONObject(){{
+                            put("size","full");
+                            put("title", annoButton.name());
+                            put("body",new JSONObject(){{
+                                put("type", "iframe");
+                                put("src","/system/config/amis/"+joinButton.joinAnnoMainClazz().getSimpleName()+"?"+joinButton.joinAnnoMainClazzField()+"=${"+joinButton.joinThisClazzField()+"}");
+                            }});
+                        }});
+                    }
+                    // 添加对应按钮
+                    columnJson.getJSONArray("buttons").add(buttonJson);
+                }
+            }
+        }
+        // 重新写入
+        Amis.write(this, "$.body.columns", columns);
     }
 }

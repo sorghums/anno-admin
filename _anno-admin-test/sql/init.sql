@@ -28,19 +28,6 @@ create table sys_org
 )
     comment '系统组织表';
 
-create table sys_org_user
-(
-    id          varchar(20)  not null comment '主键'
-        primary key,
-    org_id      varchar(30)  not null comment '组织id',
-    user_id     varchar(20)  null comment '用户id',
-    create_by   varchar(255) null comment '创建人',
-    create_time datetime(6)  null comment '创建时间',
-    del_flag    int          null comment '删除标记',
-    update_by   varchar(255) null comment '更新人',
-    update_time datetime(6)  null comment '更新时间'
-)
-    comment '用户组织绑定表';
 
 create table sys_permission
 (
@@ -88,7 +75,7 @@ create table sys_role_permission
     update_time   datetime(6)  null comment '更新时间'
 )
     comment '权限信息表';
-
+drop table if exists sys_user;
 create table sys_user
 (
     id          varchar(20)   not null comment '主键'
@@ -103,7 +90,8 @@ create table sys_user
     create_time datetime(6)   null comment '创建时间',
     del_flag    int           null comment '删除标记',
     update_by   varchar(255)  null comment '更新人',
-    update_time datetime(6)   null comment '更新时间'
+    update_time datetime(6)   null comment '更新时间',
+    org_id      varchar(20)   null comment '组织ID'
 )
     comment '系统用户表';
 

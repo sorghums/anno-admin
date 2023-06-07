@@ -10,13 +10,14 @@ import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.system.base.BaseMetaModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import site.sorghum.anno.modular.system.base.BaseOrgMetaModel;
 
 import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户", tableName = "sys_user")
-public class SysUser extends BaseMetaModel implements Serializable {
+public class SysUser extends BaseOrgMetaModel implements Serializable {
 
     /**
      * 用户头像
