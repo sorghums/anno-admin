@@ -268,7 +268,7 @@ public class AnnoUtil {
             allSuperClass.add(pClazz);
             clazz = pClazz;
         }
-        return CollUtil.reverse(allSuperClass);
+        return allSuperClass;
     }
 
     public static String simpleToString(Object obj) {

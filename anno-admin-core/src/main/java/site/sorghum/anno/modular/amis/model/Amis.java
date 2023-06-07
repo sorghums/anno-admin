@@ -132,7 +132,7 @@ public class Amis extends JSONObject {
             JSONObject amisColumn = new JSONObject();
             amisColumn.put("name", field.getName());
             amisColumn.put("label", annoField.title());
-            amisColumn.put("width", 200);
+//            amisColumn.put("width", 200);
             amisColumn.put("sortable", true);
             AnnoDataType.displayExtraInfo(amisColumn, annoField);
             if (!annoField.show()) {
@@ -265,20 +265,20 @@ public class Amis extends JSONObject {
 
     public void addCrudDeleteButton(Class<?> clazz) {
         // 删除按钮模板
-        String deleteJson = " {\n" +
-                "                    \"type\": \"button\",\n" +
-                "                    \"actionType\": \"ajax\",\n" +
-                "                    \"level\": \"danger\",\n" +
-                "                    \"label\": \"删除\",\n" +
-                "                    \"confirmText\": \"您确认要删除?\",\n" +
-                "                    \"api\": \"post:/system/anno/${clazz}/removeById\"\n" +
-                "                  }";
+        JSONObject deleteJsonObj = new JSONObject(){{
+            put("type", "button");
+            put("actionType", "ajax");
+            put("level", "danger");
+            put("label", "删除");
+            put("confirmText", "您确认要删除?");
+            put("api", "post:/system/anno/${clazz}/removeById");
+        }};
         // 读取现有的列
         List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
         for (JSONObject columnJson : columns) {
             if ("操作".equals(columnJson.getString("label"))) {
                 // 添加删除按钮
-                columnJson.getJSONArray("buttons").add(JSON.parse(deleteJson));
+                columnJson.getJSONArray("buttons").add(deleteJsonObj);
             }
         }
         // 重新写入
