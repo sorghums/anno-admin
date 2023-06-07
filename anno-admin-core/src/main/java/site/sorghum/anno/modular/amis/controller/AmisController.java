@@ -42,15 +42,14 @@ public class AmisController {
         JSONObject properties = new JSONObject(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
-            data.forEach((k,v)-> {
-                put(k, v);
-            });
+            this.putAll(data);
             put("extraData", JSON.toJSONString(data));
         }};
         // 添加树类
         if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){
             crudTemplate = TemplateUtil.getTreeTemplate(aClass,properties);
         }
+        // 添加crud类
         if (crudTemplate == null){
             crudTemplate = TemplateUtil.getCrudTemplate(aClass,properties);
         }
