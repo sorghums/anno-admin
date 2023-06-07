@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.amis.controller;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.text.StrJoiner;
+import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 
 import org.noear.solon.annotation.Controller;
@@ -44,6 +45,7 @@ public class AmisController {
             data.forEach((k,v)-> {
                 put(k, v);
             });
+            put("extraData", JSON.toJSONString(data));
         }};
         // 添加树类
         if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){

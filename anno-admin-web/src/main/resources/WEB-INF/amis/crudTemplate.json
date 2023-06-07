@@ -13,7 +13,8 @@
       "url": "/system/anno/${clazz}/page",
       "data": {
         "&": "$$",
-        "_cat": "${_cat}"
+        "_cat": "${_cat}",
+        "_extraData": "${extraData}"
       }
     },
     "keepItemSelectionOnPageChange": true,
