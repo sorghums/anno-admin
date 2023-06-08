@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.amis.model;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
@@ -132,7 +133,6 @@ public class Amis extends JSONObject {
             JSONObject amisColumn = new JSONObject();
             amisColumn.put("name", field.getName());
             amisColumn.put("label", annoField.title());
-//            amisColumn.put("width", 200);
             amisColumn.put("sortable", true);
             AnnoDataType.displayExtraInfo(amisColumn, annoField);
             if (!annoField.show()) {
@@ -345,9 +345,22 @@ public class Amis extends JSONObject {
                                 put("src","/system/config/amis/"+joinButton.joinAnnoMainClazz().getSimpleName()+"?"+joinButton.joinAnnoMainClazzField()+"=${"+joinButton.joinThisClazzField()+"}");
                             }});
                         }});
+                    } else if (StrUtil.isNotBlank(annoButton.jumpUrl())){
+                        buttonJson.put("label", annoButton.name());
+                        buttonJson.put("type", "button");
+                        buttonJson.put("actionType", "url");
+                        buttonJson.put("url", annoButton.jumpUrl());
+                    }
+                    else if (StrUtil.isNotBlank(annoButton.jsCmd())){
+                        buttonJson.put("label", annoButton.name());
+                        buttonJson.put("type", "button");
+                        buttonJson.put("onClick", annoButton.jsCmd());
+                    }else {
+                        continue;
                     }
                     // 添加对应按钮
                     columnJson.getJSONArray("buttons").add(buttonJson);
+                    columnJson.put("width", columnJson.getJSONArray("buttons").size() * 80);
                 }
             }
         }

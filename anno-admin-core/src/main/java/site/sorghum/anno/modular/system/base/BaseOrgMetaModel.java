@@ -25,6 +25,10 @@ import java.time.LocalDateTime;
 @AnnoRemove(removeType = 1)
 public class BaseOrgMetaModel extends BaseMetaModel implements Serializable {
 
-    @AnnoField(title = "组织ID", tableFieldName = "org_id", edit = @AnnoEdit(), show = false, dataType = AnnoDataType.OPTIONS, optionType = @AnnoOptionType(sql = "select id as  value, org_name as label from sys_org where del_flag = 0 order by id desc"))
+    @AnnoField(title = "组织ID",
+            tableFieldName = "org_id", edit = @AnnoEdit(),
+            show = false,
+            dataType = AnnoDataType.OPTIONS,
+            optionType = @AnnoOptionType(sql = "select id as  value, org_name as label from sys_org where del_flag = 0 order by id desc"))
     private String orgId;
 }

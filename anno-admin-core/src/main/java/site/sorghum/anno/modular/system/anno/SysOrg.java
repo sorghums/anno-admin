@@ -35,4 +35,10 @@ public class SysOrg extends BaseMetaModel {
     @AnnoButton(name = "组织用户",
             joinButton = @AnnoButton.JoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinAnnoMainClazzField = "orgId",enable = true))
     private Object userButton;
+
+    @AnnoButton(name = "跳去百度",jumpUrl = "https://www.baidu.com/")
+    private Object jump2BaiduButton;
+
+    @AnnoButton(name = "简单的JS命令",jsCmd = "alert('点击了按钮'); console.log(props);")
+    private Object jsCmd;
 }

@@ -123,5 +123,21 @@ public class AnnoResult<T> {
     public static <T> AnnoResult<T> failure(String status) {
         return new AnnoResult<>(Result.FAILURE_CODE, status);
     }
+
+
+    public AnnoResult withStatus(int status){
+        this.status = status;
+        return this;
+    }
+
+    public AnnoResult withMsg(String msg){
+        this.msg = msg;
+        return this;
+    }
+
+    public AnnoResult withData(T data){
+        this.data = data;
+        return this;
+    }
     
 }
