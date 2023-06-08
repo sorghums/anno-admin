@@ -1,0 +1,46 @@
+{
+  "title": "",
+  "subTitle": "",
+  "type": "page",
+  "body": {
+    "type": "crud",
+    "target": "window",
+    "draggable": false,
+    "perPage": 10,
+    "syncLocation": false,
+    "api": {
+      "method": "post",
+      "url": "/system/anno/${clazz}/page",
+      "data": {
+        "&": "$$",
+        "_cat": "${_cat}",
+        "_extraData": "${extraData}"
+      }
+    },
+    "keepItemSelectionOnPageChange": true,
+    "headerToolbar": [
+      "bulkActions",
+      "reload"
+    ],
+    "footerToolbar": [
+      "statistics",
+      "switch-per-page",
+      "pagination"
+    ],
+    "columns": [
+      {
+        "type": "operation",
+        "label": "操作",
+        "buttons": [
+        ],
+        "fixed": "right"
+      }
+    ]
+  },
+  "asideResizor": true,
+  "pullRefresh": {
+    "disabled": true
+  },
+  "asideMinWidth": 170,
+  "asideMaxWidth": 350
+}

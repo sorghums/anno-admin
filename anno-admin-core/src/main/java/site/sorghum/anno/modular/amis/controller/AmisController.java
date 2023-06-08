@@ -38,7 +38,7 @@ public class AmisController {
             return null;
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
-        JSONObject crudTemplate = null;
+        JSONObject template = null;
         JSONObject properties = new JSONObject(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
@@ -47,17 +47,39 @@ public class AmisController {
         }};
         // 添加树类
         if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){
-            crudTemplate = TemplateUtil.getTreeTemplate(aClass,properties);
+            template = TemplateUtil.getTreeTemplate(aClass,properties);
         }
         // 添加crud类
-        if (crudTemplate == null){
-            crudTemplate = TemplateUtil.getCrudTemplate(aClass,properties);
+        if (template == null){
+            template = TemplateUtil.getCrudTemplate(aClass,properties);
         }
         ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", crudTemplate);
+        modelAndView.put("amisJSON", template);
         modelAndView.put("properties", properties);
         return modelAndView;
     }
 
+    @Mapping(value = "/amis-m2m/{clazz}")
+    public ModelAndView amisM2m(String clazz, Context context) {
+        HashMap<String, Object> data = new HashMap<>(context.paramMap());
+        Class<?> aClass = AnnoClazzCache.get(clazz);
+        if (aClass == null) {
+            return null;
+        }
+        AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
+        JSONObject template = null;
+        JSONObject properties = new JSONObject(){{
+            put("clazz", clazz);
+            put("treeClazz",AnnoUtil.getTreeClass(aClass));
+            this.putAll(data);
+            put("extraData", JSON.toJSONString(data));
+        }};
+        // 添加crud类
+        template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
+        ModelAndView modelAndView = new ModelAndView("function.html");
+        modelAndView.put("amisJSON", template);
+        modelAndView.put("properties", properties);
+        return modelAndView;
+    }
 
 }

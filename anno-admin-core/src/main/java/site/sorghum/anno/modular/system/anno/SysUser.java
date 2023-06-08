@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.system.anno;
 
+import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -58,5 +59,19 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
             }),
             edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     private Integer enable;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "角色",m2mJoinButton = @AnnoButton.M2MJoinButton(
+            joinAnnoMainClazz = SysRole.class,
+//            joinSql = "select role_id from sys_user_role where user_id = ?",
+            mediumTable = "sys_user_role",
+            mediumTableClass = SysUserRole.class,
+            mediumOtherField = "user_id",
+            mediumThisFiled = "role_id",
+            joinThisClazzField = "id"
+    ))
+    private Object roleButton;
 
 }

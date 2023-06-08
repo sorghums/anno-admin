@@ -4,6 +4,7 @@ package site.sorghum.anno.modular.anno.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSONObject;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -15,6 +16,7 @@ import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
 import site.sorghum.anno.modular.anno.service.AnnoService;
+import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.ProxyComponent;
@@ -66,6 +68,9 @@ public class AnnoServiceImpl implements AnnoService {
             if (annoRemove.removeType() == 1) {
                 tableQuery.andEq(annoRemove.removeField(), annoRemove.notRemoveValue());
             }
+            if (StrUtil.isNotBlank(queryRequest.getAndSql())) {
+                tableQuery.and(queryRequest.getAndSql());
+            }
             tableQuery = tableQuery.limit(queryRequest.getPage() * queryRequest.getPerPage(), queryRequest.getPerPage());
             if (StrUtil.isNotBlank(queryRequest.getOrderBy())) {
                 if (queryRequest.isAsc()) {
@@ -86,6 +91,36 @@ public class AnnoServiceImpl implements AnnoService {
             log.error("AnnoService.page error:{}", e.getMessage());
             throw new BizException("AnnoService.page error",e);
         }
+    }
+
+    @Override
+    public <T> String sql(Class<T> clazz,String sql) {
+        try {
+            // 如果有配置逻辑删除
+            AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
+            if (annoRemove.removeType() == 1) {
+                sql = sql + " and " + annoRemove.removeField() + " = " + annoRemove.notRemoveValue();
+            }
+            return sql;
+        } catch (Exception e) {
+            log.error("AnnoService.page error:{}", e.getMessage());
+            throw new BizException("AnnoService.page error",e);
+        }
+    }
+
+    @Override
+    public <T> String m2mSql(JSONObject param) {
+        if (StrUtil.isBlank(param.getString("mediumTableClass"))){
+            return "";
+        }
+        String mediumOtherField = param.getString("mediumOtherField");
+        String otherValue = param.getString("joinValue");
+        String mediumThisField = param.getString("mediumThisField");
+
+        Class<?> mediumCLass = AnnoClazzCache.get(param.getString("mediumTableClass"));
+        String mediumTable = AnnoUtil.getTableName(mediumCLass);
+        String sql = "select "+mediumThisField+" from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
+        return sql(mediumCLass,sql);
     }
 
     @Override

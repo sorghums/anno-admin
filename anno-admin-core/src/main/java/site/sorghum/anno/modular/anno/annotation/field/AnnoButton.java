@@ -1,9 +1,5 @@
 package site.sorghum.anno.modular.anno.annotation.field;
 
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-
 import java.lang.annotation.*;
 
 /**
@@ -48,11 +44,19 @@ public @interface AnnoButton {
     String jumpUrl() default "";
 
     /**
-     * 关联按钮
+     * 一对多关联按钮
      *
-     * @return {@link JoinButton}
+     * @return {@link O2MJoinButton}
      */
-    JoinButton joinButton() default @JoinButton(enable = false);
+    O2MJoinButton o2mJoinButton() default @O2MJoinButton(enable = false);
+
+
+    /**
+     * 多对多关联按钮
+     *
+     * @return {@link O2MJoinButton}
+     */
+    M2MJoinButton m2mJoinButton() default @M2MJoinButton(enable = false,mediumTableClass = Object.class);
 
     /**
      * java命令行，【暂不支持】
@@ -61,7 +65,7 @@ public @interface AnnoButton {
      */
     JavaCmd JavaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
 
-    @interface JoinButton {
+    @interface O2MJoinButton {
 
         /**
          * 连表查询
@@ -77,12 +81,13 @@ public @interface AnnoButton {
          */
         String joinThisClazzField() default "";
 
+
         /**
          * 以哪个字段为条件【target】
          *
          * @return {@link String}
          */
-        String joinAnnoMainClazzField() default "";
+        String joinOtherClazzField() default "";
 
         /**
          * 启用
@@ -90,6 +95,67 @@ public @interface AnnoButton {
          * @return boolean
          */
         boolean enable() default true;
+
+    }
+
+    @interface M2MJoinButton {
+
+        /**
+         * 目标表
+         *
+         * @return {@link Class}<{@link ?}>
+         */
+        Class<?> joinAnnoMainClazz() default Object.class;
+
+        /**
+         * SQL语句：? 为 joinThisClazzField的值
+         * demo1: select user_id from sys_user_role where role_id = ?
+         * demo2: select role_id from sys_user_role where user_id = ?
+         *
+         * @return {@link String}
+         */
+        String joinSql() default "";
+
+        /**
+         * 以哪个字段为条件【this】
+         *
+         * @return {@link String}
+         */
+        String joinThisClazzField() default "";
+
+        /**
+         * 启用
+         *
+         * @return boolean
+         */
+        boolean enable() default true;
+
+        /**
+         * 中间表
+         *
+         * @return {@link String}
+         */
+        String mediumTable() default "";
+
+        /**
+         * 中间表的类
+         * @return {@link Class}<{@link ?}>
+         */
+        Class<?> mediumTableClass();
+
+        /**
+         * 中间表的字段【本表】
+         *
+         * @return {@link String}
+         */
+        String mediumThisFiled() default "";
+
+        /**
+         * 中间表的字段【目标表】
+         *
+         * @return {@link String}
+         */
+        String mediumOtherField() default "";
     }
 
     @interface JavaCmd {

@@ -1,9 +1,7 @@
 package site.sorghum.anno.modular.system.anno;
 
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
@@ -33,7 +31,7 @@ public class SysOrg extends BaseMetaModel {
 
 
     @AnnoButton(name = "组织用户",
-            joinButton = @AnnoButton.JoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinAnnoMainClazzField = "orgId",enable = true))
+            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId",enable = true))
     private Object userButton;
 
     @AnnoButton(name = "跳去百度",jumpUrl = "https://www.baidu.com/")

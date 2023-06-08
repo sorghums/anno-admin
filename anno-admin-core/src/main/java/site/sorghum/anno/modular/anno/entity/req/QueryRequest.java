@@ -36,6 +36,11 @@ public class QueryRequest<T> {
     String cat;
 
     /**
+     * 额外的sql
+     */
+    String andSql;
+
+    /**
      * 排序方向,asc,desc
      */
     String orderDir;

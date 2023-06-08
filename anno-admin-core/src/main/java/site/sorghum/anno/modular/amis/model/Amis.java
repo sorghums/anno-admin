@@ -1,8 +1,11 @@
 package site.sorghum.anno.modular.amis.model;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
@@ -20,8 +23,11 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.anno.util.TemplateUtil;
 
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Amis
@@ -332,8 +338,9 @@ public class Amis extends JSONObject {
                 for (Field buttonField : buttonFields) {
                     AnnoButton annoButton = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
                     JSONObject buttonJson = new JSONObject();
-                    AnnoButton.JoinButton joinButton = annoButton.joinButton();
-                    if (joinButton.enable()){
+                    AnnoButton.O2MJoinButton o2MJoinButton = annoButton.o2mJoinButton();
+                    AnnoButton.M2MJoinButton m2mJoinButton = annoButton.m2mJoinButton();
+                    if (o2MJoinButton.enable()){
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("actionType", "dialog");
@@ -342,7 +349,28 @@ public class Amis extends JSONObject {
                             put("title", annoButton.name());
                             put("body",new JSONObject(){{
                                 put("type", "iframe");
-                                put("src","/system/config/amis/"+joinButton.joinAnnoMainClazz().getSimpleName()+"?"+joinButton.joinAnnoMainClazzField()+"=${"+joinButton.joinThisClazzField()+"}");
+                                put("src","/system/config/amis/"+ o2MJoinButton.joinAnnoMainClazz().getSimpleName()+"?"+ o2MJoinButton.joinOtherClazzField()+"=${"+ o2MJoinButton.joinThisClazzField()+"}");
+                            }});
+                        }});
+                    } else if (m2mJoinButton.enable()){
+                        HashMap<String, Object> queryMap = new HashMap<String,Object>(){{
+                            put("joinValue", "${"+ m2mJoinButton.joinThisClazzField()+"}");
+                            put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(),false,true));
+                            put("mediumTable", m2mJoinButton.mediumTable());
+                            put("mediumThisField", m2mJoinButton.mediumThisFiled());
+                            put("mediumOtherField", m2mJoinButton.mediumOtherField());
+                            put("mediumTableClass",m2mJoinButton.mediumTableClass().getSimpleName());
+                            put("joinThisClazzField",m2mJoinButton.joinThisClazzField());
+                        }};
+                        buttonJson.put("label", annoButton.name());
+                        buttonJson.put("type", "button");
+                        buttonJson.put("actionType", "dialog");
+                        buttonJson.put("dialog",new JSONObject(){{
+                            put("size","full");
+                            put("title", annoButton.name());
+                            put("body",new JSONObject(){{
+                                put("type", "iframe");
+                                put("src", "/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap,null));
                             }});
                         }});
                     } else if (StrUtil.isNotBlank(annoButton.jumpUrl())){
@@ -360,8 +388,38 @@ public class Amis extends JSONObject {
                     }
                     // 添加对应按钮
                     columnJson.getJSONArray("buttons").add(buttonJson);
+                    // 设置列宽
                     columnJson.put("width", columnJson.getJSONArray("buttons").size() * 80);
                 }
+            }
+        }
+        // 重新写入
+        Amis.write(this, "$.body.columns", columns);
+    }
+
+    public void addDeleteRelationEditInfo(Class<?> clazz) {
+        // 删除按钮模板
+        JSONObject deleteJsonObj = new JSONObject(){{
+            put("type", "button");
+            put("actionType", "ajax");
+            put("level", "danger");
+            put("label", "删除");
+            put("confirmText", "您确认要删除?");
+            put("api",new JSONObject(){{
+                put("method", "post");
+                put("url", "/system/anno/${clazz}/remove-relation");
+                put("data",new JSONObject(){{
+                    put("&", "$$");
+                    put("_extraData","${extraData}");
+                }});
+            }});
+        }};
+        // 读取现有的列
+        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        for (JSONObject columnJson : columns) {
+            if ("操作".equals(columnJson.getString("label"))) {
+                // 添加删除按钮
+                columnJson.getJSONArray("buttons").add(deleteJsonObj);
             }
         }
         // 重新写入

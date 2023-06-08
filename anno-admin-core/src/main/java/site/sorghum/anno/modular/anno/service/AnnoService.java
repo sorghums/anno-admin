@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.anno.service;
 
+import com.alibaba.fastjson2.JSONObject;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import org.noear.wood.IPage;
@@ -21,6 +22,23 @@ public interface AnnoService {
      * @return {@link IPage}<{@link T}>
      */
     <T> IPage<T> page(QueryRequest<T> queryRequest);
+
+    /**
+     * sql查询
+     *
+     * @param clazz clazz
+     * @param sql   sql
+     * @return {@link String}
+     */
+    <T> String sql(Class<T> clazz,String sql);
+
+    /**
+     * m2m sql
+     *
+     * @param param 参数
+     * @return {@link String}
+     */
+    <T> String m2mSql(JSONObject param);
 
     /**
      * 分页查询

@@ -61,6 +61,38 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link JSONObject}
      */
+    public static JSONObject getCrudM2mTemplate(Class<?> clazz, JSONObject properties){
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Amis amis = getTemplate("m2mTemplate.json").toJavaObject(Amis.class);
+//         添加过滤
+//        amis.addCrudFilter(clazz);
+        // 添加列
+        amis.addCrudColumns(clazz);
+//        // 添加删除信息
+//        amis.addCrudDeleteButton(clazz);
+        // 添加编辑信息
+        amis.addCrudEditInfo(clazz);
+        // 添加删除对应关联关系信息的按钮
+        amis.addDeleteRelationEditInfo(clazz);
+//        // 添加自定义按钮信息
+//        amis.addCrudColumnButtonInfo(clazz);
+        // 添加新增信息
+//        amis.addCrudAddInfo(clazz);
+//        // 添加树边栏
+//        amis.addCommonTreeAside(clazz);
+        stopWatch.stop();
+        log.debug("crud模板：{}",amis.toJSONString());
+        log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
+        return amis;
+    }
+    /**
+     * 得到crud模板
+     *
+     * @param clazz      clazz
+     * @param properties 页面参数
+     * @return {@link JSONObject}
+     */
     public static JSONObject getTreeTemplate(Class<?> clazz, JSONObject properties){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
