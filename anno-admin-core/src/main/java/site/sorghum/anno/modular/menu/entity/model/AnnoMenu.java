@@ -5,6 +5,9 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
+import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.system.base.BaseMetaModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +33,13 @@ public class AnnoMenu extends BaseMetaModel {
     @JSONField(name = "title")
     private String title;
 
-    @AnnoField(title = "菜单类型", tableFieldName = "type",edit = @AnnoEdit)
+    @AnnoField(title = "菜单类型", tableFieldName = "type", search = @AnnoSearch(),
+            dataType = AnnoDataType.OPTIONS,
+            optionType = @AnnoOptionType(value = {
+                    @AnnoOptionType.OptionData(label = "页面", value = "1"),
+                    @AnnoOptionType.OptionData(label = "目录", value = "0")
+            }),
+            edit = @AnnoEdit(placeHolder = "请选择菜单类型", notNull = true))
     @JSONField(name = "type")
     private Integer type;
 

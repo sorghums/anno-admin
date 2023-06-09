@@ -185,17 +185,20 @@ public class AnnoController {
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
         Class<?> mediumClass = AnnoClazzCache.get(mediumTableClass);
-        // 字段一
-        String mediumThisField = param.get("mediumThisField").toString();
-        String mediumThisValue = param.get("selectTable").toString();
-        // 字段二
-        String mediumOtherField = param.get("mediumOtherField").toString();
-        String mediumOtherValue = param.get("joinValue").toString();
-        JSONObject addValue = new JSONObject() {{
-            put(mediumThisField, mediumThisValue);
-            put(mediumOtherField, mediumOtherValue);
-        }};
-        annoService.save(addValue.toJavaObject(mediumClass));
+        String mediumThisValues = param.get("selectTable").toString();
+        String[] split = mediumThisValues.split(",");
+        for (String mediumThisValue : split) {
+            // 字段一
+            String mediumThisField = param.get("mediumThisField").toString();
+            // 字段二
+            String mediumOtherField = param.get("mediumOtherField").toString();
+            String mediumOtherValue = param.get("joinValue").toString();
+            JSONObject addValue = new JSONObject() {{
+                put(mediumThisField, mediumThisValue);
+                put(mediumOtherField, mediumOtherValue);
+            }};
+            annoService.save(addValue.toJavaObject(mediumClass));
+        }
         return AnnoResult.succeed();
     }
 

@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.system.anno;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
@@ -42,4 +43,17 @@ public class SysRole  extends BaseMetaModel implements Serializable {
             }),
             edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     Integer enable;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "用户",m2mJoinButton = @AnnoButton.M2MJoinButton(
+            joinAnnoMainClazz = SysUser.class,
+            mediumTable = "sys_user_role",
+            mediumTableClass = SysUserRole.class,
+            mediumOtherField = "role_id",
+            mediumThisFiled = "user_id",
+            joinThisClazzField = "id"
+    ))
+    private Object userButton;
 }
