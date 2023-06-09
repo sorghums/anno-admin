@@ -84,6 +84,7 @@ public enum AnnoDataType {
     public static void displayExtraInfo(JSONObject item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getShowCode());
+        item.put("placeholder","无");
         if (annoDataType.equals(IMAGE)){
             AnnoImageType imageType = annoField.imageType();
             if (imageType.height() > 0 && imageType.width() > 0){

@@ -34,7 +34,7 @@ public class SysOrg extends BaseMetaModel {
             o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId",enable = true))
     private Object userButton;
 
-    @AnnoButton(name = "跳去百度",jumpUrl = "https://www.baidu.com/")
+    @AnnoButton(name = "跳去百度",jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
     private Object jump2BaiduButton;
 
     @AnnoButton(name = "简单的JS命令",jsCmd = "alert('点击了按钮'); console.log(props);")
