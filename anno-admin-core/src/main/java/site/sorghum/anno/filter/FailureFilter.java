@@ -41,6 +41,7 @@ public class FailureFilter implements Filter {
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e){
             ThrowableLogUtil.error(e);
+            e.printStackTrace();
             ctx.render(AnnoResult.failure( "非法参数"));
         } catch (SaTokenException e){
             ThrowableLogUtil.error(e);

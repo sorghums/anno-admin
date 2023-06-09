@@ -7,6 +7,7 @@ import org.noear.wood.IPage;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Anno服务
@@ -38,7 +39,7 @@ public interface AnnoService {
      * @param param 参数
      * @return {@link String}
      */
-    <T> String m2mSql(JSONObject param);
+    <T> String m2mSql(Map<?,String > param);
 
     /**
      * 分页查询

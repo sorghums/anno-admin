@@ -3,7 +3,10 @@ package site.sorghum.anno.modular.anno.controller;
 
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.noear.solon.core.handle.Context;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
@@ -18,9 +21,12 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Anno控制器
@@ -62,7 +68,7 @@ public class AnnoController {
         queryRequest.setParam(param.toJavaObject(aClass));
         queryRequest.setOrderBy(orderBy);
         queryRequest.setOrderDir(orderDir);
-        String m2mSql = annoService.m2mSql(param);
+        String m2mSql = annoService.m2mSql(param.toJavaObject(Map.class));
         if (StrUtil.isNotEmpty(m2mSql)) {
             String joinThisClazzField = param.getString("joinThisClazzField");
             queryRequest.setAndSql(joinThisClazzField + " in (" + m2mSql + ")");
@@ -138,7 +144,7 @@ public class AnnoController {
         Class<?> mediumCLass = AnnoClazzCache.get(param.getString("mediumTableClass"));
         String pkField = AnnoUtil.getPkField(nowClass);
         Map<String, Object> mediumMap =
-                dbContext.table(AnnoUtil.getTableName(mediumCLass)).whereEq(mediumOtherField, otherValue).andEq(mediumThisField, thisValue).selectMap(pkField);
+                dbContext.table(AnnoUtil.getTableName(mediumCLass)).whereEq(mediumOtherField, otherValue).andEq(mediumThisField, thisValue).orderByDesc(pkField).selectMap(pkField);
         if (mediumMap.get(pkField) != null) {
             log.info("删除关联表数据：{}", mediumMap.get(pkField));
             annoService.removeById(mediumCLass, mediumMap.get(pkField).toString());
@@ -151,6 +157,46 @@ public class AnnoController {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         List<AnnoTreeDto<String>> annoTreeDtos = annoService.annoTrees(aClass);
         return AnnoResult.from(Result.succeed(annoTreeDtos));
+    }
+
+    @Mapping("/{clazz}/m2mSelect")
+    public <T> AnnoResult<JSONArray> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
+        // 主表
+        Class<?> aClass = AnnoClazzCache.get(clazz);
+        String m2mSql = annoService.m2mSql(param);
+        QueryRequest<T> queryRequest = new QueryRequest<>();
+        queryRequest.setClazz((Class<T>) aClass);
+        String joinThisClazzField = param.get("joinThisClazzField");
+        queryRequest.setAndSql(joinThisClazzField + " not in ( " + m2mSql + " )");
+        List<T> list = annoService.list(queryRequest);
+        JSONArray listMap =JSON.parseArray(JSON.toJSONString(list));
+        listMap.forEach(item -> {
+            JSONObject jsonObject = (JSONObject) item;
+            jsonObject.put("label", jsonObject.get(joinThisClazzField));
+            jsonObject.put("value", jsonObject.get(joinThisClazzField));
+        });
+        return AnnoResult.succeed(listMap);
+    }
+
+    @Mapping("/{clazz}/addM2m")
+    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param) {
+        // 主表
+        Class<?> aClass = AnnoClazzCache.get(clazz);
+        // 中间表
+        String mediumTableClass = param.get("mediumTableClass").toString();
+        Class<?> mediumClass = AnnoClazzCache.get(mediumTableClass);
+        // 字段一
+        String mediumThisField = param.get("mediumThisField").toString();
+        String mediumThisValue = param.get("selectTable").toString();
+        // 字段二
+        String mediumOtherField = param.get("mediumOtherField").toString();
+        String mediumOtherValue = param.get("joinValue").toString();
+        JSONObject addValue = new JSONObject() {{
+            put(mediumThisField, mediumThisValue);
+            put(mediumOtherField, mediumOtherValue);
+        }};
+        annoService.save(addValue.toJavaObject(mediumClass));
+        return AnnoResult.succeed();
     }
 
     private JSONObject emptyStringIgnore(JSONObject param) {

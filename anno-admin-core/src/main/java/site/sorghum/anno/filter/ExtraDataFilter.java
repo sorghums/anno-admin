@@ -29,8 +29,13 @@ public class ExtraDataFilter implements Filter {
             if (bdMap.containsKey("_extraData")) {
                 extraData = bdMap.getString("_extraData");
             }
-        } else {
+        } else if (StrUtil.isBlank(ctx.body())) {
+            bdMap = new JSONObject();
+        }else {
             bdMap = null;
+        }
+        if (StrUtil.isNotBlank(ctx.param("_extraData"))) {
+            extraData = ctx.param("_extraData");
         }
         if (bdMap != null && StrUtil.isNotBlank(extraData)) {
             try {

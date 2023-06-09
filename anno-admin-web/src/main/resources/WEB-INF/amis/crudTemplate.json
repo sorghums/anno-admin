@@ -5,6 +5,7 @@
   "body": {
     "type": "crud",
     "target": "window",
+    "id": "crud_template_main",
     "draggable": false,
     "perPage": 10,
     "syncLocation": false,

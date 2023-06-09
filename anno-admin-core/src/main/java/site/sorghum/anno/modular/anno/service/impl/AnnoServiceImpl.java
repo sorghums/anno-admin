@@ -27,6 +27,7 @@ import org.noear.wood.annotation.Db;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Anno服务
@@ -109,15 +110,15 @@ public class AnnoServiceImpl implements AnnoService {
     }
 
     @Override
-    public <T> String m2mSql(JSONObject param) {
-        if (StrUtil.isBlank(param.getString("mediumTableClass"))){
+    public <T> String m2mSql(Map<?,String > param) {
+        if (StrUtil.isBlank(param.get("mediumTableClass"))){
             return "";
         }
-        String mediumOtherField = param.getString("mediumOtherField");
-        String otherValue = param.getString("joinValue");
-        String mediumThisField = param.getString("mediumThisField");
+        String mediumOtherField = param.get("mediumOtherField");
+        String otherValue = param.get("joinValue");
+        String mediumThisField = param.get("mediumThisField");
 
-        Class<?> mediumCLass = AnnoClazzCache.get(param.getString("mediumTableClass"));
+        Class<?> mediumCLass = AnnoClazzCache.get(param.get("mediumTableClass"));
         String mediumTable = AnnoUtil.getTableName(mediumCLass);
         String sql = "select "+mediumThisField+" from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
         return sql(mediumCLass,sql);
@@ -146,6 +147,9 @@ public class AnnoServiceImpl implements AnnoService {
             AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
             if (annoRemove.removeType() == 1) {
                 tableQuery.andEq(annoRemove.removeField(), annoRemove.notRemoveValue());
+            }
+            if (StrUtil.isNotBlank(queryRequest.getAndSql())) {
+                tableQuery.and(queryRequest.getAndSql());
             }
             if (StrUtil.isNotBlank(queryRequest.getOrderBy())) {
                 if (queryRequest.isAsc()) {

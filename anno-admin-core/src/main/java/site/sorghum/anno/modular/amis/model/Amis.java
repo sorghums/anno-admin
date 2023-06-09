@@ -142,7 +142,7 @@ public class Amis extends JSONObject {
             amisColumn.put("sortable", true);
             AnnoDataType.displayExtraInfo(amisColumn, annoField);
             if (!annoField.show()) {
-                amisColumn.put("toggled",false);
+                amisColumn.put("toggled", false);
             }
             amisColumns.add(amisColumn);
         }
@@ -236,6 +236,7 @@ public class Amis extends JSONObject {
                 put("title", "新增");
                 put("body", new JSONObject() {{
                     put("type", "form");
+                    put("reload", "crud_template_main");
                     put("name", "simple-edit-form");
                     put("api", "post:/system/anno/${clazz}/save");
                     put("controls", new JSONArray() {{
@@ -271,7 +272,7 @@ public class Amis extends JSONObject {
 
     public void addCrudDeleteButton(Class<?> clazz) {
         // 删除按钮模板
-        JSONObject deleteJsonObj = new JSONObject(){{
+        JSONObject deleteJsonObj = new JSONObject() {{
             put("type", "button");
             put("actionType", "ajax");
             put("level", "danger");
@@ -307,13 +308,13 @@ public class Amis extends JSONObject {
                 put("required", required);
             }};
             AnnoDataType.editorExtraInfo(itemBody, annoField);
-            if (annoField.isId()){
-                itemBody.put("disabled",true);
+            if (annoField.isId()) {
+                itemBody.put("disabled", true);
             }
-            if (!annoField.show()){
-                itemBody.put("hidden",true);
+            if (!annoField.show()) {
+                itemBody.put("hidden", true);
             }
-            if (parentKey.equals(fieldName)){
+            if (parentKey.equals(fieldName)) {
                 itemBody = TemplateUtil.getTemplate("item/tree-select.json");
                 itemBody.put("name", fieldName);
                 itemBody.put("label", annoField.title());
@@ -324,8 +325,8 @@ public class Amis extends JSONObject {
 
         // 设置${_parentKey}的值
         String parentPk = AnnoUtil.getParentPk(clazz);
-        Amis.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject(){{
-            put(parentPk,"${_cat}");
+        Amis.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject() {{
+            put(parentPk, "${_cat}");
         }});
     }
 
@@ -340,50 +341,49 @@ public class Amis extends JSONObject {
                     JSONObject buttonJson = new JSONObject();
                     AnnoButton.O2MJoinButton o2MJoinButton = annoButton.o2mJoinButton();
                     AnnoButton.M2MJoinButton m2mJoinButton = annoButton.m2mJoinButton();
-                    if (o2MJoinButton.enable()){
+                    if (o2MJoinButton.enable()) {
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("actionType", "dialog");
-                        buttonJson.put("dialog",new JSONObject(){{
-                            put("size","full");
+                        buttonJson.put("dialog", new JSONObject() {{
+                            put("size", "full");
                             put("title", annoButton.name());
-                            put("body",new JSONObject(){{
+                            put("body", new JSONObject() {{
                                 put("type", "iframe");
-                                put("src","/system/config/amis/"+ o2MJoinButton.joinAnnoMainClazz().getSimpleName()+"?"+ o2MJoinButton.joinOtherClazzField()+"=${"+ o2MJoinButton.joinThisClazzField()+"}");
+                                put("src", "/system/config/amis/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
                             }});
                         }});
-                    } else if (m2mJoinButton.enable()){
-                        HashMap<String, Object> queryMap = new HashMap<String,Object>(){{
-                            put("joinValue", "${"+ m2mJoinButton.joinThisClazzField()+"}");
-                            put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(),false,true));
+                    } else if (m2mJoinButton.enable()) {
+                        HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
+                            put("joinValue", "${" + m2mJoinButton.joinThisClazzField() + "}");
+                            put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(), false, true));
                             put("mediumTable", m2mJoinButton.mediumTable());
                             put("mediumThisField", m2mJoinButton.mediumThisFiled());
                             put("mediumOtherField", m2mJoinButton.mediumOtherField());
-                            put("mediumTableClass",m2mJoinButton.mediumTableClass().getSimpleName());
-                            put("joinThisClazzField",m2mJoinButton.joinThisClazzField());
+                            put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
+                            put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
                         }};
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("actionType", "dialog");
-                        buttonJson.put("dialog",new JSONObject(){{
-                            put("size","full");
+                        buttonJson.put("dialog", new JSONObject() {{
+                            put("size", "full");
                             put("title", annoButton.name());
-                            put("body",new JSONObject(){{
+                            put("body", new JSONObject() {{
                                 put("type", "iframe");
-                                put("src", "/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap,null));
+                                put("src", "/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                             }});
                         }});
-                    } else if (StrUtil.isNotBlank(annoButton.jumpUrl())){
+                    } else if (StrUtil.isNotBlank(annoButton.jumpUrl())) {
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("actionType", "url");
                         buttonJson.put("url", annoButton.jumpUrl());
-                    }
-                    else if (StrUtil.isNotBlank(annoButton.jsCmd())){
+                    } else if (StrUtil.isNotBlank(annoButton.jsCmd())) {
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("onClick", annoButton.jsCmd());
-                    }else {
+                    } else {
                         continue;
                     }
                     // 添加对应按钮
@@ -399,18 +399,18 @@ public class Amis extends JSONObject {
 
     public void addDeleteRelationEditInfo(Class<?> clazz) {
         // 删除按钮模板
-        JSONObject deleteJsonObj = new JSONObject(){{
+        JSONObject deleteJsonObj = new JSONObject() {{
             put("type", "button");
             put("actionType", "ajax");
             put("level", "danger");
             put("label", "删除");
             put("confirmText", "您确认要删除?");
-            put("api",new JSONObject(){{
+            put("api", new JSONObject() {{
                 put("method", "post");
                 put("url", "/system/anno/${clazz}/remove-relation");
-                put("data",new JSONObject(){{
+                put("data", new JSONObject() {{
                     put("&", "$$");
-                    put("_extraData","${extraData}");
+                    put("_extraData", "${extraData}");
                 }});
             }});
         }};
@@ -424,5 +424,29 @@ public class Amis extends JSONObject {
         }
         // 重新写入
         Amis.write(this, "$.body.columns", columns);
+    }
+
+    public void addRelationCrudColumns(Class<?> clazz) {
+        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        List<JSONObject> amisColumns = new ArrayList<>();
+        for (Field field : fields) {
+            AnnoField annoField = field.getAnnotation(AnnoField.class);
+            if (annoField.show() || annoField.isId()) {
+                JSONObject amisColumn = new JSONObject();
+                amisColumn.put("name", field.getName());
+                amisColumn.put("label", annoField.title());
+                amisColumn.put("sortable", true);
+                AnnoDataType.displayExtraInfo(amisColumn, annoField);
+                amisColumns.add(amisColumn);
+                if (annoField.isId()) {
+                    JSONObject copy = JSON.copy(amisColumn);
+                    copy.put("name", "label");
+                    copy.put("label", "显示名称");
+                    amisColumns.add(0, copy);
+                }
+            }
+        }
+        // 重新写入
+        Amis.write(this, "$.body.headerToolbar[2].dialog.body.columns", amisColumns);
     }
 }

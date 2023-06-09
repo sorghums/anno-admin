@@ -69,6 +69,8 @@ public class TemplateUtil {
 //        amis.addCrudFilter(clazz);
         // 添加列
         amis.addCrudColumns(clazz);
+        // 添加关联查询的列信息
+        amis.addRelationCrudColumns(clazz);
 //        // 添加删除信息
 //        amis.addCrudDeleteButton(clazz);
         // 添加编辑信息

@@ -12,6 +12,7 @@ import org.noear.solon.core.handle.Result;
  */
 @Data
 public class AnnoResult<T> {
+    private static final int SUCCEED_CODE = 0;
     /**
      * 状态码
      */
@@ -40,12 +41,12 @@ public class AnnoResult<T> {
     }
 
     public AnnoResult(){
-        this.status = Result.SUCCEED_CODE;
+        this.status = AnnoResult.SUCCEED_CODE;
         this.msg = "";
     }
 
     public AnnoResult(T data) {
-        this.status = Result.SUCCEED_CODE;
+        this.status = AnnoResult.SUCCEED_CODE;
         this.msg = "";
         this.data = data;
     }
@@ -66,7 +67,7 @@ public class AnnoResult<T> {
      */
     @Note("成功的空结果")
     public static <T> AnnoResult<T> succeed() {
-        return new AnnoResult<>(Result.SUCCEED_CODE, "");
+        return new AnnoResult<>(AnnoResult.SUCCEED_CODE, "");
     }
 
     /**
@@ -79,7 +80,7 @@ public class AnnoResult<T> {
 
     @Note("成功的结果")
     public static <T> AnnoResult<T> succeed(T data, String status) {
-        return new AnnoResult<>(Result.SUCCEED_CODE, status, data);
+        return new AnnoResult<>(AnnoResult.SUCCEED_CODE, status, data);
     }
 
     @Note("成功的结果")
