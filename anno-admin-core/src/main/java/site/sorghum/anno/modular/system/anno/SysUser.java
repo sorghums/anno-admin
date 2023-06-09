@@ -65,7 +65,6 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoButton(name = "角色",m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysRole.class,
-//            joinSql = "select role_id from sys_user_role where user_id = ?",
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,
             mediumOtherField = "user_id",

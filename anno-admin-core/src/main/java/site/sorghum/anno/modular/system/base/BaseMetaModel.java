@@ -4,6 +4,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import lombok.Data;
@@ -36,6 +37,14 @@ public class BaseMetaModel implements Serializable {
     @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false)
     private LocalDateTime updateTime;
 
-    @AnnoField(title = "删除标识", tableFieldName = "del_flag", show = false)
+    /**
+     * 状态 1 正常 0 封禁
+     */
+    @AnnoField(title = "删除标识", tableFieldName = "del_flag", search = @AnnoSearch(),
+            dataType = AnnoDataType.OPTIONS,
+            optionType = @AnnoOptionType(value = {
+                    @AnnoOptionType.OptionData(label = "已删除", value = "1"),
+                    @AnnoOptionType.OptionData(label = "正常", value = "0")
+            }),show = false)
     private Integer delFlag;
 }

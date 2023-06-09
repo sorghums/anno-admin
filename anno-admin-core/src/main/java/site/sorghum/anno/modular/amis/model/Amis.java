@@ -357,7 +357,6 @@ public class Amis extends JSONObject {
                         HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
                             put("joinValue", "${" + m2mJoinButton.joinThisClazzField() + "}");
                             put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(), false, true));
-                            put("mediumTable", m2mJoinButton.mediumTable());
                             put("mediumThisField", m2mJoinButton.mediumThisFiled());
                             put("mediumOtherField", m2mJoinButton.mediumOtherField());
                             put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());

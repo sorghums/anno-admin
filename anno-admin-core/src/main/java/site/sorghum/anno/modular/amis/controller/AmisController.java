@@ -74,8 +74,15 @@ public class AmisController {
             this.putAll(data);
             put("extraData", JSON.toJSONString(data));
         }};
+        // 添加树类
+        if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){
+            // TODO 添加m2m 树模板
+            template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
+        }
         // 添加crud类
-        template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
+        if (template == null){
+            template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
+        }
         ModelAndView modelAndView = new ModelAndView("function.html");
         modelAndView.put("amisJSON", template);
         modelAndView.put("properties", properties);

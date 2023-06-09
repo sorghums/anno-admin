@@ -13,6 +13,7 @@ import lombok.Getter;
 import site.sorghum.anno.util.DbContextUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public enum AnnoDataType {
 
     }
 
+    @SneakyThrows
     public static void displayExtraInfo(JSONObject item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getShowCode());
@@ -92,6 +94,23 @@ public enum AnnoDataType {
             item.put("thumbMode",imageType.thumbMode().getMode());
             item.put("thumbRatio",imageType.thumbRatio().getRatio());
             return;
+        }
+        if (annoDataType.equals(OPTIONS)){
+            item.put("type","mapping");
+            HashMap<String, String> mapping = new HashMap<>();
+            AnnoOptionType annoOptionType = annoField.optionType();
+            if (StrUtil.isNotBlank(annoOptionType.sql())){
+                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
+                for (Map<String, Object> map : mapList) {
+                    mapping.put(map.get("value").toString(),map.get("label").toString());
+                }
+            }else {
+                for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
+                    JSONObject option = new JSONObject();
+                    mapping.put(optionData.value(),optionData.label());
+                }
+            }
+            item.put("map",mapping);
         }
     }
 
