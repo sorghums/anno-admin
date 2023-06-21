@@ -65,8 +65,8 @@ public class TemplateUtil {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Amis amis = getTemplate("m2mTemplate.json").toJavaObject(Amis.class);
-//         添加过滤
-//        amis.addCrudFilter(clazz);
+        // 添加过滤
+        amis.addCrudFilter(clazz);
         // 添加列
         amis.addCrudColumns(clazz);
         // 添加关联查询的列信息

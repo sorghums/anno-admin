@@ -402,8 +402,8 @@ public class Amis extends JSONObject {
             put("type", "button");
             put("actionType", "ajax");
             put("level", "danger");
-            put("label", "删除");
-            put("confirmText", "您确认要删除?");
+            put("label", "删除关联关系");
+            put("confirmText", "您确认要删除关联关系吗?");
             put("api", new JSONObject() {{
                 put("method", "post");
                 put("url", "/system/anno/${clazz}/remove-relation");
