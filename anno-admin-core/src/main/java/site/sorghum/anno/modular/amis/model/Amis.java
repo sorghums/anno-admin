@@ -21,13 +21,11 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.anno.util.TemplateUtil;
+import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Amis
@@ -35,35 +33,9 @@ import java.util.Properties;
  * @author sorghum
  * @since 2023/05/20
  */
-public class Amis extends JSONObject {
+public class Amis extends HashMap<String ,Object> {
 
-    public static <T> T read(Object obj, String path, Class<T> type) {
-        Object eval = JSONPath.eval(obj, path);
-        if (eval instanceof JSONArray) {
-            throw new BizException("类型不匹配");
-        }
-        if (eval instanceof JSONObject) {
-            JSONObject evalJson = (JSONObject) eval;
-            return evalJson.toJavaObject(type);
-        }
-        return JSONObject.parseObject(JSON.toJSONString(obj), type);
-    }
 
-    public static <T> List<T> readList(Object obj, String path, Class<T> type) {
-        Object eval = JSONPath.eval(obj, path);
-        if (eval instanceof JSONArray) {
-            JSONArray evalArray = (JSONArray) eval;
-            return evalArray.toJavaList(type);
-        }
-        if (eval instanceof JSONObject) {
-            throw new BizException("类型不匹配");
-        }
-        return JSONArray.parseArray(JSON.toJSONString(eval), type);
-    }
-
-    public static Object write(Object obj, String path, Object value) {
-        return JSONPath.set(obj, path, value);
-    }
 
     /**
      * 添加树边栏
@@ -74,14 +46,14 @@ public class Amis extends JSONObject {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
         if (annoLeftTree.enable()) {
-            JSONObject aside = TemplateUtil.getTemplate("item/aside.json");
-            Amis.write(this, "$.aside", aside);
+            Map<String ,Object> aside = TemplateUtil.getTemplate("item/aside.json");
+            JSONUtil.write(this, "$.aside", aside);
             return;
         }
         AnnoTree annoTree = annoMain.annoTree();
         if (annoTree.enable() && annoTree.displayAsTree()) {
-            JSONObject aside = TemplateUtil.getTemplate("item/aside.json");
-            Amis.write(this, "$.aside", aside);
+            Map<String ,Object> aside = TemplateUtil.getTemplate("item/aside.json");
+            JSONUtil.write(this, "$.aside", aside);
             return;
         }
     }
@@ -93,8 +65,8 @@ public class Amis extends JSONObject {
      */
     public void addCrudFilter(Class<?> clazz) {
         // 获取过滤的模板
-        JSONObject filter = TemplateUtil.getTemplate("item/filter.json");
-        List<JSONObject> body = Amis.readList(filter, "$.body", JSONObject.class);
+        Map<String ,Object> filter = TemplateUtil.getTemplate("item/filter.json");
+        List<JSONObject> body = JSONUtil.readList(filter, "$.body", JSONObject.class);
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
         List<JSONObject> amisColumns = new ArrayList<>();
         for (Field field : fields) {
@@ -121,9 +93,9 @@ public class Amis extends JSONObject {
             body.add(group);
         });
         // 重新写入
-        Amis.write(filter, "$.body", body);
+        JSONUtil.write(filter, "$.body", body);
         // 写入到当前对象
-        Amis.write(this, "$.body.filter", filter);
+        JSONUtil.write(this, "$.body.filter", filter);
     }
 
     /**
@@ -147,10 +119,10 @@ public class Amis extends JSONObject {
             amisColumns.add(amisColumn);
         }
         // 读取现有的列
-        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
         columns.addAll(0, amisColumns);
         // 重新写入
-        Amis.write(this, "$.body.columns", columns);
+        JSONUtil.write(this, "$.body.columns", columns);
     }
 
 
@@ -166,7 +138,7 @@ public class Amis extends JSONObject {
         if (!canEdit) {
             return;
         }
-        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
         JSONObject columnJson = columns.stream().filter(column -> "操作".equals(column.getString("label"))).findFirst().orElseThrow(
                 () -> new BizException("操作列不存在")
         );
@@ -215,7 +187,7 @@ public class Amis extends JSONObject {
 
             }});
         }});
-        Amis.write(this, "$.body.columns", columns);
+        JSONUtil.write(this, "$.body.columns", columns);
     }
 
     public void addCrudAddInfo(Class<?> clazz) {
@@ -225,7 +197,7 @@ public class Amis extends JSONObject {
         if (!canAdd) {
             return;
         }
-        List<JSONObject> action = Amis.readList(this, "$.body.filter.actions", JSONObject.class);
+        List<JSONObject> action = JSONUtil.readList(this, "$.body.filter.actions", JSONObject.class);
         action.add(0, new JSONObject() {{
             put("type", "button");
             put("actionType", "dialog");
@@ -267,7 +239,7 @@ public class Amis extends JSONObject {
 
             }});
         }});
-        Amis.write(this, "$.body.filter.actions", action);
+        JSONUtil.write(this, "$.body.filter.actions", action);
     }
 
     public void addCrudDeleteButton(Class<?> clazz) {
@@ -281,7 +253,7 @@ public class Amis extends JSONObject {
             put("api", "post:/system/anno/${clazz}/removeById");
         }};
         // 读取现有的列
-        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
         for (JSONObject columnJson : columns) {
             if ("操作".equals(columnJson.getString("label"))) {
                 // 添加删除按钮
@@ -289,7 +261,7 @@ public class Amis extends JSONObject {
             }
         }
         // 重新写入
-        Amis.write(this, "$.body.columns", columns);
+        JSONUtil.write(this, "$.body.columns", columns);
     }
 
     public void addTreeForm(Class<?> clazz) {
@@ -297,12 +269,12 @@ public class Amis extends JSONObject {
         String parentKey = annoMain.annoTree().parentKey();
 
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        ArrayList<JSONObject> itemList = CollUtil.newArrayList();
+        ArrayList<Map<String ,Object>> itemList = CollUtil.newArrayList();
         for (Field field : fields) {
             AnnoField annoField = field.getAnnotation(AnnoField.class);
             boolean required = annoField.edit().notNull();
             String fieldName = field.getName();
-            JSONObject itemBody = new JSONObject() {{
+            Map<String ,Object> itemBody = new JSONObject() {{
                 put("name", fieldName);
                 put("label", annoField.title());
                 put("required", required);
@@ -321,11 +293,11 @@ public class Amis extends JSONObject {
             }
             itemList.add(itemBody);
         }
-        Amis.write(this, "$.body[1].body", itemList);
+        JSONUtil.write(this, "$.body[1].body", itemList);
 
         // 设置${_parentKey}的值
         String parentPk = AnnoUtil.getParentPk(clazz);
-        Amis.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject() {{
+        JSONUtil.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject() {{
             put(parentPk, "${_cat}");
         }});
     }
@@ -333,7 +305,7 @@ public class Amis extends JSONObject {
     public void addCrudColumnButtonInfo(Class<?> clazz) {
         List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz);
         // 读取现有的列
-        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
         for (JSONObject columnJson : columns) {
             if ("操作".equals(columnJson.getString("label"))) {
                 for (Field buttonField : buttonFields) {
@@ -393,7 +365,7 @@ public class Amis extends JSONObject {
             }
         }
         // 重新写入
-        Amis.write(this, "$.body.columns", columns);
+        JSONUtil.write(this, "$.body.columns", columns);
     }
 
     public void addDeleteRelationEditInfo(Class<?> clazz) {
@@ -414,7 +386,7 @@ public class Amis extends JSONObject {
             }});
         }};
         // 读取现有的列
-        List<JSONObject> columns = Amis.readList(this, "$.body.columns", JSONObject.class);
+        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
         for (JSONObject columnJson : columns) {
             if ("操作".equals(columnJson.getString("label"))) {
                 // 添加删除按钮
@@ -422,7 +394,7 @@ public class Amis extends JSONObject {
             }
         }
         // 重新写入
-        Amis.write(this, "$.body.columns", columns);
+        JSONUtil.write(this, "$.body.columns", columns);
     }
 
     public void addRelationCrudColumns(Class<?> clazz) {
@@ -446,6 +418,6 @@ public class Amis extends JSONObject {
             }
         }
         // 重新写入
-        Amis.write(this, "$.body.headerToolbar[2].dialog.body.columns", amisColumns);
+        JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body.columns", amisColumns);
     }
 }

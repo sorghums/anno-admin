@@ -48,7 +48,7 @@ public enum AnnoDataType {
 
 
     @SneakyThrows
-    public static void editorExtraInfo(JSONObject item, AnnoField annoField) {
+    public static void editorExtraInfo(Map<String ,Object> item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getCode());
         if (annoDataType.equals(OPTIONS)) {

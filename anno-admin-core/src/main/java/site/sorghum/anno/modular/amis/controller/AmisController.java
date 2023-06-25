@@ -38,8 +38,8 @@ public class AmisController {
             return null;
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
-        JSONObject template = null;
-        JSONObject properties = new JSONObject(){{
+        Map<String ,Object> template = null;
+        Map<String ,Object> properties = new JSONObject(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
             this.putAll(data);
@@ -67,8 +67,8 @@ public class AmisController {
             return null;
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
-        JSONObject template = null;
-        JSONObject properties = new JSONObject(){{
+        Map<String ,Object> template = null;
+        Map<String ,Object> properties = new JSONObject(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
             this.putAll(data);

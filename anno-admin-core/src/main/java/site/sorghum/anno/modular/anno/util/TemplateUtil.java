@@ -9,8 +9,10 @@ import com.alibaba.fastjson2.JSONObject;
 import site.sorghum.anno.modular.amis.model.Amis;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
+import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
+import java.util.Map;
 
 /**
  * 模板工具
@@ -30,10 +32,10 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link JSONObject}
      */
-    public static JSONObject getCrudTemplate(Class<?> clazz, JSONObject properties){
+    public static Map<String,Object> getCrudTemplate(Class<?> clazz, Map<String,Object> properties){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = getTemplate("crudTemplate.json").toJavaObject(Amis.class);
+        Amis amis = JSONUtil.parseObject(getTemplate("crudTemplate.json"),Amis.class);
         // 添加过滤
         amis.addCrudFilter(clazz);
         // 添加列
@@ -49,7 +51,7 @@ public class TemplateUtil {
         // 添加树边栏
         amis.addCommonTreeAside(clazz);
         stopWatch.stop();
-        log.debug("crud模板：{}",amis.toJSONString());
+        log.debug("crud模板：{}",JSONUtil.toJSONString(amis));
         log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
         return amis;
     }
@@ -61,10 +63,10 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link JSONObject}
      */
-    public static JSONObject getCrudM2mTemplate(Class<?> clazz, JSONObject properties){
+    public static Map<String ,Object> getCrudM2mTemplate(Class<?> clazz, Map<String ,Object> properties){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = getTemplate("m2mTemplate.json").toJavaObject(Amis.class);
+        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"),Amis.class);
         // 添加过滤
         amis.addCrudFilter(clazz);
         // 添加列
@@ -84,27 +86,29 @@ public class TemplateUtil {
 //        // 添加树边栏
 //        amis.addCommonTreeAside(clazz);
         stopWatch.stop();
-        log.debug("crud模板：{}",amis.toJSONString());
+        log.debug("crud模板：{}",JSONUtil.toJSONString(amis));
         log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
         return amis;
     }
+
     /**
+     * 让树模板
      * 得到crud模板
      *
      * @param clazz      clazz
      * @param properties 页面参数
-     * @return {@link JSONObject}
+     * @return {@link Map}<{@link String} ,{@link Object}>
      */
-    public static JSONObject getTreeTemplate(Class<?> clazz, JSONObject properties){
+    public static Map<String ,Object> getTreeTemplate(Class<?> clazz, Map<String ,Object> properties){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = getTemplate("treeTemplate.json").toJavaObject(Amis.class);
+        Amis amis = JSONUtil.parseObject(getTemplate("treeTemplate.json"),Amis.class);
         // 添加form
         amis.addTreeForm(clazz);
         // 添加树边栏
         amis.addCommonTreeAside(clazz);
         stopWatch.stop();
-        log.debug("tree模板：{}",amis.toJSONString());
+        log.debug("tree模板：{}",JSONUtil.toJSONString(amis));
         log.debug("tree模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
         return amis;
     }
@@ -114,17 +118,18 @@ public class TemplateUtil {
      * @param templateName 模板名称
      * @return {@link JSONObject}
      */
-    public static JSONObject getTemplate(String templateName){
+    public static Map<String, Object> getTemplate(String templateName){
         if (templateName == null) {
             return null;
         }
         //fifoCache
         if (FIFO_CACHE.containsKey(templateName)) {
-            return (JSONObject)JSON.copy(FIFO_CACHE.get(templateName));
+            return (Map<String, Object>) JSONUtil.copyObject(FIFO_CACHE.get(templateName));
         }
-        JSONObject jsonObject = JSON.parseObject(getTemplateUrl(templateName));
-        FIFO_CACHE.put(templateName, JSON.copy(jsonObject));
-        return jsonObject;
+
+        Map<String ,Object> map = JSONUtil.parseObject(getTemplateUrl(templateName),Map.class);
+        FIFO_CACHE.put(templateName, JSONUtil.copyObject(map));
+        return map;
     }
 
     /**
@@ -156,7 +161,7 @@ public class TemplateUtil {
     }
 
     public static void main(String[] args) {
-        JSONObject template = TemplateUtil.getTemplate("crudTemplate.json");
+        Map<String ,Object> template = TemplateUtil.getTemplate("crudTemplate.json");
         System.out.println(template);
     }
 
