@@ -50,6 +50,10 @@ public class TemplateUtil {
         amis.addCrudAddInfo(clazz);
         // 添加树边栏
         amis.addCommonTreeAside(clazz);
+        // 添加m2m多选框
+        if (properties.getOrDefault("isM2m",false).equals(true)){
+            amis.addCrudM2mCheckBox(clazz);
+        }
         stopWatch.stop();
         log.debug("crud模板：{}",JSONUtil.toJSONString(amis));
         log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
@@ -71,8 +75,9 @@ public class TemplateUtil {
         amis.addCrudFilter(clazz);
         // 添加列
         amis.addCrudColumns(clazz);
-        // 添加关联查询的列信息
-        amis.addRelationCrudColumns(clazz);
+        // 添加关联查询的表格信息
+        properties.put("isM2m",true);
+        amis.addRelationCrudData(clazz,getCrudTemplate(clazz,properties));
 //        // 添加删除信息
 //        amis.addCrudDeleteButton(clazz);
         // 添加编辑信息

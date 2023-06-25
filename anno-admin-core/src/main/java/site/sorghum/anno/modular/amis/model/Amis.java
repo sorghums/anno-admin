@@ -127,6 +127,41 @@ public class Amis extends HashMap<String ,Object> {
 
 
     /**
+     * 添加crud m2m复选框
+     *
+     * @param clazz clazz
+     */
+    public void addCrudM2mCheckBox(Class<?> clazz) {
+        //{
+        //        "label": "批量新增关系",
+        //        "actionType": "ajax",
+        //        "api": {
+        //                      "url": "/system/anno/${clazz}/addM2m",
+        //                      "method": "post",
+        //                      "data": {
+        //                        "&": "$$",
+        //                        "_extraData": "${extraData}"
+        //                      }
+        //                    },
+        //      }
+        JSONUtil.write(this, "$.body.api.data.reverseM2m",true);
+        JSONUtil.write(this, "$.body.bulkActions",new ArrayList<Map<String,Object>>(){{
+            add(new HashMap<String,Object>(){{
+                put("label","批量新增关系");
+                put("actionType","ajax");
+                put("api",new HashMap<String,Object>(){{
+                    put("url","/system/anno/${clazz}/addM2m");
+                    put("method","post");
+                    put("data",new HashMap<String,Object>(){{
+                        put("&","$$");
+                        put("_extraData","${extraData}");
+                    }});
+                }});
+            }});
+        }});
+    }
+
+    /**
      * 添加编辑信息
      *
      * @param clazz clazz
@@ -418,6 +453,11 @@ public class Amis extends HashMap<String ,Object> {
             }
         }
         // 重新写入
-        JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body.columns", amisColumns);
+        JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0].columns", amisColumns);
     }
+
+    public void addRelationCrudData(Class<?> clazz,Map<String ,Object> amisJson) {
+        JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0]", amisJson);
+    }
+
 }

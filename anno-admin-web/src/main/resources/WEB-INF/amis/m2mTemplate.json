@@ -39,34 +39,11 @@
         "dialog": {
           "title": "新增",
           "size": "full",
-          "body":[ {
-            "type": "select",
-            "name": "selectTable",
-            "selectMode": "table",
-            "multiple": true,
-            "columns": [
-
-            ],
-            "source": "/system/anno/${clazz}/m2mSelect?_extraData=${extraData}"
-          }],
+          "body":[],
           "onEvent": {
             "confirm": {
               "actions": [
                 {
-                  "args": {
-                    "options": {},
-                    "api": {
-                      "url": "/system/anno/${clazz}/addM2m",
-                      "method": "post",
-                      "data": {
-                        "&": "$$",
-                        "_extraData": "${extraData}"
-                      }
-                    }
-                  },
-                  "outputVar": "responseResult",
-                  "actionType": "ajax"
-                },{
                   "actionType": "broadcast",
                   "args": {
                     "eventName": "broadcast_refresh_m2m_crud"

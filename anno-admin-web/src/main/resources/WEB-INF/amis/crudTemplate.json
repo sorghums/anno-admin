@@ -15,10 +15,11 @@
       "data": {
         "&": "$$",
         "_cat": "${_cat}",
+        "ignoreM2m": false,
+        "reverseM2m": false,
         "_extraData": "${extraData}"
       }
     },
-    "keepItemSelectionOnPageChange": true,
     "headerToolbar": [
       "export-excel",
       "bulkActions",

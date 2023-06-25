@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
+import site.sorghum.anno.util.JSONUtil;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -55,23 +56,29 @@ public class AnnoController {
     public <T> AnnoResult<IPage<T>> page(@Path String clazz,
                                          @Param int page,
                                          @Param int perPage,
-                                         @Body JSONObject param,
+                                         @Body Map<String ,String> param,
                                          @Param String orderBy,
                                          @Param String orderDir,
-                                         @Param String _cat) {
+                                         @Param String _cat,
+                                         @Param boolean ignoreM2m,
+                                         @Param boolean reverseM2m) {
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         QueryRequest<T> queryRequest = new QueryRequest<>();
         queryRequest.setClazz(aClass);
         queryRequest.setCat(_cat);
         queryRequest.setPage(page - 1);
         queryRequest.setPerPage(perPage);
-        queryRequest.setParam(param.toJavaObject(aClass));
+        queryRequest.setParam(JSONUtil.parseObject(param, aClass));
         queryRequest.setOrderBy(orderBy);
         queryRequest.setOrderDir(orderDir);
-        String m2mSql = annoService.m2mSql(param.toJavaObject(Map.class));
-        if (StrUtil.isNotEmpty(m2mSql)) {
-            String joinThisClazzField = param.getString("joinThisClazzField");
-            queryRequest.setAndSql(joinThisClazzField + " in (" + m2mSql + ")");
+        String m2mSql = annoService.m2mSql(param);
+        String inPrefix = " in (";
+        if (reverseM2m){
+            inPrefix = " not in (";
+        }
+        if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
+            String joinThisClazzField = param.get("joinThisClazzField");
+            queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
         }
         return AnnoResult.from(Result.succeed(annoService.page(queryRequest)));
     }
@@ -185,7 +192,7 @@ public class AnnoController {
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
         Class<?> mediumClass = AnnoClazzCache.get(mediumTableClass);
-        String mediumThisValues = param.get("selectTable").toString();
+        String mediumThisValues = param.get("ids").toString();
         String[] split = mediumThisValues.split(",");
         for (String mediumThisValue : split) {
             // 字段一
