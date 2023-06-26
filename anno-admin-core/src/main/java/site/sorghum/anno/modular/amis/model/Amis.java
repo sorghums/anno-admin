@@ -3,13 +3,11 @@ package site.sorghum.anno.modular.amis.model;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONPath;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -24,7 +22,6 @@ import site.sorghum.anno.modular.anno.util.TemplateUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -40,9 +37,10 @@ public class Amis extends HashMap<String ,Object> {
     /**
      * 添加树边栏
      *
-     * @param clazz clazz
+     * @param clazz      clazz
+     * @param properties properties
      */
-    public void addCommonTreeAside(Class<?> clazz) {
+    public void addCommonTreeAside(Class<?> clazz, Map<String, Object> properties) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
         if (annoLeftTree.enable()) {
@@ -83,6 +81,9 @@ public class Amis extends HashMap<String ,Object> {
                 AnnoDataType.editorExtraInfo(column, annoField);
                 amisColumns.add(column);
             }
+        }
+        if (amisColumns.size() == 0) {
+            return;
         }
         // amisColumns 以4个为一组进行分组
         CollUtil.split(amisColumns, 4).forEach(columns -> {
@@ -371,10 +372,20 @@ public class Amis extends HashMap<String ,Object> {
                         }};
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
-                        buttonJson.put("actionType", "dialog");
-                        buttonJson.put("dialog", new JSONObject() {{
-                            put("size", "full");
+                        buttonJson.put("actionType", "drawer");
+                        buttonJson.put("drawer", new JSONObject() {{
+                            put("size", "xl");
                             put("title", annoButton.name());
+                            put("showCloseButton", false);
+                            put("actions", new JSONArray() {{
+                                add(new JSONObject() {{
+                                    put("type", "action");
+                                    put("actionType", "confirm");
+                                    put("label", "操作完成");
+                                    put("size", "lg");
+                                    put("level", "primary");
+                                }});
+                            }});
                             put("body", new JSONObject() {{
                                 put("type", "iframe");
                                 put("src", "/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
@@ -456,7 +467,14 @@ public class Amis extends HashMap<String ,Object> {
         JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0].columns", amisColumns);
     }
 
+    /**
+     * 添加crud关系数据
+     *
+     * @param clazz    clazz
+     * @param amisJson ami json
+     */
     public void addRelationCrudData(Class<?> clazz,Map<String ,Object> amisJson) {
+
         JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0]", amisJson);
     }
 

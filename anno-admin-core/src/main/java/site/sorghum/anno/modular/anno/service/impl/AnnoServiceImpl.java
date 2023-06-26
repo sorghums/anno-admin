@@ -297,13 +297,11 @@ public class AnnoServiceImpl implements AnnoService {
     }
 
     @Override
-    public <T> List<AnnoTreeDto<String>> annoTrees(Class<T> clazz) {
+    public <T> List<AnnoTreeDto<String>> annoTrees(QueryRequest<T> request) {
         try {
-            AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+            AnnoMain annoMain = AnnoUtil.getAnnoMain(request.getClazz());
             AnnoTree annoTree = annoMain.annoTree();
-            List<T> data = list(new QueryRequest<T>() {{
-                setClazz(clazz);
-            }});
+            List<T> data = list(request);
             return AnnoUtil.buildAnnoTree(data, annoTree.label(), annoTree.key(), annoTree.parentKey());
         } catch (Exception e) {
             log.error("AnnoService.annoTrees error:{}", e.getMessage());

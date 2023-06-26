@@ -15,6 +15,8 @@
     "type": "input-tree",
     "name": "_cat",
     "searchable": true,
+    "multiple": false,
+    "cascade": false,
     "heightAuto": false,
     "virtualThreshold": 999999999999999999999,
     "inputClassName": "no-border no-padder mt-1",

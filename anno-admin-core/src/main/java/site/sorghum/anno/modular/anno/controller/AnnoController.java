@@ -56,12 +56,12 @@ public class AnnoController {
     public <T> AnnoResult<IPage<T>> page(@Path String clazz,
                                          @Param int page,
                                          @Param int perPage,
-                                         @Body Map<String ,String> param,
                                          @Param String orderBy,
                                          @Param String orderDir,
                                          @Param String _cat,
                                          @Param boolean ignoreM2m,
-                                         @Param boolean reverseM2m) {
+                                         @Param boolean reverseM2m,
+                                         @Body Map<String ,String> param) {
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         QueryRequest<T> queryRequest = new QueryRequest<>();
         queryRequest.setClazz(aClass);
@@ -160,9 +160,23 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/annoTrees")
-    public <T> AnnoResult<List<AnnoTreeDto<String>>> annoTrees(@Path String clazz) {
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        List<AnnoTreeDto<String>> annoTreeDtos = annoService.annoTrees(aClass);
+    public <T> AnnoResult<List<AnnoTreeDto<String>>> annoTrees(@Path String clazz,
+                                                               @Param boolean ignoreM2m,
+                                                               @Param boolean reverseM2m,
+                                                               @Body Map<String ,String> param) {
+        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
+        QueryRequest<T> queryRequest = new QueryRequest<>();
+        queryRequest.setClazz(aClass);
+        String m2mSql = annoService.m2mSql(param);
+        String inPrefix = " in (";
+        if (reverseM2m){
+            inPrefix = " not in (";
+        }
+        if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
+            String joinThisClazzField = param.get("joinThisClazzField");
+            queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
+        }
+        List<AnnoTreeDto<String>> annoTreeDtos = annoService.annoTrees(queryRequest);
         return AnnoResult.from(Result.succeed(annoTreeDtos));
     }
 

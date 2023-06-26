@@ -33,13 +33,21 @@
       "reload",
       {
         "type": "button",
-        "label": "新增",
+        "label": "新增关联关系",
         "level": "primary",
         "actionType": "dialog",
         "dialog": {
-          "title": "新增",
+          "title": "新增关联关系",
           "size": "full",
           "body":[],
+          "actions": [{
+            "type": "action",
+            "actionType": "confirm",
+            "label": "操作完成",
+            "size": "lg",
+            "level": "primary"
+          }],
+          "showCloseButton": false,
           "onEvent": {
             "confirm": {
               "actions": [

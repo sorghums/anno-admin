@@ -32,10 +32,10 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link JSONObject}
      */
-    public static Map<String,Object> getCrudTemplate(Class<?> clazz, Map<String,Object> properties){
+    public static Map<String, Object> getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("crudTemplate.json"),Amis.class);
+        Amis amis = JSONUtil.parseObject(getTemplate("crudTemplate.json"), Amis.class);
         // 添加过滤
         amis.addCrudFilter(clazz);
         // 添加列
@@ -44,19 +44,21 @@ public class TemplateUtil {
         amis.addCrudDeleteButton(clazz);
         // 添加编辑信息
         amis.addCrudEditInfo(clazz);
-        // 添加自定义按钮信息
-        amis.addCrudColumnButtonInfo(clazz);
+        if (properties.getOrDefault("isM2m", false).equals(false)) {
+            // 添加自定义按钮信息
+            amis.addCrudColumnButtonInfo(clazz);
+        }
         // 添加新增信息
         amis.addCrudAddInfo(clazz);
         // 添加树边栏
-        amis.addCommonTreeAside(clazz);
+        amis.addCommonTreeAside(clazz, properties);
         // 添加m2m多选框
-        if (properties.getOrDefault("isM2m",false).equals(true)){
+        if (properties.getOrDefault("isM2m", false).equals(true)) {
             amis.addCrudM2mCheckBox(clazz);
         }
         stopWatch.stop();
-        log.debug("crud模板：{}",JSONUtil.toJSONString(amis));
-        log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
+        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return amis;
     }
 
@@ -67,17 +69,61 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link JSONObject}
      */
-    public static Map<String ,Object> getCrudM2mTemplate(Class<?> clazz, Map<String ,Object> properties){
+    public static Map<String, Object> getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"),Amis.class);
+        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"), Amis.class);
         // 添加过滤
         amis.addCrudFilter(clazz);
         // 添加列
         amis.addCrudColumns(clazz);
         // 添加关联查询的表格信息
-        properties.put("isM2m",true);
-        amis.addRelationCrudData(clazz,getCrudTemplate(clazz,properties));
+        properties.put("isM2m", true);
+        amis.addRelationCrudData(clazz, getCrudTemplate(clazz, properties));
+        // 添加编辑信息
+        amis.addCrudEditInfo(clazz);
+        // 添加删除对应关联关系信息的按钮
+        amis.addDeleteRelationEditInfo(clazz);
+        stopWatch.stop();
+        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        return amis;
+    }
+
+    /**
+     * 让树模板
+     * 得到crud模板
+     *
+     * @param clazz      clazz
+     * @param properties 页面参数
+     * @return {@link Map}<{@link String} ,{@link Object}>
+     */
+    public static Map<String, Object> getTreeTemplate(Class<?> clazz, Map<String, Object> properties) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Amis amis = JSONUtil.parseObject(getTemplate("treeTemplate.json"), Amis.class);
+        // 添加form
+        amis.addTreeForm(clazz);
+        // 添加树边栏
+        amis.addCommonTreeAside(clazz, properties);
+        stopWatch.stop();
+        log.debug("tree模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        return amis;
+    }
+
+    public static Map<String, Object> getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"), Amis.class);
+        // 添加过滤
+        amis.addCrudFilter(clazz);
+        // 添加列
+        amis.addCrudColumns(clazz);
+        // 添加关联查询的表格信息
+        properties.put("isM2m", true);
+
+        amis.addRelationCrudData(clazz, getTreeMultiSelect(clazz, properties));
 //        // 添加删除信息
 //        amis.addCrudDeleteButton(clazz);
         // 添加编辑信息
@@ -91,39 +137,18 @@ public class TemplateUtil {
 //        // 添加树边栏
 //        amis.addCommonTreeAside(clazz);
         stopWatch.stop();
-        log.debug("crud模板：{}",JSONUtil.toJSONString(amis));
-        log.debug("crud模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
+        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return amis;
     }
 
-    /**
-     * 让树模板
-     * 得到crud模板
-     *
-     * @param clazz      clazz
-     * @param properties 页面参数
-     * @return {@link Map}<{@link String} ,{@link Object}>
-     */
-    public static Map<String ,Object> getTreeTemplate(Class<?> clazz, Map<String ,Object> properties){
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("treeTemplate.json"),Amis.class);
-        // 添加form
-        amis.addTreeForm(clazz);
-        // 添加树边栏
-        amis.addCommonTreeAside(clazz);
-        stopWatch.stop();
-        log.debug("tree模板：{}",JSONUtil.toJSONString(amis));
-        log.debug("tree模板生成耗时：{}ms",stopWatch.getTotalTimeMillis());
-        return amis;
-    }
     /**
      * 得到模板
      *
      * @param templateName 模板名称
      * @return {@link JSONObject}
      */
-    public static Map<String, Object> getTemplate(String templateName){
+    public static Map<String, Object> getTemplate(String templateName) {
         if (templateName == null) {
             return null;
         }
@@ -132,26 +157,39 @@ public class TemplateUtil {
             return (Map<String, Object>) JSONUtil.copyObject(FIFO_CACHE.get(templateName));
         }
 
-        Map<String ,Object> map = JSONUtil.parseObject(getTemplateUrl(templateName),Map.class);
+        Map<String, Object> map = JSONUtil.parseObject(getTemplateUrl(templateName), Map.class);
         FIFO_CACHE.put(templateName, JSONUtil.copyObject(map));
         return map;
     }
 
+    /**
+     * 获取树多选择
+     *
+     * @param clazz      clazz
+     * @param properties 属性
+     * @return {@link Map}<{@link String} ,{@link Object}>
+     */
+    public static Map<String ,Object> getTreeMultiSelect(Class<?> clazz, Map<String, Object> properties){
+        Map<String, Object> template = getTemplate("item/tree-input.json");
+        Amis amis = JSONUtil.parseObject(template, Amis.class);
+        // 添加form
+        return amis;
+    }
     /**
      * 得到模板
      *
      * @param templateName 模板名称
      * @return {@link JSONObject}
      */
-    public static JSONArray getTemplateArray(String templateName){
+    public static JSONArray getTemplateArray(String templateName) {
         if (templateName == null) {
             return null;
         }
         if (FIFO_CACHE.containsKey(templateName)) {
-            return (JSONArray)JSON.copy(FIFO_CACHE.get(templateName));
+            return (JSONArray) JSON.copy(FIFO_CACHE.get(templateName));
         }
         JSONArray jsonArray = JSON.parseObject(getTemplateUrl(templateName), JSONArray.class);
-        FIFO_CACHE.put(templateName,JSON.copy(jsonArray));
+        FIFO_CACHE.put(templateName, JSON.copy(jsonArray));
         return jsonArray;
     }
 
@@ -161,13 +199,14 @@ public class TemplateUtil {
      * @param templateName 模板名称
      * @return {@link URL}
      */
-    private static URL getTemplateUrl(String templateName){
-        return ResourceUtil.getResource("/WEB-INF/amis/"+templateName);
+    private static URL getTemplateUrl(String templateName) {
+        return ResourceUtil.getResource("/WEB-INF/amis/" + templateName);
     }
 
     public static void main(String[] args) {
-        Map<String ,Object> template = TemplateUtil.getTemplate("crudTemplate.json");
+        Map<String, Object> template = TemplateUtil.getTemplate("crudTemplate.json");
         System.out.println(template);
     }
+
 
 }

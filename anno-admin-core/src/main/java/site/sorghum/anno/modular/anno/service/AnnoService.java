@@ -89,8 +89,8 @@ public interface AnnoService {
     /**
      * Anno 树
      *
-     * @param clazz clazz
+     * @param request 请求
      * @return {@link List}<{@link AnnoTreeDto}<{@link String}>>
      */
-    <T> List<AnnoTreeDto<String>> annoTrees(Class<T> clazz);
+    <T> List<AnnoTreeDto<String>> annoTrees(QueryRequest<T> request);
 }

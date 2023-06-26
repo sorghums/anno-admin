@@ -77,7 +77,7 @@ public class AmisController {
         // 添加树类
         if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){
             // TODO 添加m2m 树模板
-            template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
+            template = TemplateUtil.getTreeM2mTemplate(aClass,properties);
         }
         // 添加crud类
         if (template == null){

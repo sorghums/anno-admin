@@ -40,7 +40,7 @@ public class BaseMetaModel implements Serializable {
     /**
      * 状态 1 正常 0 封禁
      */
-    @AnnoField(title = "删除标识", tableFieldName = "del_flag", search = @AnnoSearch(),
+    @AnnoField(title = "删除标识", tableFieldName = "del_flag",
             dataType = AnnoDataType.OPTIONS,
             optionType = @AnnoOptionType(value = {
                     @AnnoOptionType.OptionData(label = "已删除", value = "1"),
