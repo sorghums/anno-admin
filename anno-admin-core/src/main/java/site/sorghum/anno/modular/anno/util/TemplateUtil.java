@@ -115,27 +115,7 @@ public class TemplateUtil {
     public static Map<String, Object> getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"), Amis.class);
-        // 添加过滤
-        amis.addCrudFilter(clazz);
-        // 添加列
-        amis.addCrudColumns(clazz);
-        // 添加关联查询的表格信息
-        properties.put("isM2m", true);
-
-        amis.addRelationCrudData(clazz, getTreeMultiSelect(clazz, properties));
-//        // 添加删除信息
-//        amis.addCrudDeleteButton(clazz);
-        // 添加编辑信息
-        amis.addCrudEditInfo(clazz);
-        // 添加删除对应关联关系信息的按钮
-        amis.addDeleteRelationEditInfo(clazz);
-//        // 添加自定义按钮信息
-//        amis.addCrudColumnButtonInfo(clazz);
-        // 添加新增信息
-//        amis.addCrudAddInfo(clazz);
-//        // 添加树边栏
-//        amis.addCommonTreeAside(clazz);
+        Amis amis = JSONUtil.parseObject(getTemplateUrl("m2mTreeTemplate.json"), Amis.class);
         stopWatch.stop();
         log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());

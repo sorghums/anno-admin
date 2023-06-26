@@ -133,18 +133,6 @@ public class Amis extends HashMap<String ,Object> {
      * @param clazz clazz
      */
     public void addCrudM2mCheckBox(Class<?> clazz) {
-        //{
-        //        "label": "批量新增关系",
-        //        "actionType": "ajax",
-        //        "api": {
-        //                      "url": "/system/anno/${clazz}/addM2m",
-        //                      "method": "post",
-        //                      "data": {
-        //                        "&": "$$",
-        //                        "_extraData": "${extraData}"
-        //                      }
-        //                    },
-        //      }
         JSONUtil.write(this, "$.body.api.data.reverseM2m",true);
         JSONUtil.write(this, "$.body.bulkActions",new ArrayList<Map<String,Object>>(){{
             add(new HashMap<String,Object>(){{
@@ -156,6 +144,10 @@ public class Amis extends HashMap<String ,Object> {
                     put("data",new HashMap<String,Object>(){{
                         put("&","$$");
                         put("_extraData","${extraData}");
+                    }});
+                    put("messages",new HashMap<String,Object>(){{
+                        put("success","好耶，成功了！");
+                        put("failed","糟糕，失败了！");
                     }});
                 }});
             }});
@@ -381,7 +373,7 @@ public class Amis extends HashMap<String ,Object> {
                                 add(new JSONObject() {{
                                     put("type", "action");
                                     put("actionType", "confirm");
-                                    put("label", "操作完成");
+                                    put("label", "关闭");
                                     put("size", "lg");
                                     put("level", "primary");
                                 }});
@@ -428,6 +420,10 @@ public class Amis extends HashMap<String ,Object> {
                 put("data", new JSONObject() {{
                     put("&", "$$");
                     put("_extraData", "${extraData}");
+                }});
+                put("messages", new JSONObject() {{
+                    put("success", "好耶，成功了！");
+                    put("failed", "糟糕，失败了！");
                 }});
             }});
         }};

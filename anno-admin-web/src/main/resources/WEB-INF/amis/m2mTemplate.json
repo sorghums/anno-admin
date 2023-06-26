@@ -43,7 +43,7 @@
           "actions": [{
             "type": "action",
             "actionType": "confirm",
-            "label": "操作完成",
+            "label": "关闭",
             "size": "lg",
             "level": "primary"
           }],

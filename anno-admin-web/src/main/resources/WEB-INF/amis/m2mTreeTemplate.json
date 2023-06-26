@@ -1,0 +1,41 @@
+{
+  "type": "form",
+  "name": "关联树",
+  "api": {
+    "url": "/system/anno/${clazz}/addM2m",
+    "method": "post",
+    "data": {
+      "&": "$$",
+      "ids": "${m2mTree}",
+      "_extraData": "${extraData}"
+    },"messages": {
+      "success": "好耶，成功了！",
+      "failed": "糟糕，失败了！"
+    }
+  },
+  "initApi": {
+    "url": "/system/anno/${treeClazz}/annoTreeSelectDatas",
+    "method": "post",
+    "data": {
+      "_extraData": "${extraData}",
+      "reverseM2m": false
+    }
+  },
+  "data": {
+  },
+  "body": {
+    "type": "input-tree",
+    "id": "parent-tree-select",
+    "name": "m2mTree",
+    "searchable": true,
+    "autoCheckChildren": false,
+    "multiple": true,
+    "cascade": true,
+    "source": {
+      "url": "/system/anno/${treeClazz}/annoTrees",
+      "method": "post",
+      "data": {
+      }
+    }
+  }
+}

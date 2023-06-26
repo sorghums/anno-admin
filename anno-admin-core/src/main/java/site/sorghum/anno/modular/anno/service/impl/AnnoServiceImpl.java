@@ -2,9 +2,9 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONObject;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -228,6 +228,50 @@ public class AnnoServiceImpl implements AnnoService {
             // 删除后置处理
             preProxyInstance.afterDelete(id);
             proxyInstance.afterDelete(id);
+        } catch (Exception e) {
+            log.error("AnnoService.deleteById error:{}", e.getMessage());
+            throw new BizException("AnnoService.deleteById error", e);
+        }
+    }
+
+    /**
+     * 通过组合条件删除
+     *
+     * @param clazz  clazz
+     * @param tuples 元组
+     */
+    @Override
+    public <T> void removeByKvs(Class<T> clazz, List<Tuple> tuples) {
+        try {
+            permissionProxy.deletePermission(clazz);
+            AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
+            AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+            String pkField = AnnoUtil.getPkField(clazz);
+            String tableName = AnnoUtil.getTableName(clazz);
+            // 删除前置处理
+            preProxyInstance.beforeDelete(tuples);
+            proxyInstance.beforeDelete(tuples);
+            AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
+            if (annoRemove.removeType() == 0) {
+                // 物理删除
+                DbTableQuery dbTableQuery = dbContext.table(tableName)
+                        .where("1=1");
+                for (Tuple tuple : tuples) {
+                    dbTableQuery.andEq(tuple.get(0), tuple.get(1));
+                }
+                dbTableQuery.delete();
+            } else {
+                // 逻辑删除
+                DbTableQuery dbTableQuery = dbContext.table(tableName).where("1=1");
+                for (Tuple tuple : tuples) {
+                    dbTableQuery.andEq(tuple.get(0), tuple.get(1));
+                }
+                dbTableQuery.set(annoRemove.removeField(), annoRemove.removeValue()).update();
+
+            }
+            // 删除后置处理
+            preProxyInstance.afterDelete(tuples);
+            proxyInstance.afterDelete(tuples);
         } catch (Exception e) {
             log.error("AnnoService.deleteById error:{}", e.getMessage());
             throw new BizException("AnnoService.deleteById error", e);

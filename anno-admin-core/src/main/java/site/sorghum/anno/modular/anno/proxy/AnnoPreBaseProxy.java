@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.anno.proxy;
 
+import cn.hutool.core.lang.Tuple;
 import org.noear.wood.DbTableQuery;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
@@ -7,6 +8,7 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Anno代理
@@ -55,6 +57,23 @@ public class AnnoPreBaseProxy<T> {
      * @param id id
      */
     public void beforeDelete(Serializable id) {
+    }
+
+    /**
+     * 删除前
+     *
+     * @param tuples tuples
+     */
+    public void beforeDelete(List<Tuple> tuples) {
+    }
+
+
+    /**
+     * 删除后
+     *
+     * @param id id
+     */
+    public void afterDelete(List<Tuple> tuples) {
     }
 
     /**

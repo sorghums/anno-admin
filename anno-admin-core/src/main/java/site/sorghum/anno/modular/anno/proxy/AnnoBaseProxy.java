@@ -1,9 +1,11 @@
 package site.sorghum.anno.modular.anno.proxy;
 
+import cn.hutool.core.lang.Tuple;
 import org.noear.wood.DbTableQuery;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Anno代理
@@ -54,11 +56,27 @@ public class AnnoBaseProxy<T> {
     }
 
     /**
+     * 删除前
+     *
+     * @param tuples tuples
+     */
+    public void beforeDelete(List<Tuple> tuples) {
+    }
+
+    /**
      * 删除后
      *
      * @param id id
      */
     public void afterDelete(Serializable id) {
+    }
+
+    /**
+     * 删除后
+     *
+     * @param id id
+     */
+    public void afterDelete(List<Tuple> tuples) {
     }
 
     /**

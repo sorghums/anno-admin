@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.anno.service;
 
+import cn.hutool.core.lang.Tuple;
 import com.alibaba.fastjson2.JSONObject;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
@@ -64,6 +65,14 @@ public interface AnnoService {
      * @param id    id
      */
     <T> void removeById(Class<T> clazz, Serializable id);
+
+    /**
+     * 通过组合条件删除
+     *
+     * @param clazz  clazz
+     * @param tuples 元组
+     */
+    <T> void removeByKvs(Class<T> clazz, List<Tuple> tuples);
 
     /**
      * 通过id 更新
