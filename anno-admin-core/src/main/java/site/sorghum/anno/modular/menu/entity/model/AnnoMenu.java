@@ -44,6 +44,12 @@ public class AnnoMenu extends BaseMetaModel {
     private Integer type;
 
     @AnnoField(title = "菜单排序", tableFieldName = "sort",edit = @AnnoEdit)
+    @JSONField(name = "sort")
+    private Integer sort;
+
+    @AnnoField(title ="打开方式", tableFieldName = "open_type",edit = @AnnoEdit,optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "内置页", value = "_iframe"),
+    }),dataType = AnnoDataType.OPTIONS)
     @JSONField(name = "openType")
     private String openType;
 

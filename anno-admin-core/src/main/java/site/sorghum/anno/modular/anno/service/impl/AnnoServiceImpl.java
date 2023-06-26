@@ -90,7 +90,7 @@ public class AnnoServiceImpl implements AnnoService {
             return iPage;
         } catch (Exception e) {
             log.error("AnnoService.page error:{}", e.getMessage());
-            throw new BizException("AnnoService.page error",e);
+            throw new BizException("权限不足或系统异常",e);
         }
     }
 
@@ -105,7 +105,7 @@ public class AnnoServiceImpl implements AnnoService {
             return sql;
         } catch (Exception e) {
             log.error("AnnoService.page error:{}", e.getMessage());
-            throw new BizException("AnnoService.page error",e);
+            throw new BizException("权限不足或系统异常",e);
         }
     }
 
@@ -168,7 +168,7 @@ public class AnnoServiceImpl implements AnnoService {
             return list;
         } catch (Exception e) {
             log.error("AnnoService.list error:{}", e.getMessage());
-            throw new BizException("AnnoService.list error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -193,7 +193,7 @@ public class AnnoServiceImpl implements AnnoService {
             return selectItem;
         } catch (Exception e) {
             log.error("AnnoService.queryById error:{}", e.getMessage());
-            throw new BizException("AnnoService.queryById error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -230,7 +230,7 @@ public class AnnoServiceImpl implements AnnoService {
             proxyInstance.afterDelete(id);
         } catch (Exception e) {
             log.error("AnnoService.deleteById error:{}", e.getMessage());
-            throw new BizException("AnnoService.deleteById error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -274,7 +274,7 @@ public class AnnoServiceImpl implements AnnoService {
             proxyInstance.afterDelete(tuples);
         } catch (Exception e) {
             log.error("AnnoService.deleteById error:{}", e.getMessage());
-            throw new BizException("AnnoService.deleteById error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -299,7 +299,7 @@ public class AnnoServiceImpl implements AnnoService {
             proxyInstance.afterUpdate(param);
         } catch (Exception e) {
             log.error("AnnoService.updateById error:{}", e.getMessage());
-            throw new BizException("AnnoService.updateById error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -322,7 +322,7 @@ public class AnnoServiceImpl implements AnnoService {
             proxyInstance.afterAdd(param);
         } catch (Exception e) {
             log.error("AnnoService.save error:{}", e.getMessage());
-            throw new BizException("AnnoService.save error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -336,7 +336,7 @@ public class AnnoServiceImpl implements AnnoService {
             table.insert();
         } catch (Exception e) {
             log.error("AnnoService.onlySave error:{}", e.getMessage());
-            throw new BizException("AnnoService.onlySave error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
@@ -349,7 +349,7 @@ public class AnnoServiceImpl implements AnnoService {
             return AnnoUtil.buildAnnoTree(data, annoTree.label(), annoTree.key(), annoTree.parentKey());
         } catch (Exception e) {
             log.error("AnnoService.annoTrees error:{}", e.getMessage());
-            throw new BizException("AnnoService.annoTrees error", e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 }

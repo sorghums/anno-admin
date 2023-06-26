@@ -33,6 +33,7 @@ public class MenuController {
     public List<AnnoMenuResponse> dataMenu() {
         QueryRequest<AnnoMenu> annoMenuQueryRequest = new QueryRequest<AnnoMenu>(){{
             setClazz(AnnoMenu.class);
+            setOrderBy("sort");
         }};
         List<AnnoMenu> list = annoService.list(annoMenuQueryRequest);
         return listToTree(list2AnnoMenuResponse(list));

@@ -121,8 +121,8 @@ public class AnnoResult<T> {
     }
 
     @Note("失败的结果")
-    public static <T> AnnoResult<T> failure(String status) {
-        return new AnnoResult<>(Result.FAILURE_CODE, status);
+    public static <T> AnnoResult<T> failure(String msg) {
+        return new AnnoResult<>(Result.FAILURE_CODE, msg);
     }
 
 

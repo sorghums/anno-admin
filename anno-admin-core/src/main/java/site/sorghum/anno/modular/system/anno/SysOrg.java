@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.system.anno;
 
 
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
@@ -18,7 +19,8 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "组织机构", tableName = "sys_org")
+@AnnoMain(name = "组织机构", tableName = "sys_org",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织机构"))
 public class SysOrg extends BaseMetaModel {
 
     /**
@@ -31,12 +33,12 @@ public class SysOrg extends BaseMetaModel {
 
 
     @AnnoButton(name = "组织用户",
-            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId",enable = true))
+            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId", enable = true))
     private Object userButton;
 
-    @AnnoButton(name = "跳去百度",jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
+    @AnnoButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
     private Object jump2BaiduButton;
 
-    @AnnoButton(name = "简单的JS命令",jsCmd = "alert('点击了按钮'); console.log(props);")
+    @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
     private Object jsCmd;
 }
