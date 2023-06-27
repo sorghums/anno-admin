@@ -1,17 +1,17 @@
 package site.sorghum.anno.modular.system.anno;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.system.base.BaseMetaModel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import site.sorghum.anno.modular.system.base.BaseOrgMetaModel;
+import site.sorghum.anno.modular.auth.service.AuthService;
+import site.sorghum.anno.modular.base.base.BaseOrgMetaModel;
 
 import java.io.Serializable;
 
@@ -72,5 +72,11 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
             joinThisClazzField = "id"
     ))
     private Object roleButton;
+
+    /**
+     * 重置密码按钮
+     */
+    @AnnoButton(name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
+    private Object resetPwdButton;
 
 }

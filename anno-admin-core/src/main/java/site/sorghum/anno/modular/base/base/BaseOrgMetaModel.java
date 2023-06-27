@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.system.base;
+package site.sorghum.anno.modular.base.base;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,6 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 雪花模型
@@ -25,10 +24,10 @@ import java.time.LocalDateTime;
 @AnnoRemove(removeType = 1)
 public class BaseOrgMetaModel extends BaseMetaModel implements Serializable {
 
-    @AnnoField(title = "组织ID",
+    @AnnoField(title = "组织",
             tableFieldName = "org_id", edit = @AnnoEdit(),
-            show = false,
             dataType = AnnoDataType.OPTIONS,
+            search = @AnnoSearch(),
             optionType = @AnnoOptionType(sql = "select id as  value, org_name as label from sys_org where del_flag = 0 order by id desc"))
     private String orgId;
 }

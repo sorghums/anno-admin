@@ -1,10 +1,10 @@
-package site.sorghum.anno.modular.system.base;
+package site.sorghum.anno.modular.base.base;
 
 import cn.hutool.core.util.IdUtil;
-import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
-import site.sorghum.anno.modular.anno.service.AnnoService;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
+import site.sorghum.anno.modular.anno.service.AnnoService;
 
 import java.time.LocalDateTime;
 

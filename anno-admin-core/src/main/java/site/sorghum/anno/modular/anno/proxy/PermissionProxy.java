@@ -2,8 +2,6 @@ package site.sorghum.anno.modular.anno.proxy;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.IdUtil;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
@@ -12,7 +10,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.modular.system.anno.SysPermission;
+import site.sorghum.anno.modular.base.anno.SysPermission;
 
 import java.util.ArrayList;
 import java.util.Collection;

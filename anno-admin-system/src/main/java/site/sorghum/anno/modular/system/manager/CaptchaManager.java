@@ -3,8 +3,6 @@ package site.sorghum.anno.modular.system.manager;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.RandomUtil;
-import site.sorghum.anno.exception.BizException;
-import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
@@ -12,6 +10,8 @@ import org.noear.solon.annotation.Init;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
+import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

@@ -11,7 +11,9 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.noear.solon.Solon;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.MethodType;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
@@ -25,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
+import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.io.IOException;
@@ -67,6 +70,7 @@ public class AnnoController {
                                          @Body Map<String, String> param) {
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         QueryRequest<T> queryRequest = new QueryRequest<>();
+        param = emptyStringIgnore(param);
         queryRequest.setClazz(aClass);
         queryRequest.setCat(_cat);
         queryRequest.setPage(page - 1);
@@ -80,7 +84,7 @@ public class AnnoController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = param.get("joinThisClazzField");
+            String joinThisClazzField = param.get("joinThisClazzField").toString();
             queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
         }
         return AnnoResult.from(Result.succeed(annoService.page(queryRequest)));
@@ -90,7 +94,7 @@ public class AnnoController {
     @Post
     public <T> AnnoResult<T> save(@Path String clazz, @Body JSONObject param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        annoService.save(emptyStringIgnore(param).toJavaObject(aClass));
+        annoService.save(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
         return AnnoResult.from(Result.succeed());
     }
 
@@ -128,14 +132,14 @@ public class AnnoController {
     @Mapping("/{clazz}/updateById")
     public <T> AnnoResult<T> updateById(@Path String clazz, @Body JSONObject param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        annoService.updateById(emptyStringIgnore(param).toJavaObject(aClass));
+        annoService.updateById(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
         return AnnoResult.from(Result.succeed());
     }
 
     @Mapping("/{clazz}/saveOrUpdate")
     public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body JSONObject param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        T javaObject = (T) emptyStringIgnore(param).toJavaObject(aClass);
+        T javaObject = (T) JSONUtil.parseObject(emptyStringIgnore(param),aClass);
         if (ReflectUtil.getFieldValue(javaObject, AnnoUtil.getPkField(aClass)) == null) {
             annoService.save(javaObject);
         } else {
@@ -249,8 +253,19 @@ public class AnnoController {
         return AnnoResult.succeed();
     }
 
-    private JSONObject emptyStringIgnore(JSONObject param) {
-        JSONObject nParam = new JSONObject();
+    @Mapping(value = "runJavaCmd",method = MethodType.POST,consumes = "application/json")
+    public AnnoResult<String> runJavaCmd(@Body Map<String ,String> map) throws ClassNotFoundException {
+        map.put("clazz", CryptoUtil.decrypt(map.get("clazz")));
+        map.put("method", CryptoUtil.decrypt(map.get("method")));
+        Object bean = Solon.context().getBean(
+                Class.forName(map.get("clazz"))
+        );
+        ReflectUtil.invoke(bean, map.get("method"),map);
+        return AnnoResult.succeed("执行成功");
+    }
+
+    private Map emptyStringIgnore(Map<String,?> param) {
+        Map nParam = new HashMap();
         for (String key : param.keySet()) {
             Object item = param.get(key);
             if (item instanceof String) {

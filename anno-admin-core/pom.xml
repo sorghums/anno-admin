@@ -15,6 +15,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <bcprov.version>1.73</bcprov.version>
     </properties>
 
     <dependencies>
@@ -40,9 +41,8 @@
 
 
         <dependency>
-            <groupId>cn.dev33</groupId>
+            <groupId>org.noear</groupId>
             <artifactId>sa-token-solon-plugin</artifactId>
-            <version>${sa-token.version}</version>
         </dependency>
 
         <dependency>
@@ -96,6 +96,17 @@
             <version>${hutool.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+            <version>${bcprov.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>cn.hutool</groupId>

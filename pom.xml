@@ -28,6 +28,7 @@
         <module>anno-admin-web</module>
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
+        <module>anno-admin-system</module>
     </modules>
 
     <properties>

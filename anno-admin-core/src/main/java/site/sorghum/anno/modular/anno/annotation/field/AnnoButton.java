@@ -58,12 +58,13 @@ public @interface AnnoButton {
      */
     M2MJoinButton m2mJoinButton() default @M2MJoinButton(enable = false,mediumTableClass = Object.class);
 
+
     /**
      * java命令行，【暂不支持】
      *
      * @return {@link String}
      */
-    JavaCmd JavaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
+    JavaCmd javaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
 
     @interface O2MJoinButton {
 
@@ -167,7 +168,7 @@ public @interface AnnoButton {
         Class<?> beanClass();
 
         /**
-         * 方法名称，必须是无参方法
+         * 方法名称 参数必须是: Map<String,Object> props
          *
          * @return {@link String}
          */

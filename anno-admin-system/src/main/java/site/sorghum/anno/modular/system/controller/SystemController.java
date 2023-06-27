@@ -1,14 +1,15 @@
 package site.sorghum.anno.modular.system.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.alibaba.fastjson2.JSONObject;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
 import site.sorghum.anno.response.AnnoResult;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
 
 /**
  * 系统控制器
@@ -24,6 +25,7 @@ public class SystemController {
 
     // 验证码
     @Mapping(value = "/system/common/captcha")
+    @SaIgnore
     public AnnoResult<CaptchaResponse> captcha() {
         return AnnoResult.succeed(captchaManager.createImageCaptcha());
     }

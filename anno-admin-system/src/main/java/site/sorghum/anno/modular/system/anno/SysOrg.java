@@ -1,15 +1,15 @@
 package site.sorghum.anno.modular.system.anno;
 
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.system.base.BaseMetaModel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import site.sorghum.anno.modular.base.base.BaseMetaModel;
 
 /**
  * 系统组织

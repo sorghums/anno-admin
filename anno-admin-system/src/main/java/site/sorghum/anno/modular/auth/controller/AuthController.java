@@ -1,22 +1,14 @@
-package site.sorghum.anno.modular.login.controller;
+package site.sorghum.anno.modular.auth.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
-import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
-import site.sorghum.anno.modular.anno.service.AnnoService;
-import site.sorghum.anno.modular.menu.entity.model.AnnoMenu;
-import site.sorghum.anno.modular.menu.entity.response.AnnoMenuResponse;
+import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.system.anno.SysUser;
 import site.sorghum.anno.response.AnnoResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Auth控制器
@@ -26,10 +18,11 @@ import java.util.stream.Collectors;
  */
 @Mapping(value = "/system/auth")
 @Controller
+@SaIgnore
 public class AuthController {
 
     @Inject
-    AnnoService annoService;
+    AuthService authService;
 
     @Mapping(value = "/login", method = MethodType.POST,consumes = "application/json")
     public AnnoResult<String> login(@Body Map<String ,String> user) {
@@ -40,7 +33,8 @@ public class AuthController {
         if (mobile == null || password == null) {
             return AnnoResult.failure("用户名或密码不能为空");
         }
-        StpUtil.login(mobile);
+        SysUser sysUser = authService.verifyLogin(mobile, password);
+        StpUtil.login(sysUser.getId());
         return AnnoResult.succeed(StpUtil.getTokenValue());
     }
 }

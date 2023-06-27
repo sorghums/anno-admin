@@ -8,9 +8,9 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.system.base.BaseMetaModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import site.sorghum.anno.modular.base.base.BaseMetaModel;
 
 
 /**

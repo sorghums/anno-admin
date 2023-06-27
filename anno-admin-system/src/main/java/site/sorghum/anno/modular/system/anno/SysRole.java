@@ -9,7 +9,8 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.system.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.anno.SysPermission;
+import site.sorghum.anno.modular.base.base.BaseMetaModel;
 
 import java.io.Serializable;
 
@@ -64,8 +65,8 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     @AnnoButton(name = "权限",m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
-            mediumOtherField = "permission_id",
-            mediumThisFiled = "role_id",
+            mediumOtherField = "role_id",
+            mediumThisFiled = "permission_id",
             joinThisClazzField = "id"
     ))
     private Object roleButton;

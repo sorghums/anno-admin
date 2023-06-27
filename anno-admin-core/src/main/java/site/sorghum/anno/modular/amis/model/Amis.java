@@ -19,6 +19,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.anno.util.TemplateUtil;
+import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
@@ -392,6 +393,23 @@ public class Amis extends HashMap<String ,Object> {
                         buttonJson.put("label", annoButton.name());
                         buttonJson.put("type", "button");
                         buttonJson.put("onClick", annoButton.jsCmd());
+                    } else if(annoButton.javaCmd().enable()){
+                        buttonJson.put("label", annoButton.name());
+                        buttonJson.put("type", "button");
+                        buttonJson.put("actionType", "ajax");
+                        buttonJson.put("api",new HashMap<String ,Object >(){{
+                            put("method","post");
+                            put("url","/system/anno/runJavaCmd");
+                            put("data",new HashMap<String ,String >(){{
+                                put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
+                                put("method",CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                                put("&", "$$");
+                            }});
+                            put("messages",new HashMap<String,Object>(){{
+                                put("success","好耶，成功了！");
+                                put("failed","糟糕，失败了！");
+                            }});
+                        }});
                     } else {
                         continue;
                     }

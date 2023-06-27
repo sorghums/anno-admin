@@ -90,7 +90,8 @@
 					}),
 					success: function(data) {
 						if (data.status !== 0) {
-							popup.error(data.msg);
+							console.log(data)
+							layer.msg(data.msg);
 							return;
 						}
 						let token = data.data;
