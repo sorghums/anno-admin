@@ -7,7 +7,8 @@
     "data": {
       "&": "$$",
       "ids": "${m2mTree}",
-      "_extraData": "${extraData}"
+      "_extraData": "${extraData}",
+      "clearAll":"true"
     },"messages": {
       "success": "好耶，成功了！",
       "failed": "糟糕，失败了！"

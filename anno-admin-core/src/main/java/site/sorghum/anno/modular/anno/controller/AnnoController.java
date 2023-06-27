@@ -228,20 +228,29 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/addM2m")
-    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param) {
+    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param,@Param boolean clearAll) {
         // 主表
         Class<?> aClass = AnnoClazzCache.get(clazz);
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
         Class<?> mediumClass = AnnoClazzCache.get(mediumTableClass);
-        String mediumThisValues = param.get("ids").toString();
-        String[] split = mediumThisValues.split(",");
+        String[] split;
+        Object ids = param.get("ids");
         // 字段一
         String mediumThisField = param.get("mediumThisField").toString();
         // 字段二
         String mediumOtherField = param.get("mediumOtherField").toString();
         String mediumOtherValue = param.get("joinValue").toString();
-        annoService.removeByKvs(mediumClass, ListUtil.of(new Tuple(mediumOtherField, mediumOtherValue)));
+        if (ids instanceof List){
+            List<String> idList =  (List)ids;
+            split = idList.toArray(new String[idList.size()]);
+        }else {
+            String mediumThisValues = ids.toString();
+            split = mediumThisValues.split(",");
+        }
+        if (clearAll) {
+            annoService.removeByKvs(mediumClass, ListUtil.of(new Tuple(mediumOtherField, mediumOtherValue)));
+        }
         for (String mediumThisValue : split) {
             JSONObject addValue = new JSONObject() {{
                 put(mediumThisField, mediumThisValue);
