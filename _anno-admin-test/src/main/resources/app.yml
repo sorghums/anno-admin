@@ -46,3 +46,8 @@ redis.main:
     singleServerConfig:
       address: "redis://127.0.0.1:6379"
       database: 8
+sa-token-dao:
+  redis:
+    server: "127.0.0.1:6379"
+    db: 8
+    maxTotal: 200

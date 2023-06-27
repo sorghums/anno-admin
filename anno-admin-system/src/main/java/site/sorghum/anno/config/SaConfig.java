@@ -1,15 +1,23 @@
 package site.sorghum.anno.config;
 
 import cn.dev33.satoken.context.SaHolder;
+import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.response.AnnoResult;
 
 @Configuration
 public class SaConfig {
+    @Bean
+    public SaTokenDao saTokenDaoInit(@Inject("${sa-token-dao.redis}") SaTokenDaoOfRedis saTokenDao) {
+        return saTokenDao;
+    }
+
     @Bean(index = -100)  //-100，是顺序位（低值优先）
     public SaTokenInterceptor saTokenInterceptor() {
         return new SaTokenInterceptor()
