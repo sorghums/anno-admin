@@ -11,7 +11,8 @@ Anno-Admin是一个基于Solon框架的开源项目，旨在通过注解生成�
 在代码中添加注解，指定需要生成的后台管理系统功能
 ## 演示
 系统菜单：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/35144398/1687921526133-40fcbf25-7bc5-40e9-bf88-304021d9f780.png#averageHue=%23fefefe&clientId=uf37295f7-831a-4&from=paste&height=1002&id=u06fc8568&originHeight=1274&originWidth=2550&originalType=binary&ratio=1.2708333730697632&rotation=0&showTitle=false&size=88169&status=done&style=none&taskId=u53901725-615a-4586-a919-b51b6af8945&title=&width=2006.5573143081253)
+![image.png](img/系统菜单.png)
+
 系统菜单代码：
 ```java
 package site.sorghum.anno.modular.menu.entity.model;
@@ -80,7 +81,8 @@ public class AnnoMenu extends BaseMetaModel {
 
 ```
 系统组织：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/35144398/1687921406664-b4dcc88e-de83-4fa8-87e9-fcd45e878e0f.png#averageHue=%23fefdfd&clientId=uf37295f7-831a-4&from=paste&height=873&id=u9f2b9352&originHeight=1109&originWidth=2559&originalType=binary&ratio=1.2708333730697632&rotation=0&showTitle=false&size=85143&status=done&style=none&taskId=ue338849f-5caa-42bc-88ec-4347c5c4020&title=&width=2013.639281299801)
+![image.png](img/系统组织.png)
+
 系统组织代码：
 ```java
 package site.sorghum.anno.modular.system.anno;
@@ -130,7 +132,8 @@ public class SysOrg extends BaseMetaModel {
 
 ```
 系统角色：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/35144398/1687921463050-1d080509-1831-4de2-841f-6f8598b91040.png#averageHue=%23fefdfd&clientId=uf37295f7-831a-4&from=paste&height=1037&id=u5d6fecf0&originHeight=1318&originWidth=2557&originalType=binary&ratio=1.2708333730697632&rotation=0&showTitle=false&size=97100&status=done&style=none&taskId=u4161a314-26fc-4902-9e27-87dfc44d69f&title=&width=2012.0655108572066)
+![image.png](img/系统角色.png)
+
 系统角色代码：
 ```java
 package site.sorghum.anno.modular.system.anno;
@@ -209,7 +212,8 @@ public class SysRole  extends BaseMetaModel implements Serializable {
 
 ```
 系统用户：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/35144398/1687921591098-a24449ea-3959-4a19-8f4d-1cf51043b559.png#averageHue=%23fefdfd&clientId=uf37295f7-831a-4&from=paste&height=1004&id=u983e9f0a&originHeight=1276&originWidth=2555&originalType=binary&ratio=1.2708333730697632&rotation=0&showTitle=false&size=149258&status=done&style=none&taskId=uc26fbeb8-602f-49ed-bbe3-046f93ac9bd&title=&width=2010.491740414612)
+![image.png](img/系统用户.png)
+
 系统用户代码：
 ```java
 package site.sorghum.anno.modular.system.anno;
