@@ -60,7 +60,7 @@ public @interface AnnoButton {
 
 
     /**
-     * java命令行，【暂不支持】
+     * java命令行
      *
      * @return {@link String}
      */
