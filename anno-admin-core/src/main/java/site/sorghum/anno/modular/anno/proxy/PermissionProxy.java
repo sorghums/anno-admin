@@ -1,20 +1,12 @@
 package site.sorghum.anno.modular.anno.proxy;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.annotation.AnnotationUtil;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.service.AnnoService;
-import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.modular.base.anno.SysPermission;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * 许可代理
@@ -102,80 +94,5 @@ public class PermissionProxy {
     public AnnoPermission getAnnoPermission(Class<?> clazz) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         return annoMain.annoPermission();
-    }
-
-    @Init
-    public void init() {
-        // 初始化的时候，进行Db的注入
-        List<AnnoPermission> annoPermissions = new ArrayList<>();
-        Collection<Class<?>> classes = AnnoClazzCache.fetchAllClazz();
-        for (Class<?> aClass : classes) {
-            // 获取类上注解
-            AnnoMain annoMain = AnnotationUtil.getAnnotation(aClass, AnnoMain.class);
-            AnnoPermission annoPermission = annoMain.annoPermission();
-            if (annoPermission.enable()) {
-                annoPermissions.add(annoPermission);
-            }
-        }
-        // 插入数据库
-        annoPermissions.forEach(
-                annoPermission -> {
-                    String baseCode = annoPermission.baseCode();
-                    String baseName = annoPermission.baseCodeTranslate();
-
-                    SysPermission sysPermission = annoService.queryById(SysPermission.class, baseCode);
-                    if (sysPermission != null && sysPermission.getId() != null) {
-                        return;
-                    }
-
-                    SysPermission basePermission = new SysPermission();
-                    basePermission.setId(baseCode);
-                    basePermission.setCode(baseCode);
-                    basePermission.setName(baseName);
-                    basePermission.setDelFlag(0);
-
-                    annoService.onlySave(basePermission);
-
-
-                    // 新增
-                    String addCode = baseCode + ":" + ADD;
-                    String addName = baseName + ":" + ADD_TRANSLATE;
-
-                    SysPermission addPermission = new SysPermission();
-                    addPermission.setId(addCode);
-                    addPermission.setParentId(baseCode);
-                    addPermission.setCode(addCode);
-                    addPermission.setName(addName);
-                    addPermission.setDelFlag(0);
-
-                    annoService.onlySave(addPermission);
-
-                    // 修改
-                    String updateCode = baseCode + ":" + UPDATE;
-                    String updateName = baseName + ":" + UPDATE_TRANSLATE;
-
-                    SysPermission updatePermission = new SysPermission();
-                    updatePermission.setId(updateCode);
-                    updatePermission.setParentId(baseCode);
-                    updatePermission.setCode(updateCode);
-                    updatePermission.setName(updateName);
-                    updatePermission.setDelFlag(0);
-
-                    annoService.onlySave(updatePermission);
-
-                    // 删除
-                    String deleteCode = baseCode + ":" + DELETE;
-                    String deleteName = baseName + ":" + DELETE_TRANSLATE;
-
-                    SysPermission deletePermission = new SysPermission();
-                    deletePermission.setId(deleteCode);
-                    deletePermission.setParentId(baseCode);
-                    deletePermission.setCode(deleteCode);
-                    deletePermission.setName(deleteName);
-                    deletePermission.setDelFlag(0);
-
-                    annoService.onlySave(deletePermission);
-                }
-        );
     }
 }

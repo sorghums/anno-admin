@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.base.base;
+package site.sorghum.anno.modular.base.model;
 
 import lombok.Data;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
@@ -6,6 +6,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
+import site.sorghum.anno.modular.base.proxy.BaseAnnoPreProxy;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

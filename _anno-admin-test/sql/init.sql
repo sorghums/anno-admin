@@ -84,7 +84,6 @@ create table sys_user
     mobile      varchar(255)  null comment '手机号',
     password    varchar(255)  null comment '手机号',
     name        varchar(255)  null comment '用户名',
-    role_id     varchar(20)   null comment '角色id',
     enable      int default 0 null comment '状态 1正常 0 封禁',
     create_by   varchar(255)  null comment '创建人',
     create_time datetime(6)   null comment '创建时间',

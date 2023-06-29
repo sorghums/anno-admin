@@ -9,8 +9,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.anno.SysPermission;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 import java.io.Serializable;
 

@@ -11,7 +11,7 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.base.base.BaseOrgMetaModel;
+import site.sorghum.anno.modular.base.model.BaseOrgMetaModel;
 
 import java.io.Serializable;
 

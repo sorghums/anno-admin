@@ -1,11 +1,10 @@
 package site.sorghum.anno.modular.system.anno;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 import java.io.Serializable;
 

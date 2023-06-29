@@ -1,6 +1,5 @@
 package site.sorghum.anno.modular.menu.entity.response;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.annotation.JSONField;
 import site.sorghum.anno.modular.menu.entity.model.AnnoMenu;
 import lombok.Data;

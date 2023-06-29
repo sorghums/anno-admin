@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.base.anno;
+package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,7 +7,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 import java.io.Serializable;
 

@@ -42,6 +42,7 @@ public class AnnoServiceImpl implements AnnoService {
 
     @Inject
     PermissionProxy permissionProxy;
+
     @Db
     DbContext dbContext;
 

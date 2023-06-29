@@ -9,7 +9,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 /**
  * 系统组织
