@@ -2,14 +2,12 @@ package site.sorghum.anno.modular.anno.enums;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
-import org.noear.solon.Solon;
-import org.noear.wood.DbContext;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import site.sorghum.anno.util.DbContextUtil;
 
 import java.util.ArrayList;

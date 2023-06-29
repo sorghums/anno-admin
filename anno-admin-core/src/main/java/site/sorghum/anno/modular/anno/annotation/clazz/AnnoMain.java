@@ -1,7 +1,5 @@
 package site.sorghum.anno.modular.anno.annotation.clazz;
 
-import lombok.Data;
-
 import java.lang.annotation.*;
 
 /**

@@ -1,6 +1,9 @@
 package site.sorghum.anno.modular.anno.proxy;
 
+import cn.dev33.satoken.context.SaHolder;
+import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -16,8 +19,6 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
  */
 @Component
 public class PermissionProxy {
-    @Inject
-    AnnoService annoService;
 
     public static final String ADD = "add";
 
@@ -36,6 +37,9 @@ public class PermissionProxy {
     }
 
     public void fetchPermission(Class<?> clazz) {
+        if (isSystemRun()){
+            return;
+        }
         AnnoPermission annoPermission = getAnnoPermission(clazz);
         boolean enable = annoPermission.enable();
         if (!enable) {
@@ -51,14 +55,7 @@ public class PermissionProxy {
     }
 
     public void addPermission(Class<?> clazz) {
-        AnnoPermission annoPermission = getAnnoPermission(clazz);
-        boolean enable = annoPermission.enable();
-        if (!enable) {
-            return;
-        }
-        String baseCode = annoPermission.baseCode();
-        // 校验权限
-        StpUtil.checkPermission(baseCode + ":" + ADD);
+        checkPermission(getAnnoPermission(clazz), ADD);
     }
 
     public void updatePermission(Object obj) {
@@ -66,14 +63,7 @@ public class PermissionProxy {
     }
 
     public void updatePermission(Class<?> clazz) {
-        AnnoPermission annoPermission = getAnnoPermission(clazz);
-        boolean enable = annoPermission.enable();
-        if (!enable) {
-            return;
-        }
-        String baseCode = annoPermission.baseCode();
-        // 校验权限
-        StpUtil.checkPermission(baseCode + ":" + UPDATE);
+        checkPermission(getAnnoPermission(clazz), UPDATE);
     }
 
     public void deletePermission(Object obj) {
@@ -81,18 +71,32 @@ public class PermissionProxy {
     }
 
     public void deletePermission(Class<?> clazz) {
-        AnnoPermission annoPermission = getAnnoPermission(clazz);
+        checkPermission(getAnnoPermission(clazz), DELETE);
+    }
+
+    private void checkPermission(AnnoPermission annoPermission, String delete) {
+        if (isSystemRun()) {
+            return;
+        }
         boolean enable = annoPermission.enable();
         if (!enable) {
             return;
         }
         String baseCode = annoPermission.baseCode();
         // 校验权限
-        StpUtil.checkPermission(baseCode + ":" + DELETE);
+        StpUtil.checkPermission(baseCode + ":" + delete);
     }
 
     public AnnoPermission getAnnoPermission(Class<?> clazz) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         return annoMain.annoPermission();
+    }
+
+    private boolean isSystemRun(){
+        SaRequest request = SaHolder.getRequest();
+        if (request != null && request.getSource() != null) {
+            return false;
+        }
+        return true;
     }
 }

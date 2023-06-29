@@ -4,13 +4,12 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import org.noear.solon.Solon;
-import org.noear.solon.core.util.ScanUtil;
+import org.noear.solon.core.AopContext;
+import org.noear.solon.core.Plugin;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.Plugin;
 
 import java.util.Objects;
 import java.util.Set;

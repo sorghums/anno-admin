@@ -305,11 +305,11 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 				logout = callback;
 			}
 
-			this.message = function(callback) {
-				if (callback != null) {
-					msgInstance.click(callback);
-				}
-			}
+			// this.message = function(callback) {
+			// 	if (callback != null) {
+			// 		msgInstance.click(callback);
+			// 	}
+			// }
 
 			this.collapseSide = function() {
 				collapse()
@@ -887,9 +887,6 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 			pearAdmin.bodyRender(param);
 			pearAdmin.themeRender(param);
 			pearAdmin.keepLoad(param);
-			if (param.header.message != false) {
-				pearAdmin.messageRender(param);
-			}
 		}
 
 		function getColorById(id) {

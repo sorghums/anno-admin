@@ -3,13 +3,9 @@ package site.sorghum.anno.util;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
-import org.noear.solon.data.annotation.CacheRemove;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
-import org.redisson.codec.JacksonCodec;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;

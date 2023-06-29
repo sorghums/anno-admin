@@ -2,7 +2,6 @@ package site.sorghum.anno.modular.anno.controller;
 
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.map.MapUtil;
@@ -11,28 +10,28 @@ import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
-import org.noear.solon.core.handle.Context;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
+import org.noear.solon.core.handle.Result;
 import org.noear.wood.DbContext;
+import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.response.AnnoResult;
-import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.Result;
-import org.noear.wood.IPage;
 import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

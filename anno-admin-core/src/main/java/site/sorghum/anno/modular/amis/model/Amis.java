@@ -5,9 +5,9 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -23,7 +23,10 @@ import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Amis
@@ -34,6 +37,7 @@ import java.util.*;
 public class Amis extends HashMap<String ,Object> {
 
 
+    //---------------------- 以下为CRUD的表代码 ----------------------//
 
     /**
      * 添加树边栏
@@ -293,44 +297,6 @@ public class Amis extends HashMap<String ,Object> {
         JSONUtil.write(this, "$.body.columns", columns);
     }
 
-    public void addTreeForm(Class<?> clazz) {
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-        String parentKey = annoMain.annoTree().parentKey();
-
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        ArrayList<Map<String ,Object>> itemList = CollUtil.newArrayList();
-        for (Field field : fields) {
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
-            boolean required = annoField.edit().notNull();
-            String fieldName = field.getName();
-            Map<String ,Object> itemBody = new JSONObject() {{
-                put("name", fieldName);
-                put("label", annoField.title());
-                put("required", required);
-            }};
-            AnnoDataType.editorExtraInfo(itemBody, annoField);
-            if (annoField.isId()) {
-                itemBody.put("disabled", true);
-            }
-            if (!annoField.show()) {
-                itemBody.put("hidden", true);
-            }
-            if (parentKey.equals(fieldName)) {
-                itemBody = TemplateUtil.getTemplate("item/tree-select.json");
-                itemBody.put("name", fieldName);
-                itemBody.put("label", annoField.title());
-            }
-            itemList.add(itemBody);
-        }
-        JSONUtil.write(this, "$.body[1].body", itemList);
-
-        // 设置${_parentKey}的值
-        String parentPk = AnnoUtil.getParentPk(clazz);
-        JSONUtil.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject() {{
-            put(parentPk, "${_cat}");
-        }});
-    }
-
     public void addCrudColumnButtonInfo(Class<?> clazz) {
         List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz);
         // 读取现有的列
@@ -424,6 +390,49 @@ public class Amis extends HashMap<String ,Object> {
         JSONUtil.write(this, "$.body.columns", columns);
     }
 
+
+    //---------------------- 以下为CRUD的树代码 ----------------------//
+
+    public void addTreeForm(Class<?> clazz) {
+        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+        String parentKey = annoMain.annoTree().parentKey();
+
+        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        ArrayList<Map<String ,Object>> itemList = CollUtil.newArrayList();
+        for (Field field : fields) {
+            AnnoField annoField = field.getAnnotation(AnnoField.class);
+            boolean required = annoField.edit().notNull();
+            String fieldName = field.getName();
+            Map<String ,Object> itemBody = new JSONObject() {{
+                put("name", fieldName);
+                put("label", annoField.title());
+                put("required", required);
+            }};
+            AnnoDataType.editorExtraInfo(itemBody, annoField);
+            if (annoField.isId()) {
+                itemBody.put("disabled", true);
+            }
+            if (!annoField.show()) {
+                itemBody.put("hidden", true);
+            }
+            if (parentKey.equals(fieldName)) {
+                itemBody = TemplateUtil.getTemplate("item/tree-select.json");
+                itemBody.put("name", fieldName);
+                itemBody.put("label", annoField.title());
+            }
+            itemList.add(itemBody);
+        }
+        JSONUtil.write(this, "$.body[1].body", itemList);
+
+        // 设置${_parentKey}的值
+        String parentPk = AnnoUtil.getParentPk(clazz);
+        JSONUtil.write(this, "$.body[0].buttons[1].onEvent.click.actions[1].args.value", new JSONObject() {{
+            put(parentPk, "${_cat}");
+        }});
+    }
+
+    //---------------------- 以下为CRUD的多对多关系代码 ----------------------//
+
     public void addDeleteRelationEditInfo(Class<?> clazz) {
         // 删除按钮模板
         JSONObject deleteJsonObj = new JSONObject() {{
@@ -457,30 +466,6 @@ public class Amis extends HashMap<String ,Object> {
         JSONUtil.write(this, "$.body.columns", columns);
     }
 
-    public void addRelationCrudColumns(Class<?> clazz) {
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        List<JSONObject> amisColumns = new ArrayList<>();
-        for (Field field : fields) {
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
-            if (annoField.show() || annoField.isId()) {
-                JSONObject amisColumn = new JSONObject();
-                amisColumn.put("name", field.getName());
-                amisColumn.put("label", annoField.title());
-                amisColumn.put("sortable", true);
-                AnnoDataType.displayExtraInfo(amisColumn, annoField);
-                amisColumns.add(amisColumn);
-                if (annoField.isId()) {
-                    JSONObject copy = JSON.copy(amisColumn);
-                    copy.put("name", "label");
-                    copy.put("label", "显示名称");
-                    amisColumns.add(0, copy);
-                }
-            }
-        }
-        // 重新写入
-        JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0].columns", amisColumns);
-    }
-
     /**
      * 添加crud关系数据
      *
@@ -488,7 +473,6 @@ public class Amis extends HashMap<String ,Object> {
      * @param amisJson ami json
      */
     public void addRelationCrudData(Class<?> clazz,Map<String ,Object> amisJson) {
-
         JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0]", amisJson);
     }
 

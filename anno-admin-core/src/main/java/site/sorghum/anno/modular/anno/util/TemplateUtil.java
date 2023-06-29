@@ -6,9 +6,9 @@ import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import site.sorghum.anno.modular.amis.model.Amis;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
+import site.sorghum.anno.modular.amis.model.Amis;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
@@ -143,19 +143,6 @@ public class TemplateUtil {
     }
 
     /**
-     * 获取树多选择
-     *
-     * @param clazz      clazz
-     * @param properties 属性
-     * @return {@link Map}<{@link String} ,{@link Object}>
-     */
-    public static Map<String ,Object> getTreeMultiSelect(Class<?> clazz, Map<String, Object> properties){
-        Map<String, Object> template = getTemplate("item/tree-input.json");
-        Amis amis = JSONUtil.parseObject(template, Amis.class);
-        // 添加form
-        return amis;
-    }
-    /**
      * 得到模板
      *
      * @param templateName 模板名称
@@ -182,11 +169,5 @@ public class TemplateUtil {
     private static URL getTemplateUrl(String templateName) {
         return ResourceUtil.getResource("/WEB-INF/amis/" + templateName);
     }
-
-    public static void main(String[] args) {
-        Map<String, Object> template = TemplateUtil.getTemplate("crudTemplate.json");
-        System.out.println(template);
-    }
-
 
 }

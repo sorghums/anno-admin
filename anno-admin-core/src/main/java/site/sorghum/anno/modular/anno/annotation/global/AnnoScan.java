@@ -1,9 +1,5 @@
 package site.sorghum.anno.modular.anno.annotation.global;
 
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
-
 import java.lang.annotation.*;
 
 /**

@@ -26,9 +26,10 @@
         <module>anno-admin-core</module>
         <!-- 静态资源的WEB包 -->
         <module>anno-admin-web</module>
+        <!-- 拓展包-->
+        <module>anno-admin-model</module>
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
-        <module>anno-admin-system</module>
     </modules>
 
     <properties>

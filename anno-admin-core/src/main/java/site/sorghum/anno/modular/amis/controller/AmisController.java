@@ -2,12 +2,8 @@ package site.sorghum.anno.modular.amis.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.net.URLEncodeUtil;
-import cn.hutool.core.text.StrJoiner;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
@@ -18,7 +14,6 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.anno.util.TemplateUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

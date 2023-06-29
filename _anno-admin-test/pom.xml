@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.easyzan</groupId>
-            <artifactId>anno-admin-system</artifactId>
+            <artifactId>anno-admin-model-system</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

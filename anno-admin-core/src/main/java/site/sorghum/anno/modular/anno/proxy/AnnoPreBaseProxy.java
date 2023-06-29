@@ -2,9 +2,6 @@ package site.sorghum.anno.modular.anno.proxy;
 
 import cn.hutool.core.lang.Tuple;
 import org.noear.wood.DbTableQuery;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
