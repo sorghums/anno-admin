@@ -35,8 +35,7 @@
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="menuSearch layui-icon layui-icon-search"></a></li>
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
-					<li class="layui-nav-item layui-hide-xs"><a href="http://www.pearadmin.com" class="layui-icon layui-icon-website"></a></li>
-					<li class="layui-nav-item layui-hide-xs message"></li>
+					<li class="layui-nav-item layui-hide-xs"><a href="https://gitee.com/cmeet/anno-admin" class="layui-icon layui-icon-website"></a></li>
 					<li class="layui-nav-item user">
 						<!-- 头 像 -->
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
@@ -108,10 +107,18 @@
 				
 				// 登出逻辑 
 				admin.logout(function(){
+					// 注销逻辑 返回 true / false
+					localStorage.removeItem("anno-token");
+					$.ajax({
+						url: "/system/auth/logout",
+						type: "post",
+						success: function(data) {
+							// ignore
+						}
+					})
 					popup.success("注销成功",function(){
 						location.href = "login.html";
 					})
-					// 注销逻辑 返回 true / false
 					return true;
 				})
 				

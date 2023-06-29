@@ -147,8 +147,8 @@ public class Amis extends HashMap<String ,Object> {
                         put("_extraData","${extraData}");
                     }});
                     put("messages",new HashMap<String,Object>(){{
-                        put("success","好耶，成功了！");
-                        put("failed","糟糕，失败了！");
+                        put("success","操作成功");
+                        put("failed","操作失败");
                     }});
                 }});
             }});
@@ -406,8 +406,8 @@ public class Amis extends HashMap<String ,Object> {
                                 put("&", "$$");
                             }});
                             put("messages",new HashMap<String,Object>(){{
-                                put("success","好耶，成功了！");
-                                put("failed","糟糕，失败了！");
+                                put("success","操作成功");
+                                put("failed","操作失败");
                             }});
                         }});
                     } else {
@@ -440,8 +440,8 @@ public class Amis extends HashMap<String ,Object> {
                     put("_extraData", "${extraData}");
                 }});
                 put("messages", new JSONObject() {{
-                    put("success", "好耶，成功了！");
-                    put("failed", "糟糕，失败了！");
+                    put("success", "操作成功");
+                    put("failed", "操作失败");
                 }});
             }});
         }};

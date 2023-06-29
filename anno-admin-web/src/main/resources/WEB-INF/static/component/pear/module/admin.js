@@ -120,12 +120,7 @@ layui.define(['message', 'table', 'jquery', 'element', 'yaml', 'form', 'tab', 'm
 						closeEvent: function(id) {
 							sideMenu.selectItem(id);
 						},
-						data: [{
-							id: param.tab.index.id,
-							url: param.tab.index.href,
-							title: param.tab.index.title,
-							close: false
-						}],
+						data: [],
 						success: function(id) {
 							if (param.tab.session) {
 								setTimeout(function() {

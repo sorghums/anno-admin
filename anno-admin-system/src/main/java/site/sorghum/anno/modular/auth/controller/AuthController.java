@@ -37,4 +37,10 @@ public class AuthController {
         StpUtil.login(sysUser.getId());
         return AnnoResult.succeed(StpUtil.getTokenValue());
     }
+
+    @Mapping(value = "/logout", method = MethodType.POST)
+    public AnnoResult<String> logout() {
+        StpUtil.logout();
+        return AnnoResult.succeed("退出成功");
+    }
 }

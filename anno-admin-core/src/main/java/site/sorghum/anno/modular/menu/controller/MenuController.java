@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.menu.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  */
 @Mapping(value = "/system/config")
 @Controller
+@SaIgnore
 public class MenuController {
 
     @Inject

@@ -1,5 +1,7 @@
 package site.sorghum.anno.modular.amis.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.net.URLEncodeUtil;
 import cn.hutool.core.text.StrJoiner;
@@ -31,7 +33,12 @@ public class AmisController {
 
 
     @Mapping(value = "/amis/{clazz}")
+    @SaIgnore
     public ModelAndView amis(String clazz, Context context) {
+        if(!StpUtil.isLogin()){
+            context.redirect("/error/403.html");
+            return null;
+        };
         HashMap<String, Object> data = new HashMap<>(context.paramMap());
         Class<?> aClass = AnnoClazzCache.get(clazz);
         if (aClass == null) {
@@ -60,7 +67,12 @@ public class AmisController {
     }
 
     @Mapping(value = "/amis-m2m/{clazz}")
+    @SaIgnore
     public ModelAndView amisM2m(String clazz, Context context) {
+        if(!StpUtil.isLogin()){
+            context.redirect("/error/403.html");
+            return null;
+        };
         HashMap<String, Object> data = new HashMap<>(context.paramMap());
         Class<?> aClass = AnnoClazzCache.get(clazz);
         if (aClass == null) {

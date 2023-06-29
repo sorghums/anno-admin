@@ -45,9 +45,8 @@
                 // 另外在 amis 配置项中的 api 也可以配置适配器，针对某个特定接口单独处理。
                 //
                 requestAdaptor(api) {
-                    console.log(api)
-                    console.log("add token: "+localStorage.getItem("token"))
-                    api.headers["token"] = localStorage.getItem("token");
+                    console.log("add token: "+localStorage.getItem("anno-token"))
+                    api.headers["anno-token"] = localStorage.getItem("anno-token");
                     return api;
                 },
                 //
