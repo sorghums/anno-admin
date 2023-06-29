@@ -7,9 +7,7 @@ import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.*;
@@ -28,10 +26,7 @@ import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +86,7 @@ public class AnnoController {
 
     @Mapping("/{clazz}/save")
     @Post
-    public <T> AnnoResult<T> save(@Path String clazz, @Body JSONObject param) {
+    public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String,Object> param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         annoService.save(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
         return AnnoResult.from(Result.succeed());
@@ -129,14 +124,14 @@ public class AnnoController {
      * 通过ID 更新
      */
     @Mapping("/{clazz}/updateById")
-    public <T> AnnoResult<T> updateById(@Path String clazz, @Body JSONObject param) {
+    public <T> AnnoResult<T> updateById(@Path String clazz, @Body Map<String,Object> param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         annoService.updateById(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
         return AnnoResult.from(Result.succeed());
     }
 
     @Mapping("/{clazz}/saveOrUpdate")
-    public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body JSONObject param) {
+    public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String,Object> param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         T javaObject = (T) JSONUtil.parseObject(emptyStringIgnore(param),aClass);
         if (ReflectUtil.getFieldValue(javaObject, AnnoUtil.getPkField(aClass)) == null) {
@@ -148,12 +143,12 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/remove-relation")
-    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body JSONObject param) throws SQLException {
-        String mediumOtherField = param.getString("mediumOtherField");
-        String otherValue = param.getString("joinValue");
-        String thisValue = param.getString(param.getString("joinThisClazzField"));
-        String mediumThisField = param.getString("mediumThisField");
-        Class<?> mediumCLass = AnnoClazzCache.get(param.getString("mediumTableClass"));
+    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String,String> param) throws SQLException {
+        String mediumOtherField = param.get("mediumOtherField");
+        String otherValue = param.get("joinValue");
+        String thisValue = param.get(param.get("joinThisClazzField"));
+        String mediumThisField = param.get("mediumThisField");
+        Class<?> mediumCLass = AnnoClazzCache.get(param.get("mediumTableClass"));
         annoService.removeByKvs(mediumCLass, CollUtil.newArrayList(
                 new Tuple(mediumOtherField, otherValue),
                 new Tuple(mediumThisField, thisValue)
@@ -208,7 +203,7 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/m2mSelect")
-    public <T> AnnoResult<JSONArray> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
+    public <T> AnnoResult<List<Map<String,Object>>> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
         // 主表
         Class<?> aClass = AnnoClazzCache.get(clazz);
         String m2mSql = annoService.m2mSql(param);
@@ -217,13 +212,19 @@ public class AnnoController {
         String joinThisClazzField = param.get("joinThisClazzField");
         queryRequest.setAndSql(joinThisClazzField + " not in ( " + m2mSql + " )");
         List<T> list = annoService.list(queryRequest);
-        JSONArray listMap = JSON.parseArray(JSON.toJSONString(list));
-        listMap.forEach(item -> {
-            JSONObject jsonObject = (JSONObject) item;
-            jsonObject.put("label", jsonObject.get(joinThisClazzField));
-            jsonObject.put("value", jsonObject.get(joinThisClazzField));
+        List<Map<String,Object>> maps = CollUtil.newArrayList();
+        list.forEach(item -> {
+            Map<String,Object> map;
+            if (item instanceof Map){
+                map = (Map<String, Object>) item;
+            }else {
+                map = JSONUtil.parseObject(item, Map.class);
+            }
+            map.put("label", map.get(joinThisClazzField));
+            map.put("value", map.get(joinThisClazzField));
+            maps.add(map);
         });
-        return AnnoResult.succeed(listMap);
+        return AnnoResult.succeed(maps);
     }
 
     @Mapping("/{clazz}/addM2m")
@@ -251,12 +252,12 @@ public class AnnoController {
             annoService.removeByKvs(mediumClass, ListUtil.of(new Tuple(mediumOtherField, mediumOtherValue)));
         }
         for (String mediumThisValue : split) {
-            JSONObject addValue = new JSONObject() {{
+            Map<String,Object> addValue = new HashMap<String,Object>() {{
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
 
-            annoService.save(addValue.toJavaObject(mediumClass));
+            annoService.save(JSONUtil.parseObject(addValue,mediumClass));
         }
         return AnnoResult.succeed();
     }

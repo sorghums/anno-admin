@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.anno.enums;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -50,19 +50,19 @@ public enum AnnoDataType {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getCode());
         if (annoDataType.equals(OPTIONS)) {
-            List<JSONObject> options = new ArrayList<>();
+            List<Map<String,Object>> options = new ArrayList<>();
             AnnoOptionType annoOptionType = annoField.optionType();
             if (StrUtil.isNotBlank(annoOptionType.sql())){
                 List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
                 for (Map<String, Object> map : mapList) {
-                    JSONObject option = new JSONObject();
+                    HashMap<String,Object> option = MapUtil.newHashMap();
                     option.put("label", map.get("label"));
                     option.put("value", map.get("value"));
                     options.add(option);
                 }
             }else {
                 for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                    JSONObject option = new JSONObject();
+                    HashMap<String,Object> option = MapUtil.newHashMap();
                     option.put("label", optionData.label());
                     option.put("value", optionData.value());
                     options.add(option);
@@ -79,7 +79,7 @@ public enum AnnoDataType {
     }
 
     @SneakyThrows
-    public static void displayExtraInfo(JSONObject item, AnnoField annoField) {
+    public static void displayExtraInfo(HashMap<String,Object> item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.put("type",annoDataType.getShowCode());
         item.put("placeholder","无");
@@ -105,7 +105,6 @@ public enum AnnoDataType {
                 }
             }else {
                 for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                    JSONObject option = new JSONObject();
                     mapping.put(optionData.value(),optionData.label());
                 }
             }

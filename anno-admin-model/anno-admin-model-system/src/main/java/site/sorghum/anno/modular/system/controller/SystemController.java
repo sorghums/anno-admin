@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.system.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import com.alibaba.fastjson2.JSONObject;
+import cn.hutool.core.map.MapUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
@@ -10,6 +10,9 @@ import org.noear.solon.core.handle.UploadedFile;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
 import site.sorghum.anno.response.AnnoResult;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 系统控制器
@@ -31,8 +34,8 @@ public class SystemController {
     }
 
     @Mapping(value = "/api/upload", multipart=true)
-    public AnnoResult<JSONObject> upload(Context ctx) throws Exception {
-        JSONObject res = new JSONObject();
+    public AnnoResult<Map<String,Object>> upload(Context ctx) throws Exception {
+        HashMap<String,Object> res = MapUtil.newHashMap();
         res.put("value","https://solon.noear.org/img/solon/favicon.png");
         UploadedFile file = ctx.file("file");
         return AnnoResult.succeed(res).withStatus(0);

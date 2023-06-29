@@ -3,7 +3,6 @@ package site.sorghum.anno.modular.amis.controller;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
@@ -41,7 +40,7 @@ public class AmisController {
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
         Map<String ,Object> template = null;
-        Map<String ,Object> properties = new JSONObject(){{
+        Map<String ,Object> properties = new HashMap<String,Object>(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
             this.putAll(data);
@@ -75,7 +74,7 @@ public class AmisController {
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
         Map<String ,Object> template = null;
-        Map<String ,Object> properties = new JSONObject(){{
+        Map<String ,Object> properties = new HashMap<String,Object>(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
             this.putAll(data);

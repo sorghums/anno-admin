@@ -2,14 +2,15 @@ package site.sorghum.anno.filter;
 
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
+import site.sorghum.anno.util.JSONUtil;
 import site.sorghum.anno.util.ThrowableLogUtil;
+
+import java.util.HashMap;
 
 /**
  * 额外数据重新设置
@@ -23,14 +24,14 @@ public class ExtraDataFilter implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         String extraData = null;
-        JSONObject bdMap;
+        HashMap<String,Object> bdMap;
         if (ctx.body().startsWith("{")) {
-            bdMap = JSON.parseObject(ctx.body());
+            bdMap = JSONUtil.parseObject(ctx.body(),HashMap.class);
             if (bdMap.containsKey("_extraData")) {
-                extraData = bdMap.getString("_extraData");
+                extraData = bdMap.get("_extraData").toString();
             }
         } else if (StrUtil.isBlank(ctx.body())) {
-            bdMap = new JSONObject();
+            bdMap = new HashMap<>();
         }else {
             bdMap = null;
         }
@@ -39,7 +40,7 @@ public class ExtraDataFilter implements Filter {
         }
         if (bdMap != null && StrUtil.isNotBlank(extraData)) {
             try {
-                JSONObject param = JSON.parseObject(extraData);
+                HashMap<String,Object> param = JSONUtil.parseObject(extraData,HashMap.class);
                 param.forEach(
                         (k, v) -> {
                             if (v != null) {
@@ -48,7 +49,7 @@ public class ExtraDataFilter implements Filter {
                             }
                         }
                 );
-                ctx.bodyNew(bdMap.toJSONString());
+                ctx.bodyNew(JSONUtil.toJSONString(bdMap));
             } catch (Exception e) {
                 ThrowableLogUtil.error(e);
             }

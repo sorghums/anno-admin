@@ -4,14 +4,13 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.FIFOCache;
 import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
 import site.sorghum.anno.modular.amis.model.Amis;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +29,7 @@ public class TemplateUtil {
      *
      * @param clazz      clazz
      * @param properties 页面参数
-     * @return {@link JSONObject}
+     * @return {@link Map}
      */
     public static Map<String, Object> getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
@@ -67,7 +66,7 @@ public class TemplateUtil {
      *
      * @param clazz      clazz
      * @param properties 页面参数
-     * @return {@link JSONObject}
+     * @return {@link Map}
      */
     public static Map<String, Object> getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
@@ -126,7 +125,7 @@ public class TemplateUtil {
      * 得到模板
      *
      * @param templateName 模板名称
-     * @return {@link JSONObject}
+     * @return {@link Map}
      */
     public static Map<String, Object> getTemplate(String templateName) {
         if (templateName == null) {
@@ -146,16 +145,16 @@ public class TemplateUtil {
      * 得到模板
      *
      * @param templateName 模板名称
-     * @return {@link JSONObject}
+     * @return {@link List<Map>}
      */
-    public static JSONArray getTemplateArray(String templateName) {
+    public static List<Map<String ,Object>> getTemplateArray(String templateName) {
         if (templateName == null) {
             return null;
         }
         if (FIFO_CACHE.containsKey(templateName)) {
-            return (JSONArray) JSON.copy(FIFO_CACHE.get(templateName));
+            return (List<Map<String ,Object>>) JSON.copy(FIFO_CACHE.get(templateName));
         }
-        JSONArray jsonArray = JSON.parseObject(getTemplateUrl(templateName), JSONArray.class);
+        List<Map<String ,Object>> jsonArray = JSON.parseObject(getTemplateUrl(templateName), List.class);
         FIFO_CACHE.put(templateName, JSON.copy(jsonArray));
         return jsonArray;
     }
