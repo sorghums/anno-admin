@@ -129,7 +129,7 @@ public class AuthServiceImpl implements AuthService {
                     addPermission.setName(addName);
                     addPermission.setDelFlag(0);
 
-                    annoService.onlySave(addPermission);
+                    sysPermissionDao.insert(addPermission,true);
 
                     // 修改
                     String updateCode = baseCode + ":" + PermissionProxy.UPDATE;
@@ -142,7 +142,7 @@ public class AuthServiceImpl implements AuthService {
                     updatePermission.setName(updateName);
                     updatePermission.setDelFlag(0);
 
-                    annoService.onlySave(updatePermission);
+                    sysPermissionDao.insert(updatePermission,true);
 
                     // 删除
                     String deleteCode = baseCode + ":" + PermissionProxy.DELETE;
@@ -155,7 +155,8 @@ public class AuthServiceImpl implements AuthService {
                     deletePermission.setName(deleteName);
                     deletePermission.setDelFlag(0);
 
-                    annoService.onlySave(deletePermission);
+                    sysPermissionDao.insert(deletePermission,true);
+
                 }
         );
     }
