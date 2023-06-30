@@ -7,7 +7,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;

@@ -6,6 +6,7 @@ import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
@@ -15,13 +16,15 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.base.model.BaseOrgMetaModel;
+import site.sorghum.anno.modular.system.proxy.SysUserProxy;
 
 import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理", tableName = "sys_user",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"))
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
+annoProxy =@AnnoProxy(value = SysUserProxy.class))
 @Table("sys_user")
 public class SysUser extends BaseOrgMetaModel implements Serializable {
 

@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.auth.service.impl;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.crypto.digest.MD5;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
@@ -33,12 +34,6 @@ import java.util.stream.Collectors;
 @ProxyComponent
 public class AuthServiceImpl implements AuthService {
     @Db
-    DbContext dbContext;
-
-    @Inject
-    AnnoService annoService;
-
-    @Db
     SysUserDao sysUserDao;
 
     @Db
@@ -47,11 +42,15 @@ public class AuthServiceImpl implements AuthService {
     @Db
     SysPermissionDao sysPermissionDao;
 
+    MD5 md5 = MD5.create();
+
     @Override
     public void resetPwd(Map<String, Object> props) {
         SysUser sysUser = new SysUser();
-        sysUser.setId(props.get("id").toString());
-        sysUser.setPassword("123456");
+        String mobile = props.get("mobile").toString();
+        String id = props.get("id").toString();
+        sysUser.setId(id);
+        sysUser.setPassword(md5.digestHex(mobile + ":" + "123456"));
         sysUserDao.updateById(sysUser, true);
     }
 
@@ -66,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         SysUser user = sysUsers.get(0);
         // 清除缓存
         this.removePermissionCacheList(user.getId());
-        if (!user.getPassword().equals(pwd)) {
+        if (!user.getPassword().equals(md5.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
         }
         return user;
@@ -103,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
 
     @CacheRemove(keys = "permissionList")
     @Override
-    public void removePermissionCacheList(String userId){
+    public void removePermissionCacheList(String userId) {
         // 清除缓存
     }
 
