@@ -30,9 +30,6 @@ import java.util.stream.Collectors;
 public class MenuController {
 
     @Inject
-    AnnoService annoService;
-
-    @Inject
     SysAnnoMenuService sysAnnoMenuService;
 
     @Inject

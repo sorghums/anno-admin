@@ -56,7 +56,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,
             mediumOtherField = "role_id",
-            mediumThisFiled = "user_id",
+            mediumThisField = "user_id",
             joinThisClazzField = "id"
     ))
     private Object userButton;
@@ -69,7 +69,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
             mediumOtherField = "role_id",
-            mediumThisFiled = "permission_id",
+            mediumThisField = "permission_id",
             joinThisClazzField = "id"
     ))
     private Object roleButton;

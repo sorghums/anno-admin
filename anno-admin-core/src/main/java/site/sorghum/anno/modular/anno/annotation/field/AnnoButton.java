@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.anno.annotation.field;
 
+
 import java.lang.annotation.*;
 
 /**
@@ -144,12 +145,7 @@ public @interface AnnoButton {
          */
         Class<?> mediumTableClass();
 
-        /**
-         * 中间表的字段【本表】
-         *
-         * @return {@link String}
-         */
-        String mediumThisFiled() default "";
+
 
         /**
          * 中间表的字段【目标表】
@@ -157,6 +153,13 @@ public @interface AnnoButton {
          * @return {@link String}
          */
         String mediumOtherField() default "";
+
+        /**
+         * 中间表的字段【本表】
+         *
+         * @return {@link String}
+         */
+        String mediumThisField() default "";
     }
 
     @interface JavaCmd {

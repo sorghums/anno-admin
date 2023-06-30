@@ -11,8 +11,12 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.response.AnnoResult;
 
+/**
+ * @author Sorghum
+ */
 @Configuration
 public class SaConfig {
+
     @Bean
     public SaTokenDao saTokenDaoInit(@Inject("${sa-token-dao.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
