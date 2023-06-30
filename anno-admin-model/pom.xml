@@ -19,7 +19,7 @@
     </properties>
 
     <modules>
-        <module>anno-admin-model-system</module>
+        <module>anno-admin-model-base</module>
     </modules>
 
     <dependencies>
