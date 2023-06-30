@@ -14,8 +14,9 @@ Anno-Admin是一个基于Solon框架的开源项目，旨在通过注解生成�
 ![image.png](img/系统菜单.png)
 
 系统菜单代码：
+
 ```java
-package site.sorghum.anno.modular.menu.entity.model;
+package site.sorghum.anno.modular.menu.entity.anno;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
@@ -43,10 +44,10 @@ import site.sorghum.anno.modular.base.base.BaseMetaModel;
 public class AnnoMenu extends BaseMetaModel {
 
     @JSONField(name = "parentId")
-    @AnnoField(title = "父菜单id", tableFieldName = "parent_id",edit = @AnnoEdit)
+    @AnnoField(title = "父菜单id", tableFieldName = "parent_id", edit = @AnnoEdit)
     private String parentId;
 
-    @AnnoField(title = "菜单名称", tableFieldName = "title",edit = @AnnoEdit)
+    @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)
     @JSONField(name = "title")
     private String title;
 
@@ -60,21 +61,21 @@ public class AnnoMenu extends BaseMetaModel {
     @JSONField(name = "type")
     private Integer type;
 
-    @AnnoField(title = "菜单排序", tableFieldName = "sort",edit = @AnnoEdit)
+    @AnnoField(title = "菜单排序", tableFieldName = "sort", edit = @AnnoEdit)
     @JSONField(name = "sort")
     private Integer sort;
 
-    @AnnoField(title ="打开方式", tableFieldName = "open_type",edit = @AnnoEdit,optionType = @AnnoOptionType(value = {
+    @AnnoField(title = "打开方式", tableFieldName = "open_type", edit = @AnnoEdit, optionType = @AnnoOptionType(value = {
             @AnnoOptionType.OptionData(label = "内置页", value = "_iframe"),
-    }),dataType = AnnoDataType.OPTIONS)
+    }), dataType = AnnoDataType.OPTIONS)
     @JSONField(name = "openType")
     private String openType;
 
-    @AnnoField(title = "菜单图标", tableFieldName = "icon",edit = @AnnoEdit)
+    @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit)
     @JSONField(name = "icon")
     private String icon;
 
-    @AnnoField(title = "菜单链接", tableFieldName = "href",edit = @AnnoEdit)
+    @AnnoField(title = "菜单链接", tableFieldName = "href", edit = @AnnoEdit)
     @JSONField(name = "href")
     private String href;
 }

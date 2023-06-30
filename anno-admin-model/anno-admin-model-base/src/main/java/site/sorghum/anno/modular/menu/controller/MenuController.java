@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Mapping;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.menu.entity.model.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;
 import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
 

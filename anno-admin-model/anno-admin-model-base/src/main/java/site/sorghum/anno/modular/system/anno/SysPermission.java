@@ -22,7 +22,6 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "权限管理",
-        tableName = "sys_permission",
         annoTree = @AnnoTree(label = "name", parentKey = "parentId", key = "id", displayAsTree = true),
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_permission", baseCodeTranslate = "权限管理")
 )

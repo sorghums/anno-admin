@@ -3,7 +3,7 @@ package site.sorghum.anno.modular.system.dao;
 import org.noear.wood.BaseMapper;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
-import site.sorghum.anno.modular.menu.entity.model.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 
 import java.util.List;
 

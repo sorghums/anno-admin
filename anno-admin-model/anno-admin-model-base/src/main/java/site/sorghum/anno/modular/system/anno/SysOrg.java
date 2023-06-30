@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
@@ -19,8 +20,9 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "组织管理", tableName = "sys_org",
+@AnnoMain(name = "组织管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织管理"))
+@Table("sys_org")
 public class SysOrg extends BaseMetaModel {
 
     /**

@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -195,7 +196,8 @@ public class Amis extends HashMap<String ,Object> {
                         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
                         for (Field field : fields) {
                             AnnoField annoField = field.getAnnotation(AnnoField.class);
-                            if (annoField.isId()) {
+                            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
+                            if (annoId != null) {
                                 add(new JSONObject() {{
                                     put("name", field.getName());
                                     put("type", "hidden");
@@ -247,7 +249,8 @@ public class Amis extends HashMap<String ,Object> {
                         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
                         for (Field field : fields) {
                             AnnoField annoField = field.getAnnotation(AnnoField.class);
-                            if (annoField.isId()) {
+                            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
+                            if (annoId != null) {
                                 add(new JSONObject() {{
                                     put("name", field.getName());
                                     put("type", "hidden");
@@ -400,6 +403,7 @@ public class Amis extends HashMap<String ,Object> {
         ArrayList<Map<String ,Object>> itemList = CollUtil.newArrayList();
         for (Field field : fields) {
             AnnoField annoField = field.getAnnotation(AnnoField.class);
+            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
             boolean required = annoField.edit().notNull();
             String fieldName = field.getName();
             Map<String ,Object> itemBody = new JSONObject() {{
@@ -408,7 +412,7 @@ public class Amis extends HashMap<String ,Object> {
                 put("required", required);
             }};
             AnnoDataType.editorExtraInfo(itemBody, annoField);
-            if (annoField.isId()) {
+            if (annoId != null) {
                 itemBody.put("disabled", true);
             }
             if (!annoField.show()) {

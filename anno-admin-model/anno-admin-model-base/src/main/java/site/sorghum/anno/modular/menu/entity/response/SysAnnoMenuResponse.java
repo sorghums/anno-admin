@@ -3,7 +3,7 @@ package site.sorghum.anno.modular.menu.entity.response;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.modular.menu.entity.model.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 
 import java.util.List;
 

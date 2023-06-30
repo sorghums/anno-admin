@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.menu.entity.model;
+package site.sorghum.anno.modular.menu.entity.anno;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
@@ -23,7 +23,7 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "菜单管理", tableName = "sys_anno_menu",
+@AnnoMain(name = "菜单管理",
         annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_anno_menu", baseCodeTranslate = "菜单管理"))
 @Table("sys_anno_menu")

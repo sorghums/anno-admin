@@ -25,13 +25,6 @@ public @interface AnnoField {
     String title();
 
     /**
-     * 是否为主键
-     *
-     * @return boolean
-     */
-    boolean isId() default false;
-
-    /**
      * 表字段名
      *
      * @return {@link String}

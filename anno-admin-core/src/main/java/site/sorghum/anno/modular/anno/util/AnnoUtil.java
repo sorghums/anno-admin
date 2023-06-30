@@ -6,6 +6,8 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import org.noear.solon.Solon;
+import org.noear.wood.annotation.PrimaryKey;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
@@ -118,7 +120,11 @@ public class AnnoUtil {
      * @return {@link String}
      */
     public static String getTableName(Class<?> clazz) {
-        return AnnotationUtil.getAnnotationValue(clazz, AnnoMain.class, "tableName");
+        Table table = AnnotationUtil.getAnnotation(clazz, Table.class);
+        if (table == null) {
+            throw new BizException("请在类上添加@Table注解");
+        }
+        return table.value();
     }
 
     /**
@@ -193,7 +199,7 @@ public class AnnoUtil {
      */
     public static String getPkField(Class<?> clazz) {
         List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
-        Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, AnnoField.class).isId()).findFirst();
+        Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null).findFirst();
         return first.map(Field::getName).orElseThrow(() -> new BizException("未找到主键"));
     }
 

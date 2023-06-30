@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
@@ -17,8 +18,9 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "角色用户关联管理", tableName = "sys_user_role",
+@AnnoMain(name = "角色用户关联管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user_role", baseCodeTranslate = "角色用户关联管理"))
+@Table("sys_user_role")
 public class SysUserRole extends BaseMetaModel implements Serializable {
 
     /**

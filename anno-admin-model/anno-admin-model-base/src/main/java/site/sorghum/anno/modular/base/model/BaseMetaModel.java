@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @AnnoPreProxy(BaseAnnoPreProxy.class)
 @AnnoRemove(removeType = 1)
 public class BaseMetaModel implements Serializable {
-    @AnnoField(isId = true, title = "主键", tableFieldName = "id", show = false)
+    @AnnoField(title = "主键", tableFieldName = "id", show = false)
     @PrimaryKey
     protected String id;
 

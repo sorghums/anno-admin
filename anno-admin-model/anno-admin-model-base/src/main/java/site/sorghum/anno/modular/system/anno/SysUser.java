@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "用户管理", tableName = "sys_user",
+@AnnoMain(name = "用户管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
 annoProxy =@AnnoProxy(value = SysUserProxy.class))
 @Table("sys_user")
