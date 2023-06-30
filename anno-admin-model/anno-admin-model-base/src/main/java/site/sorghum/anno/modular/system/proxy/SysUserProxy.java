@@ -8,6 +8,7 @@ import org.noear.wood.DbTableQuery;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.system.anno.SysUser;
+import site.sorghum.anno.util.MD5Util;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -30,8 +31,7 @@ public class SysUserProxy extends AnnoBaseProxy<SysUser> {
             throw new BizException("新增用户密码不能为空");
         }
         // 重新设置密码
-        MD5 md5 = MD5.create();
-        data.setPassword(md5.digestHex(data.getMobile() + ":" + data.getPassword()));
+        data.setPassword(MD5Util.digestHex(data.getMobile() + ":" + data.getPassword()));
         super.beforeAdd(data);
     }
 

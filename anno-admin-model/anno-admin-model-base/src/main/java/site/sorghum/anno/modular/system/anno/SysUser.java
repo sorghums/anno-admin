@@ -24,7 +24,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
-annoProxy =@AnnoProxy(value = SysUserProxy.class))
+        annoProxy = @AnnoProxy(value = SysUserProxy.class))
 @Table("sys_user")
 public class SysUser extends BaseOrgMetaModel implements Serializable {
 
@@ -35,25 +35,25 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
             tableFieldName = "avatar",
             dataType = AnnoDataType.IMAGE,
             edit = @AnnoEdit(placeHolder = "请上传用户头像"),
-            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER,thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE))
+            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE))
     private String avatar;
     /**
      * 手机号
      */
-    @AnnoField(title = "手机号", tableFieldName = "mobile",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入手机号",notNull = true))
+    @AnnoField(title = "手机号", tableFieldName = "mobile", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true))
     private String mobile;
     /**
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
-            edit = @AnnoEdit(placeHolder = "请输入密码",notNull = true,editEnable = false),show = false)
+            edit = @AnnoEdit(placeHolder = "请输入密码", notNull = true, editEnable = false), show = false)
     private String password;
     /**
      * 用户名
      */
-    @AnnoField(title = "用户名", tableFieldName = "name",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入用户名",notNull = true))
+    @AnnoField(title = "用户名", tableFieldName = "name", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入用户名", notNull = true))
     private String name;
 
     /**
@@ -71,7 +71,7 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "角色",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysRole.class,
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,

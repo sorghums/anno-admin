@@ -21,6 +21,7 @@ import site.sorghum.anno.modular.system.anno.*;
 import site.sorghum.anno.modular.system.dao.SysPermissionDao;
 import site.sorghum.anno.modular.system.dao.SysRoleDao;
 import site.sorghum.anno.modular.system.dao.SysUserDao;
+import site.sorghum.anno.util.MD5Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,70 +42,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Db
     SysPermissionDao sysPermissionDao;
-
-    MD5 md5 = MD5.create();
-
-    @Override
-    public void resetPwd(Map<String, Object> props) {
-        SysUser sysUser = new SysUser();
-        String mobile = props.get("mobile").toString();
-        String id = props.get("id").toString();
-        sysUser.setId(id);
-        sysUser.setPassword(md5.digestHex(mobile + ":" + "123456"));
-        sysUserDao.updateById(sysUser, true);
-    }
-
-    @Override
-    public SysUser verifyLogin(String mobile, String pwd) {
-        HashMap<String, Object> queryMap = MapUtil.newHashMap();
-        queryMap.put("mobile", mobile);
-        List<SysUser> sysUsers = sysUserDao.selectByMap(queryMap);
-        if (sysUsers.isEmpty()) {
-            throw new BizException("用户不存在");
-        }
-        SysUser user = sysUsers.get(0);
-        // 清除缓存
-        this.removePermissionCacheList(user.getId());
-        if (!user.getPassword().equals(md5.digestHex(mobile + ":" + pwd))) {
-            throw new BizException("密码错误");
-        }
-        return user;
-    }
-
-    @Override
-    public SysUser getUserByMobile(String mobile) {
-        HashMap<String, Object> queryMap = MapUtil.newHashMap();
-        queryMap.put("mobile", mobile);
-        List<SysUser> sysUsers = sysUserDao.selectByMap(queryMap);
-        if (sysUsers.isEmpty()) {
-            throw new BizException("用户不存在");
-        }
-        return sysUsers.get(0);
-    }
-
-    @Override
-    public SysUser getUserById(String id) {
-        return sysUserDao.selectById(id);
-    }
-
-    @Override
-    @Cache(key = "permissionList", seconds = 60 * 60 * 2)
-    public List<String> permissionList(String userId) {
-        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
-        List<String> roleIds = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
-        if (roleIds.contains("admin")) {
-            List<SysPermission> sysPermissions = sysPermissionDao.list();
-            return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
-        }
-        List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
-        return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
-    }
-
-    @CacheRemove(keys = "permissionList")
-    @Override
-    public void removePermissionCacheList(String userId) {
-        // 清除缓存
-    }
 
     @Init
     public void init() {
@@ -178,5 +115,62 @@ public class AuthServiceImpl implements AuthService {
 
                 }
         );
+    }
+
+    @Override
+    public void resetPwd(Map<String, Object> props) {
+        SysUser sysUser = new SysUser();
+        String mobile = props.get("mobile").toString();
+        String id = props.get("id").toString();
+        sysUser.setId(id);
+        sysUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
+        sysUserDao.updateById(sysUser, true);
+    }
+
+    @Override
+    public SysUser verifyLogin(String mobile, String pwd) {
+        SysUser sysUser = sysUserDao.queryByMobile(mobile);
+        if (sysUser == null) {
+            throw new BizException("用户不存在");
+        }
+        // 清除缓存
+        this.removePermissionCacheList(sysUser.getId());
+        if (!sysUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
+            throw new BizException("密码错误");
+        }
+        return sysUser;
+    }
+
+    @Override
+    public SysUser getUserByMobile(String mobile) {
+        SysUser sysUser = sysUserDao.queryByMobile(mobile);
+        if (sysUser == null) {
+            throw new BizException("用户不存在");
+        }
+        return sysUser;
+    }
+
+    @Override
+    public SysUser getUserById(String id) {
+        return sysUserDao.selectById(id);
+    }
+
+    @Override
+    @Cache(key = "permissionList", seconds = 60 * 60 * 2)
+    public List<String> permissionList(String userId) {
+        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
+        List<String> roleIds = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        if (roleIds.contains("admin")) {
+            List<SysPermission> sysPermissions = sysPermissionDao.list();
+            return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+        }
+        List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
+        return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+    }
+
+    @CacheRemove(keys = "permissionList")
+    @Override
+    public void removePermissionCacheList(String userId) {
+        // 清除缓存
     }
 }
