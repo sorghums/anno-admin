@@ -2,7 +2,6 @@ package site.sorghum.anno.modular.system.proxy;
 
 import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.digest.MD5;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.wood.DbTableQuery;
 import site.sorghum.anno.exception.BizException;

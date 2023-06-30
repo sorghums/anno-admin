@@ -4,9 +4,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
-import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.base.model.BaseMetaModel;
 import site.sorghum.anno.modular.system.anno.SysUser;
 

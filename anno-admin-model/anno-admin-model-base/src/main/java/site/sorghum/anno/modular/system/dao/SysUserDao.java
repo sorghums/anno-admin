@@ -5,8 +5,6 @@ import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
-import java.util.List;
-
 /**
  * 系统用户
  *

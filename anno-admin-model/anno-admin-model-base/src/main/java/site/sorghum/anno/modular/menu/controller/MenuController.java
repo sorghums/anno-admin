@@ -7,12 +7,11 @@ import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;
-import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
+import site.sorghum.anno.modular.system.service.SysAnnoMenuService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,8 +32,8 @@ public class MenuController {
     @Inject
     AnnoService annoService;
 
-    @Db
-    SysAnnoMenuDao sysAnnoMenuDao;
+    @Inject
+    SysAnnoMenuService sysAnnoMenuService;
 
     @Inject
     AuthService authService;
@@ -42,7 +41,7 @@ public class MenuController {
     @Mapping(value = "/dataMenu")
     public List<SysAnnoMenuResponse> dataMenu() {
         String uid = StpUtil.getLoginId().toString();
-        List<SysAnnoMenu> sysAnnoMenus = sysAnnoMenuDao.list();
+        List<SysAnnoMenu> sysAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
                 sysAnnoMenu -> {

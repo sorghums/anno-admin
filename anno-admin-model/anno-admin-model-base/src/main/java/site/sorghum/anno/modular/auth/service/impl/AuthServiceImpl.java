@@ -1,29 +1,29 @@
 package site.sorghum.anno.modular.auth.service.impl;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.crypto.digest.MD5;
 import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
-import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.system.anno.*;
+import site.sorghum.anno.modular.system.anno.SysPermission;
+import site.sorghum.anno.modular.system.anno.SysRole;
+import site.sorghum.anno.modular.system.anno.SysUser;
 import site.sorghum.anno.modular.system.dao.SysPermissionDao;
 import site.sorghum.anno.modular.system.dao.SysRoleDao;
 import site.sorghum.anno.modular.system.dao.SysUserDao;
 import site.sorghum.anno.util.MD5Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -168,8 +168,8 @@ public class AuthServiceImpl implements AuthService {
         return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
     }
 
-    @CacheRemove(keys = "permissionList")
     @Override
+    @CacheRemove(keys = "permissionList")
     public void removePermissionCacheList(String userId) {
         // 清除缓存
     }

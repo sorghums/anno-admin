@@ -29,12 +29,10 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
 @Table("sys_anno_menu")
 public class SysAnnoMenu extends BaseMetaModel {
 
-    @JSONField(name = "parentId")
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit)
     private String parentId;
 
     @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)
-    @JSONField(name = "title")
     private String title;
 
     @AnnoField(title = "菜单类型", tableFieldName = "type", search = @AnnoSearch(),
@@ -44,30 +42,24 @@ public class SysAnnoMenu extends BaseMetaModel {
                     @AnnoOptionType.OptionData(label = "目录", value = "0")
             }),
             edit = @AnnoEdit(placeHolder = "请选择菜单类型", notNull = true))
-    @JSONField(name = "type")
     private Integer type;
 
     @AnnoField(title = "菜单排序", tableFieldName = "sort", edit = @AnnoEdit)
-    @JSONField(name = "sort")
     private Integer sort;
 
     @AnnoField(title = "打开方式", tableFieldName = "open_type", edit = @AnnoEdit, optionType = @AnnoOptionType(value = {
             @AnnoOptionType.OptionData(label = "内置页", value = "_iframe"),
     }), dataType = AnnoDataType.OPTIONS)
-    @JSONField(name = "openType")
     private String openType;
 
     @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit)
-    @JSONField(name = "icon")
     private String icon;
 
     @AnnoField(title = "菜单链接", tableFieldName = "href", edit = @AnnoEdit)
-    @JSONField(name = "href")
     private String href;
 
     @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit,
             dataType = AnnoDataType.OPTIONS,
             optionType = @AnnoOptionType(sql = "select id as value, name as label from sys_permission where del_flag = 0 and parent_id is null order by id desc"))
-    @JSONField(name = "permissionId")
     private String permissionId;
 }

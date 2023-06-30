@@ -1,6 +1,5 @@
 package site.sorghum.anno.modular.auth.service;
 
-import org.noear.solon.data.annotation.CacheRemove;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
 import java.util.List;
@@ -22,7 +21,5 @@ public interface AuthService {
     public SysUser getUserById(String id);
 
     public List<String> permissionList(String userId);
-
-    @CacheRemove(keys = "permissionList")
     void removePermissionCacheList(String userId);
 }

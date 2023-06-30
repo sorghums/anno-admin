@@ -3,12 +3,9 @@ package site.sorghum.anno.modular.anno.proxy;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.thread.ThreadUtil;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 /**
