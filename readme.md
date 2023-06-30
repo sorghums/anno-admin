@@ -351,8 +351,9 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
         - key： 当前节点关键词，一般为id
         - displayAsTree：是否展示为树
         - enable：是否启用
+
 @Table
-    - value: 声明表名
+- value: 声明表名
 #### 删除配置类：
 @AnnoRemove
 
@@ -403,8 +404,10 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
         - enlargeAble：点击可放大展示
         - width：宽度 px
         - height：高度 px
+
 @PrimaryKey
-    - value：主键名称
+- value：主键名称
+
 #### 按钮注解
 > 自定义逻辑 一对多 多对多的连表逻辑
 
