@@ -17,8 +17,8 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "系统角色用户关联表", tableName = "sys_user_role",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user_role", baseCodeTranslate = "系统角色用户关联"))
+@AnnoMain(name = "角色用户关联管理", tableName = "sys_user_role",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user_role", baseCodeTranslate = "角色用户关联管理"))
 public class SysUserRole extends BaseMetaModel implements Serializable {
 
     /**

@@ -3,7 +3,7 @@ package site.sorghum.anno.modular.menu.entity.response;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.modular.menu.entity.model.AnnoMenu;
+import site.sorghum.anno.modular.menu.entity.model.SysAnnoMenu;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class AnnoMenuResponse extends AnnoMenu {
+public class SysAnnoMenuResponse extends SysAnnoMenu {
     /**
      * 子节点
      */
     @JSONField(name = "children")
-    List<AnnoMenuResponse> children;
+    List<SysAnnoMenuResponse> children;
 
 }

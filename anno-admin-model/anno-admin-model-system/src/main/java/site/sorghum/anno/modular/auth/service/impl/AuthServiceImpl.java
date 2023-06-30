@@ -1,26 +1,21 @@
 package site.sorghum.anno.modular.auth.service.impl;
 
-import cn.dev33.satoken.context.SaHolder;
-import cn.dev33.satoken.context.model.SaRequest;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
-import lombok.SneakyThrows;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.data.annotation.Cache;
+import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.base.model.BaseMetaModel;
 import site.sorghum.anno.modular.system.anno.*;
 import site.sorghum.anno.modular.system.dao.SysPermissionDao;
 import site.sorghum.anno.modular.system.dao.SysRoleDao;
@@ -57,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
         SysUser sysUser = new SysUser();
         sysUser.setId(props.get("id").toString());
         sysUser.setPassword("123456");
-        sysUserDao.updateById(sysUser,true);
+        sysUserDao.updateById(sysUser, true);
     }
 
     @Override
@@ -65,10 +60,12 @@ public class AuthServiceImpl implements AuthService {
         HashMap<String, Object> queryMap = MapUtil.newHashMap();
         queryMap.put("mobile", mobile);
         List<SysUser> sysUsers = sysUserDao.selectByMap(queryMap);
-        if (sysUsers.isEmpty()){
+        if (sysUsers.isEmpty()) {
             throw new BizException("用户不存在");
         }
         SysUser user = sysUsers.get(0);
+        // 清除缓存
+        this.removePermissionCacheList(user.getId());
         if (!user.getPassword().equals(pwd)) {
             throw new BizException("密码错误");
         }
@@ -76,6 +73,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public SysUser getUserByMobile(String mobile) {
+        HashMap<String, Object> queryMap = MapUtil.newHashMap();
+        queryMap.put("mobile", mobile);
+        List<SysUser> sysUsers = sysUserDao.selectByMap(queryMap);
+        if (sysUsers.isEmpty()) {
+            throw new BizException("用户不存在");
+        }
+        return sysUsers.get(0);
+    }
+
+    @Override
+    public SysUser getUserById(String id) {
+        return sysUserDao.selectById(id);
+    }
+
+    @Override
+    @Cache(key = "permissionList", seconds = 60 * 60 * 2)
     public List<String> permissionList(String userId) {
         List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
         List<String> roleIds = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
@@ -85,6 +99,12 @@ public class AuthServiceImpl implements AuthService {
         }
         List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
         return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+    }
+
+    @CacheRemove(keys = "permissionList")
+    @Override
+    public void removePermissionCacheList(String userId){
+        // 清除缓存
     }
 
     @Init
@@ -115,7 +135,7 @@ public class AuthServiceImpl implements AuthService {
                     basePermission.setCode(baseCode);
                     basePermission.setName(baseName);
                     basePermission.setDelFlag(0);
-                    sysPermissionDao.insert(basePermission,true);
+                    sysPermissionDao.insert(basePermission, true);
 
 
                     // 新增
@@ -129,7 +149,7 @@ public class AuthServiceImpl implements AuthService {
                     addPermission.setName(addName);
                     addPermission.setDelFlag(0);
 
-                    sysPermissionDao.insert(addPermission,true);
+                    sysPermissionDao.insert(addPermission, true);
 
                     // 修改
                     String updateCode = baseCode + ":" + PermissionProxy.UPDATE;
@@ -142,7 +162,7 @@ public class AuthServiceImpl implements AuthService {
                     updatePermission.setName(updateName);
                     updatePermission.setDelFlag(0);
 
-                    sysPermissionDao.insert(updatePermission,true);
+                    sysPermissionDao.insert(updatePermission, true);
 
                     // 删除
                     String deleteCode = baseCode + ":" + PermissionProxy.DELETE;
@@ -155,7 +175,7 @@ public class AuthServiceImpl implements AuthService {
                     deletePermission.setName(deleteName);
                     deletePermission.setDelFlag(0);
 
-                    sysPermissionDao.insert(deletePermission,true);
+                    sysPermissionDao.insert(deletePermission, true);
 
                 }
         );

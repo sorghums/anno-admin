@@ -41,7 +41,7 @@
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
+							<dd><a href="javascript:void(0);" user-menu-title="清除缓存" id="clearSysUserCache" >清除缓存</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -121,7 +121,19 @@
 					})
 					return true;
 				})
+
+				//id为clearSysUserCache点击事件
+				$("#clearSysUserCache").on("click",function () {
+					$.ajax({
+						url: "/system/auth/clearSysUserCache",
+						type: "post",
+						success: function (data) {
+							// ignore
+						}
+					})
+					popup.success("清除成功")
+				})
 			})
-		</script>		
+		</script>
 	</body>
 </html>

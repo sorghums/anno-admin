@@ -7,11 +7,12 @@ import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
+import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.menu.entity.model.AnnoMenu;
-import site.sorghum.anno.modular.menu.entity.response.AnnoMenuResponse;
+import site.sorghum.anno.modular.menu.entity.model.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,22 +33,21 @@ public class MenuController {
     @Inject
     AnnoService annoService;
 
+    @Db
+    SysAnnoMenuDao sysAnnoMenuDao;
+
     @Inject
     AuthService authService;
 
     @Mapping(value = "/dataMenu")
-    public List<AnnoMenuResponse> dataMenu() {
+    public List<SysAnnoMenuResponse> dataMenu() {
         String uid = StpUtil.getLoginId().toString();
-        QueryRequest<AnnoMenu> annoMenuQueryRequest = new QueryRequest<AnnoMenu>(){{
-            setClazz(AnnoMenu.class);
-            setOrderBy("sort");
-        }};
-        List<AnnoMenu> list = annoService.list(annoMenuQueryRequest);
+        List<SysAnnoMenu> sysAnnoMenus = sysAnnoMenuDao.list();
         // 过滤需要权限的菜单
-        List<AnnoMenu> nList = list.stream().filter(
-                annoMenu -> {
-                    if (StrUtil.isNotBlank(annoMenu.getPermissionId())) {
-                        return authService.permissionList(uid).contains(annoMenu.getPermissionId());
+        List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
+                sysAnnoMenu -> {
+                    if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
+                        return authService.permissionList(uid).contains(sysAnnoMenu.getPermissionId());
                     }
                     return true;
                 }
@@ -55,17 +55,17 @@ public class MenuController {
         return listToTree(list2AnnoMenuResponse(nList));
     }
 
-    public static List<AnnoMenuResponse> listToTree(List<AnnoMenuResponse> list) {
-        Map<String ,AnnoMenuResponse> map = new HashMap<>();
-        List<AnnoMenuResponse> roots = new ArrayList<>();
-        for (AnnoMenuResponse node : list) {
+    public static List<SysAnnoMenuResponse> listToTree(List<SysAnnoMenuResponse> list) {
+        Map<String , SysAnnoMenuResponse> map = new HashMap<>();
+        List<SysAnnoMenuResponse> roots = new ArrayList<>();
+        for (SysAnnoMenuResponse node : list) {
             map.put(node.getId(), node);
         }
-        for (AnnoMenuResponse node : list) {
+        for (SysAnnoMenuResponse node : list) {
             if (isRootNode(node.getParentId())) {
                 roots.add(node);
             } else {
-                AnnoMenuResponse parent = map.get(node.getParentId());
+                SysAnnoMenuResponse parent = map.get(node.getParentId());
                 if (parent != null) {
                     parent.getChildren().add(node);
                 }
@@ -73,11 +73,11 @@ public class MenuController {
         }
         return roots;
     }
-    private static List<AnnoMenuResponse> list2AnnoMenuResponse(List<AnnoMenu> annoMenus) {
-        return annoMenus.stream().map(
-                annoMenu -> {
-                    AnnoMenuResponse annoMenuResponse = new AnnoMenuResponse();
-                    BeanUtil.copyProperties(annoMenu,annoMenuResponse);
+    private static List<SysAnnoMenuResponse> list2AnnoMenuResponse(List<SysAnnoMenu> sysAnnoMenus) {
+        return sysAnnoMenus.stream().map(
+                sysAnnoMenu -> {
+                    SysAnnoMenuResponse annoMenuResponse = new SysAnnoMenuResponse();
+                    BeanUtil.copyProperties(sysAnnoMenu,annoMenuResponse);
                     annoMenuResponse.setChildren(new ArrayList<>());
                     return annoMenuResponse;
                 }

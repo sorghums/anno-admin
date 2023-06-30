@@ -26,7 +26,6 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        log.info("loginId: {}, loginType: {}", loginId, loginType);
         return authService.permissionList(loginId.toString());
     }
 

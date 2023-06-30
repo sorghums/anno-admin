@@ -20,8 +20,8 @@ import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "系统用户", tableName = "sys_user",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "系统用户"))
+@AnnoMain(name = "用户管理", tableName = "sys_user",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"))
 @Table("sys_user")
 public class SysUser extends BaseOrgMetaModel implements Serializable {
 

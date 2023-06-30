@@ -1,7 +1,7 @@
 package site.sorghum.anno.util;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
@@ -11,6 +11,7 @@ import java.util.Objects;
  * @author sorghum
  * @since 2022/06/29
  */
+@Slf4j
 public class ThrowableLogUtil {
     /**
      * 调用栈偏移量
@@ -37,12 +38,12 @@ public class ThrowableLogUtil {
             StackTraceElement[] stackTrace = throwable.getStackTrace();
             StackTraceElement selfStack = getSelfStack(stackTrace);
             if (!Objects.isNull(selfStack)) {
-                Log.get(rootStackElement.getClassName()).error("异常信息:{} 出错类名：{},出错方法名：{},行号：{}", getMessage(throwable),selfStack.getClassName(), selfStack.getMethodName(), selfStack.getLineNumber());
+                log.error("异常信息:{} 出错类名：{},出错方法名：{},行号：{}", getMessage(throwable),selfStack.getClassName(), selfStack.getMethodName(), selfStack.getLineNumber());
             }else {
-                Log.get(rootStackElement.getClassName()).error("[{}] 行号：{},异常信息：{}",rootStackElement.getMethodName(),rootStackElement.getLineNumber(), getMessage(throwable));
+                log.error("[{}] 行号：{},异常信息：{}",rootStackElement.getMethodName(),rootStackElement.getLineNumber(), getMessage(throwable));
             }
         }else {
-            Log.get(rootStackElement.getClassName()).error("[{}] 行号：{},打印错误异常：{}，获取源信息失败。", rootStackElement.getMethodName(), rootStackElement.getLineNumber(), inThrowable.getMessage());
+            log.error("[{}] 行号：{},打印错误异常：{}，获取源信息失败。", rootStackElement.getMethodName(), rootStackElement.getLineNumber(), inThrowable.getMessage());
         }
 
     }

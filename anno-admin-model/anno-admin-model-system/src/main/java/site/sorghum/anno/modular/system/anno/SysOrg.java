@@ -19,8 +19,8 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "组织机构", tableName = "sys_org",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织机构"))
+@AnnoMain(name = "组织管理", tableName = "sys_org",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织管理"))
 public class SysOrg extends BaseMetaModel {
 
     /**
