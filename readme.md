@@ -19,32 +19,36 @@ Anno-Admin是一个基于Solon框架的开源项目，旨在通过注解生成�
 package site.sorghum.anno.modular.menu.entity.anno;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.Table;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 
 /**
- * Anno菜单
+ * 系统菜单
  *
  * @author Sorghum
  * @since 2023/05/19
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "菜单信息", tableName = "sys_anno_menu",
-        annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true))
-public class AnnoMenu extends BaseMetaModel {
+@AnnoMain(name = "菜单管理",
+        annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_anno_menu", baseCodeTranslate = "菜单管理"))
+@Table("sys_anno_menu")
+public class SysAnnoMenu extends BaseMetaModel {
 
     @JSONField(name = "parentId")
-    @AnnoField(title = "父菜单id", tableFieldName = "parent_id", edit = @AnnoEdit)
+    @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit)
     private String parentId;
 
     @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)
@@ -78,6 +82,12 @@ public class AnnoMenu extends BaseMetaModel {
     @AnnoField(title = "菜单链接", tableFieldName = "href", edit = @AnnoEdit)
     @JSONField(name = "href")
     private String href;
+
+    @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit,
+            dataType = AnnoDataType.OPTIONS,
+            optionType = @AnnoOptionType(sql = "select id as value, name as label from sys_permission where del_flag = 0 and parent_id is null order by id desc"))
+    @JSONField(name = "permissionId")
+    private String permissionId;
 }
 
 ```
@@ -91,13 +101,14 @@ package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 /**
  * 系统组织
@@ -107,8 +118,9 @@ import site.sorghum.anno.modular.base.base.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "组织机构", tableName = "sys_org",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织机构"))
+@AnnoMain(name = "组织管理",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织管理"))
+@Table("sys_org")
 public class SysOrg extends BaseMetaModel {
 
     /**
@@ -130,7 +142,6 @@ public class SysOrg extends BaseMetaModel {
     @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
     private Object jsCmd;
 }
-
 ```
 系统角色：
 ![image.png](img/系统角色.png)
@@ -141,21 +152,24 @@ package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.anno.SysPermission;
-import site.sorghum.anno.modular.base.base.BaseMetaModel;
+import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
 import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "系统角色", tableName = "sys_role")
+@AnnoMain(name = "角色管理",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"))
+@Table("sys_role")
 public class SysRole  extends BaseMetaModel implements Serializable {
 
     /**
@@ -199,7 +213,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
 
 
     /**
-     * 权限按钮
+     * 角色按钮
      */
     @AnnoButton(name = "权限",m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
@@ -221,7 +235,11 @@ package site.sorghum.anno.modular.system.anno;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.wood.annotation.PrimaryKey;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
@@ -230,13 +248,17 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.base.base.BaseOrgMetaModel;
+import site.sorghum.anno.modular.base.model.BaseOrgMetaModel;
+import site.sorghum.anno.modular.system.proxy.SysUserProxy;
 
 import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "用户", tableName = "sys_user")
+@AnnoMain(name = "用户管理",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
+        annoProxy =@AnnoProxy(value = SysUserProxy.class))
+@Table("sys_user")
 public class SysUser extends BaseOrgMetaModel implements Serializable {
 
     /**
@@ -309,7 +331,6 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
 @AnnoMain
 
 - name：类名称
-- tableName：表名
 - annoProxy：前置代理类
     - @AnnoProxy
         - value**: **代理类,Class<? extends AnnoBaseProxy>
@@ -330,6 +351,8 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
         - key： 当前节点关键词，一般为id
         - displayAsTree：是否展示为树
         - enable：是否启用
+@Table
+    - value: 声明表名
 #### 删除配置类：
 @AnnoRemove
 
@@ -346,7 +369,6 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
 @AnnoField
 
 - title：标题
-- isId：是否为主键
 - tableFieldName：表字段名
 - show：显示
 - search：搜索信息
@@ -381,6 +403,8 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
         - enlargeAble：点击可放大展示
         - width：宽度 px
         - height：高度 px
+@PrimaryKey
+    - value：主键名称
 #### 按钮注解
 > 自定义逻辑 一对多 多对多的连表逻辑
 
