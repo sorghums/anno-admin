@@ -33,7 +33,7 @@
         let amis = amisRequire('amis/embed');
         // 通过替换下面这个配置来生成不同页面
         // 解析字符串到json
-        let amisJSON = JSON.parse([[${amisJSON}]]);
+        let amisJSON = [[${amisJSON}]];
         let properties = [[${properties}]];
         let amisScoped = amis.embed('#root', amisJSON,
             {data: properties},

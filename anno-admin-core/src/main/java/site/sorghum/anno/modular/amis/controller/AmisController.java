@@ -57,7 +57,7 @@ public class AmisController {
             template = TemplateUtil.getCrudTemplate(aClass,properties);
         }
         ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", JSONUtil.toJSONString(template));
+        modelAndView.put("amisJSON", template);
         modelAndView.put("properties", properties);
         return modelAndView;
     }
@@ -92,7 +92,7 @@ public class AmisController {
             template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
         }
         ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", JSONUtil.toJSONString(template));
+        modelAndView.put("amisJSON", template);
         modelAndView.put("properties", properties);
         return modelAndView;
     }

@@ -115,7 +115,6 @@ public class Amis extends HashMap<String ,Object> {
                     setLabel("重置");
                 }}
         ));
-        Map<String ,Object> filter = TemplateUtil.getTemplate("item/filter.json");
         List<AmisBase> body = new ArrayList<>();
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
         List<FormItem> amisColumns = new ArrayList<>();
