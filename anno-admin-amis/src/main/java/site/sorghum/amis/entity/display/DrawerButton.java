@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -127,7 +128,7 @@ public class DrawerButton extends Action {
         /**
          * 可以不设置，默认只有两个按钮。
          */
-        Action[] actions;
+        List<Action> actions;
 
         /**
          * 支持 数据映射，如果不设定将默认将触发按钮的上下文中继承数据。

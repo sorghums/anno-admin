@@ -101,7 +101,7 @@ public class Api {
     ApiMessage messages;
 
     @Data
-    static class ApiMessage {
+    public static class ApiMessage {
         /**
          * 请求成功提示信息
          */
@@ -113,7 +113,7 @@ public class Api {
     }
 
     @Data
-    static class QsOptions {
+    public static class QsOptions {
         /**
          * 用来设置数组格式，支持 indices、brackets、repeat、comma、separator、bracket、none
          */

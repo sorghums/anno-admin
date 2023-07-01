@@ -272,8 +272,6 @@ public class Form extends AmisBase {
 
 
 
-
-
     @Data
     static class FormHorizontal {
         /**

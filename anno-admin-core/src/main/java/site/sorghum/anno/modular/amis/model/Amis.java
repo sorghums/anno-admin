@@ -3,14 +3,14 @@ package site.sorghum.anno.modular.amis.model;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.display.Group;
-import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.display.*;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
@@ -42,7 +42,7 @@ import java.util.Map;
  * @author sorghum
  * @since 2023/05/20
  */
-public class Amis extends HashMap<String ,Object> {
+public class Amis extends HashMap<String, Object> {
 
 
     //---------------------- 以下为CRUD的表代码 ----------------------//
@@ -67,12 +67,12 @@ public class Amis extends HashMap<String ,Object> {
         tree.setInputClassName("no-border no-padder mt-1");
         tree.setUnfoldedLevel(2);
         tree.setShowOutline(true);
-        tree.setSource(new Api(){{
+        tree.setSource(new Api() {{
             setMethod("get");
             setUrl("/system/anno/${treeClazz}/annoTrees");
         }});
-        Map<String,Object> event = new HashMap<>();
-        event.put("change", new HashMap<String,Object>(){{
+        Map<String, Object> event = new HashMap<>();
+        event.put("change", new HashMap<String, Object>() {{
             put("actions", List.of(
                     new HashMap<String, Object>() {{
                         put("actionType", "broadcast");
@@ -107,12 +107,12 @@ public class Amis extends HashMap<String ,Object> {
         Form form = new Form();
         form.setTitle("条件搜索");
         form.setActions(List.of(
-                new Action(){{
+                new Action() {{
                     setType("submit");
                     setLevel("primary");
                     setLabel("搜索");
                 }},
-                new Action(){{
+                new Action() {{
                     setType("reset");
                     setLabel("重置");
                 }}
@@ -138,7 +138,7 @@ public class Amis extends HashMap<String ,Object> {
         }
         // amisColumns 以4个为一组进行分组
         CollUtil.split(amisColumns, 4).forEach(columns -> {
-            Group group = new Group(){{
+            Group group = new Group() {{
                 setBody(columns);
             }};
             body.add(group);
@@ -182,21 +182,21 @@ public class Amis extends HashMap<String ,Object> {
      * @param clazz clazz
      */
     public void addCrudM2mCheckBox(Class<?> clazz) {
-        JSONUtil.write(this, "$.body.api.data.reverseM2m",true);
-        JSONUtil.write(this, "$.body.bulkActions",new ArrayList<Map<String,Object>>(){{
-            add(new HashMap<String,Object>(){{
-                put("label","批量新增关系");
-                put("actionType","ajax");
-                put("api",new HashMap<String,Object>(){{
-                    put("url","/system/anno/${clazz}/addM2m");
-                    put("method","post");
-                    put("data",new HashMap<String,Object>(){{
-                        put("&","$$");
-                        put("_extraData","${extraData}");
+        JSONUtil.write(this, "$.body.api.data.reverseM2m", true);
+        JSONUtil.write(this, "$.body.bulkActions", new ArrayList<Map<String, Object>>() {{
+            add(new HashMap<String, Object>() {{
+                put("label", "批量新增关系");
+                put("actionType", "ajax");
+                put("api", new HashMap<String, Object>() {{
+                    put("url", "/system/anno/${clazz}/addM2m");
+                    put("method", "post");
+                    put("data", new HashMap<String, Object>() {{
+                        put("&", "$$");
+                        put("_extraData", "${extraData}");
                     }});
-                    put("messages",new HashMap<String,Object>(){{
-                        put("success","操作成功");
-                        put("failed","操作失败");
+                    put("messages", new HashMap<String, Object>() {{
+                        put("success", "操作成功");
+                        put("failed", "操作失败");
                     }});
                 }});
             }});
@@ -215,55 +215,57 @@ public class Amis extends HashMap<String ,Object> {
         if (!canEdit) {
             return;
         }
-        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
-        JSONObject columnJson = columns.stream().filter(column -> "操作".equals(column.getString("label"))).findFirst().orElseThrow(
+        List<HashMap> columns = JSONUtil.readList(this, "$.body.columns", HashMap.class);
+        HashMap columnJson = columns.stream().filter(column -> "操作".equals(MapUtil.getStr(column, "label"))).findFirst().orElseThrow(
                 () -> new BizException("操作列不存在")
         );
-        columnJson.getJSONArray("buttons").add(new JSONObject() {{
-            // 编辑按钮
-            put("type", "button");
-            put("label", "编辑");
-            put("actionType", "dialog");
-            // 弹出框
-            put("dialog", new JSONObject() {{
-                // 弹出框标题
-                put("title", "编辑");
-                // 弹出框内容
-                put("body", new JSONObject() {{
-                    // 弹出框内容类型
-                    put("type", "form");
-                    put("name", "simple-edit-form");
-                    // 提交API
-                    put("api", "post:/system/anno/${clazz}/updateById");
-                    // 表单控件
-                    put("controls", new JSONArray() {{
-                        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-                        for (Field field : fields) {
-                            AnnoField annoField = field.getAnnotation(AnnoField.class);
-                            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
-                            if (annoId != null) {
-                                add(new FormItem(){{
-                                    setName(field.getName());
-                                    setType("hidden");
-                                }});
-                                continue;
-                            }
-                            AnnoEdit edit = annoField.edit();
-                            if (edit.editEnable()) {
-                                FormItem formItem = new FormItem();
-                                formItem.setName(field.getName());
-                                formItem.setLabel(annoField.title());
-                                formItem.setRequired(edit.notNull());
-                                formItem.setPlaceholder(edit.placeHolder());
-                                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
-                                add(formItem);
-                            }
-                        }
-                    }});
-                }});
-
-            }});
-        }});
+        Object buttons = columnJson.get("buttons");
+        if (buttons instanceof List<?> buttonList) {
+            List<Object> buttonListMap = (List<Object>) buttonList;
+            DialogButton dialogButton = new DialogButton();
+            dialogButton.setLabel("编辑");
+            ArrayList<AmisBase> formItems = new ArrayList<>() {{
+                List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+                for (Field field : fields) {
+                    AnnoField annoField = field.getAnnotation(AnnoField.class);
+                    PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
+                    if (annoId != null) {
+                        add(new FormItem() {{
+                            setName(field.getName());
+                            setType("hidden");
+                        }});
+                        continue;
+                    }
+                    AnnoEdit edit = annoField.edit();
+                    if (edit.editEnable()) {
+                        FormItem formItem = new FormItem();
+                        formItem.setName(field.getName());
+                        formItem.setLabel(annoField.title());
+                        formItem.setRequired(edit.notNull());
+                        formItem.setPlaceholder(edit.placeHolder());
+                        formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                        add(formItem);
+                    }
+                }
+            }};
+            dialogButton.setDialog(
+                    new DialogButton.Dialog() {{
+                        setTitle("编辑");
+                        setBody(
+                                new Form() {{
+                                    setId("simple-edit-form");
+                                    setWrapWithPanel(false);
+                                    setApi(new Api() {{
+                                        setMethod("post");
+                                        setUrl("/system/anno/${clazz}/updateById");
+                                    }});
+                                    setBody(formItems);
+                                }}
+                        );
+                    }}
+            );
+            buttonListMap.add(dialogButton);
+        }
         JSONUtil.write(this, "$.body.columns", columns);
     }
 
@@ -274,67 +276,78 @@ public class Amis extends HashMap<String ,Object> {
         if (!canAdd) {
             return;
         }
-        List<JSONObject> action = JSONUtil.readList(this, "$.body.filter.actions", JSONObject.class);
-        action.add(0, new JSONObject() {{
-            put("type", "button");
-            put("actionType", "dialog");
-            put("label", "新增");
-            put("icon", "fa fa-plus pull-left");
-            put("primary", true);
-            put("dialog", new JSONObject() {{
-                put("title", "新增");
-                put("body", new JSONObject() {{
-                    put("type", "form");
-                    put("reload", "crud_template_main");
-                    put("name", "simple-edit-form");
-                    put("api", "post:/system/anno/${clazz}/save");
-                    put("controls", new JSONArray() {{
-                        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-                        for (Field field : fields) {
-                            AnnoField annoField = field.getAnnotation(AnnoField.class);
-                            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
-                            if (annoId != null) {
-                                add(new FormItem(){{
-                                    setName(field.getName());
-                                    setType("hidden");
-                                }});
-                                continue;
-                            }
-                            AnnoEdit edit = annoField.edit();
-                            if (edit.addEnable()) {
-                                FormItem formItem = new FormItem();
-                                formItem.setName(field.getName());
-                                formItem.setLabel(annoField.title());
-                                formItem.setRequired(edit.notNull());
-                                formItem.setPlaceholder(edit.placeHolder());
-                                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
-                                add(formItem);
-                            }
-                        }
+        List<AmisBase> formItems = new ArrayList<AmisBase>() {{
+            List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+            for (Field field : fields) {
+                AnnoField annoField = field.getAnnotation(AnnoField.class);
+                PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
+                if (annoId != null) {
+                    add(new FormItem() {{
+                        setName(field.getName());
+                        setType("hidden");
                     }});
-                }});
-
-            }});
-        }});
+                    continue;
+                }
+                AnnoEdit edit = annoField.edit();
+                if (edit.addEnable()) {
+                    FormItem formItem = new FormItem();
+                    formItem.setName(field.getName());
+                    formItem.setLabel(annoField.title());
+                    formItem.setRequired(edit.notNull());
+                    formItem.setPlaceholder(edit.placeHolder());
+                    formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                    add(formItem);
+                }
+            }
+        }};
+        List<Action> action = JSONUtil.readList(this, "$.body.filter.actions", Action.class);
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel("新增");
+        dialogButton.setIcon("fa fa-plus pull-left");
+        dialogButton.setLevel("primary");
+        dialogButton.setDialog(
+                new DialogButton.Dialog() {{
+                    setTitle("新增");
+                    setBody(
+                            new Form() {{
+                                setWrapWithPanel(false);
+                                setReload("crud_template_main");
+                                setApi(new Api() {{
+                                    setMethod("post");
+                                    setUrl("/system/anno/${clazz}/save");
+                                }});
+                                setId("simple-edit-form");
+                                setBody(formItems);
+                            }}
+                    );
+                }}
+        );
+        action.add(0, dialogButton);
         JSONUtil.write(this, "$.body.filter.actions", action);
     }
 
     public void addCrudDeleteButton(Class<?> clazz) {
         // 删除按钮模板
-        JSONObject deleteJsonObj = new JSONObject() {{
-            put("type", "button");
-            put("actionType", "ajax");
-            put("level", "danger");
-            put("label", "删除");
-            put("confirmText", "您确认要删除?");
-            put("api", "post:/system/anno/${clazz}/removeById");
-        }};
+        Action delete = new Action();
+        delete.setActionType("ajax");
+        delete.setLabel("删除");
+        delete.setLevel("danger");
+        delete.setConfirmText("您确认要删除?");
+        delete.setApi(new Api() {{
+            setMethod("post");
+            setUrl("/system/anno/${clazz}/removeById");
+        }});
         // 读取现有的列
-        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
-        for (JSONObject columnJson : columns) {
-            if ("操作".equals(columnJson.getString("label"))) {
+        List<HashMap> columns = JSONUtil.readList(this, "$.body.columns", HashMap.class);
+        for (HashMap columnJson : columns) {
+            if ("操作".equals(MapUtil.getStr(columnJson, "label"))) {
                 // 添加删除按钮
-                columnJson.getJSONArray("buttons").add(deleteJsonObj);
+                Object buttons = columnJson.get("buttons");
+                if (buttons instanceof List<?> buttonList) {
+                    List<Object> buttonListMap = (List<Object>) buttonList;
+                    buttonListMap.add(delete);
+                }
+                break;
             }
         }
         // 重新写入
@@ -344,27 +357,31 @@ public class Amis extends HashMap<String ,Object> {
     public void addCrudColumnButtonInfo(Class<?> clazz) {
         List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz);
         // 读取现有的列
-        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
-        for (JSONObject columnJson : columns) {
-            if ("操作".equals(columnJson.getString("label"))) {
+        List<HashMap> columns = JSONUtil.readList(this, "$.body.columns", HashMap.class);
+        for (HashMap columnJson : columns) {
+            if ("操作".equals(MapUtil.getStr(columnJson, "label"))) {
                 for (Field buttonField : buttonFields) {
                     AnnoButton annoButton = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
-                    JSONObject buttonJson = new JSONObject();
+                    Action action = new Action();
                     AnnoButton.O2MJoinButton o2MJoinButton = annoButton.o2mJoinButton();
                     AnnoButton.M2MJoinButton m2mJoinButton = annoButton.m2mJoinButton();
                     if (o2MJoinButton.enable()) {
-                        buttonJson.put("label", annoButton.name());
-                        buttonJson.put("type", "button");
-                        buttonJson.put("actionType", "dialog");
-                        buttonJson.put("dialog", new JSONObject() {{
-                            put("size", "full");
-                            put("title", annoButton.name());
-                            put("body", new JSONObject() {{
-                                put("type", "iframe");
-                                put("src", "/system/config/amis/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
-                            }});
-                        }});
+                        action = new DialogButton();
+                        action.setLabel(annoButton.name());
+                        ((DialogButton) action).setDialog(
+                                new DialogButton.Dialog() {{
+                                    setTitle(annoButton.name());
+                                    setSize("full");
+                                    setBody(
+                                            new IFrame() {{
+                                                setType("iframe");
+                                                setSrc("/system/config/amis/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
+                                            }}
+                                    );
+                                }}
+                        );
                     } else if (m2mJoinButton.enable()) {
+                        action = new DrawerButton();
                         HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
                             put("joinValue", "${" + m2mJoinButton.joinThisClazzField() + "}");
                             put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(), false, true));
@@ -373,60 +390,69 @@ public class Amis extends HashMap<String ,Object> {
                             put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
                             put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
                         }};
-                        buttonJson.put("label", annoButton.name());
-                        buttonJson.put("type", "button");
-                        buttonJson.put("actionType", "drawer");
-                        buttonJson.put("drawer", new JSONObject() {{
-                            put("size", "xl");
-                            put("title", annoButton.name());
-                            put("showCloseButton", false);
-                            put("actions", new JSONArray() {{
-                                add(new JSONObject() {{
-                                    put("type", "action");
-                                    put("actionType", "confirm");
-                                    put("label", "关闭");
-                                    put("size", "lg");
-                                    put("level", "primary");
-                                }});
-                            }});
-                            put("body", new JSONObject() {{
-                                put("type", "iframe");
-                                put("src", "/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
-                            }});
-                        }});
+                        action.setLabel(annoButton.name());
+                        ((DrawerButton) action).setDrawer(
+                                new DrawerButton.Drawer() {{
+                                    setSize("xl");
+                                    setTitle(annoButton.name());
+                                    setShowCloseButton(false);
+                                    setBody(
+                                            new IFrame() {{
+                                                setType("iframe");
+                                                setSrc("/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+                                            }}
+                                    );
+                                    setActions(
+                                            new ArrayList<Action>() {{
+                                                add(new Action() {{
+                                                    setType("action");
+                                                    setActionType("confirm");
+                                                    setLabel("关闭");
+                                                    setSize("lg");
+                                                }});
+                                            }}
+                                    );
+                                }}
+                        );
                     } else if (StrUtil.isNotBlank(annoButton.jumpUrl())) {
-                        buttonJson.put("label", annoButton.name());
-                        buttonJson.put("type", "button");
-                        buttonJson.put("actionType", "url");
-                        buttonJson.put("url", annoButton.jumpUrl());
+                        action.setLabel(annoButton.name());
+                        action.setActionType("url");
+                        action.setUrl(annoButton.jumpUrl());
                     } else if (StrUtil.isNotBlank(annoButton.jsCmd())) {
-                        buttonJson.put("label", annoButton.name());
-                        buttonJson.put("type", "button");
-                        buttonJson.put("onClick", annoButton.jsCmd());
-                    } else if(annoButton.javaCmd().enable()){
-                        buttonJson.put("label", annoButton.name());
-                        buttonJson.put("type", "button");
-                        buttonJson.put("actionType", "ajax");
-                        buttonJson.put("api",new HashMap<String ,Object >(){{
-                            put("method","post");
-                            put("url","/system/anno/runJavaCmd");
-                            put("data",new HashMap<String ,String >(){{
-                                put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
-                                put("method",CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
-                                put("&", "$$");
-                            }});
-                            put("messages",new HashMap<String,Object>(){{
-                                put("success","操作成功");
-                                put("failed","操作失败");
-                            }});
-                        }});
+                        action.setLabel(annoButton.name());
+                        action.setOnClick(annoButton.jsCmd());
+                    } else if (annoButton.javaCmd().enable()) {
+                        action.setLabel(annoButton.name());
+                        action.setActionType("ajax");
+                        action.setApi(
+                                new Api() {{
+                                    setMethod("post");
+                                    setUrl("/system/anno/runJavaCmd");
+                                    setData(new HashMap<String, Object>() {{
+                                        put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
+                                        put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                                        put("&", "$$");
+                                    }});
+                                    setMessages(
+                                            new ApiMessage() {{
+                                                setSuccess("操作成功");
+                                                setFailed("操作失败");
+                                            }}
+                                    );
+
+                                }}
+                        );
                     } else {
                         continue;
                     }
                     // 添加对应按钮
-                    columnJson.getJSONArray("buttons").add(buttonJson);
-                    // 设置列宽
-                    columnJson.put("width", columnJson.getJSONArray("buttons").size() * 80);
+                    Object buttons = columnJson.get("buttons");
+                    if (buttons instanceof List<?> buttonList) {
+                        List<Object> buttonListMap = (List<Object>) buttonList;
+                        buttonListMap.add(action);
+                        // 设置列宽
+                        columnJson.put("width", buttonListMap.size() * 80);
+                    }
                 }
             }
         }
@@ -465,8 +491,8 @@ public class Amis extends HashMap<String ,Object> {
                 formItem.setRequired(required);
                 formItem.setName(fieldName);
                 formItem.setLabel(annoField.title());
-                ((TreeSelect)formItem).setSource(
-                        new Api(){{
+                ((TreeSelect) formItem).setSource(
+                        new Api() {{
                             setMethod("get");
                             setUrl("/system/anno/${treeClazz}/annoTrees");
                         }}
@@ -487,35 +513,43 @@ public class Amis extends HashMap<String ,Object> {
 
     public void addDeleteRelationEditInfo(Class<?> clazz) {
         // 删除按钮模板
-        JSONObject deleteJsonObj = new JSONObject() {{
-            put("type", "button");
-            put("actionType", "ajax");
-            put("level", "danger");
-            put("label", "删除关联关系");
-            put("confirmText", "您确认要删除关联关系吗?");
-            put("api", new JSONObject() {{
-                put("method", "post");
-                put("url", "/system/anno/${clazz}/remove-relation");
-                put("data", new JSONObject() {{
-                    put("&", "$$");
-                    put("_extraData", "${extraData}");
-                }});
-                put("messages", new JSONObject() {{
-                    put("success", "操作成功");
-                    put("failed", "操作失败");
-                }});
-            }});
-        }};
+        Action delete = new Action();
+        delete.setType("button");
+        delete.setActionType("ajax");
+        delete.setLevel("danger");
+        delete.setLabel("删除关联关系");
+        delete.setConfirmText("您确认要删除关联关系吗?");
+        delete.setApi(
+                new Api() {{
+                    setMethod("post");
+                    setUrl("/system/anno/${clazz}/remove-relation");
+                    setData(new JSONObject() {{
+                        put("&", "$$");
+                        put("_extraData", "${extraData}");
+                    }});
+                    setMessages(
+                            new ApiMessage() {{
+                                setSuccess("操作成功");
+                                setFailed("操作失败");
+                            }}
+                    );
+                }}
+        );
         // 读取现有的列
-        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
-        for (JSONObject columnJson : columns) {
-            if ("操作".equals(columnJson.getString("label"))) {
+        List<HashMap> columns = JSONUtil.readList(this, "$.body.columns", HashMap.class);
+        for (HashMap columnJson : columns) {
+            if ("操作".equals(MapUtil.getStr(columnJson, "label"))) {
                 // 添加删除按钮
-                columnJson.getJSONArray("buttons").add(deleteJsonObj);
+                Object buttons = columnJson.get("buttons");
+                if (buttons instanceof List<?> buttonList) {
+                    List<Object> buttonListCommon = (List<Object>) buttonList;
+                    // 设置列宽
+                    buttonListCommon.add(delete);
+                }
             }
+            // 重新写入
+            JSONUtil.write(this, "$.body.columns", columns);
         }
-        // 重新写入
-        JSONUtil.write(this, "$.body.columns", columns);
     }
 
     /**
@@ -524,7 +558,7 @@ public class Amis extends HashMap<String ,Object> {
      * @param clazz    clazz
      * @param amisJson ami json
      */
-    public void addRelationCrudData(Class<?> clazz,Map<String ,Object> amisJson) {
+    public void addRelationCrudData(Class<?> clazz, Map<String, Object> amisJson) {
         JSONUtil.write(this, "$.body.headerToolbar[2].dialog.body[0]", amisJson);
     }
 

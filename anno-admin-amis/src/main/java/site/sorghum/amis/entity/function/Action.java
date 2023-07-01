@@ -25,6 +25,26 @@ public class Action extends AmisBase {
     String actionType;
 
     /**
+     * 提交接口
+     */
+    Api api;
+
+    /**
+     * 按钮链接，一般跳转
+     */
+    String link;
+
+    /**
+     * 按钮链接，一般跳转
+     */
+    String url;
+
+    /**
+     * 按钮点击执行的JS代码
+     */
+    String onClick;
+
+    /**
      * 按钮文本。可用 ${xxx} 取值。
      */
     String label;
