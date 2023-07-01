@@ -7,6 +7,7 @@ import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
 import site.sorghum.amis.entity.display.Crud;
+import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.TreeSelect;
@@ -15,6 +16,7 @@ import site.sorghum.anno.modular.amis.model.Amis;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class TemplateUtil {
     public static Map<String, Object> getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("crudTemplate.json"), Amis.class);
+        Amis amis = JSONUtil.parseObject(crudBasePage(), Amis.class);
         // 添加过滤
         amis.addCrudFilter(clazz);
         // 添加列
@@ -62,8 +64,8 @@ public class TemplateUtil {
             amis.addCrudM2mCheckBox(clazz);
         }
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
-        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        log.info("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.info("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return amis;
     }
 
@@ -173,6 +175,47 @@ public class TemplateUtil {
      */
     private static URL getTemplateUrl(String templateName) {
         return ResourceUtil.getResource("/WEB-INF/amis/" + templateName);
+    }
+
+    private static Page crudBasePage(){
+        Page page = new Page();
+        page.setAsideResizor(true);
+        Crud bodyCrud = new Crud();
+        bodyCrud.setId("crud_template_main");
+        bodyCrud.setDraggable(false);
+        bodyCrud.setPerPage(10);
+        bodyCrud.setSyncLocation(false);
+        bodyCrud.setApi(
+                new Api(){{
+                    setMethod("post");
+                    setUrl("/system/anno/${clazz}/page");
+                    setData(new HashMap<>(){{
+                        put("&", "$$");
+                        put("_cat", "${_cat}");
+                        put("ignoreM2m", false);
+                        put("reverseM2m", false);
+                        put("_extraData", "${extraData}");
+                    }});
+                }}
+        );
+        bodyCrud.setHeaderToolbar(List.of("export-excel", "bulkActions", "reload"));
+        bodyCrud.setFooterToolbar(List.of("statistics", "switch-per-page", "pagination"));
+        bodyCrud.setColumns(
+                new ArrayList<>(){{
+                    add(
+                            new HashMap<String,Object>(){{
+                                put("type","operation");
+                                put("label","操作");
+                                put("buttons",new ArrayList<>());
+                                put("fixed","right");
+                            }}
+                    );
+                }}
+        );
+        page.setBody(bodyCrud);
+        page.setAsideMinWidth(220);
+        page.setAsideMaxWidth(350);
+        return page;
     }
 
 }

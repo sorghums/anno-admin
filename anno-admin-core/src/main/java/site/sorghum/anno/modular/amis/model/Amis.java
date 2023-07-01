@@ -366,12 +366,12 @@ public class Amis extends HashMap<String, Object> {
                     AnnoButton.O2MJoinButton o2MJoinButton = annoButton.o2mJoinButton();
                     AnnoButton.M2MJoinButton m2mJoinButton = annoButton.m2mJoinButton();
                     if (o2MJoinButton.enable()) {
-                        action = new DialogButton();
+                        action = new DrawerButton();
                         action.setLabel(annoButton.name());
-                        ((DialogButton) action).setDialog(
-                                new DialogButton.Dialog() {{
+                        ((DrawerButton) action).setDrawer(
+                                new DrawerButton.Drawer() {{
                                     setTitle(annoButton.name());
-                                    setSize("full");
+                                    setSize("xl");
                                     setBody(
                                             new IFrame() {{
                                                 setType("iframe");
