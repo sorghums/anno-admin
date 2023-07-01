@@ -6,6 +6,9 @@ import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import site.sorghum.amis.entity.AmisBase;
+import site.sorghum.amis.entity.display.Image;
+import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputDatetime;
 import site.sorghum.amis.entity.input.Options;
@@ -13,6 +16,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.util.DbContextUtil;
+import site.sorghum.anno.util.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,37 +92,49 @@ public enum AnnoDataType {
     }
 
     @SneakyThrows
-    public static void displayExtraInfo(HashMap<String,Object> item, AnnoField annoField) {
+    public static Map<String,Object> displayExtraInfo(AmisBase item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
-        item.put("type",annoDataType.getShowCode());
-        item.put("placeholder","无");
+        item.setType(annoDataType.getShowCode());
         if (annoDataType.equals(IMAGE)){
+            Image image = new Image();
             AnnoImageType imageType = annoField.imageType();
             if (imageType.height() > 0 && imageType.width() > 0){
-                item.put("height",imageType.height());
-                item.put("width",imageType.width());
+                image.setHeight(imageType.height());
+                image.setWidth(imageType.width());
             }
-            item.put("enlargeAble",imageType.enlargeAble());
-            item.put("thumbMode",imageType.thumbMode().getMode());
-            item.put("thumbRatio",imageType.thumbRatio().getRatio());
-            return;
+            image.setEnlargeAble(imageType.enlargeAble());
+            image.setThumbMode(imageType.thumbMode().getMode());
+            image.setThumbRatio(imageType.thumbRatio().getRatio());
+            return mergeObj(image,item);
         }
         if (annoDataType.equals(OPTIONS)){
-            item.put("type","mapping");
-            HashMap<String, String> mapping = new HashMap<>();
+            Mapping mappingItem = new Mapping();
+            HashMap<String, Object> mapping = new HashMap<>();
             AnnoOptionType annoOptionType = annoField.optionType();
             if (StrUtil.isNotBlank(annoOptionType.sql())){
                 List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
                 for (Map<String, Object> map : mapList) {
-                    mapping.put(map.get("value").toString(),map.get("label").toString());
+                    mapping.put(map.get("value").toString(),map.get("label"));
                 }
             }else {
                 for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
                     mapping.put(optionData.value(),optionData.label());
                 }
             }
-            item.put("map",mapping);
+            mappingItem.setMap(mapping);
+            return mergeObj(mappingItem,item);
         }
+        return mergeObj(item);
     }
 
+    private static Map<String,Object> mergeObj(Object obj1, Object obj2){
+        HashMap<String, Object> map1 = JSONUtil.parseObject(obj1, HashMap.class);
+        HashMap<String, Object> map2 = JSONUtil.parseObject(obj2, HashMap.class);
+        map2.putAll(map1);
+        return map2;
+    }
+
+    private static Map<String,Object> mergeObj(Object obj1){
+        return JSONUtil.parseObject(obj1, HashMap.class);
+    }
 }

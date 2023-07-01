@@ -27,12 +27,14 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.modular.anno.util.TemplateUtil;
 import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Amis
@@ -153,21 +155,21 @@ public class Amis extends HashMap<String ,Object> {
      */
     public void addCrudColumns(Class<?> clazz) {
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        List<JSONObject> amisColumns = new ArrayList<>();
+        List<Map> amisColumns = new ArrayList<>();
         for (Field field : fields) {
             AnnoField annoField = field.getAnnotation(AnnoField.class);
-            JSONObject amisColumn = new JSONObject();
-            amisColumn.put("name", field.getName());
-            amisColumn.put("label", annoField.title());
-            amisColumn.put("sortable", true);
-            AnnoDataType.displayExtraInfo(amisColumn, annoField);
+            Table.Column column = new Table.Column();
+            column.setName(field.getName());
+            column.setLabel(annoField.title());
+            column.setSortable(true);
+            Map<String, Object> amisColumn = AnnoDataType.displayExtraInfo(column, annoField);
             if (!annoField.show()) {
                 amisColumn.put("toggled", false);
             }
             amisColumns.add(amisColumn);
         }
         // 读取现有的列
-        List<JSONObject> columns = JSONUtil.readList(this, "$.body.columns", JSONObject.class);
+        List<Map> columns = JSONUtil.readList(this, "$.body.columns", Map.class);
         columns.addAll(0, amisColumns);
         // 重新写入
         JSONUtil.write(this, "$.body.columns", columns);

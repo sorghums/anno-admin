@@ -55,12 +55,12 @@ public class Image extends AmisBase {
     /**
      * 图片缩率高度
      */
-    String height;
+    Integer height;
 
     /**
      * 图片缩率宽度
      */
-    String width;
+    Integer width;
 
     /**
      * 标题

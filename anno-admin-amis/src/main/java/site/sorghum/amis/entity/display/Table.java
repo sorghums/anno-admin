@@ -147,7 +147,8 @@ public class Table extends AmisBase {
     Boolean multiple;
 
     @Data
-    public static class Column{
+    @EqualsAndHashCode(callSuper = true)
+    public static class Column extends AmisBase{
         /**
          * 表头文本内容
          */
@@ -194,5 +195,10 @@ public class Table extends AmisBase {
          * 单元格内部组件自定义样式
          */
         Map<String , Object> innerStyle;
+
+        /**
+         * 列可排序
+         */
+        Boolean sortable;
     }
 }
