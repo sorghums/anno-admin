@@ -24,6 +24,8 @@
     <modules>
         <!-- 核心包 -->
         <module>anno-admin-core</module>
+        <!-- AMIS包 -->
+        <module>anno-admin-amis</module>
         <!-- 静态资源的WEB包 -->
         <module>anno-admin-web</module>
         <!-- 拓展包-->

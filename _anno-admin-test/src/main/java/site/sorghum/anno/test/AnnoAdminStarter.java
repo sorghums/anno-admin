@@ -20,8 +20,8 @@ public class AnnoAdminStarter {
         Solon.start(AnnoAdminStarter.class, args, app ->{
             //执行后打印sql
             WoodConfig.onExecuteAft(cmd -> {
-                log.info("===[Wood] sql: {}",cmd.text);
-                log.info("===[Wood] var: {}",cmd.paramMap());
+                log.debug("===[Wood] sql: {}",cmd.text);
+                log.debug("===[Wood] var: {}",cmd.paramMap());
             });
         });
     }

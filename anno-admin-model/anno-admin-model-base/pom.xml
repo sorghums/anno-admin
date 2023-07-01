@@ -9,7 +9,7 @@
         <version>0.0.1</version>
     </parent>
 
-    <groupId>com.easyzan</groupId>
+    <groupId>site.sorghum</groupId>
     <artifactId>anno-admin-model-base</artifactId>
 
     <properties>

@@ -27,7 +27,7 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.easyzan</groupId>
+            <groupId>site.sorghum</groupId>
             <artifactId>anno-admin-model-base</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

@@ -1,10 +1,14 @@
 package site.sorghum.anno.modular.anno.enums;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.amis.entity.input.InputDatetime;
+import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
@@ -46,35 +50,40 @@ public enum AnnoDataType {
 
 
     @SneakyThrows
-    public static void editorExtraInfo(Map<String ,Object> item, AnnoField annoField) {
+    public static FormItem editorExtraInfo(FormItem item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
-        item.put("type",annoDataType.getCode());
+        item.setType(annoDataType.getCode());
         if (annoDataType.equals(OPTIONS)) {
-            List<Map<String,Object>> options = new ArrayList<>();
+            Options options = new Options();
+            BeanUtil.copyProperties(item,options);
+            List<Options.Option> optionItemList = new ArrayList<>();
             AnnoOptionType annoOptionType = annoField.optionType();
             if (StrUtil.isNotBlank(annoOptionType.sql())){
                 List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
                 for (Map<String, Object> map : mapList) {
-                    HashMap<String,Object> option = MapUtil.newHashMap();
-                    option.put("label", map.get("label"));
-                    option.put("value", map.get("value"));
-                    options.add(option);
+                    Options.Option optionItem = new Options.Option();
+                    optionItem.setLabel(MapUtil.getStr(map,"label"));
+                    optionItem.setValue(map.get("value"));
+                    optionItemList.add(optionItem);
                 }
             }else {
                 for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                    HashMap<String,Object> option = MapUtil.newHashMap();
-                    option.put("label", optionData.label());
-                    option.put("value", optionData.value());
-                    options.add(option);
+                    Options.Option optionItem = new Options.Option();
+                    optionItem.setLabel(optionData.label());
+                    optionItem.setValue(optionData.value());
+                    optionItemList.add(optionItem);
                 }
             }
-            item.put("options",options);
-            return;
+            options.setOptions(optionItemList);
+            return options;
         }
         if (annoDataType.equals(DATETIME)){
-            item.put("format","YYYY-MM-DD HH:mm:ss");
-            return;
+            InputDatetime inputDatetime = new InputDatetime();
+            BeanUtil.copyProperties(item,inputDatetime);
+            inputDatetime.setFormat("YYYY-MM-DD HH:mm:ss");
+            return inputDatetime;
         }
+        return item;
 
     }
 

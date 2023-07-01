@@ -8,6 +8,10 @@ import cn.hutool.core.util.URLUtil;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.noear.wood.annotation.PrimaryKey;
+import site.sorghum.amis.entity.AmisBase;
+import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.amis.entity.input.TreeSelect;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -71,20 +75,18 @@ public class Amis extends HashMap<String ,Object> {
         Map<String ,Object> filter = TemplateUtil.getTemplate("item/filter.json");
         List<JSONObject> body = JSONUtil.readList(filter, "$.body", JSONObject.class);
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        List<JSONObject> amisColumns = new ArrayList<>();
+        List<FormItem> amisColumns = new ArrayList<>();
         for (Field field : fields) {
             AnnoField annoField = field.getAnnotation(AnnoField.class);
             AnnoSearch search = annoField.search();
             if (search.enable()) {
-                JSONObject column = new JSONObject() {{
-                    put("name", field.getName());
-                    put("label", annoField.title());
-                    put("clearable", true);
-                    put("placeholder", search.placeHolder());
-                    put("size", "sm");
-                }};
-                AnnoDataType.editorExtraInfo(column, annoField);
-                amisColumns.add(column);
+                FormItem formItem = new FormItem();
+                formItem.setName(field.getName());
+                formItem.setLabel(annoField.title());
+                formItem.setPlaceholder(search.placeHolder());
+                formItem.setSize("sm");
+                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                amisColumns.add(formItem);
             }
         }
         if (amisColumns.size() == 0) {
@@ -198,22 +200,21 @@ public class Amis extends HashMap<String ,Object> {
                             AnnoField annoField = field.getAnnotation(AnnoField.class);
                             PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
                             if (annoId != null) {
-                                add(new JSONObject() {{
-                                    put("name", field.getName());
-                                    put("type", "hidden");
+                                add(new FormItem(){{
+                                    setName(field.getName());
+                                    setType("hidden");
                                 }});
                                 continue;
                             }
                             AnnoEdit edit = annoField.edit();
                             if (edit.editEnable()) {
-                                JSONObject editItem = new JSONObject() {{
-                                    put("name", field.getName());
-                                    put("label", annoField.title());
-                                    put("required", edit.notNull());
-                                    put("placeholder", edit.placeHolder());
-                                }};
-                                AnnoDataType.editorExtraInfo(editItem, annoField);
-                                add(editItem);
+                                FormItem formItem = new FormItem();
+                                formItem.setName(field.getName());
+                                formItem.setLabel(annoField.title());
+                                formItem.setRequired(edit.notNull());
+                                formItem.setPlaceholder(edit.placeHolder());
+                                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                                add(formItem);
                             }
                         }
                     }});
@@ -251,22 +252,21 @@ public class Amis extends HashMap<String ,Object> {
                             AnnoField annoField = field.getAnnotation(AnnoField.class);
                             PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
                             if (annoId != null) {
-                                add(new JSONObject() {{
-                                    put("name", field.getName());
-                                    put("type", "hidden");
+                                add(new FormItem(){{
+                                    setName(field.getName());
+                                    setType("hidden");
                                 }});
                                 continue;
                             }
                             AnnoEdit edit = annoField.edit();
                             if (edit.addEnable()) {
-                                JSONObject item = new JSONObject() {{
-                                    put("name", field.getName());
-                                    put("label", annoField.title());
-                                    put("required", edit.notNull());
-                                    put("placeholder", edit.placeHolder());
-                                }};
-                                AnnoDataType.editorExtraInfo(item, annoField);
-                                add(item);
+                                FormItem formItem = new FormItem();
+                                formItem.setName(field.getName());
+                                formItem.setLabel(annoField.title());
+                                formItem.setRequired(edit.notNull());
+                                formItem.setPlaceholder(edit.placeHolder());
+                                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                                add(formItem);
                             }
                         }
                     }});
@@ -400,30 +400,31 @@ public class Amis extends HashMap<String ,Object> {
         String parentKey = annoMain.annoTree().parentKey();
 
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-        ArrayList<Map<String ,Object>> itemList = CollUtil.newArrayList();
+        ArrayList<FormItem> itemList = CollUtil.newArrayList();
         for (Field field : fields) {
             AnnoField annoField = field.getAnnotation(AnnoField.class);
             PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
             boolean required = annoField.edit().notNull();
             String fieldName = field.getName();
-            Map<String ,Object> itemBody = new JSONObject() {{
-                put("name", fieldName);
-                put("label", annoField.title());
-                put("required", required);
-            }};
-            AnnoDataType.editorExtraInfo(itemBody, annoField);
+            FormItem formItem = new FormItem();
+            formItem.setRequired(required);
+            formItem.setName(fieldName);
+            formItem.setLabel(annoField.title());
+            formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
             if (annoId != null) {
-                itemBody.put("disabled", true);
+                formItem.setDisabled(true);
             }
             if (!annoField.show()) {
-                itemBody.put("hidden", true);
+                formItem.setHidden(true);
             }
             if (parentKey.equals(fieldName)) {
-                itemBody = TemplateUtil.getTemplate("item/tree-select.json");
-                itemBody.put("name", fieldName);
-                itemBody.put("label", annoField.title());
+                formItem = new TreeSelect();
+                formItem.setRequired(required);
+                formItem.setName(fieldName);
+                formItem.setLabel(annoField.title());
+//                itemBody = TemplateUtil.getTemplate("item/tree-select.json");
             }
-            itemList.add(itemBody);
+            itemList.add(formItem);
         }
         JSONUtil.write(this, "$.body[1].body", itemList);
 
