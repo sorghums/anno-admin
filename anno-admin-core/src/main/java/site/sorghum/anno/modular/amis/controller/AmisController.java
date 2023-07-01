@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.amis.controller;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
@@ -11,6 +12,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.anno.util.TemplateUtil;
+import site.sorghum.anno.util.JSONUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +57,7 @@ public class AmisController {
             template = TemplateUtil.getCrudTemplate(aClass,properties);
         }
         ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", template);
+        modelAndView.put("amisJSON", JSONUtil.toJSONString(template));
         modelAndView.put("properties", properties);
         return modelAndView;
     }
@@ -90,7 +92,7 @@ public class AmisController {
             template = TemplateUtil.getCrudM2mTemplate(aClass,properties);
         }
         ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", template);
+        modelAndView.put("amisJSON", JSONUtil.toJSONString(template));
         modelAndView.put("properties", properties);
         return modelAndView;
     }

@@ -9,8 +9,11 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
+import site.sorghum.amis.entity.display.Group;
 import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
+import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.TreeSelect;
@@ -99,8 +102,21 @@ public class Amis extends HashMap<String ,Object> {
      */
     public void addCrudFilter(Class<?> clazz) {
         // 获取过滤的模板
+        Form form = new Form();
+        form.setTitle("条件搜索");
+        form.setActions(List.of(
+                new Action(){{
+                    setType("submit");
+                    setLevel("primary");
+                    setLabel("搜索");
+                }},
+                new Action(){{
+                    setType("reset");
+                    setLabel("重置");
+                }}
+        ));
         Map<String ,Object> filter = TemplateUtil.getTemplate("item/filter.json");
-        List<JSONObject> body = JSONUtil.readList(filter, "$.body", JSONObject.class);
+        List<AmisBase> body = new ArrayList<>();
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
         List<FormItem> amisColumns = new ArrayList<>();
         for (Field field : fields) {
@@ -121,16 +137,14 @@ public class Amis extends HashMap<String ,Object> {
         }
         // amisColumns 以4个为一组进行分组
         CollUtil.split(amisColumns, 4).forEach(columns -> {
-            JSONObject group = new JSONObject() {{
-                put("type", "group");
-                put("body", columns);
+            Group group = new Group(){{
+                setBody(columns);
             }};
             body.add(group);
         });
-        // 重新写入
-        JSONUtil.write(filter, "$.body", body);
+        form.setBody(body);
         // 写入到当前对象
-        JSONUtil.write(this, "$.body.filter", filter);
+        JSONUtil.write(this, "$.body.filter", form);
     }
 
     /**
