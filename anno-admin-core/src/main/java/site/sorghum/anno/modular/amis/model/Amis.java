@@ -10,7 +10,9 @@ import com.alibaba.fastjson2.JSONObject;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.TreeSelect;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
@@ -27,10 +29,7 @@ import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Amis
@@ -52,15 +51,43 @@ public class Amis extends HashMap<String ,Object> {
     public void addCommonTreeAside(Class<?> clazz, Map<String, Object> properties) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
+        InputTree tree = new InputTree();
+        tree.setId("aside-input-tree");
+        tree.setName("_cat");
+        tree.setSearchable(true);
+        tree.setMultiple(false);
+        tree.setCascade(false);
+        tree.setHeightAuto(false);
+        tree.setVirtualThreshold(9999);
+        tree.setInputClassName("no-border no-padder mt-1");
+        tree.setUnfoldedLevel(2);
+        tree.setShowOutline(true);
+        tree.setSource(new Api(){{
+            setMethod("get");
+            setUrl("/system/anno/${treeClazz}/annoTrees");
+        }});
+        Map<String,Object> event = new HashMap<>();
+        event.put("change", new HashMap<String,Object>(){{
+            put("actions", List.of(
+                    new HashMap<String, Object>() {{
+                        put("actionType", "broadcast");
+                        put("args", new HashMap<String, Object>() {{
+                            put("eventName", "broadcast_aside_change");
+                        }});
+                        put("data", new HashMap<String, Object>() {{
+                            put("_cat", "${_cat}");
+                        }});
+                    }}
+            ));
+        }});
+        tree.setOnEvent(event);
         if (annoLeftTree.enable()) {
-            Map<String ,Object> aside = TemplateUtil.getTemplate("item/aside.json");
-            JSONUtil.write(this, "$.aside", aside);
+            JSONUtil.write(this, "$.aside", tree);
             return;
         }
         AnnoTree annoTree = annoMain.annoTree();
         if (annoTree.enable() && annoTree.displayAsTree()) {
-            Map<String ,Object> aside = TemplateUtil.getTemplate("item/aside.json");
-            JSONUtil.write(this, "$.aside", aside);
+            JSONUtil.write(this, "$.aside", tree);
             return;
         }
     }
@@ -419,10 +446,16 @@ public class Amis extends HashMap<String ,Object> {
             }
             if (parentKey.equals(fieldName)) {
                 formItem = new TreeSelect();
+                formItem.setId("parent-tree-select");
                 formItem.setRequired(required);
                 formItem.setName(fieldName);
                 formItem.setLabel(annoField.title());
-//                itemBody = TemplateUtil.getTemplate("item/tree-select.json");
+                ((TreeSelect)formItem).setSource(
+                        new Api(){{
+                            setMethod("get");
+                            setUrl("/system/anno/${treeClazz}/annoTrees");
+                        }}
+                );
             }
             itemList.add(formItem);
         }
