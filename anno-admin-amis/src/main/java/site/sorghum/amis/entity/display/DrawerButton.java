@@ -68,7 +68,7 @@ public class DrawerButton extends Action {
         /**
          * 指定 Drawer 方向，支持: left、right、top、bottom
          */
-        String position;
+        String position = "top";
 
         /**
          * Drawer 最外层容器的样式类名

@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.display.Crud;
-import site.sorghum.amis.entity.display.DialogButton;
-import site.sorghum.amis.entity.display.Group;
-import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.display.*;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
@@ -133,9 +130,9 @@ public class CrudM2mView extends Page {
         Crud crudBody = getCrudBody();
         List<Object> headerToolbar = crudBody.getHeaderToolbar();
         Object obj = headerToolbar.get(2);
-        DialogButton dialogButton = (DialogButton) obj;
-        DialogButton.Dialog dialog = dialogButton.getDialog();
-        dialog.setBody(amisBase);
+        DrawerButton drawerButton = (DrawerButton) obj;
+        DrawerButton.Drawer drawer = drawerButton.getDrawer();
+        drawer.setBody(amisBase);
     }
 
     /**
@@ -295,24 +292,17 @@ public class CrudM2mView extends Page {
                 CollUtil.newArrayList(
                         "bulkActions",
                         "reload",
-                        new DialogButton() {{
+                        new DrawerButton() {{
                             setLabel("新增关联关系");
                             setLevel("primary");
-                            setDialog(
-                                    new DialogButton.Dialog() {{
-                                        setTitle("新增关联关系");
-                                        setSize("full");
-                                        setActions(
-                                                CollUtil.newArrayList(
-                                                        new Action() {{
-                                                            setLabel("关闭");
-                                                            setActionType("confirm");
-                                                            setSize("lg");
-                                                            setLevel("info");
-                                                        }}
-                                                )
-                                        );
+                            setDrawer(
+                                    new DrawerButton.Drawer() {{
+                                        setSize("xl");
+                                        setPosition("right");
+                                        setHeaderClassName("p-none m-none h-0");
+                                        setActions(CollUtil.newArrayList());
                                         setShowCloseButton(false);
+                                        setCloseOnOutside(true);
                                         setOnEvent(
                                                 new HashMap<>() {{
                                                     put("confirm", new HashMap<>() {{

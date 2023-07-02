@@ -248,10 +248,13 @@ public class CrudView extends Page {
                         action.setLabel(annoButton.name());
                         ((DrawerButton) action).setDrawer(
                                 new DrawerButton.Drawer() {{
-                                    setCloseOnEsc(true);
+                                    setShowCloseButton(false);
+                                    setPosition("right");
                                     setCloseOnOutside(true);
-                                    setTitle(annoButton.name());
                                     setSize("xl");
+                                    setHeaderClassName("p-none m-none h-0");
+                                    setFooterClassName("p-xs m-xs h-1/2");
+                                    setActions(new ArrayList<>());
                                     setBody(
                                             new IFrame() {{
                                                 setType("iframe");
@@ -276,24 +279,16 @@ public class CrudView extends Page {
                                     setCloseOnEsc(true);
                                     setCloseOnOutside(true);
                                     setSize("xl");
-                                    setTitle(annoButton.name());
                                     setShowCloseButton(false);
+                                    setHeaderClassName("p-none m-none h-0");
+                                    setFooterClassName("p-xs m-xs h-1/2");
                                     setBody(
                                             new IFrame() {{
                                                 setType("iframe");
                                                 setSrc("/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                                             }}
                                     );
-                                    setActions(
-                                            new ArrayList<Action>() {{
-                                                add(new Action() {{
-                                                    setType("action");
-                                                    setActionType("confirm");
-                                                    setLabel("关闭");
-                                                    setSize("lg");
-                                                }});
-                                            }}
-                                    );
+                                    setActions(new ArrayList<Action>());
                                 }}
                         );
                     } else if (StrUtil.isNotBlank(annoButton.jumpUrl())) {
@@ -484,6 +479,7 @@ public class CrudView extends Page {
                 setFailed("操作失败");
             }});
         }});
+        insertRelations.setReload("m2m-crud,crud_template_main");
         bulkActions.add(insertRelations);
     }
 
