@@ -44,6 +44,6 @@ public class ButtonGroup extends AmisBase {
     /**
      * 按钮
      */
-    List<Action> actions;
+    List<Action> buttons;
 
 }

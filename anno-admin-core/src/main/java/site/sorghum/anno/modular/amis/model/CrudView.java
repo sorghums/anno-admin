@@ -50,7 +50,7 @@ public class CrudView extends Page {
     
     @Transient
     private Crud getCrudBody(){
-        return (Crud) this.getBody();
+        return (Crud) this.getBody().get(0);
     }
     /**
      * 添加过滤器
@@ -521,7 +521,7 @@ public class CrudView extends Page {
                     );
                 }}
         );
-        page.setBody(bodyCrud);
+        page.setBody(CollUtil.newArrayList(bodyCrud));
         page.setAsideMinWidth(220);
         page.setAsideMaxWidth(350);
         return page;

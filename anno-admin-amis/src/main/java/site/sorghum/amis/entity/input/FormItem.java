@@ -152,16 +152,6 @@ public class FormItem extends AmisBase {
      */
     String size;
 
-    /**
-     * 隐藏
-     */
-    Boolean hidden;
-
-    /**
-     * 事件
-     */
-    Map<String,Object> onEvent;
-
     @Data
     public static class AutoFill {
 

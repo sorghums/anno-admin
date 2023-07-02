@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Api;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Page extends AmisBase {
@@ -60,7 +62,7 @@ public class Page extends AmisBase {
     /**
      * 往页面的内容区域加内容
      */
-    AmisBase body;
+    List<AmisBase> body;
 
     /**
      * 自定义 CSS 变量，请参考样式
@@ -106,7 +108,7 @@ public class Page extends AmisBase {
     /**
      * 刷新时间(最小 1000)
      */
-    Integer interval = 3000;
+    Integer interval;
 
     /**
      * 配置刷新时是否显示加载动画

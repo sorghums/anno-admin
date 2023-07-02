@@ -74,7 +74,7 @@ public class Crud extends Table {
     /**
      * 刷新时间(最低 1000)
      */
-    private Integer interval = 3000;
+    private Integer interval;
 
     /**
      * 配置刷新时是否隐藏加载动画

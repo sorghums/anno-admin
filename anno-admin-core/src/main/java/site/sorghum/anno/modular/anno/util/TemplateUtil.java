@@ -12,6 +12,7 @@ import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.layout.Page;
 import site.sorghum.anno.modular.amis.model.Amis;
 import site.sorghum.anno.modular.amis.model.CrudView;
+import site.sorghum.anno.modular.amis.model.TreeView;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
@@ -102,20 +103,20 @@ public class TemplateUtil {
      *
      * @param clazz      clazz
      * @param properties 页面参数
-     * @return {@link Map}<{@link String} ,{@link Object}>
+     * @return {@link TreeView}
      */
-    public static Map<String, Object> getTreeTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static TreeView getTreeTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("treeTemplate.json"), Amis.class);
+        TreeView treeView = TreeView.of();
         // 添加form
-        amis.addTreeForm(clazz);
+        treeView.addTreeForm(clazz);
         // 添加树边栏
-        amis.addCommonTreeAside(clazz, properties);
+        treeView.addCommonTreeAside(clazz, properties);
         stopWatch.stop();
-        log.debug("tree模板：{}", JSONUtil.toJSONString(amis));
-        log.debug("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
-        return amis;
+        log.info("tree模板：{}", JSONUtil.toJSONString(treeView));
+        log.info("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        return treeView;
     }
 
     public static Map<String, Object> getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
@@ -175,46 +176,4 @@ public class TemplateUtil {
     private static URL getTemplateUrl(String templateName) {
         return ResourceUtil.getResource("/WEB-INF/amis/" + templateName);
     }
-
-    private static Page crudBasePage(){
-        Page page = new Page();
-        page.setAsideResizor(true);
-        Crud bodyCrud = new Crud();
-        bodyCrud.setId("crud_template_main");
-        bodyCrud.setDraggable(false);
-        bodyCrud.setPerPage(10);
-        bodyCrud.setSyncLocation(false);
-        bodyCrud.setApi(
-                new Api(){{
-                    setMethod("post");
-                    setUrl("/system/anno/${clazz}/page");
-                    setData(new HashMap<>(){{
-                        put("&", "$$");
-                        put("_cat", "${_cat}");
-                        put("ignoreM2m", false);
-                        put("reverseM2m", false);
-                        put("_extraData", "${extraData}");
-                    }});
-                }}
-        );
-        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions", "reload"));
-        bodyCrud.setFooterToolbar(CollUtil.newArrayList("statistics", "switch-per-page", "pagination"));
-        bodyCrud.setColumns(
-                new ArrayList<>(){{
-                    add(
-                            new HashMap<String,Object>(){{
-                                put("type","operation");
-                                put("label","操作");
-                                put("buttons",new ArrayList<>());
-                                put("fixed","right");
-                            }}
-                    );
-                }}
-        );
-        page.setBody(bodyCrud);
-        page.setAsideMinWidth(220);
-        page.setAsideMaxWidth(350);
-        return page;
-    }
-
 }

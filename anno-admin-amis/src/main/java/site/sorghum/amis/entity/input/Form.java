@@ -101,7 +101,7 @@ public class Form extends AmisBase {
     /**
      * 刷新时间(最低 3000)
      */
-    Long interval = 3000L;
+    Long interval;
 
     /**
      * 配置刷新时是否显示加载动画
@@ -139,7 +139,7 @@ public class Form extends AmisBase {
     /**
      * 设置了 initAsyncApi 以后，默认拉取的时间间隔
      */
-    Long initCheckInterval = 3000L;
+    Long initCheckInterval;
 
     /**
      * 设置此属性后，表单提交发送保存接口后
@@ -150,7 +150,7 @@ public class Form extends AmisBase {
     /**
      * 轮询请求的时间间隔，默认为 3 秒。设置 asyncApi 才有效
      */
-    Long checkInterval = 3000L;
+    Long checkInterval;
 
     /**
      * 如果决定结束的字段名不是 finished 请设置此属性，比如 is_success
