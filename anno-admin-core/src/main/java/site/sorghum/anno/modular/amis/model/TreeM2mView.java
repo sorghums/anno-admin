@@ -70,7 +70,6 @@ public class TreeM2mView extends Page {
                         new InputTree(){{
                             setId("m2mTree");
                             setName("m2mTree");
-                            setSearchable(true);
                             setAutoCheckChildren(true);
                             setMultiple(true);
                             setCascade(true);

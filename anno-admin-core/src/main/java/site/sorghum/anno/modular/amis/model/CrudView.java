@@ -142,6 +142,12 @@ public class CrudView extends Page {
         delete.setApi(new Api() {{
             setMethod("post");
             setUrl("/system/anno/${clazz}/removeById");
+            setMessages(
+                    new ApiMessage() {{
+                        setSuccess("删除成功");
+                        setFailed("删除失败");
+                    }}
+            );
         }});
         // 读取现有的列
         Crud crudBody = getCrudBody();

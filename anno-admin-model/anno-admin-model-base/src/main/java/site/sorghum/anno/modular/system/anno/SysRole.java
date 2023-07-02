@@ -32,7 +32,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     /**
      * 排序
      */
-    @AnnoField(title = "排序", tableFieldName = "sort",search = @AnnoSearch(),
+    @AnnoField(title = "排序", tableFieldName = "sort",
             edit = @AnnoEdit(placeHolder = "请输入排序",notNull = true))
     Integer sort;
 
