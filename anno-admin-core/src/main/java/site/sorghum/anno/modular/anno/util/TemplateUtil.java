@@ -2,23 +2,17 @@ package site.sorghum.anno.modular.anno.util;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.FIFOCache;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
-import site.sorghum.amis.entity.display.Crud;
-import site.sorghum.amis.entity.function.Api;
-import site.sorghum.amis.entity.layout.Page;
-import site.sorghum.anno.modular.amis.model.Amis;
 import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
+import site.sorghum.anno.modular.amis.model.TreeM2mView;
 import site.sorghum.anno.modular.amis.model.TreeView;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -119,14 +113,14 @@ public class TemplateUtil {
         return treeView;
     }
 
-    public static Map<String, Object> getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static TreeM2mView getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplateUrl("m2mTreeTemplate.json"), Amis.class);
+        TreeM2mView treeM2mView = TreeM2mView.of();
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
-        return amis;
+        return treeM2mView;
     }
 
     /**

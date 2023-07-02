@@ -22,7 +22,6 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
