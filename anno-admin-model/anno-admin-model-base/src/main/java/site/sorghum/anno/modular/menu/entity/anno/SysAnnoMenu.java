@@ -1,6 +1,5 @@
 package site.sorghum.anno.modular.menu.entity.anno;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;

@@ -1,12 +1,12 @@
 package site.sorghum.amis;
 
+import cn.hutool.core.collection.CollUtil;
 import com.alibaba.fastjson2.JSON;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.InputDatetime;
 import site.sorghum.amis.entity.input.LocationPicker;
 import site.sorghum.amis.entity.input.Options;
 import site.sorghum.amis.entity.layout.Page;
-import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
@@ -15,11 +15,11 @@ public class Test {
         page.setSubTitle("This is a subtitle.");
         Form form = new Form();
         page.setBody(form);
-        form.setBody(Arrays.asList(
+        form.setBody(CollUtil.newArrayList(
                 new Options() {{
                     setName("sex");
                     setOptions(
-                            Arrays.asList(
+                            CollUtil.newArrayList(
                                     new Options.Option() {{
                                         setLabel("男");
                                         setValue("1");

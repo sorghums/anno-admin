@@ -1,13 +1,12 @@
 package site.sorghum.amis.entity.display;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -151,7 +150,7 @@ public class Crud extends Table {
     /**
      * 设置一页显示多少条数据下拉框可选条数。
      */
-    private List<Integer> perPageAvailable = Arrays.asList(5, 10, 20, 50, 100);
+    private List<Integer> perPageAvailable = CollUtil.newArrayList(5, 10, 20, 50, 100);
 
     /**
      * 设置用来确定位置的字段名，设置后新的顺序将被赋值到该字段中。
@@ -191,12 +190,12 @@ public class Crud extends Table {
     /**
      * 顶部工具栏配置
      */
-    private List<String> headerToolbar = Arrays.asList("bulkActions", "pagination");
+    private List<String> headerToolbar = CollUtil.newArrayList("bulkActions", "pagination");
 
     /**
      * 底部工具栏配置
      */
-    private List<String> footerToolbar = Arrays.asList("statistics", "pagination");
+    private List<String> footerToolbar = CollUtil.newArrayList("statistics", "pagination");
 
     /**
      * 是否总是显示分页

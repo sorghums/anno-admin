@@ -1,6 +1,5 @@
 package site.sorghum.amis.entity.input;
 
-import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.function.Api;

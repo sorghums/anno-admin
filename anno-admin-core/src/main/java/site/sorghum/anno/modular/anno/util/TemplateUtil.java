@@ -2,17 +2,16 @@ package site.sorghum.anno.modular.anno.util;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.FIFOCache;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
 import site.sorghum.amis.entity.display.Crud;
-import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.function.Api;
-import site.sorghum.amis.entity.input.InputTree;
-import site.sorghum.amis.entity.input.TreeSelect;
 import site.sorghum.amis.entity.layout.Page;
 import site.sorghum.anno.modular.amis.model.Amis;
+import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
@@ -39,34 +38,34 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link Map}
      */
-    public static Map<String, Object> getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static CrudView getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(crudBasePage(), Amis.class);
+        CrudView crudView = CrudView.of();
         // 添加过滤
-        amis.addCrudFilter(clazz);
+        crudView.addCrudFilter(clazz);
         // 添加列
-        amis.addCrudColumns(clazz);
+        crudView.addCrudColumns(clazz);
         // 添加删除信息
-        amis.addCrudDeleteButton(clazz);
+        crudView.addCrudDeleteButton(clazz);
         // 添加编辑信息
-        amis.addCrudEditInfo(clazz);
+        crudView.addCrudEditInfo(clazz);
         if (properties.getOrDefault("isM2m", false).equals(false)) {
             // 添加自定义按钮信息
-            amis.addCrudColumnButtonInfo(clazz);
+            crudView.addCrudColumnButtonInfo(clazz);
         }
         // 添加新增信息
-        amis.addCrudAddInfo(clazz);
+        crudView.addCrudAddInfo(clazz);
         // 添加树边栏
-        amis.addCommonTreeAside(clazz, properties);
+        crudView.addCommonTreeAside(clazz, properties);
         // 添加m2m多选框
         if (properties.getOrDefault("isM2m", false).equals(true)) {
-            amis.addCrudM2mCheckBox(clazz);
+            crudView.addCrudM2mCheckBox(clazz);
         }
         stopWatch.stop();
-        log.info("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.info("crud模板：{}", JSONUtil.toJSONString(crudView));
         log.info("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
-        return amis;
+        return crudView;
     }
 
     /**
@@ -198,8 +197,8 @@ public class TemplateUtil {
                     }});
                 }}
         );
-        bodyCrud.setHeaderToolbar(List.of("export-excel", "bulkActions", "reload"));
-        bodyCrud.setFooterToolbar(List.of("statistics", "switch-per-page", "pagination"));
+        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions", "reload"));
+        bodyCrud.setFooterToolbar(CollUtil.newArrayList("statistics", "switch-per-page", "pagination"));
         bodyCrud.setColumns(
                 new ArrayList<>(){{
                     add(

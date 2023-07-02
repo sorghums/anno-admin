@@ -7,7 +7,6 @@ import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
-import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;

@@ -1,5 +1,6 @@
 package site.sorghum.amis.entity.display;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
@@ -54,6 +55,6 @@ public class Audio extends AmisBase {
      * 内部模块定制化
      * 默认：['rates', 'play', 'time', 'process', 'volume']
      */
-    List<String> controls = List.of("rates", "play", "time", "process", "volume");
+    List<String> controls = CollUtil.newArrayList("rates", "play", "time", "process", "volume");
 
 }

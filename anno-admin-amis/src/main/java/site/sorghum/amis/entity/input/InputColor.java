@@ -1,9 +1,9 @@
 package site.sorghum.amis.entity.input;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,7 +26,7 @@ public class InputColor extends FormItem{
     /**
      * 选择器底部的默认颜色，数组内为空则不显示默认颜色
      */
-    List<String> presetColors = Arrays.asList("#ff0000", "#00ff00", "#0000ff");
+    List<String> presetColors = CollUtil.newArrayList("#ff0000", "#00ff00", "#0000ff");
 
     /**
      * 为false时只能选择颜色，使用 presetColors 设定颜色选择范围

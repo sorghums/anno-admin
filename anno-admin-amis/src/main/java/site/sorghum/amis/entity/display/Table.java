@@ -74,7 +74,7 @@ public class Table extends AmisBase {
     /**
      * 用来设置列信息
      */
-    List<Object> columns;
+    List<Map> columns;
 
     /**
      * 自动合并单元格
