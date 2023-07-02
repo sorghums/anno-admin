@@ -30,4 +30,14 @@ public class AmisBase {
      * 是否隐藏
      */
     Boolean hidden;
+
+    /**
+     * 是否隐藏
+     */
+    String hiddenOn;
+
+    /**
+     * 数据
+     */
+    Map<String ,Object> data;
 }

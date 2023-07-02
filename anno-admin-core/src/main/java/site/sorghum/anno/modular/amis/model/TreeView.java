@@ -1,10 +1,16 @@
 package site.sorghum.anno.modular.amis.model;
 
+import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
+import site.sorghum.amis.entity.display.DrawerButton;
+import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.function.ButtonGroup;
@@ -16,9 +22,11 @@ import site.sorghum.amis.entity.layout.Page;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
+import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
+import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.lang.reflect.Field;
@@ -41,6 +49,11 @@ public class TreeView extends Page {
 
     }
 
+    /**
+     * 添加树表单
+     *
+     * @param clazz clazz
+     */
     public void addTreeForm(Class<?> clazz) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         String parentKey = annoMain.annoTree().parentKey();
@@ -143,6 +156,104 @@ public class TreeView extends Page {
         }
     }
 
+    /**
+     * 添加Tree列按钮
+     *
+     * @param clazz clazz
+     */
+    public void addTreeColumnButtonInfo(Class<?> clazz) {
+        List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz);
+        // 读取现有的列
+        Form formBody = getCrudForm();
+        for (Field buttonField : buttonFields) {
+            AnnoButton annoButton = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
+            Action action = new Action();
+            AnnoButton.O2MJoinButton o2MJoinButton = annoButton.o2mJoinButton();
+            AnnoButton.M2MJoinButton m2mJoinButton = annoButton.m2mJoinButton();
+            if (o2MJoinButton.enable()) {
+                action = new DrawerButton();
+                action.setLabel(annoButton.name());
+                ((DrawerButton) action).setDrawer(
+                        new DrawerButton.Drawer() {{
+                            setShowCloseButton(false);
+                            setPosition("right");
+                            setCloseOnOutside(true);
+                            setSize("xl");
+                            setHeaderClassName("p-none m-none h-0");
+                            setFooterClassName("p-xs m-xs h-1/2");
+                            setActions(new ArrayList<>());
+                            setBody(
+                                    new IFrame() {{
+                                        setType("iframe");
+                                        setSrc("/system/config/amis/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
+                                    }}
+                            );
+                        }}
+                );
+            } else if (m2mJoinButton.enable()) {
+                action = new DrawerButton();
+                HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
+                    put("joinValue", "${" + m2mJoinButton.joinThisClazzField() + "}");
+                    put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(), false, true));
+                    put("mediumThisField", m2mJoinButton.mediumThisField());
+                    put("mediumOtherField", m2mJoinButton.mediumOtherField());
+                    put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
+                    put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
+                }};
+                action.setLabel(annoButton.name());
+                ((DrawerButton) action).setDrawer(
+                        new DrawerButton.Drawer() {{
+                            setCloseOnEsc(true);
+                            setCloseOnOutside(true);
+                            setSize("xl");
+                            setShowCloseButton(false);
+                            setHeaderClassName("p-none m-none h-0");
+                            setFooterClassName("p-xs m-xs h-1/2");
+                            setBody(
+                                    new IFrame() {{
+                                        setType("iframe");
+                                        setSrc("/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+                                    }}
+                            );
+                            setActions(new ArrayList<Action>());
+                        }}
+                );
+            } else if (StrUtil.isNotBlank(annoButton.jumpUrl())) {
+                action.setLabel(annoButton.name());
+                action.setActionType("url");
+                action.setUrl(annoButton.jumpUrl());
+            } else if (StrUtil.isNotBlank(annoButton.jsCmd())) {
+                action.setLabel(annoButton.name());
+                action.setOnClick(annoButton.jsCmd());
+            } else if (annoButton.javaCmd().enable()) {
+                action.setLabel(annoButton.name());
+                action.setActionType("ajax");
+                action.setApi(
+                        new Api() {{
+                            setMethod("post");
+                            setUrl("/system/anno/runJavaCmd");
+                            setData(new HashMap<String, Object>() {{
+                                put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
+                                put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                                put("&", "$$");
+                            }});
+                            setMessages(
+                                    new ApiMessage() {{
+                                        setSuccess("操作成功");
+                                        setFailed("操作失败");
+                                    }}
+                            );
+
+                        }}
+                );
+            } else {
+                continue;
+            }
+            action.setHiddenOn("!_hasId");
+            formBody.getActions().add(action);
+        }
+    }
+
 
     private Form getCrudForm(){
         return (Form) getBody().get(1);
@@ -175,8 +286,13 @@ public class TreeView extends Page {
                                                                 put("actionType", "clear");
                                                             }},
                                                             new HashMap<String, Object>() {{
-                                                                put("componentId", "tree-form-reload-delete");
-                                                                put("actionType", "hidden");
+                                                                put("actionType","setValue");
+                                                                put("componentId","tree-form-reload");
+                                                                put("args",new HashMap<String,Object>(){{
+                                                                    put("value",new HashMap<>(){{
+                                                                        put("_hasId",false);
+                                                                    }});
+                                                                }});
                                                             }}
                                                     ));
                                                 }}
@@ -208,8 +324,13 @@ public class TreeView extends Page {
                                                               put("actionType", "setValue");
                                                           }},
                                                           new HashMap<String, Object>() {{
-                                                              put("componentId", "tree-form-reload-delete");
-                                                              put("actionType", "hidden");
+                                                              put("actionType","setValue");
+                                                              put("componentId","tree-form-reload");
+                                                              put("args",new HashMap<String,Object>(){{
+                                                                  put("value",new HashMap<>(){{
+                                                                        put("_hasId",false);
+                                                                  }});
+                                                              }});
                                                           }}
                                                   ));
                                                 }}
@@ -223,6 +344,9 @@ public class TreeView extends Page {
         buttonGroup.setClassName("p-sm");
         buttonGroup.setVertical(false);
         Form form = new Form();
+        form.setData(new HashMap<>() {{
+            put("_hasId", false);
+        }});
         form.setTitle("表单");
         form.setId("tree-form-reload");
         form.setMode("normal");
@@ -251,8 +375,13 @@ public class TreeView extends Page {
                                                 new HashMap<>(){{
                                                     put("actions",CollUtil.newArrayList(
                                                             new HashMap<String, Object>() {{
-                                                                put("componentId", "tree-form-reload-delete");
-                                                                put("actionType", "show");
+                                                                put("actionType","setValue");
+                                                                put("componentId","tree-form-reload");
+                                                                put("args",new HashMap<String,Object>(){{
+                                                                    put("value",new HashMap<>(){{
+                                                                        put("_hasId",true);
+                                                                    }});
+                                                                }});
                                                             }}
                                                     ));
                                                 }}
@@ -265,7 +394,7 @@ public class TreeView extends Page {
                             setType("button");
                             setLabel("删除");
                             setId("tree-form-reload-delete");
-                            setHidden(true);
+                            setHiddenOn("!_hasId");
                             setOnEvent(
                                     new HashMap<>() {{
                                         put("click",
@@ -298,6 +427,15 @@ public class TreeView extends Page {
                                                             new HashMap<String, Object>() {{
                                                                 put("componentId", "parent-tree-select");
                                                                 put("actionType", "reload");
+                                                            }},
+                                                            new HashMap<String, Object>() {{
+                                                                put("actionType","setValue");
+                                                                put("componentId","tree-form-reload");
+                                                                put("args",new HashMap<String,Object>(){{
+                                                                    put("value",new HashMap<>(){{
+                                                                        put("_hasId",false);
+                                                                    }});
+                                                                }});
                                                             }}
                                                     ));
                                                 }}
@@ -314,16 +452,21 @@ public class TreeView extends Page {
                             new HashMap<>(){{
                                 put("actions",CollUtil.newArrayList(
                                         new HashMap<String, Object>() {{
-                                            put("componentId", "tree-form-reload-delete");
-                                            put("actionType", "show");
-                                        }},
-                                        new HashMap<String, Object>() {{
                                             put("componentId", "tree-form-reload");
                                             put("actionType", "clear");
                                         }},
                                         new HashMap<String, Object>() {{
                                             put("componentId", "tree-form-reload");
                                             put("actionType", "reload");
+                                        }},
+                                        new HashMap<String, Object>() {{
+                                            put("actionType","setValue");
+                                            put("componentId","tree-form-reload");
+                                            put("args",new HashMap<String,Object>(){{
+                                                put("value",new HashMap<>(){{
+                                                    put("_hasId",true);
+                                                }});
+                                            }});
                                         }}
                                 ));
                             }}

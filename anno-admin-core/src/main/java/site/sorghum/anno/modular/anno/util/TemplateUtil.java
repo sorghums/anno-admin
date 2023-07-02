@@ -105,6 +105,8 @@ public class TemplateUtil {
         treeView.addTreeForm(clazz);
         // 添加树边栏
         treeView.addCommonTreeAside(clazz, properties);
+        // 添加自定义按钮
+        treeView.addTreeColumnButtonInfo(clazz);
         stopWatch.stop();
         log.info("tree模板：{}", JSONUtil.toJSONString(treeView));
         log.info("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
