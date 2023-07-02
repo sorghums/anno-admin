@@ -465,6 +465,7 @@ public class CrudView extends Page {
         Action insertRelations = new Action();
         insertRelations.setLabel("批量新增关系");
         insertRelations.setActionType("ajax");
+        insertRelations.setLevel("primary");
         insertRelations.setApi(new Api(){{
             setMethod("post");
             setUrl("/system/anno/${clazz}/addM2m");

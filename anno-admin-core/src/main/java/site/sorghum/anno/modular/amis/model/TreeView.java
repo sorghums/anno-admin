@@ -1,7 +1,6 @@
 package site.sorghum.anno.modular.amis.model;
 
 import cn.hutool.core.collection.CollUtil;
-import com.alibaba.fastjson2.JSONObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.PrimaryKey;

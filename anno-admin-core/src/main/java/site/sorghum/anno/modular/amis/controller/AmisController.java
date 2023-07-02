@@ -73,7 +73,7 @@ public class AmisController {
             return null;
         }
         AnnoMain annoMain = AnnoUtil.getAnnoMain(aClass);
-        Map<String ,Object> template = null;
+        Object template = null;
         Map<String ,Object> properties = new HashMap<String,Object>(){{
             put("clazz", clazz);
             put("treeClazz",AnnoUtil.getTreeClass(aClass));
@@ -82,7 +82,6 @@ public class AmisController {
         }};
         // 添加树类
         if (annoMain.annoTree().enable() && annoMain.annoTree().displayAsTree()){
-            // TODO 添加m2m 树模板
             template = TemplateUtil.getTreeM2mTemplate(aClass,properties);
         }
         // 添加crud类

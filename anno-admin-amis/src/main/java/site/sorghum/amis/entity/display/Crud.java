@@ -190,7 +190,7 @@ public class Crud extends Table {
     /**
      * 顶部工具栏配置
      */
-    private List<String> headerToolbar = CollUtil.newArrayList("bulkActions", "pagination");
+    private List<Object> headerToolbar = CollUtil.newArrayList("bulkActions", "pagination");
 
     /**
      * 底部工具栏配置

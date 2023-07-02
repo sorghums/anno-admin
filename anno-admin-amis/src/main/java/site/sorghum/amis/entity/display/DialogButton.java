@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -82,7 +83,7 @@ public class DialogButton extends Action {
         /**
          * 如果想不显示底部按钮，可以配置：[]
          */
-        Action[] actions;
+        List<Action> actions;
 
         /**
          * 支持数据映射，如果不设定将默认将触发按钮的上下文中继承数据。

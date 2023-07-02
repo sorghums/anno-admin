@@ -11,6 +11,7 @@ import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.layout.Page;
 import site.sorghum.anno.modular.amis.model.Amis;
+import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.model.TreeView;
 import site.sorghum.anno.util.JSONUtil;
@@ -76,30 +77,29 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link Map}
      */
-    public static Map<String, Object> getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static CrudM2mView getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        Amis amis = JSONUtil.parseObject(getTemplate("m2mTemplate.json"), Amis.class);
+        CrudM2mView crudM2mView = CrudM2mView.of();
         // 添加过滤
-        amis.addCrudFilter(clazz);
+        crudM2mView.addCrudFilter(clazz);
         // 添加列
-        amis.addCrudColumns(clazz);
+        crudM2mView.addCrudColumns(clazz);
         // 添加关联查询的表格信息
         properties.put("isM2m", true);
-        amis.addRelationCrudData(clazz, getCrudTemplate(clazz, properties));
+        crudM2mView.addRelationCrudData(clazz, getCrudTemplate(clazz, properties));
         // 添加编辑信息
-        amis.addCrudEditInfo(clazz);
+        crudM2mView.addCrudEditInfo(clazz);
         // 添加删除对应关联关系信息的按钮
-        amis.addDeleteRelationEditInfo(clazz);
+        crudM2mView.addDeleteRelationEditInfo(clazz);
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(amis));
+        log.debug("crud模板：{}", JSONUtil.toJSONString(crudM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
-        return amis;
+        return crudM2mView;
     }
 
     /**
-     * 让树模板
-     * 得到crud模板
+     * 得到树模板
      *
      * @param clazz      clazz
      * @param properties 页面参数
