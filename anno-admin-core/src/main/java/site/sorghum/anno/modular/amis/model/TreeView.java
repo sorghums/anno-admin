@@ -260,7 +260,7 @@ public class TreeView extends Page {
                                         );
                                     }}
                             );
-                            setBlock(false);
+                            setLevel("primary");
                         }},
                         new Action() {{
                             setType("button");
@@ -305,6 +305,7 @@ public class TreeView extends Page {
                                         );
                                     }}
                             );
+                            setLevel("danger");
                         }}
                 )
         );
