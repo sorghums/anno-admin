@@ -25,8 +25,6 @@ import java.util.Map;
 @Slf4j
 public class TemplateUtil {
 
-    private static final FIFOCache<String, Object> FIFO_CACHE = CacheUtil.newFIFOCache(500);
-
     /**
      * 得到crud模板
      *
@@ -118,56 +116,9 @@ public class TemplateUtil {
         stopWatch.start();
         TreeM2mView treeM2mView = TreeM2mView.of();
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
-        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        log.info("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
+        log.info("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return treeM2mView;
     }
 
-    /**
-     * 得到模板
-     *
-     * @param templateName 模板名称
-     * @return {@link Map}
-     */
-    public static Map<String, Object> getTemplate(String templateName) {
-        if (templateName == null) {
-            return null;
-        }
-        //fifoCache
-        if (FIFO_CACHE.containsKey(templateName)) {
-            return (Map<String, Object>) JSONUtil.copyObject(FIFO_CACHE.get(templateName));
-        }
-
-        Map<String, Object> map = JSONUtil.parseObject(getTemplateUrl(templateName), Map.class);
-        FIFO_CACHE.put(templateName, JSONUtil.copyObject(map));
-        return map;
-    }
-
-    /**
-     * 得到模板
-     *
-     * @param templateName 模板名称
-     * @return {@link List<Map>}
-     */
-    public static List<Map<String ,Object>> getTemplateArray(String templateName) {
-        if (templateName == null) {
-            return null;
-        }
-        if (FIFO_CACHE.containsKey(templateName)) {
-            return (List<Map<String ,Object>>) JSON.copy(FIFO_CACHE.get(templateName));
-        }
-        List<Map<String ,Object>> jsonArray = JSON.parseObject(getTemplateUrl(templateName), List.class);
-        FIFO_CACHE.put(templateName, JSON.copy(jsonArray));
-        return jsonArray;
-    }
-
-    /**
-     * 获取模板的url
-     *
-     * @param templateName 模板名称
-     * @return {@link URL}
-     */
-    private static URL getTemplateUrl(String templateName) {
-        return ResourceUtil.getResource("/WEB-INF/amis/" + templateName);
-    }
 }
