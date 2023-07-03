@@ -2,10 +2,7 @@ package site.sorghum.anno.util;
 
 
 import cn.hutool.core.bean.BeanUtil;
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
-import com.alibaba.fastjson2.JSONPath;
+import com.alibaba.fastjson2.*;
 import site.sorghum.anno.exception.BizException;
 
 import java.net.URL;
@@ -26,7 +23,7 @@ public class JSONUtil {
         }
         JSONObject jsonObject = new JSONObject();
         BeanUtil.copyProperties(map,jsonObject);
-        return jsonObject.toJavaObject(objectClass);
+        return jsonObject.toJavaObject(objectClass, JSONReader.Feature.SupportSmartMatch);
     }
 
     public static <T> T parseObject(String json, Class<T> objectClass) {
