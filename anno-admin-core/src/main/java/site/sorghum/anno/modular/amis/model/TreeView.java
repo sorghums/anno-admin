@@ -39,7 +39,7 @@ import java.util.Map;
  * 树视图
  *
  * @author sorghum
- * @date 2023/07/02
+ * @since 2023/07/02
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -347,6 +347,7 @@ public class TreeView extends Page {
         form.setData(new HashMap<>() {{
             put("_hasId", false);
         }});
+        form.setColumnCount(2);
         form.setTitle("表单");
         form.setId("tree-form-reload");
         form.setMode("normal");

@@ -10,7 +10,7 @@ import java.util.List;
  * 复选框
  *
  * @author sorghum
- * @date 2023/07/01
+ * @since 2023/07/01
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

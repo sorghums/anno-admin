@@ -138,3 +138,9 @@ values  ('1666356287765979136', 'https://solon.noear.org/img/solon/favicon.png',
 
 insert into sys_user_role (id, role_id, user_id, create_by, create_time, del_flag, update_by, update_time)
 values  ('1674390418047348736', 'admin', '1666356287765979136', null, '2023-06-29 20:12:38.989000', 0, null, '2023-06-29 20:12:38.989000');
+
+# 2023-07-03 新增菜单解析选项
+alter table sys_anno_menu
+    add parse_type varchar(20) null comment '解析类型' after href;
+alter table sys_anno_menu
+    add parse_data varchar(255) null comment '解析数据' after parse_type;

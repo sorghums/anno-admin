@@ -57,8 +57,8 @@ public class TemplateUtil {
             crudView.addCrudM2mCheckBox(clazz);
         }
         stopWatch.stop();
-        log.info("crud模板：{}", JSONUtil.toJSONString(crudView));
-        log.info("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        log.debug("crud模板：{}", JSONUtil.toJSONString(crudView));
+        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return crudView;
     }
 
@@ -108,8 +108,8 @@ public class TemplateUtil {
         // 添加自定义按钮
         treeView.addTreeColumnButtonInfo(clazz);
         stopWatch.stop();
-        log.info("tree模板：{}", JSONUtil.toJSONString(treeView));
-        log.info("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        log.debug("tree模板：{}", JSONUtil.toJSONString(treeView));
+        log.debug("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return treeView;
     }
 
@@ -118,8 +118,8 @@ public class TemplateUtil {
         stopWatch.start();
         TreeM2mView treeM2mView = TreeM2mView.of();
         stopWatch.stop();
-        log.info("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
-        log.info("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
+        log.debug("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
+        log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return treeM2mView;
     }
 

@@ -18,7 +18,7 @@ import java.util.Set;
  * thymeleaf配置
  *
  * @author sorghum
- * @date 2023/07/01
+ * @since 2023/07/01
  */
 @Configuration
 public class ThymeleafConfig {

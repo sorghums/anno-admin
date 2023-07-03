@@ -44,10 +44,10 @@ sa-token:
   is-print: false
 db.main:
   schema: anno_admin
-  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno-admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   driverClassName: com.mysql.cj.jdbc.Driver
   username: root
-  password: 12345678
+  password: 123456
 redis.main:
   config: |
     singleServerConfig:
