@@ -30,6 +30,8 @@
         <module>anno-admin-web</module>
         <!-- 拓展包-->
         <module>anno-admin-model</module>
+        <!-- 自动生成表结构 -->
+        <module>anno-admin-ddl</module>
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
     </modules>
