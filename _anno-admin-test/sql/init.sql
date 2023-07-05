@@ -144,3 +144,37 @@ alter table sys_anno_menu
     add parse_type varchar(20) null comment '解析类型' after href;
 alter table sys_anno_menu
     add parse_data varchar(255) null comment '解析数据' after parse_type;
+
+create table business_product_cat
+(
+    id          varchar(20)  not null comment '主键'
+        primary key,
+    cat_image     varchar(512)   comment '分类图片',
+    cat_name     varchar(255)  null comment '分类名称',
+    sort     int  null comment '排序',
+    parent_id    varchar(20)  null comment '父级分类',
+    create_by   varchar(255) null comment '创建人',
+    create_time datetime(6)  null comment '创建时间',
+    del_flag    int          null comment '删除标记',
+    update_by   varchar(255) null comment '更新人',
+    update_time datetime(6)  null comment '更新时间'
+)
+    comment '商品分类表';
+
+create table business_product
+(
+    id          varchar(20)  not null comment '主键'
+        primary key,
+    product_name     varchar(255)   comment '商品名称',
+    product_image     varchar(512)  null comment '商品图片',
+    product_cat_id     varchar(20)  null comment '商品分类',
+    product_desc    text  null comment '商品描述',
+    product_status    int  null comment '商品状态',
+    product_freight    bigint  null comment '运费',
+    create_by   varchar(255) null comment '创建人',
+    create_time datetime(6)  null comment '创建时间',
+    del_flag    int          null comment '删除标记',
+    update_by   varchar(255) null comment '更新人',
+    update_time datetime(6)  null comment '更新时间'
+)
+    comment '商品表';

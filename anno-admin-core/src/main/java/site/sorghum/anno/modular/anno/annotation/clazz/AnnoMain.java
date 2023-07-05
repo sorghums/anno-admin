@@ -22,13 +22,6 @@ public @interface AnnoMain {
     String name() default "" ;
 
     /**
-     * 表名
-     *
-     * @return {@link String}
-     */
-    String tableName() default "";
-
-    /**
      * 代理类
      *
      * @return {@link AnnoProxy}

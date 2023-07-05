@@ -19,8 +19,11 @@ public class SysAnnoMenuProxy extends AnnoBaseProxy<SysAnnoMenu> {
 
     @Override
     public void beforeAdd(SysAnnoMenu data) {
+        String parseData = null;
         // ------ 解析菜单解析 ------
-        String parseData = data.getParseData().trim();
+        if (StrUtil.isNotBlank(data.getParseData())) {
+            parseData = data.getParseData().trim();
+        }
         data.setParseData(parseData);
         //1. AnnoMain --> 转成菜单
         if ("annoMain".equals(data.getParseType())) {
