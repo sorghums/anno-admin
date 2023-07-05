@@ -24,7 +24,7 @@ public class AmisBase {
     /**
      * 事件
      */
-    Map<String,Object> onEvent;
+    Map<String, Object> onEvent;
 
     /**
      * 是否隐藏
@@ -39,5 +39,10 @@ public class AmisBase {
     /**
      * 数据
      */
-    Map<String ,Object> data;
+    Map<String, Object> data;
+
+    /**
+     * 调试模式
+     */
+    Boolean debug;
 }

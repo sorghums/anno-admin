@@ -16,7 +16,7 @@ import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
+import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
@@ -342,7 +342,7 @@ public class AnnoServiceImpl implements AnnoService {
     }
 
     @Override
-    public <T> List<AnnoTreeDto<String>> annoTrees(QueryRequest<T> request) {
+    public <T> List<AnnoTreeDTO<String>> annoTrees(QueryRequest<T> request) {
         try {
             AnnoMain annoMain = AnnoUtil.getAnnoMain(request.getClazz());
             AnnoTree annoTree = annoMain.annoTree();

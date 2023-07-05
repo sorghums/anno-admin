@@ -14,7 +14,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
+import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreDefaultProxy;
@@ -214,25 +214,25 @@ public class AnnoUtil {
         return annoMain.annoTree().parentKey();
     }
 
-    public static <T> List<AnnoTreeDto<String>> buildAnnoTree(List<T> datas,
+    public static <T> List<AnnoTreeDTO<String>> buildAnnoTree(List<T> datas,
                                                               String label,
                                                               String key,
                                                               String parentKey) {
-        List<AnnoTreeDto<String>> annoTreeDtos = list2AnnoTreeNode(datas, label, key, parentKey);
-        return listToTree(annoTreeDtos);
+        List<AnnoTreeDTO<String>> annoTreeDTOS = list2AnnoTreeNode(datas, label, key, parentKey);
+        return listToTree(annoTreeDTOS);
     }
 
-    public static List<AnnoTreeDto<String>> listToTree(List<AnnoTreeDto<String>> list) {
-        Map<String, AnnoTreeDto<String>> map = new HashMap<>();
-        List<AnnoTreeDto<String>> roots = new ArrayList<>();
-        for (AnnoTreeDto<String> node : list) {
+    public static List<AnnoTreeDTO<String>> listToTree(List<AnnoTreeDTO<String>> list) {
+        Map<String, AnnoTreeDTO<String>> map = new HashMap<>();
+        List<AnnoTreeDTO<String>> roots = new ArrayList<>();
+        for (AnnoTreeDTO<String> node : list) {
             map.put(node.getId(), node);
         }
-        for (AnnoTreeDto<String> node : list) {
+        for (AnnoTreeDTO<String> node : list) {
             if (isRootNode(node.getParentId())) {
                 roots.add(node);
             } else {
-                AnnoTreeDto<String> parent = map.get(node.getParentId());
+                AnnoTreeDTO<String> parent = map.get(node.getParentId());
                 if (parent != null) {
                     parent.getChildren().add(node);
                 }
@@ -241,17 +241,17 @@ public class AnnoUtil {
         return roots;
     }
 
-    private static <T> List<AnnoTreeDto<String>> list2AnnoTreeNode(List<T> datas,
+    private static <T> List<AnnoTreeDTO<String>> list2AnnoTreeNode(List<T> datas,
                                                                    String label,
                                                                    String key,
                                                                    String parentKey) {
         return datas.stream().map(
                 d -> {
-                    AnnoTreeDto<String> annoTreeDto = new AnnoTreeDto<>();
-                    annoTreeDto.setId(simpleToString(ReflectUtil.getFieldValue(d, key)));
-                    annoTreeDto.setLabel(simpleToString(ReflectUtil.getFieldValue(d, label)));
-                    annoTreeDto.setValue(simpleToString(ReflectUtil.getFieldValue(d, key)));
-                    annoTreeDto.setParentId(simpleToString(ReflectUtil.getFieldValue(d, parentKey)));
+                    AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
+                    annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
+                    annoTreeDto.setLabel(simpleToString(reflectGetValue(d, label)));
+                    annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
+                    annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
                     annoTreeDto.setChildren(new ArrayList<>());
                     return annoTreeDto;
                 }
@@ -292,5 +292,12 @@ public class AnnoUtil {
             return annoMain.annoLeftTree().treeClass().getSimpleName();
         }
         return "";
+    }
+    
+    private static Object reflectGetValue(Object o,String field){
+        if (o instanceof Map){
+            return ((Map) o).get(field);
+        }
+        return ReflectUtil.getFieldValue(o,field);
     }
 }

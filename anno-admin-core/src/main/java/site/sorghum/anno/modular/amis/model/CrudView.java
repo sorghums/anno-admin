@@ -58,8 +58,10 @@ public class CrudView extends Page {
      * @param clazz clazz
      */
     public void addCrudFilter(Class<?> clazz) {
+        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         // 获取过滤的模板
         Form form = new Form();
+        form.setId("crud_filter");
         form.setTitle("条件搜索");
         form.setActions(CollUtil.newArrayList(
                 new Action() {{
@@ -99,6 +101,20 @@ public class CrudView extends Page {
             body.add(group);
         });
         form.setBody(body);
+        AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
+        form.setOnEvent(
+                new HashMap<>() {{
+                    put("broadcast_aside_change",
+                            new HashMap<>(){{
+                                put("actions",CollUtil.newArrayList(new HashMap<>() {{
+                                            put("actionType", "reload");
+                                            put("componentId", "crud_template_main");
+                                        }}
+                                ));
+                            }}
+                    );
+                }}
+        );
         // 写入到当前对象
         Crud crudBody = getCrudBody();
         crudBody.setFilter(form);
@@ -427,7 +443,7 @@ public class CrudView extends Page {
                             put("eventName", "broadcast_aside_change");
                         }});
                         put("data", new HashMap<String, Object>() {{
-                            put("_cat", "${_cat}");
+                            put(annoLeftTree.catKey(), "${_cat}");
                         }});
                     }}
             ));
@@ -491,6 +507,7 @@ public class CrudView extends Page {
 
     private static CrudView crudBasePage(){
         CrudView page = new CrudView();
+        page.setId("crud_base_page");
         page.setAsideResizor(true);
         Crud bodyCrud = new Crud();
         bodyCrud.setId("crud_template_main");
@@ -510,7 +527,7 @@ public class CrudView extends Page {
                     }});
                 }}
         );
-        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions", "reload"));
+        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions", ""));
         bodyCrud.setFooterToolbar(CollUtil.newArrayList("statistics", "switch-per-page", "pagination"));
         bodyCrud.setColumns(
                 new ArrayList<>(){{

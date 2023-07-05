@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.anno.annotation.field;
 
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 
 import java.lang.annotation.*;
@@ -64,11 +65,17 @@ public @interface AnnoField {
      */
     AnnoOptionType optionType() default @AnnoOptionType;
 
-
     /**
      * 图像类型
      *
      * @return {@link AnnoImageType}
      */
     AnnoImageType imageType() default @AnnoImageType;
+
+    /**
+     * 选择类型
+     *
+     * @return {@link AnnoOptionType}
+     */
+    AnnoTreeType treeType() default @AnnoTreeType;
 }

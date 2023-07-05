@@ -9,6 +9,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.base.model.BaseMetaModel;
 
@@ -20,7 +21,7 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
  */
 @Data @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品",
-         annoLeftTree = @AnnoLeftTree(catKey = "product_cat_id", treeClass = BusinessProductCat.class)
+         annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class)
 )
 @Table("business_product")
 public class BusinessProduct extends BaseMetaModel {
@@ -42,8 +43,8 @@ public class BusinessProduct extends BaseMetaModel {
     @AnnoField(
             title = "商品分类",
             tableFieldName = "product_cat_id",
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(sql = "SELECT id as value,cat_name as label FROM business_product_cat where del_flag = 0"),
+            dataType = AnnoDataType.TREE,
+            treeType = @AnnoTreeType(sql = "SELECT id,cat_name as label,parent_id as pid FROM business_product_cat where del_flag = 0"),
             search = @AnnoSearch,
             edit = @AnnoEdit)
     String productCatId;

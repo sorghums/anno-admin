@@ -3,6 +3,7 @@ package site.sorghum.anno.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson2.*;
+import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.exception.BizException;
 
 import java.net.URL;
@@ -80,4 +81,7 @@ public class JSONUtil {
         return JSON.toJSONString(object);
     }
 
+    public static List<Options.Option> parseArray(String jsonString, Class<Options.Option> optionClass) {
+        return JSONArray.parseArray(jsonString, optionClass);
+    }
 }

@@ -11,10 +11,14 @@ import site.sorghum.amis.entity.display.Image;
 import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputDatetime;
+import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.util.DbContextUtil;
 import site.sorghum.anno.util.JSONUtil;
 
@@ -39,6 +43,7 @@ public enum AnnoDataType {
     DATE("input-date", "日期","text"),
     DATETIME("input-datetime", "日期时间","text"),
     OPTIONS("select", "下拉框","text"),
+    TREE("tree-select", "树形下拉框","input-tree"),
     RICH_TEXT("input-rich-text", "富文本","text"),
     EDITOR("input-editor", "编辑器","text"),
     ;
@@ -87,6 +92,31 @@ public enum AnnoDataType {
             inputDatetime.setFormat("YYYY-MM-DD HH:mm:ss");
             return inputDatetime;
         }
+        if (annoDataType.equals(TREE)) {
+            InputTree inputTree = new InputTree();
+            BeanUtil.copyProperties(item,inputTree);
+            List<Options.Option> optionItemList = new ArrayList<>();
+            AnnoTreeType annoTreeType = annoField.treeType();
+            if (StrUtil.isNotBlank(annoTreeType.sql())){
+                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
+                List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+                        mapList, "label", "id", "pid"
+                );
+                optionItemList = AnnoTreeDTO.toOptions(trees);
+            }else {
+                List<AnnoTreeDTO<String>> trees = new ArrayList<>();
+                for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
+                    AnnoTreeDTO<String> tree = new AnnoTreeDTO<>();
+                    tree.setLabel(treeData.label());
+                    tree.setValue(treeData.value());
+                    tree.setParentId(treeData.pid());
+                    trees.add(tree);
+                }
+                optionItemList = AnnoTreeDTO.toOptions(trees);
+            }
+            inputTree.setOptions(optionItemList);
+            return inputTree;
+        }
         return item;
 
     }
@@ -119,6 +149,23 @@ public enum AnnoDataType {
             }else {
                 for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
                     mapping.put(optionData.value(),optionData.label());
+                }
+            }
+            mappingItem.setMap(mapping);
+            return mergeObj(mappingItem,item);
+        }
+        if (annoDataType.equals(TREE)){
+            Mapping mappingItem = new Mapping();
+            HashMap<String, Object> mapping = new HashMap<>();
+            AnnoTreeType annoTreeType = annoField.treeType();
+            if (StrUtil.isNotBlank(annoTreeType.sql())){
+                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
+                for (Map<String, Object> map : mapList) {
+                    mapping.put(map.get("id").toString(),map.get("label"));
+                }
+            }else {
+                for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
+                    mapping.put(treeData.value(),treeData.label());
                 }
             }
             mappingItem.setMap(mapping);

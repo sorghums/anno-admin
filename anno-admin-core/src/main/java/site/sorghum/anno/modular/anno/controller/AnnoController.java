@@ -15,7 +15,7 @@ import org.noear.solon.core.handle.Result;
 import org.noear.wood.DbContext;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
+import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
@@ -64,6 +64,7 @@ public class AnnoController {
                                          @Param boolean ignoreM2m,
                                          @Param boolean reverseM2m,
                                          @Body Map<String, String> param) {
+        _cat = null;
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         QueryRequest<T> queryRequest = new QueryRequest<>();
         param = emptyStringIgnore(param);
@@ -159,7 +160,7 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/annoTrees")
-    public <T> AnnoResult<List<AnnoTreeDto<String>>> annoTrees(@Path String clazz,
+    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
                                                                @Param boolean ignoreM2m,
                                                                @Param boolean reverseM2m,
                                                                @Body Map<String, String> param) {
@@ -175,8 +176,8 @@ public class AnnoController {
             String joinThisClazzField = param.get("joinThisClazzField");
             queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
         }
-        List<AnnoTreeDto<String>> annoTreeDtos = annoService.annoTrees(queryRequest);
-        return AnnoResult.from(Result.succeed(annoTreeDtos));
+        List<AnnoTreeDTO<String>> annoTreeDTOS = annoService.annoTrees(queryRequest);
+        return AnnoResult.from(Result.succeed(annoTreeDTOS));
     }
 
     @Mapping("/{clazz}/annoTreeSelectDatas")

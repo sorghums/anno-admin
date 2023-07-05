@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.anno.service;
 
 import cn.hutool.core.lang.Tuple;
 import org.noear.wood.IPage;
-import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDto;
+import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 
 import java.io.Serializable;
@@ -98,7 +98,7 @@ public interface AnnoService {
      * Anno 树
      *
      * @param request 请求
-     * @return {@link List}<{@link AnnoTreeDto}<{@link String}>>
+     * @return {@link List}<{@link AnnoTreeDTO}<{@link String}>>
      */
-    <T> List<AnnoTreeDto<String>> annoTrees(QueryRequest<T> request);
+    <T> List<AnnoTreeDTO<String>> annoTrees(QueryRequest<T> request);
 }

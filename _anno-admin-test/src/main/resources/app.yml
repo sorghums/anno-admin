@@ -25,6 +25,8 @@ solon.logging.appender:
 solon.logging.logger:
   "root":  #默认记录器配置
     level: info
+  "site.sorghum":
+    level: debug
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token名称 (同时也是cookie名称)

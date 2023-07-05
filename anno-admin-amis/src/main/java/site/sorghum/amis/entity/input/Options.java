@@ -64,6 +64,10 @@ public class Options extends FormItem{
     @Data
     public static class Option {
         /**
+         * ID (可忽略)
+         */
+        String id;
+        /**
          * 选项标签
          */
         String label;
@@ -77,5 +81,10 @@ public class Options extends FormItem{
          * 角标
          */
         Map<String , Object> badge;
+
+        /**
+         * 子选项
+         */
+        List<Option> children;
     }
 }
