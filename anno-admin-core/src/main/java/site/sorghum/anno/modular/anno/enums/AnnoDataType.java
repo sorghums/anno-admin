@@ -161,7 +161,7 @@ public enum AnnoDataType {
             if (StrUtil.isNotBlank(annoTreeType.sql())){
                 List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
                 for (Map<String, Object> map : mapList) {
-                    mapping.put(map.get("id").toString(),map.get("label"));
+                    mapping.put(map.get("value").toString(),map.get("label"));
                 }
             }else {
                 for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
