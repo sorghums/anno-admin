@@ -31,7 +31,9 @@ public class Container extends AmisBase {
      */
     String bodyClassName = "wrapper";
 
-
+    /**
+     * Body dom 样式
+     */
     String wrapperComponent = "div";
 
     /**

@@ -255,7 +255,6 @@ public class CrudM2mView extends Page {
     private static CrudM2mView crudM2mView() {
         CrudM2mView crudM2mView = new CrudM2mView();
         crudM2mView.setAsideResizor(true);
-        crudM2mView.setAsideMinWidth(220);
         crudM2mView.setAsideMaxWidth(350);
         Crud bodyCrud = new Crud();
         bodyCrud.setDraggable(false);

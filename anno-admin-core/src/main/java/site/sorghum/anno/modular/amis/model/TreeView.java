@@ -476,7 +476,6 @@ public class TreeView extends Page {
         );
         treeView.setBody(CollUtil.newArrayList(buttonGroup, form));
         treeView.setAsideResizor(true);
-        treeView.setAsideMinWidth(220);
         treeView.setAsideMaxWidth(350);
         return treeView;
     }

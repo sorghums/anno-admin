@@ -542,7 +542,6 @@ public class CrudView extends Page {
                 }}
         );
         page.setBody(CollUtil.newArrayList(bodyCrud));
-        page.setAsideMinWidth(220);
         page.setAsideMaxWidth(350);
         return page;
     }
