@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * crud处理器链
+ * 增删改查处理器链
  *
  * @author Sorghum
  * @since 2023/07/07
