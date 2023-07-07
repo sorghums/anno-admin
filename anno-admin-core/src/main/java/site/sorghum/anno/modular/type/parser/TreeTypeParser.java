@@ -1,6 +1,7 @@
 package site.sorghum.anno.modular.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import org.noear.solon.annotation.Component;
@@ -39,7 +40,7 @@ public class TreeTypeParser implements TypeParser {
         if (StrUtil.isNotBlank(annoTreeType.sql())){
             List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
-                mapping.put(map.get("value").toString(),map.get("label"));
+                mapping.put(MapUtil.getStr(map,"id"),map.get("label"));
             }
         }else {
             for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
