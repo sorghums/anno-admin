@@ -6,10 +6,12 @@ import cn.hutool.core.date.StopWatch;
 import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.core.util.ResourceUtil;
+import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.model.TreeM2mView;
 import site.sorghum.anno.modular.amis.model.TreeView;
+import site.sorghum.anno.modular.amis.process.processer.CrudProcessorChain;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
@@ -35,27 +37,10 @@ public class TemplateUtil {
     public static CrudView getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        CrudView crudView = CrudView.of();
-        // 添加过滤
-        crudView.addCrudFilter(clazz);
-        // 添加列
-        crudView.addCrudColumns(clazz);
-        // 添加删除信息
-        crudView.addCrudDeleteButton(clazz);
-        // 添加编辑信息
-        crudView.addCrudEditInfo(clazz);
-        if (properties.getOrDefault("isM2m", false).equals(false)) {
-            // 添加自定义按钮信息
-            crudView.addCrudColumnButtonInfo(clazz);
-        }
-        // 添加新增信息
-        crudView.addCrudAddInfo(clazz);
-        // 添加树边栏
-        crudView.addCommonTreeAside(clazz, properties);
-        // 添加m2m多选框
-        if (properties.getOrDefault("isM2m", false).equals(true)) {
-            crudView.addCrudM2mCheckBox(clazz);
-        }
+        CrudProcessorChain crudProcessorChain = new CrudProcessorChain();
+        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
+        crudProcessorChain.doProcessor(wrapper,clazz,properties);
+        CrudView crudView = ((CrudView) wrapper.getAmisBase());
         stopWatch.stop();
         log.debug("crud模板：{}", JSONUtil.toJSONString(crudView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
