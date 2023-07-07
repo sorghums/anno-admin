@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.type;
+package site.sorghum.anno.modular.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
@@ -15,6 +15,7 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
+import site.sorghum.anno.modular.type.TypeParser;
 import site.sorghum.anno.util.DbContextUtil;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.Map;
  * @since 2023/07/07
  */
 @Component
-public class TreeTypeParser implements TypeParser{
+public class TreeTypeParser implements TypeParser {
 
     @SneakyThrows
     @Override

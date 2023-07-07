@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.type;
+package site.sorghum.anno.modular.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
@@ -12,6 +12,7 @@ import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
+import site.sorghum.anno.modular.type.TypeParser;
 import site.sorghum.anno.util.DbContextUtil;
 
 import java.sql.SQLException;

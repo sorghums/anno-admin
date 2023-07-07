@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.type;
+package site.sorghum.anno.modular.type.parser;
 
 import org.noear.solon.annotation.Component;
 import site.sorghum.amis.entity.AmisBase;
@@ -6,6 +6,7 @@ import site.sorghum.amis.entity.display.Image;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
+import site.sorghum.anno.modular.type.TypeParser;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ import java.util.Map;
  * @author Sorghum
  */
 @Component
-public class ImageTypeParser implements TypeParser{
+public class ImageTypeParser implements TypeParser {
 
     @Override
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {

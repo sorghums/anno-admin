@@ -2,6 +2,10 @@ package site.sorghum.anno.modular.type;
 
 import org.noear.solon.Solon;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
+import site.sorghum.anno.modular.type.parser.DefaultTypeParser;
+import site.sorghum.anno.modular.type.parser.ImageTypeParser;
+import site.sorghum.anno.modular.type.parser.OptionsTypeParser;
+import site.sorghum.anno.modular.type.parser.TreeTypeParser;
 
 /**
  * @author Sorghum
