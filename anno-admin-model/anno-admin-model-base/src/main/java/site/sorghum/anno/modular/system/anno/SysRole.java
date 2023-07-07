@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
@@ -18,22 +19,23 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"))
+        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"),
+        annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
 @Table("sys_role")
-public class SysRole  extends BaseMetaModel implements Serializable {
+public class SysRole extends BaseMetaModel implements Serializable {
 
     /**
      * 角色名称
      */
-    @AnnoField(title = "角色名称", tableFieldName = "role_name",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入角色名称",notNull = true))
+    @AnnoField(title = "角色名称", tableFieldName = "role_name", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入角色名称", notNull = true))
     String roleName;
 
     /**
      * 排序
      */
     @AnnoField(title = "排序", tableFieldName = "sort",
-            edit = @AnnoEdit(placeHolder = "请输入排序",notNull = true))
+            edit = @AnnoEdit(placeHolder = "请输入排序", notNull = true))
     Integer sort;
 
     /**
@@ -51,7 +53,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "用户",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysUser.class,
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,
@@ -65,7 +67,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "权限",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
             mediumOtherField = "role_id",

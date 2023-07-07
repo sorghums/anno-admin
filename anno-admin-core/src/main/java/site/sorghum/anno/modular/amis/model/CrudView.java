@@ -101,7 +101,6 @@ public class CrudView extends Page {
             body.add(group);
         });
         form.setBody(body);
-        AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
         form.setOnEvent(
                 new HashMap<>() {{
                     put("broadcast_aside_change",
@@ -115,9 +114,18 @@ public class CrudView extends Page {
                     );
                 }}
         );
+        // 设置默认排序数据
+        Map<String, Object> data = form.getData();
+        if (data == null) {
+            data = new HashMap<>();
+            form.setData(data);
+        }
+        data.put("orderBy",annoMain.annoOrder().orderValue());
+        data.put("orderDir", annoMain.annoOrder().orderType());
         // 写入到当前对象
         Crud crudBody = getCrudBody();
         crudBody.setFilter(form);
+
     }
 
     /**

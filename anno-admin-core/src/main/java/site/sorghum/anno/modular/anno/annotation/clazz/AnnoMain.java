@@ -22,6 +22,13 @@ public @interface AnnoMain {
     String name() default "" ;
 
     /**
+     * 排序
+     *
+     * @return {@link AnnoOrder}
+     */
+    AnnoOrder annoOrder() default @AnnoOrder();
+
+    /**
      * 代理类
      *
      * @return {@link AnnoProxy}
