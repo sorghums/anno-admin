@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.type;
 
+import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.util.JSONUtil;
@@ -16,8 +17,22 @@ import java.util.Map;
  */
 public interface TypeParser {
 
-    Map<String,Object> parseDisplay(FormItem formItem, AnnoField annoField);
+    /**
+     * 解析显示
+     *
+     * @param amisBase  基础组件
+     * @param annoField 注解字段
+     * @return {@link Map}<{@link String},{@link Object}>
+     */
+    Map<String,Object> parseDisplay(AmisBase amisBase, AnnoField annoField);
 
+    /**
+     * 解析编辑
+     *
+     * @param formItem  表单项
+     * @param annoField 注解字段
+     * @return {@link FormItem}
+     */
     FormItem parseEdit(FormItem formItem,AnnoField annoField);
 
     default Map<String,Object> mergeObj(Object obj1, Object obj2){

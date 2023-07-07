@@ -19,6 +19,7 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
+import site.sorghum.anno.modular.type.TypeParserFactory;
 import site.sorghum.anno.util.DbContextUtil;
 import site.sorghum.anno.util.JSONUtil;
 
@@ -62,116 +63,14 @@ public enum AnnoDataType {
     public static FormItem editorExtraInfo(FormItem item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.setType(annoDataType.getCode());
-        if (annoDataType.equals(OPTIONS)) {
-            Options options = new Options();
-            BeanUtil.copyProperties(item,options);
-            List<Options.Option> optionItemList = new ArrayList<>();
-            AnnoOptionType annoOptionType = annoField.optionType();
-            if (StrUtil.isNotBlank(annoOptionType.sql())){
-                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
-                for (Map<String, Object> map : mapList) {
-                    Options.Option optionItem = new Options.Option();
-                    optionItem.setLabel(MapUtil.getStr(map,"label"));
-                    optionItem.setValue(map.get("value"));
-                    optionItemList.add(optionItem);
-                }
-            }else {
-                for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                    Options.Option optionItem = new Options.Option();
-                    optionItem.setLabel(optionData.label());
-                    optionItem.setValue(optionData.value());
-                    optionItemList.add(optionItem);
-                }
-            }
-            options.setOptions(optionItemList);
-            return options;
-        }
-        if (annoDataType.equals(DATETIME)){
-            InputDatetime inputDatetime = new InputDatetime();
-            BeanUtil.copyProperties(item,inputDatetime);
-            inputDatetime.setFormat("YYYY-MM-DD HH:mm:ss");
-            return inputDatetime;
-        }
-        if (annoDataType.equals(TREE)) {
-            InputTree inputTree = new InputTree();
-            BeanUtil.copyProperties(item,inputTree);
-            List<Options.Option> optionItemList = new ArrayList<>();
-            AnnoTreeType annoTreeType = annoField.treeType();
-            if (StrUtil.isNotBlank(annoTreeType.sql())){
-                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
-                List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
-                        mapList, "label", "id", "pid"
-                );
-                optionItemList = AnnoTreeDTO.toOptions(trees);
-            }else {
-                List<AnnoTreeDTO<String>> trees = new ArrayList<>();
-                for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
-                    AnnoTreeDTO<String> tree = new AnnoTreeDTO<>();
-                    tree.setLabel(treeData.label());
-                    tree.setValue(treeData.value());
-                    tree.setParentId(treeData.pid());
-                    trees.add(tree);
-                }
-                optionItemList = AnnoTreeDTO.toOptions(trees);
-            }
-            inputTree.setOptions(optionItemList);
-            return inputTree;
-        }
-        return item;
-
+        return TypeParserFactory.getTypeParser(annoDataType).parseEdit(item,annoField);
     }
 
     @SneakyThrows
     public static Map<String,Object> displayExtraInfo(AmisBase item, AnnoField annoField) {
         AnnoDataType annoDataType = annoField.dataType();
         item.setType(annoDataType.getShowCode());
-        if (annoDataType.equals(IMAGE)){
-            Image image = new Image();
-            AnnoImageType imageType = annoField.imageType();
-            if (imageType.height() > 0 && imageType.width() > 0){
-                image.setHeight(imageType.height());
-                image.setWidth(imageType.width());
-            }
-            image.setEnlargeAble(imageType.enlargeAble());
-            image.setThumbMode(imageType.thumbMode().getMode());
-            image.setThumbRatio(imageType.thumbRatio().getRatio());
-            return mergeObj(image,item);
-        }
-        if (annoDataType.equals(OPTIONS)){
-            Mapping mappingItem = new Mapping();
-            HashMap<String, Object> mapping = new HashMap<>();
-            AnnoOptionType annoOptionType = annoField.optionType();
-            if (StrUtil.isNotBlank(annoOptionType.sql())){
-                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
-                for (Map<String, Object> map : mapList) {
-                    mapping.put(map.get("value").toString(),map.get("label"));
-                }
-            }else {
-                for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                    mapping.put(optionData.value(),optionData.label());
-                }
-            }
-            mappingItem.setMap(mapping);
-            return mergeObj(mappingItem,item);
-        }
-        if (annoDataType.equals(TREE)){
-            Mapping mappingItem = new Mapping();
-            HashMap<String, Object> mapping = new HashMap<>();
-            AnnoTreeType annoTreeType = annoField.treeType();
-            if (StrUtil.isNotBlank(annoTreeType.sql())){
-                List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
-                for (Map<String, Object> map : mapList) {
-                    mapping.put(map.get("value").toString(),map.get("label"));
-                }
-            }else {
-                for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
-                    mapping.put(treeData.value(),treeData.label());
-                }
-            }
-            mappingItem.setMap(mapping);
-            return mergeObj(mappingItem,item);
-        }
-        return mergeObj(item);
+        return TypeParserFactory.getTypeParser(annoDataType).parseDisplay(item,annoField);
     }
 
     private static Map<String,Object> mergeObj(Object obj1, Object obj2){
