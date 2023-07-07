@@ -27,13 +27,13 @@ public class CrudProcessorChain implements BaseProcessorChain {
             new CrudColumnProcessor(),
             // 过滤的表单信息
             new CrudFilterProcessor(),
-            // 每一行的删除信息
+            // 行的删除信息
             new CrudDeleteBtnProcessor(),
-            // 每一行的编辑信息
+            // 行的编辑信息
             new CrudEditInfoProcessor(),
-            // 每一行的自定义按钮信息
+            // 行的自定义按钮信息
             new CrudColumnButtonProcessor(),
-            // 每一行的新增信息
+            // 行的新增信息
             new CrudAddInfoProcessor(),
             // 边栏的树信息
             new CrudTreeAsideProcessor(),
