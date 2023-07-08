@@ -34,6 +34,7 @@
         <module>anno-admin-ddl</module>
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
+        <module>anno-admin-db</module>
     </modules>
 
     <properties>

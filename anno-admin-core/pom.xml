@@ -71,6 +71,11 @@
         </dependency>
 
         <dependency>
+            <groupId>site.sorghum</groupId>
+            <artifactId>anno-admin-db</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>wood-solon-plugin</artifactId>
         </dependency>

@@ -15,6 +15,11 @@ import org.noear.solon.core.handle.Result;
 import org.noear.wood.DbContext;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.param.RemoveParam;
+import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
@@ -45,8 +50,8 @@ public class AnnoController {
     @Inject
     AnnoService annoService;
 
-    @Db
-    DbContext dbContext;
+    @Inject
+    DbService dbService;
 
     /**
      * 分页查询
@@ -60,16 +65,13 @@ public class AnnoController {
                                          @Param int perPage,
                                          @Param String orderBy,
                                          @Param String orderDir,
-                                         @Param String _cat,
                                          @Param boolean ignoreM2m,
                                          @Param boolean reverseM2m,
                                          @Body Map<String, String> param) {
-        _cat = null;
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         QueryRequest<T> queryRequest = new QueryRequest<>();
         param = emptyStringIgnore(param);
         queryRequest.setClazz(aClass);
-        queryRequest.setCat(_cat);
         queryRequest.setPage(page - 1);
         queryRequest.setPerPage(perPage);
         queryRequest.setParam(JSONUtil.parseObject(param, aClass));
@@ -84,7 +86,16 @@ public class AnnoController {
             String joinThisClazzField = param.get("joinThisClazzField").toString();
             queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
         }
-        return AnnoResult.from(Result.succeed(annoService.page(queryRequest)));
+        List<DbCondition> dbConditions = DbCondition.simpleEntity2conditions(param, aClass);
+        if (queryRequest.getAndSql() != null) {
+            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(queryRequest.getAndSql()).build());
+        }
+        IPage<T> pageRes = dbService.page(new TableParam<T>() {{
+            setClazz(aClass);
+            setTableName(AnnoUtil.getTableName(aClass));
+            setRemoveParam(new RemoveParam(){{setLogic(true);}});
+        }}, dbConditions, new PageParam(page, perPage));
+        return AnnoResult.succeed(pageRes);
     }
 
     @Mapping("/{clazz}/save")
