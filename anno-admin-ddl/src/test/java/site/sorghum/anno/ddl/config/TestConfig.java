@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl.app.config;
+package site.sorghum.anno.ddl.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.annotation.Bean;

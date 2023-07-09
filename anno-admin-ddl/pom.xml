@@ -33,6 +33,14 @@
             <artifactId>wood-solon-plugin</artifactId>
         </dependency>
 
+        <!-- 解析 sql -->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>${jsqlparser.version}</version>
+        </dependency>
+
+
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>

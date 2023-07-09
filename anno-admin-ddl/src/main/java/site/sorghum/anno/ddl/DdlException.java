@@ -12,4 +12,8 @@ public class DdlException extends RuntimeException {
   public DdlException(Throwable cause) {
     super(cause);
   }
+
+  public DdlException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

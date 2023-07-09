@@ -1,9 +1,6 @@
 package site.sorghum.anno.ddl.entity2db;
 
-import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
-
-import java.lang.reflect.Field;
 
 /**
  * @author songyinyin
@@ -13,5 +10,4 @@ public interface EntityToTableGetter {
 
   TableWrap getTable(Class<?> clazz);
 
-  ColumnWrap getColumn(Class<?> clazz, Field field);
 }
