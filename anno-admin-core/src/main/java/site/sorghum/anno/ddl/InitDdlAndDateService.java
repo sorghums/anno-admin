@@ -6,6 +6,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.config.AnnoProperty;
 import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 
@@ -26,14 +27,18 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
   InitDataService initDataService;
   @Db
   DbContext dbContext;
+  @Inject
+  AnnoProperty annoProperty;
 
   @Override
   public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
     // 维护 entity 对应的表结构
-    EntityToDdlGenerator generator = new EntityToDdlGenerator(dbContext, annoEntityToTableGetter);
-    Collection<Class<?>> classes = AnnoClazzCache.fetchAllClazz();
-    for (Class<?> clazz : classes) {
-      generator.autoMaintainTable(clazz);
+    if (annoProperty.getIsAutoMaintainTable()) {
+      EntityToDdlGenerator generator = new EntityToDdlGenerator(dbContext, annoEntityToTableGetter);
+      Collection<Class<?>> classes = AnnoClazzCache.fetchAllClazz();
+      for (Class<?> clazz : classes) {
+        generator.autoMaintainTable(clazz);
+      }
     }
 
     // 初始化数据

@@ -1,8 +1,10 @@
 package site.sorghum.anno.ddl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.ExpressionVisitorAdapter;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
@@ -11,10 +13,13 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.insert.Insert;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.config.AnnoProperty;
 import site.sorghum.anno.util.JSqlParserUtil;
 import site.sorghum.anno.util.ScriptUtils;
 
@@ -27,17 +32,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
+ * 添加和升级预置数据
+ *
  * @author songyinyin
  * @since 2023/7/9 11:49
  */
+@Slf4j
 @Component
 public class InitDataService {
 
   @Db
   DbContext dbContext;
+
+  @Inject
+  AnnoProperty annoProperty;
 
   public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
 
@@ -47,19 +59,43 @@ public class InitDataService {
     WoodConfig.isUsingValueNull = true;
 
     // 初始化 init.sql
-    initSql();
+    if (annoProperty.getIsAutoMaintainInitData()) {
+      initSql();
+    }
 
 
   }
 
   /**
-   * 读取 init.sql 文件，对比数据库中已有的数据，初始化数据或者升级历史数据
+   * 读取 sql 文件，对比数据库中已有的数据，初始化数据或者升级历史数据
    */
-  public void initSql() throws Exception {
-    URL resource = ResourceUtil.getResource(InitDdlAndDateService.class.getClassLoader(), "initdata/init.sql");
+  private void initSql() throws Exception {
+    List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
+        .stream()
+        .map(ResourceUtil::getResource)
+        .toList();
+    for (URL resource : resources) {
+      try {
+        initSql(resource);
+      } catch (Exception e) {
+        log.error("parse or execute sql error, resource: {}", resource);
+        throw e;
+      }
+    }
+  }
 
+  /**
+   * 对比数据库中已有的数据，初始化数据或者升级历史数据
+   *
+   * @param resource 预置数据文件
+   */
+  public void initSql(URL resource) throws Exception {
+    StopWatch stopWatch = new StopWatch("init sql");
+    stopWatch.start("read sql");
     List<String> statements = ScriptUtils.getStatements(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8));
+    stopWatch.stop();
 
+    stopWatch.start("parse & execute sql");
     for (String statement : statements) {
 
       Statement parse = CCJSqlParserUtil.parse(statement);
@@ -115,6 +151,11 @@ public class InitDataService {
           }
         }
       }
+    }
+    stopWatch.stop();
+    log.info("init sql({}) finished, time: {}ms", resource.getPath(), stopWatch.getTotal(TimeUnit.MILLISECONDS));
+    if (log.isDebugEnabled()) {
+      log.debug(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
     }
   }
 }
