@@ -1,8 +1,9 @@
 package site.sorghum.anno.modular.auth.service.impl;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.event.EventListener;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.wood.annotation.Db;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  * @since 2023/06/27
  */
 @ProxyComponent
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEvent> {
     @Db
     SysUserDao sysUserDao;
 
@@ -43,8 +44,7 @@ public class AuthServiceImpl implements AuthService {
     @Db
     SysPermissionDao sysPermissionDao;
 
-    @Init
-    public void init() {
+    public void initPermissions() {
         // 初始化的时候，进行Db的注入
         List<AnnoPermission> annoPermissions = new ArrayList<>();
         Collection<Class<?>> classes = AnnoClazzCache.fetchAllClazz();
@@ -173,4 +173,9 @@ public class AuthServiceImpl implements AuthService {
     public void removePermissionCacheList(String userId) {
         // 清除缓存
     }
+
+  @Override
+  public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
+    initPermissions();
+  }
 }

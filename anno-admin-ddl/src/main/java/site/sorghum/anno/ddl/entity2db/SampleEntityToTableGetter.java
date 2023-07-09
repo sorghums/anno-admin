@@ -49,8 +49,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter {
     return tableWrap;
   }
 
-  @Override
-  public ColumnWrap getColumn(Class<?> clazz, Field field) {
+  protected ColumnWrap getColumn(Class<?> clazz, Field field) {
     String fieldName = NamingUtils.toUnderlineString(field.getName());
     Class<?> fieldType = field.getType();
     Integer sqlType;
@@ -87,7 +86,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter {
     return new ColumnWrap(fieldName, sqlType, size, digit, defaultValue, null);
   }
 
-  public boolean columnIsSupport(Field field) {
+  protected boolean columnIsSupport(Field field) {
     Class<?> fieldType = field.getType();
 
     return ClassUtil.isBasicType(field.getType())

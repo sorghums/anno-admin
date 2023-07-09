@@ -64,8 +64,7 @@ create table sys_role
     id          varchar(20)      not null comment '主键'
         primary key,
     role_name   varchar(30)      not null comment '角色名称',
-    sort        int              not null comment '显示顺序',
-    data_scope  char default '1' null comment '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+    sort        int              not null comment '显示顺序'
     enable      tinyint          not null comment '角色状态（1正常 0停用）',
     remark      varchar(500)     null comment '备注',
     create_by   varchar(255)     null comment '创建人',
@@ -130,8 +129,8 @@ values ('10', '', '系统菜单', 0, '_iframe', 0, 'layui-icon layui-icon-consol
 insert into sys_org (id, org_name, create_by, create_time, del_flag, update_by, update_time)
 values  ('1674391485808001024', '标准组织', null, '2023-06-29 20:16:53.563000', 0, null, '2023-06-29 20:16:53.563000');
 
-insert into sys_role (id, role_name, sort, data_scope, enable, remark, create_by, create_time, del_flag, update_by, update_time)
-values  ('admin', '超级管理员（默认所有权限）', 0, '1', 1, null, null, '2023-06-29 14:32:50.738000', 0, '超级管理员', '2023-06-30 10:38:56.839000');
+insert into sys_role (id, role_name, sort, enable, remark, create_by, create_time, del_flag, update_by, update_time)
+values  ('admin', '超级管理员（默认所有权限）', 0, 1, null, null, '2023-06-29 14:32:50.738000', 0, '超级管理员', '2023-06-30 10:38:56.839000');
 
 insert into sys_user (id, avatar, mobile, password, name, enable, create_by, create_time, del_flag, update_by, update_time, org_id)
 values  ('1666356287765979136', 'https://solon.noear.org/img/solon/favicon.png', '18888888888', 'caf545f0cdd499df43d34613dcfa70c0', '超级管理员', 1, 'admin', '2023-06-07 16:07:53.063000', 0, '测试账号', '2023-06-30 09:52:15.775000', '1674391485808001024');

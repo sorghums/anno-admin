@@ -425,6 +425,36 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
 - m2mJoinButton：多对多关联按钮
 - javaCmd：java命令
 
+## 自动生成表结构
+项目启动后，会对`@AnnoMain`注解标记的实体类，做以下处理：
+
+1. 如果实体类对应的表不存在，自动创建表；
+2. 如果表存在，且实体类上有新增字段，会将新增字段添加到已有的表上；
+3. 对于实体类上已经删除的字段，不会将已有的字段删除，需要手动处理；
+4. 如果实体类上的字段信息（类型，长度，备注等）和数据库中不一致，不会做任何处理，需要手动处理；
+
+如果想要关闭改功能，可以添加配置：
+```yaml
+anno:
+  isAutoMaintainTable: false
+```
+
+## 预置数据
+
+项目启动后，会扫描 `resources/init-data/*.sql` 的所有文件，将依次执行文件中的 sql。
+
+对于 insert 语句：
+
+- 如果当前行的数据不存在，则执行 insert 语句；
+- 按照主键（`id`）查询数据库已有的数据，将每个字段，和当前的`insert`语句中的值进行比较，如果不一致，则生成 `update` 语句；
+- 预置数据升级时，会忽略系统字段（`create_time`、`create_by`、`update_time`、`update_by`、`del_flag`）的比较；
+
+如果想要关闭改功能，可以添加配置：
+```yaml
+anno:
+  isAutoMaintainInitData: false
+```
+
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 

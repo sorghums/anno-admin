@@ -33,6 +33,16 @@ public @interface AnnoField {
     String tableFieldName();
 
     /**
+     * 数据库中的字段长度，为 0 时使用 anno 设置的默认长度
+     */
+    int fieldSize() default 0;
+
+    /**
+     * 定义数据库中的默认值，比如：DEFAULT 0
+     */
+    String defaultValue() default "";
+
+    /**
      * 显示
      *
      * @return boolean
