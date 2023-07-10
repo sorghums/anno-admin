@@ -33,16 +33,5 @@ public class AnnoAdminStarter {
                 log.debug("===[Wood] var: {}", cmd.paramMap());
             });
         });
-        DbService dbService = start.context().getBean(DbService.class);
-        IPage<SysRole> page = dbService.page(
-                new TableParam<SysRole>() {{
-                    setClazz(SysRole.class);
-                    setTableName("sys_role");
-                    setRemoveParam(new RemoveParam(){{
-                        setLogic(true);
-                    }});
-                }}, new ArrayList<>(), new PageParam(1, 10)
-        );
-        System.out.println(page.getList());
     }
 }

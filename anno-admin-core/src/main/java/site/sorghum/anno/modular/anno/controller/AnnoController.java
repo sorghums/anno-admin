@@ -124,7 +124,7 @@ public class AnnoController {
     public AnnoResult<String> removeById(@Path String clazz, @Param("id") String id) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         Field pkField = AnnoUtil.getPkFieldItem(aClass);
-        dbService.delete(AnnoTableParamCache.get(clazz), Collections.singletonList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
+        dbService.delete(AnnoTableParamCache.get(clazz), CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
         return AnnoResult.succeed();
     }
 

@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
+import cn.hutool.core.collection.CollUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
@@ -20,6 +21,7 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,13 +79,23 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                     setBody(
                             new Form() {{
                                 setWrapWithPanel(false);
-                                setReload("crud_template_main");
                                 setApi(new Api() {{
                                     setMethod("post");
                                     setUrl("/system/anno/${clazz}/save");
                                 }});
-                                setId("simple-edit-form");
+                                setId("simple-add-form");
                                 setBody(formItems);
+                                // 刷新某个组件
+                                setOnEvent(new HashMap<>() {{
+                                    put("submitSucc", new HashMap<>() {{
+                                        put("actions",
+                                                CollUtil.newArrayList(new HashMap<>() {{
+                                                                          put("actionType", "reload");
+                                                                          put("componentId", "crud_template_main");
+                                                                      }}
+                                                ));
+                                    }});
+                                }});
                             }}
                     );
                 }}

@@ -132,12 +132,6 @@ public @interface AnnoButton {
          */
         boolean enable() default true;
 
-        /**
-         * 中间表
-         *
-         * @return {@link String}
-         */
-        String mediumTable() default "";
 
         /**
          * 中间表的类
