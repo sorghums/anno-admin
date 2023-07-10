@@ -6,9 +6,13 @@ import cn.hutool.core.util.ClassUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
+import site.sorghum.anno.db.param.RemoveParam;
+import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
+import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.Objects;
@@ -21,7 +25,8 @@ import java.util.Set;
  * @since 2023/05/20
  */
 public class XPluginImp implements Plugin {
-    private static final String ANNO_BASE_PACKAGE  = "site.sorghum.anno";
+    private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
+
     @Override
     public void start(AopContext context) {
         // 扫描包
@@ -43,12 +48,34 @@ public class XPluginImp implements Plugin {
                 }
                 AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
                 if (annoMain != null) {
+                    // 缓存处理类
                     AnnoClazzCache.put(clazz.getSimpleName(), clazz);
+                    // 缓存表基础信息
+                    AnnoTableParamCache.put(clazz.getSimpleName(), buildFromClazz(clazz));
                 }
             }
         }
 
 
+    }
+
+    public <T> TableParam<T> buildFromClazz(Class<T> clazz) {
+        TableParam<T> tableParam = new TableParam<>();
+        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+        String tableName = AnnoUtil.getTableName(clazz);
+        if (annoMain == null) {
+            return null;
+        }
+        tableParam.setClazz(clazz);
+        tableParam.setTableName(tableName);
+        tableParam.setColumns(AnnoUtil.getTableFields(clazz));
+        AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
+        if (annoRemove.removeType() == 0) {
+            tableParam.setRemoveParam(new RemoveParam());
+        }else {
+            tableParam.setRemoveParam(new RemoveParam(true,annoRemove.removeField(),annoRemove.removeValue(),annoRemove.notRemoveValue()));
+        }
+        return tableParam;
     }
 
 

@@ -24,6 +24,7 @@ import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
+import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.response.AnnoResult;
 import site.sorghum.anno.util.CryptoUtil;
@@ -69,32 +70,22 @@ public class AnnoController {
                                          @Param boolean reverseM2m,
                                          @Body Map<String, String> param) {
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        QueryRequest<T> queryRequest = new QueryRequest<>();
         param = emptyStringIgnore(param);
-        queryRequest.setClazz(aClass);
-        queryRequest.setPage(page - 1);
-        queryRequest.setPerPage(perPage);
-        queryRequest.setParam(JSONUtil.parseObject(param, aClass));
-        queryRequest.setOrderBy(orderBy);
-        queryRequest.setOrderDir(orderDir);
         String m2mSql = annoService.m2mSql(param);
+        String andSql = null;
         String inPrefix = " in (";
         if (reverseM2m) {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
             String joinThisClazzField = param.get("joinThisClazzField").toString();
-            queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
+            andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
-        List<DbCondition> dbConditions = DbCondition.simpleEntity2conditions(param, aClass);
-        if (queryRequest.getAndSql() != null) {
-            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(queryRequest.getAndSql()).build());
+        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, aClass);
+        if (andSql != null) {
+            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        IPage<T> pageRes = dbService.page(new TableParam<T>() {{
-            setClazz(aClass);
-            setTableName(AnnoUtil.getTableName(aClass));
-            setRemoveParam(new RemoveParam(){{setLogic(true);}});
-        }}, dbConditions, new PageParam(page, perPage));
+        IPage<T> pageRes = (IPage<T>) dbService.page(AnnoTableParamCache.get(clazz), dbConditions, new PageParam(page, perPage));
         return AnnoResult.succeed(pageRes);
     }
 

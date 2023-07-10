@@ -5,9 +5,11 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
+import lombok.SneakyThrows;
 import org.noear.solon.Solon;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
@@ -300,5 +302,40 @@ public class AnnoUtil {
             return ((Map<?, ?>) o).get(field);
         }
         return ReflectUtil.getFieldValue(o,field);
+    }
+
+    /**
+     * 简单实体转条件
+     * @param entity 参数
+     * @param clazz 类
+     * @param <T> 泛型
+     */
+    @SneakyThrows
+    public static <T> List<DbCondition> simpleEntity2conditions(Object entity, Class<T> clazz) {
+        ArrayList<DbCondition> conditions = new ArrayList<>();
+        if (entity instanceof Map map) {
+            Field[] fields = org.noear.solon.core.util.ReflectUtil.getDeclaredFields(clazz);
+            for (Field field : fields) {
+                Object value = map.get(field.getName());
+                if (value != null) {
+                    AnnoField annoField = field.getAnnotation(AnnoField.class);
+                    conditions.add(DbCondition.builder().field(annoField.tableFieldName()).value(value).build());
+                }
+            }
+            return conditions;
+        }
+        if (entity.getClass() != clazz) {
+            throw new IllegalArgumentException("entity must be instance of " + clazz.getName());
+        }
+        Field[] fields = ReflectUtil.getFields(clazz);
+        for (Field field : fields) {
+            field.setAccessible(true);
+            Object value = field.get(entity);
+            if (value != null) {
+                AnnoField annoField = field.getAnnotation(AnnoField.class);
+                conditions.add(DbCondition.builder().field(annoField.tableFieldName()).value(value).build());
+            }
+        }
+        return conditions;
     }
 }

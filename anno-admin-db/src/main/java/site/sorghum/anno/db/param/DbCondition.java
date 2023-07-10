@@ -148,33 +148,6 @@ public class DbCondition {
         }
     }
 
-    @SneakyThrows
-    public static List<DbCondition> simpleEntity2conditions(Object entity, Class<?> clazz) {
-        ArrayList<DbCondition> conditions = new ArrayList<>();
-        if (entity instanceof Map map) {
-            Field[] fields = ReflectUtil.getDeclaredFields(clazz);
-            for (Field field : fields) {
-                Object value = map.get(field.getName());
-                if (value != null) {
-                    conditions.add(DbCondition.builder().field(field.getName()).value(value).build());
-                }
-            }
-            return conditions;
-        }
-        if (entity.getClass() != clazz) {
-            throw new IllegalArgumentException("entity must be instance of " + clazz.getName());
-        }
-        Field[] fields = ReflectUtil.getDeclaredFields(clazz);
-        for (Field field : fields) {
-            field.setAccessible(true);
-            Object value = field.get(entity);
-            if (value != null) {
-                conditions.add(DbCondition.builder().field(field.getName()).value(value).build());
-            }
-        }
-        return conditions;
-    }
-
     public enum QueryType {
         EQ(0), LIKE(1), IN(2), NOT_IN(3), NEQ(4), GT(5), LT(6), GTE(7), LTE(8), CUSTOM(9);
         private final int value;
