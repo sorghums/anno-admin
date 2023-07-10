@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Tuple;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -82,8 +83,8 @@ public class AnnoServiceImpl implements AnnoService {
                 }
             }
             // 查询前置处理
-            preProxyInstance.beforeFetch(tableQuery);
-            proxyInstance.beforeFetch(tableQuery);
+//            preProxyInstance.beforeFetch(tableQuery);
+//            proxyInstance.beforeFetch(tableQuery);
             IPage<T> iPage = tableQuery.selectPage(columns, clazz);
             // 查询后置处理
             preProxyInstance.afterFetch(iPage.getList());
@@ -111,15 +112,15 @@ public class AnnoServiceImpl implements AnnoService {
     }
 
     @Override
-    public <T> String m2mSql(Map<?,String > param) {
-        if (StrUtil.isBlank(param.get("mediumTableClass"))){
+    public <T> String m2mSql(Map<?,? > param) {
+        if (StrUtil.isBlank(MapUtil.getStr(param,"mediumTableClass"))){
             return "";
         }
-        String mediumOtherField = param.get("mediumOtherField");
-        String otherValue = param.get("joinValue");
-        String mediumThisField = param.get("mediumThisField");
+        String mediumOtherField = MapUtil.getStr(param,"mediumOtherField");
+        String otherValue =MapUtil.getStr(param,"joinValue");
+        String mediumThisField = MapUtil.getStr(param,"mediumThisField");
 
-        Class<?> mediumCLass = AnnoClazzCache.get(param.get("mediumTableClass"));
+        Class<?> mediumCLass = AnnoClazzCache.get(MapUtil.getStr(param,"mediumTableClass"));
         String mediumTable = AnnoUtil.getTableName(mediumCLass);
         String sql = "select "+mediumThisField+" from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
         return sql(mediumCLass,sql);
@@ -160,8 +161,8 @@ public class AnnoServiceImpl implements AnnoService {
                 }
             }
             // 查询前置处理
-            preProxyInstance.beforeFetch(tableQuery);
-            proxyInstance.beforeFetch(tableQuery);
+//            preProxyInstance.beforeFetch(tableQuery);
+//            proxyInstance.beforeFetch(tableQuery);
             List<T> list = tableQuery.selectList(columns, clazz);
             // 查询后置处理
             preProxyInstance.afterFetch(list);
@@ -185,8 +186,8 @@ public class AnnoServiceImpl implements AnnoService {
             DbTableQuery tableQuery = dbContext.table(tableName)
                     .whereEq(pkField, id);
             // 查询前置处理
-            preProxyInstance.beforeFetch(tableQuery);
-            proxyInstance.beforeFetch(tableQuery);
+//            preProxyInstance.beforeFetch(tableQuery);
+//            proxyInstance.beforeFetch(tableQuery);
             T selectItem = tableQuery.selectItem(columns, clazz);
             // 查询后置处理
             preProxyInstance.afterFetch(CollUtil.toList(selectItem));
@@ -211,9 +212,9 @@ public class AnnoServiceImpl implements AnnoService {
             AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
             String pkField = AnnoUtil.getPkField(clazz);
             String tableName = AnnoUtil.getTableName(clazz);
-            // 删除前置处理
-            preProxyInstance.beforeDelete(id);
-            proxyInstance.beforeDelete(id);
+//            // 删除前置处理
+//            preProxyInstance.beforeDelete(id);
+//            proxyInstance.beforeDelete(id);
             AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
             if (annoRemove.removeType() == 0) {
                 // 物理删除
@@ -227,8 +228,8 @@ public class AnnoServiceImpl implements AnnoService {
 
             }
             // 删除后置处理
-            preProxyInstance.afterDelete(id);
-            proxyInstance.afterDelete(id);
+//            preProxyInstance.afterDelete(id);
+//            proxyInstance.afterDelete(id);
         } catch (Exception e) {
             log.error("AnnoService.deleteById error:{}", e.getMessage());
             throw new BizException("权限不足或系统异常", e);
@@ -249,9 +250,9 @@ public class AnnoServiceImpl implements AnnoService {
             AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
             String pkField = AnnoUtil.getPkField(clazz);
             String tableName = AnnoUtil.getTableName(clazz);
-            // 删除前置处理
-            preProxyInstance.beforeDelete(tuples);
-            proxyInstance.beforeDelete(tuples);
+//            // 删除前置处理
+//            preProxyInstance.beforeDelete(tuples);
+//            proxyInstance.beforeDelete(tuples);
             AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
             if (annoRemove.removeType() == 0) {
                 // 物理删除
@@ -271,8 +272,8 @@ public class AnnoServiceImpl implements AnnoService {
 
             }
             // 删除后置处理
-            preProxyInstance.afterDelete(tuples);
-            proxyInstance.afterDelete(tuples);
+//            preProxyInstance.afterDelete(tuples);
+//            proxyInstance.afterDelete(tuples);
         } catch (Exception e) {
             log.error("AnnoService.deleteById error:{}", e.getMessage());
             throw new BizException("权限不足或系统异常", e);
@@ -288,8 +289,8 @@ public class AnnoServiceImpl implements AnnoService {
             AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(aClass);
             AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(aClass);
             // 更新前置处理
-            preProxyInstance.beforeUpdate(param);
-            proxyInstance.beforeUpdate(param);
+//            preProxyInstance.beforeUpdate(param);
+//            proxyInstance.beforeUpdate(param);
             String tableName = AnnoUtil.getTableName(aClass);
             DbTableQuery table = dbContext.table(tableName);
             table.setEntity(param);
@@ -312,8 +313,8 @@ public class AnnoServiceImpl implements AnnoService {
             AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(aClass);
             AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(aClass);
             // 新增前置处理
-            preProxyInstance.beforeAdd(param);
-            proxyInstance.beforeAdd(param);
+//            preProxyInstance.beforeAdd(param);
+//            proxyInstance.beforeAdd(param);
             String tableName = AnnoUtil.getTableName(aClass);
             DbTableQuery table = dbContext.table(tableName);
             table.setEntity(param);

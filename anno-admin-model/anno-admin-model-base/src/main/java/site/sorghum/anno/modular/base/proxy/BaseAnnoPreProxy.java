@@ -4,11 +4,14 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import org.noear.solon.annotation.Component;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.base.model.BaseMetaModel;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 基础前置代理
@@ -20,21 +23,22 @@ import java.time.LocalDateTime;
 public class BaseAnnoPreProxy extends AnnoPreBaseProxy<BaseMetaModel> {
 
     @Override
-    public void beforeAdd(BaseMetaModel data) {
+    public void beforeAdd(TableParam<BaseMetaModel> tableParam,BaseMetaModel data) {
         data.setId(IdUtil.getSnowflakeNextIdStr());
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
         data.setCreateBy(getLoginName());
-        super.beforeAdd(data);
+        super.beforeAdd(tableParam,data);
     }
 
     @Override
-    public void beforeUpdate(BaseMetaModel data) {
+    public void beforeUpdate(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, BaseMetaModel data) {
         data.setUpdateTime(LocalDateTime.now());
         data.setUpdateBy(getLoginName());
-        super.beforeUpdate(data);
+        super.beforeUpdate(tableParam, dbConditions, data);
     }
+
 
     private String getLoginName() {
         try {

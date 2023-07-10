@@ -7,23 +7,22 @@ import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.db.service.DbService;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * 数据库服务
  *
  * @author sorghum
- * @date 2023/07/07
+ * @since 2023/07/07
  */
-@ProxyComponent
+@ProxyComponent(name = "dbServiceWood")
 @Condition(onClass = DbContext.class)
 public class DbServiceWood implements DbService {
 
@@ -106,6 +105,7 @@ public class DbServiceWood implements DbService {
         if (removeParam.getLogic()) {
             dbConditions.add(DbCondition.builder().field(removeParam.getRemoveColumn()).value(removeParam.getNotRemoveValue()).build());
         }
+        tableParam.getOrderByParam().fillSql(dbTableQuery);
         for (DbCondition dbCondition : dbConditions) {
             dbCondition.woodFill(dbTableQuery);
         }

@@ -1,10 +1,12 @@
 package site.sorghum.anno.modular.anno.proxy;
 
 import org.noear.solon.annotation.Component;
-import org.noear.wood.DbTableQuery;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.param.TableParam;
 
-import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Anno代理默认实现类
@@ -15,8 +17,8 @@ import java.util.Collection;
 @Component
 public class AnnoPreDefaultProxy<T> extends AnnoPreBaseProxy<T>{
     @Override
-    public void beforeAdd(T data) {
-        super.beforeAdd(data);
+    public void beforeAdd(TableParam<T> tableParam, T data) {
+        super.beforeAdd(tableParam, data);
     }
 
     @Override
@@ -25,8 +27,8 @@ public class AnnoPreDefaultProxy<T> extends AnnoPreBaseProxy<T>{
     }
 
     @Override
-    public void beforeUpdate(T data) {
-        super.beforeUpdate(data);
+    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
+        super.beforeUpdate(tableParam, dbConditions, data);
     }
 
     @Override
@@ -34,19 +36,20 @@ public class AnnoPreDefaultProxy<T> extends AnnoPreBaseProxy<T>{
         super.afterUpdate(data);
     }
 
+
     @Override
-    public void beforeDelete(Serializable id) {
-        super.beforeDelete(id);
+    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+        super.beforeDelete(tableParam, dbConditions);
     }
 
     @Override
-    public void afterDelete(Serializable id) {
-        super.afterDelete(id);
+    public void afterDelete(List<DbCondition> dbConditions) {
+        super.afterDelete(dbConditions);
     }
 
     @Override
-    public void beforeFetch(DbTableQuery dbTableQuery) {
-        super.beforeFetch(dbTableQuery);
+    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+        super.beforeFetch(tableParam, dbConditions, pageParam);
     }
 
     @Override

@@ -12,6 +12,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
+import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
@@ -53,6 +54,13 @@ public class XPluginImp implements Plugin {
                     // 缓存表基础信息
                     AnnoTableParamCache.put(clazz.getSimpleName(), buildFromClazz(clazz));
                 }
+                // 缓存字段信息
+                AnnoUtil.getAnnoFields(clazz).forEach(
+                        field -> {
+                            String columnName = AnnoUtil.getColumnName(field);
+                            AnnoFieldCache.putFiledName2FiledAndSql(clazz,columnName,field);
+                        }
+                );
             }
         }
 

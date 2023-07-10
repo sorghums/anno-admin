@@ -39,7 +39,7 @@ public interface AnnoService {
      * @param param 参数
      * @return {@link String}
      */
-    <T> String m2mSql(Map<?,String > param);
+    <T> String m2mSql(Map<?,? > param);
 
     /**
      * 分页查询

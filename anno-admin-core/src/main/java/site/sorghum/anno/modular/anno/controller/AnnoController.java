@@ -12,24 +12,24 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
-import org.noear.wood.DbContext;
 import org.noear.wood.IPage;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.OrderByParam;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
+import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.response.AnnoResult;
 import site.sorghum.anno.util.CryptoUtil;
 import site.sorghum.anno.util.JSONUtil;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
  * @author sorghum
  * @since 2023/05/20
  */
+@SuppressWarnings("unchecked")
 @Controller
 @Mapping("/system/anno")
 @Slf4j
@@ -68,7 +69,7 @@ public class AnnoController {
                                          @Param String orderDir,
                                          @Param boolean ignoreM2m,
                                          @Param boolean reverseM2m,
-                                         @Body Map<String, String> param) {
+                                         @Body Map<String, Object> param) {
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         param = emptyStringIgnore(param);
         String m2mSql = annoService.m2mSql(param);
@@ -85,30 +86,38 @@ public class AnnoController {
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        IPage<T> pageRes = (IPage<T>) dbService.page(AnnoTableParamCache.get(clazz), dbConditions, new PageParam(page, perPage));
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        if (StrUtil.isNotEmpty(orderBy)) {
+            tableParam.getOrderByParam().addOrderByItem(new OrderByParam.OrderByItem(AnnoFieldCache.getSqlColumnByJavaName(aClass, orderBy), "asc".equals(orderDir)));
+        }
+        IPage<T> pageRes = dbService.page(tableParam, dbConditions, new PageParam(page, perPage));
         return AnnoResult.succeed(pageRes);
     }
 
     @Mapping("/{clazz}/save")
     @Post
-    public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String,Object> param) {
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        annoService.save(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
+    public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String, Object> param) {
+        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        T t = JSONUtil.parseObject(emptyStringIgnore(param), aClass);
+        dbService.insert(tableParam, t);
         return AnnoResult.from(Result.succeed());
     }
 
     @Mapping("/{clazz}/queryById")
     @Post
     public <T> AnnoResult<T> queryById(@Path String clazz, @Param String pkValue, @Param String _cat) {
-        String id = null;
-        if (id == null) {
-            id = pkValue;
-        }
+        String id = pkValue;
         if (id == null) {
             id = _cat;
         }
         Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        return AnnoResult.from(Result.succeed(annoService.queryById(aClass, id)));
+        Field pkField = AnnoUtil.getPkFieldItem(aClass);
+        if (pkField == null) {
+            return AnnoResult.from(Result.failure("未找到主键"));
+        }
+        T queryOne = (T) dbService.queryOne(AnnoTableParamCache.get(clazz), CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
+        return AnnoResult.succeed(queryOne);
     }
 
     /**
@@ -121,34 +130,46 @@ public class AnnoController {
     @Post
     public AnnoResult<String> removeById(@Path String clazz, @Param("id") String id) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        annoService.removeById(aClass, id);
-        return AnnoResult.from(Result.succeed());
+        Field pkField = AnnoUtil.getPkFieldItem(aClass);
+        dbService.delete(AnnoTableParamCache.get(clazz), Collections.singletonList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
+        return AnnoResult.succeed();
     }
 
     /**
      * 通过ID 更新
      */
     @Mapping("/{clazz}/updateById")
-    public <T> AnnoResult<T> updateById(@Path String clazz, @Body Map<String,Object> param) {
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        annoService.updateById(JSONUtil.parseObject(emptyStringIgnore(param),aClass));
-        return AnnoResult.from(Result.succeed());
+    public <T> AnnoResult<T> updateById(@Path String clazz, @Body Map<String, Object> param) {
+        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
+        Field pkField = AnnoUtil.getPkFieldItem(aClass);
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        dbService.update(tableParam,
+                CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(param.get(pkField.getName())).build()),
+                JSONUtil.parseObject(emptyStringIgnore(param), aClass));
+        return AnnoResult.succeed();
     }
 
     @Mapping("/{clazz}/saveOrUpdate")
-    public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String,Object> param) {
+    public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String, Object> param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        T javaObject = (T) JSONUtil.parseObject(emptyStringIgnore(param),aClass);
-        if (ReflectUtil.getFieldValue(javaObject, AnnoUtil.getPkField(aClass)) == null) {
-            annoService.save(javaObject);
+        T data = (T) JSONUtil.parseObject(emptyStringIgnore(param), aClass);
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        if (ReflectUtil.getFieldValue(data, AnnoUtil.getPkField(aClass)) == null) {
+            dbService.insert(tableParam, data);
         } else {
-            annoService.updateById(javaObject);
+            Field pkField = AnnoUtil.getPkFieldItem(aClass);
+            if (pkField == null) {
+                return AnnoResult.from(Result.failure("未找到主键"));
+            }
+            dbService.update(tableParam,
+                    CollUtil.newArrayList(DbCondition.builder().field(AnnoFieldCache.getSqlColumnByFiled(aClass,pkField)).value(param.get(pkField.getName())).build()),
+                    data);
         }
-        return AnnoResult.from(Result.succeed(javaObject));
+        return AnnoResult.from(Result.succeed(data));
     }
 
     @Mapping("/{clazz}/remove-relation")
-    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String,String> param) throws SQLException {
+    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String, String> param) throws SQLException {
         String mediumOtherField = param.get("mediumOtherField");
         String otherValue = param.get("joinValue");
         String thisValue = param.get(param.get("joinThisClazzField"));
@@ -208,7 +229,7 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/m2mSelect")
-    public <T> AnnoResult<List<Map<String,Object>>> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
+    public <T> AnnoResult<List<Map<String, Object>>> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
         // 主表
         Class<?> aClass = AnnoClazzCache.get(clazz);
         String m2mSql = annoService.m2mSql(param);
@@ -217,12 +238,12 @@ public class AnnoController {
         String joinThisClazzField = param.get("joinThisClazzField");
         queryRequest.setAndSql(joinThisClazzField + " not in ( " + m2mSql + " )");
         List<T> list = annoService.list(queryRequest);
-        List<Map<String,Object>> maps = CollUtil.newArrayList();
+        List<Map<String, Object>> maps = CollUtil.newArrayList();
         list.forEach(item -> {
-            Map<String,Object> map;
-            if (item instanceof Map){
+            Map<String, Object> map;
+            if (item instanceof Map) {
                 map = (Map<String, Object>) item;
-            }else {
+            } else {
                 map = JSONUtil.parseObject(item, Map.class);
             }
             map.put("label", map.get(joinThisClazzField));
@@ -233,7 +254,7 @@ public class AnnoController {
     }
 
     @Mapping("/{clazz}/addM2m")
-    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param,@Param boolean clearAll) {
+    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
         // 主表
         Class<?> aClass = AnnoClazzCache.get(clazz);
         // 中间表
@@ -246,10 +267,10 @@ public class AnnoController {
         // 字段二
         String mediumOtherField = param.get("mediumOtherField").toString();
         String mediumOtherValue = param.get("joinValue").toString();
-        if (ids instanceof List){
-            List<String> idList =  (List)ids;
-            split = idList.toArray(new String[idList.size()]);
-        }else {
+        if (ids instanceof List) {
+            List<String> idList = (List) ids;
+            split = idList.toArray(new String[0]);
+        } else {
             String mediumThisValues = ids.toString();
             split = mediumThisValues.split(",");
         }
@@ -257,33 +278,32 @@ public class AnnoController {
             annoService.removeByKvs(mediumClass, ListUtil.of(new Tuple(mediumOtherField, mediumOtherValue)));
         }
         for (String mediumThisValue : split) {
-            Map<String,Object> addValue = new HashMap<String,Object>() {{
+            Map<String, Object> addValue = new HashMap<String, Object>() {{
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
 
-            annoService.save(JSONUtil.parseObject(addValue,mediumClass));
+            annoService.save(JSONUtil.parseObject(addValue, mediumClass));
         }
         return AnnoResult.succeed();
     }
 
-    @Mapping(value = "runJavaCmd",method = MethodType.POST,consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@Body Map<String ,String> map) throws ClassNotFoundException {
+    @Mapping(value = "runJavaCmd", method = MethodType.POST, consumes = "application/json")
+    public AnnoResult<String> runJavaCmd(@Body Map<String, String> map) throws ClassNotFoundException {
         map.put("clazz", CryptoUtil.decrypt(map.get("clazz")));
         map.put("method", CryptoUtil.decrypt(map.get("method")));
         Object bean = Solon.context().getBean(
                 Class.forName(map.get("clazz"))
         );
-        ReflectUtil.invoke(bean, map.get("method"),map);
+        ReflectUtil.invoke(bean, map.get("method"), map);
         return AnnoResult.succeed("执行成功");
     }
 
-    private Map emptyStringIgnore(Map<String,?> param) {
-        Map nParam = new HashMap();
+    private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
+        Map<String, Object> nParam = new HashMap<String, Object>();
         for (String key : param.keySet()) {
             Object item = param.get(key);
-            if (item instanceof String) {
-                String sItem = (String) item;
+            if (item instanceof String sItem) {
                 if (StrUtil.isNotBlank(sItem)) {
                     nParam.put(key, sItem);
                 }

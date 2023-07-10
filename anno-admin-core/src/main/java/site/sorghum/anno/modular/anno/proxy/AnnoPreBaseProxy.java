@@ -1,9 +1,9 @@
 package site.sorghum.anno.modular.anno.proxy;
 
-import cn.hutool.core.lang.Tuple;
-import org.noear.wood.DbTableQuery;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.param.TableParam;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,11 +15,13 @@ import java.util.List;
  */
 public class AnnoPreBaseProxy<T> {
     /**
+     * 之前添加
      * 增加前
      *
-     * @param data 数据
+     * @param data       数据
+     * @param tableParam 表参数
      */
-    public void beforeAdd(T data) {
+    public void beforeAdd(TableParam<T> tableParam,T data) {
 
     }
 
@@ -32,11 +34,13 @@ public class AnnoPreBaseProxy<T> {
     }
 
     /**
-     * 修改前
+     * 在更新之前
      *
-     * @param data 数据
+     * @param tableParam   表参数
+     * @param dbConditions db条件
+     * @param data            data
      */
-    public void beforeUpdate(T data) {
+    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
     }
 
 
@@ -49,44 +53,32 @@ public class AnnoPreBaseProxy<T> {
     }
 
     /**
-     * 删除前
+     * 在删除之前
      *
-     * @param id id
+     * @param tableParam   表参数
+     * @param dbConditions db条件
      */
-    public void beforeDelete(Serializable id) {
-    }
+    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
 
-    /**
-     * 删除前
-     *
-     * @param tuples tuples
-     */
-    public void beforeDelete(List<Tuple> tuples) {
-    }
-
-
-    /**
-     * 删除后
-     *
-     * @param id id
-     */
-    public void afterDelete(List<Tuple> tuples) {
     }
 
     /**
      * 删除后
      *
-     * @param id id
+     * @param dbConditions db条件
      */
-    public void afterDelete(Serializable id) {
+    public void afterDelete(List<DbCondition> dbConditions) {
     }
 
     /**
+     *
      * 查询前，返回值为：自定义查询条件
      *
-     * @param dbTableQuery 数据库表查询
+     * @param tableParam   表参数
+     * @param dbConditions db条件
+     * @param pageParam    页面参数
      */
-    public void beforeFetch(DbTableQuery dbTableQuery) {
+    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
     }
 
     /**
@@ -96,7 +88,5 @@ public class AnnoPreBaseProxy<T> {
      */
     public void afterFetch(Collection<T> dataList) {
     }
-
-
 
 }

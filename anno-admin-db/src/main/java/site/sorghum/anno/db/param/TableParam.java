@@ -38,6 +38,11 @@ public class TableParam<T> {
      */
     RemoveParam removeParam;
 
+    /**
+     * 排序参数
+     */
+    OrderByParam orderByParam = new OrderByParam();
+
     public void addColumn(String column) {
         if (this.columns == null) {
             this.columns = new ArrayList<>();
@@ -51,5 +56,14 @@ public class TableParam<T> {
             column = "*";
         }
         return column;
+    }
+
+    /**
+     * 设置实体类
+     *
+     * @param clazz 实体类
+     */
+    public void setClazz(Class<?> clazz) {
+        this.clazz = (Class<T>) clazz;
     }
 }

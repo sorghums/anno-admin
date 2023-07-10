@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.menu.entity.proxy;
 
 import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.ProxyComponent;
+import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
@@ -18,7 +19,7 @@ import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 public class SysAnnoMenuProxy extends AnnoBaseProxy<SysAnnoMenu> {
 
     @Override
-    public void beforeAdd(SysAnnoMenu data) {
+    public void beforeAdd(TableParam<SysAnnoMenu> tableParam, SysAnnoMenu data) {
         String parseData = null;
         // ------ 解析菜单解析 ------
         if (StrUtil.isNotBlank(data.getParseData())) {

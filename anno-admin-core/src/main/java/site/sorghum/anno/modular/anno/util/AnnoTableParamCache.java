@@ -1,9 +1,8 @@
 package site.sorghum.anno.modular.anno.util;
 
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.exception.BizException;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +36,14 @@ public class AnnoTableParamCache {
      * @return {@link Class}<{@link ?}>
      */
     public static synchronized TableParam<?> get(String key){
-        return STRING_TABLE_PARAM_CACHE.get(key);
+        TableParam<?> tableParam = STRING_TABLE_PARAM_CACHE.get(key);
+        // 复制一份，防止被修改
+        TableParam<?> returnParam = new TableParam<>();
+        returnParam.setTableName(tableParam.getTableName());
+        returnParam.setClazz(tableParam.getClazz());
+        returnParam.setColumns(new ArrayList<>(tableParam.getColumns()));
+        returnParam.setRemoveParam(tableParam.getRemoveParam());
+        return returnParam;
     }
 
 }

@@ -88,7 +88,7 @@ public class AnnoUtil {
                 return annoRemove;
             }
         }
-        return new AnnoRemove(){
+        return new AnnoRemove() {
             @Override
             public Class<? extends Annotation> annotationType() {
                 return AnnoRemove.class;
@@ -129,6 +129,21 @@ public class AnnoUtil {
         }
         return table.value();
     }
+
+    /**
+     * 得到表名
+     *
+     * @param field clazz
+     * @return {@link String}
+     */
+    public static String getColumnName(Field field) {
+        AnnoField annoField = AnnotationUtil.getAnnotation(field, AnnoField.class);
+        if (annoField == null) {
+            throw new BizException("请在类上添加@AnnoField注解");
+        }
+        return annoField.tableFieldName();
+    }
+
 
     /**
      * 获取分类键值
@@ -204,6 +219,19 @@ public class AnnoUtil {
         List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
         Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null).findFirst();
         return first.map(Field::getName).orElseThrow(() -> new BizException("未找到主键"));
+    }
+
+
+    /**
+     * 得到主键字段
+     *
+     * @param clazz clazz
+     * @return {@link String}
+     */
+    public static Field getPkFieldItem(Class<?> clazz) {
+        List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
+        Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null).findFirst();
+        return first.orElseThrow(() -> new BizException("未找到主键"));
     }
 
     /**
@@ -296,19 +324,20 @@ public class AnnoUtil {
         }
         return "";
     }
-    
-    private static Object reflectGetValue(Object o,String field){
-        if (o instanceof Map){
+
+    private static Object reflectGetValue(Object o, String field) {
+        if (o instanceof Map) {
             return ((Map<?, ?>) o).get(field);
         }
-        return ReflectUtil.getFieldValue(o,field);
+        return ReflectUtil.getFieldValue(o, field);
     }
 
     /**
      * 简单实体转条件
+     *
      * @param entity 参数
-     * @param clazz 类
-     * @param <T> 泛型
+     * @param clazz  类
+     * @param <T>    泛型
      */
     @SneakyThrows
     public static <T> List<DbCondition> simpleEntity2conditions(Object entity, Class<T> clazz) {
@@ -316,10 +345,10 @@ public class AnnoUtil {
         if (entity instanceof Map map) {
             Field[] fields = org.noear.solon.core.util.ReflectUtil.getDeclaredFields(clazz);
             for (Field field : fields) {
+                String sqlColumn = AnnoFieldCache.getSqlColumnByFiled(clazz, field);
                 Object value = map.get(field.getName());
-                if (value != null) {
-                    AnnoField annoField = field.getAnnotation(AnnoField.class);
-                    conditions.add(DbCondition.builder().field(annoField.tableFieldName()).value(value).build());
+                if (sqlColumn != null && value != null) {
+                    conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
                 }
             }
             return conditions;
@@ -329,11 +358,10 @@ public class AnnoUtil {
         }
         Field[] fields = ReflectUtil.getFields(clazz);
         for (Field field : fields) {
-            field.setAccessible(true);
+            String sqlColumn = AnnoFieldCache.getSqlColumnByFiled(clazz, field);
             Object value = field.get(entity);
-            if (value != null) {
-                AnnoField annoField = field.getAnnotation(AnnoField.class);
-                conditions.add(DbCondition.builder().field(annoField.tableFieldName()).value(value).build());
+            if (sqlColumn != null && value != null) {
+                conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
             }
         }
         return conditions;
