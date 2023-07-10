@@ -146,7 +146,6 @@ public @interface AnnoButton {
         Class<?> mediumTableClass();
 
 
-
         /**
          * 中间表的字段【目标表】
          *

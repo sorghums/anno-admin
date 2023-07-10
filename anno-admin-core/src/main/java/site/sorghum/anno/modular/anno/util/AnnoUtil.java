@@ -345,7 +345,7 @@ public class AnnoUtil {
         if (entity instanceof Map map) {
             Field[] fields = org.noear.solon.core.util.ReflectUtil.getDeclaredFields(clazz);
             for (Field field : fields) {
-                String sqlColumn = AnnoFieldCache.getSqlColumnByFiled(clazz, field);
+                String sqlColumn = AnnoFieldCache.getSqlColumnByField(clazz, field);
                 Object value = map.get(field.getName());
                 if (sqlColumn != null && value != null) {
                     conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
@@ -358,7 +358,7 @@ public class AnnoUtil {
         }
         Field[] fields = ReflectUtil.getFields(clazz);
         for (Field field : fields) {
-            String sqlColumn = AnnoFieldCache.getSqlColumnByFiled(clazz, field);
+            String sqlColumn = AnnoFieldCache.getSqlColumnByField(clazz, field);
             Object value = field.get(entity);
             if (sqlColumn != null && value != null) {
                 conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());

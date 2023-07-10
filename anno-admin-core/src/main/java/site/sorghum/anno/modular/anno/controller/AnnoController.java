@@ -17,7 +17,6 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.modular.anno.entity.req.QueryRequest;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
@@ -156,7 +155,7 @@ public class AnnoController {
                 return AnnoResult.from(Result.failure("未找到主键"));
             }
             dbService.update(tableParam,
-                    CollUtil.newArrayList(DbCondition.builder().field(AnnoFieldCache.getSqlColumnByFiled(aClass,pkField)).value(param.get(pkField.getName())).build()),
+                    CollUtil.newArrayList(DbCondition.builder().field(AnnoFieldCache.getSqlColumnByField(aClass,pkField)).value(param.get(pkField.getName())).build()),
                     data);
         }
         return AnnoResult.from(Result.succeed(data));

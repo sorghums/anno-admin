@@ -15,7 +15,7 @@ import java.util.Map;
 public class AnnoFieldCache {
 
     /**
-     * 类到数据库字段到filed的映射
+     * 类到数据库字段到field的映射
      */
     public static Map<Class<?>, BiHashMap<String, Field>> clazz2Sql2Field = new HashMap<>();
 
@@ -30,7 +30,7 @@ public class AnnoFieldCache {
      * @param sqlColumnName   数据库字段名
      * @param field field
      */
-    public static synchronized void putFiledName2FiledAndSql(Class<?> clazz, String sqlColumnName, Field field) {
+    public static synchronized void putFieldName2FieldAndSql(Class<?> clazz, String sqlColumnName, Field field) {
         clazz2Sql2Field.putIfAbsent(clazz, new BiHashMap<>());
         clazz2Name2Field.putIfAbsent(clazz, new BiHashMap<>());
         clazz2Sql2Field.get(clazz).put(sqlColumnName, field);
@@ -38,12 +38,12 @@ public class AnnoFieldCache {
     }
 
     /**
-     * 获取filed by 数据库字段名
+     * 获取field by 数据库字段名
      *
      * @param sqlColumnName 数据库字段名
      * @return {@link Field}
      */
-    public static synchronized Field getFiledBySqlColumn(Class<?> clazz, String sqlColumnName) {
+    public static synchronized Field getFieldBySqlColumn(Class<?> clazz, String sqlColumnName) {
         return clazz2Sql2Field.get(clazz).get(sqlColumnName);
     }
 
@@ -53,17 +53,17 @@ public class AnnoFieldCache {
      * @param field field
      * @return {@link Field}
      */
-    public static synchronized String getSqlColumnByFiled(Class<?> clazz, Field field) {
+    public static synchronized String getSqlColumnByField(Class<?> clazz, Field field) {
         return clazz2Sql2Field.get(clazz).reverseGet(field);
     }
 
     /**
-     * 获取filed by java变量名
+     * 获取field by java变量名
      *
      * @param name java变量名
      * @return {@link Field}
      */
-    public static synchronized Field getFiledByJavaName(Class<?> clazz, String name) {
+    public static synchronized Field getFieldByJavaName(Class<?> clazz, String name) {
         return clazz2Name2Field.get(clazz).get(name);
     }
 

@@ -58,7 +58,7 @@ public class XPluginImp implements Plugin {
                 AnnoUtil.getAnnoFields(clazz).forEach(
                         field -> {
                             String columnName = AnnoUtil.getColumnName(field);
-                            AnnoFieldCache.putFiledName2FiledAndSql(clazz,columnName,field);
+                            AnnoFieldCache.putFieldName2FieldAndSql(clazz,columnName,field);
                         }
                 );
             }
