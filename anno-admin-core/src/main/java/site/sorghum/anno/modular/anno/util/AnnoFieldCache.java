@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.anno.util;
 
-import site.sorghum.anno.common.BiHashMap;
+import site.sorghum.anno.common.entity.BiHashMap;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;

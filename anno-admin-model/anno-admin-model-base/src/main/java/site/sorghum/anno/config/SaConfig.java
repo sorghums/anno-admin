@@ -9,7 +9,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import site.sorghum.anno.response.AnnoResult;
+import site.sorghum.anno.common.response.AnnoResult;
 
 /**
  * @author Sorghum

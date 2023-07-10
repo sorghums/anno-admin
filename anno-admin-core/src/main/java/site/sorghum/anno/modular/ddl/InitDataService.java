@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl;
+package site.sorghum.anno.modular.ddl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
@@ -19,9 +19,9 @@ import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.config.AnnoProperty;
-import site.sorghum.anno.util.JSqlParserUtil;
-import site.sorghum.anno.util.ScriptUtils;
+import site.sorghum.anno.common.config.AnnoProperty;
+import site.sorghum.anno.common.util.JSqlParserUtil;
+import site.sorghum.anno.common.util.ScriptUtils;
 
 import java.io.InputStreamReader;
 import java.net.URL;

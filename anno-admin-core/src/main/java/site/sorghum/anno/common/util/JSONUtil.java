@@ -1,10 +1,10 @@
-package site.sorghum.anno.util;
+package site.sorghum.anno.common.util;
 
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson2.*;
 import site.sorghum.amis.entity.input.Options;
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 
 import java.net.URL;
 import java.util.List;

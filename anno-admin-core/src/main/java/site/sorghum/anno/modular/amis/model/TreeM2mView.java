@@ -55,7 +55,7 @@ public class TreeM2mView extends Page {
         );
         treeForm.setInitApi(
                 new Api(){{
-                    setUrl("/system/anno/${treeClazz}/annoTreeSelectDatas");
+                    setUrl("/system/anno/${treeClazz}/annoTreeSelectData");
                     setMethod("post");
                     setData(new HashMap<>(){{
                         put("_extraData","${extraData}");

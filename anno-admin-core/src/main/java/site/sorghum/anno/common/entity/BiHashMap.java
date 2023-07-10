@@ -1,4 +1,4 @@
-package site.sorghum.anno.common;
+package site.sorghum.anno.common.entity;
 
 import java.util.*;
 

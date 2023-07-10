@@ -2,8 +2,6 @@ package site.sorghum.anno.modular.anno.controller;
 
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
-import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -25,16 +23,13 @@ import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.response.AnnoResult;
-import site.sorghum.anno.util.CryptoUtil;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.response.AnnoResult;
+import site.sorghum.anno.common.util.CryptoUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -174,11 +169,12 @@ public class AnnoController {
         String otherValue = param.get("joinValue");
         String thisValue = param.get(param.get("joinThisClazzField"));
         String mediumThisField = param.get("mediumThisField");
-        Class<?> mediumCLass = AnnoClazzCache.get(param.get("mediumTableClass"));
-        annoService.removeByKvs(mediumCLass, CollUtil.newArrayList(
-                new Tuple(mediumOtherField, otherValue),
-                new Tuple(mediumThisField, thisValue)
-        ));
+        TableParam<?> tableParam = AnnoTableParamCache.get(param.get("mediumTableClass"));
+        ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
+                DbCondition.builder().field(mediumOtherField).value(otherValue).build(),
+                DbCondition.builder().field(mediumThisField).value(thisValue).build()
+        );
+        dbService.delete(tableParam, dbConditions);
         return AnnoResult.from(Result.succeed());
     }
 
@@ -203,8 +199,8 @@ public class AnnoController {
         return AnnoResult.from(Result.succeed(annoTreeDTOS));
     }
 
-    @Mapping("/{clazz}/annoTreeSelectDatas")
-    public <T> AnnoResult<Map<?, ?>> annoTreeSelectDatas(@Path String clazz,
+    @Mapping("/{clazz}/annoTreeSelectData")
+    public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(@Path String clazz,
                                                          @Param boolean ignoreM2m,
                                                          @Param boolean reverseM2m,
                                                          @Body Map<String, String> param) {
@@ -224,33 +220,8 @@ public class AnnoController {
         if (list == null || list.isEmpty()) {
             return AnnoResult.from(Result.succeed(Collections.emptyMap()));
         }
-        List<Object> datas = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(aClass))).collect(Collectors.toList());
-        return AnnoResult.from(Result.succeed(MapUtil.of("m2mTree", datas)));
-    }
-
-    @Mapping("/{clazz}/m2mSelect")
-    public <T> AnnoResult<List<Map<String, Object>>> m2mSelect(@Path String clazz, @Body Map<?, String> param) {
-        // 主表
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        String m2mSql = annoService.m2mSql(param);
-        QueryRequest<T> queryRequest = new QueryRequest<>();
-        queryRequest.setClazz((Class<T>) aClass);
-        String joinThisClazzField = param.get("joinThisClazzField");
-        queryRequest.setAndSql(joinThisClazzField + " not in ( " + m2mSql + " )");
-        List<T> list = annoService.list(queryRequest);
-        List<Map<String, Object>> maps = CollUtil.newArrayList();
-        list.forEach(item -> {
-            Map<String, Object> map;
-            if (item instanceof Map) {
-                map = (Map<String, Object>) item;
-            } else {
-                map = JSONUtil.parseObject(item, Map.class);
-            }
-            map.put("label", map.get(joinThisClazzField));
-            map.put("value", map.get(joinThisClazzField));
-            maps.add(map);
-        });
-        return AnnoResult.succeed(maps);
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(aClass))).collect(Collectors.toList());
+        return AnnoResult.from(Result.succeed(MapUtil.of("m2mTree", data)));
     }
 
     @Mapping("/{clazz}/addM2m")
@@ -259,7 +230,8 @@ public class AnnoController {
         Class<?> aClass = AnnoClazzCache.get(clazz);
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
-        Class<?> mediumClass = AnnoClazzCache.get(mediumTableClass);
+        Class<Object> mediumClass = (Class<Object>) AnnoClazzCache.get(mediumTableClass);
+        TableParam<Object> tableParam = (TableParam<Object>) AnnoTableParamCache.get(mediumTableClass);
         String[] split;
         Object ids = param.get("ids");
         // 字段一
@@ -275,7 +247,12 @@ public class AnnoController {
             split = mediumThisValues.split(",");
         }
         if (clearAll) {
-            annoService.removeByKvs(mediumClass, ListUtil.of(new Tuple(mediumOtherField, mediumOtherValue)));
+            // 物理删除
+            tableParam.getRemoveParam().setLogic(false);
+            dbService.delete(tableParam, CollUtil.newArrayList(
+                    DbCondition.builder().field(mediumOtherField).value(mediumOtherValue).build()
+            ));
+            tableParam.getRemoveParam().setLogic(true);
         }
         for (String mediumThisValue : split) {
             Map<String, Object> addValue = new HashMap<String, Object>() {{
@@ -283,7 +260,7 @@ public class AnnoController {
                 put(mediumOtherField, mediumOtherValue);
             }};
 
-            annoService.save(JSONUtil.parseObject(addValue, mediumClass));
+            dbService.insert(tableParam,JSONUtil.parseObject(addValue, mediumClass));
         }
         return AnnoResult.succeed();
     }

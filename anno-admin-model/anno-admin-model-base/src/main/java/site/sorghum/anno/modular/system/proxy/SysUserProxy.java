@@ -5,10 +5,10 @@ import org.noear.solon.annotation.ProxyComponent;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.system.anno.SysUser;
-import site.sorghum.anno.util.MD5Util;
+import site.sorghum.anno.common.util.MD5Util;
 
 import java.util.Collection;
 import java.util.List;

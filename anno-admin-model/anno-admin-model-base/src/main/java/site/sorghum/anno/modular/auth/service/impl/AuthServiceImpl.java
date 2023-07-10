@@ -7,7 +7,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
@@ -19,7 +19,7 @@ import site.sorghum.anno.modular.system.anno.SysUser;
 import site.sorghum.anno.modular.system.dao.SysPermissionDao;
 import site.sorghum.anno.modular.system.dao.SysRoleDao;
 import site.sorghum.anno.modular.system.dao.SysUserDao;
-import site.sorghum.anno.util.MD5Util;
+import site.sorghum.anno.common.util.MD5Util;
 
 import java.util.ArrayList;
 import java.util.Collection;

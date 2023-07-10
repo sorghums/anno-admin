@@ -12,7 +12,7 @@ import org.noear.solon.core.handle.MethodType;
 import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.system.anno.SysUser;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
-import site.sorghum.anno.response.AnnoResult;
+import site.sorghum.anno.common.response.AnnoResult;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package site.sorghum.anno.config;
+package site.sorghum.anno.common.config;
 
 import cn.hutool.core.util.ReflectUtil;
 import lombok.SneakyThrows;
@@ -9,7 +9,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.serializer.IStandardJavaScriptSerializer;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
 import java.io.Writer;
 import java.util.Set;

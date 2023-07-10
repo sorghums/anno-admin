@@ -1,4 +1,4 @@
-package site.sorghum.anno.filter;
+package site.sorghum.anno.common.filter;
 
 
 import cn.dev33.satoken.exception.NotPermissionException;
@@ -10,9 +10,9 @@ import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.validation.ValidatorException;
 import org.noear.solon.validation.annotation.Logined;
-import site.sorghum.anno.exception.BizException;
-import site.sorghum.anno.response.AnnoResult;
-import site.sorghum.anno.util.ThrowableLogUtil;
+import site.sorghum.anno.common.exception.BizException;
+import site.sorghum.anno.common.response.AnnoResult;
+import site.sorghum.anno.common.util.ThrowableLogUtil;
 
 import java.time.format.DateTimeParseException;
 
@@ -43,7 +43,7 @@ public class FailureFilter implements Filter {
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e){
             ThrowableLogUtil.error(e);
-            e.printStackTrace();
+            log.error("参数错误 ==>",e);
             ctx.render(AnnoResult.failure( "非法参数"));
         } catch (SaTokenException e){
             ThrowableLogUtil.error(e);

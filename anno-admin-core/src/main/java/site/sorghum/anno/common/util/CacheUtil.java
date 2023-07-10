@@ -1,4 +1,4 @@
-package site.sorghum.anno.util;
+package site.sorghum.anno.common.util;
 
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;

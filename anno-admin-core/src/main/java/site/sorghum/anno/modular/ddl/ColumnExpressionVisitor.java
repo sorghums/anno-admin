@@ -1,10 +1,10 @@
-package site.sorghum.anno.ddl;
+package site.sorghum.anno.modular.ddl;
 
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.ExpressionVisitorAdapter;
 import net.sf.jsqlparser.expression.RowConstructor;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
-import site.sorghum.anno.util.JSqlParserUtil;
+import site.sorghum.anno.common.util.JSqlParserUtil;
 
 import java.util.LinkedHashMap;
 import java.util.List;

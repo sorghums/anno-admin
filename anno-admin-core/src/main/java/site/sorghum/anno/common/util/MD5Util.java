@@ -1,4 +1,4 @@
-package site.sorghum.anno.util;
+package site.sorghum.anno.common.util;
 
 import cn.hutool.crypto.digest.MD5;
 

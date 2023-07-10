@@ -1,31 +1,15 @@
 package site.sorghum.anno.modular.anno.enums;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.display.Image;
-import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.amis.entity.input.InputDatetime;
-import site.sorghum.amis.entity.input.InputTree;
-import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
-import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.type.TypeParserFactory;
-import site.sorghum.anno.util.DbContextUtil;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

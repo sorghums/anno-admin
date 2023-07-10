@@ -1,11 +1,7 @@
 package site.sorghum.anno.modular.anno.util;
 
-import cn.hutool.cache.CacheUtil;
-import cn.hutool.cache.impl.FIFOCache;
 import cn.hutool.core.date.StopWatch;
-import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.core.util.ResourceUtil;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
@@ -15,10 +11,8 @@ import site.sorghum.anno.modular.amis.process.processer.CrudM2mProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.CrudProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.TreeM2mProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.TreeProcessorChain;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
-import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 /**

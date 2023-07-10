@@ -1,4 +1,4 @@
-package site.sorghum.anno.filter;
+package site.sorghum.anno.common.filter;
 
 
 import cn.hutool.core.util.StrUtil;
@@ -7,8 +7,8 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
-import site.sorghum.anno.util.JSONUtil;
-import site.sorghum.anno.util.ThrowableLogUtil;
+import site.sorghum.anno.common.util.JSONUtil;
+import site.sorghum.anno.common.util.ThrowableLogUtil;
 
 import java.util.HashMap;
 

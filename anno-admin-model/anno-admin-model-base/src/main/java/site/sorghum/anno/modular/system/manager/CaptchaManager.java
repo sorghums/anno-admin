@@ -11,7 +11,7 @@ import org.noear.solon.annotation.Inject;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 
 import java.util.Objects;

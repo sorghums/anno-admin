@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.anno.util;
 
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 
 import java.util.Collection;
 import java.util.HashMap;

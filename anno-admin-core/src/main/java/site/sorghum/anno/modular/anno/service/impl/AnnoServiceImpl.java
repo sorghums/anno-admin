@@ -13,7 +13,7 @@ import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.exception.BizException;
+import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;

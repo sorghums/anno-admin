@@ -1,4 +1,4 @@
-package site.sorghum.anno.config;
+package site.sorghum.anno.common.config;
 
 import lombok.Data;
 import org.noear.solon.annotation.Configuration;

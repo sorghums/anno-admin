@@ -3,9 +3,8 @@ package site.sorghum.anno.modular.type;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 

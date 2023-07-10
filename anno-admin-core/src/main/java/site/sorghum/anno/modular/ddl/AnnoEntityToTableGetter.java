@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl;
+package site.sorghum.anno.modular.ddl;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;

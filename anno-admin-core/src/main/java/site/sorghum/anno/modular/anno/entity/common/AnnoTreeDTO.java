@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.anno.entity.common;
 
 import lombok.Data;
 import site.sorghum.amis.entity.input.Options;
-import site.sorghum.anno.util.JSONUtil;
+import site.sorghum.anno.common.util.JSONUtil;
 
 import java.util.List;
 

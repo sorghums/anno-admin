@@ -1,4 +1,4 @@
-package site.sorghum.anno.exception;
+package site.sorghum.anno.common.exception;
 
 /**
  * 业务异常

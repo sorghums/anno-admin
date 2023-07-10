@@ -1,40 +1,16 @@
 package site.sorghum.anno.modular.amis.model;
 
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.PrimaryKey;
-import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.display.DrawerButton;
-import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.function.ButtonGroup;
 import site.sorghum.amis.entity.input.Form;
-import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.amis.entity.input.InputTree;
-import site.sorghum.amis.entity.input.TreeSelect;
 import site.sorghum.amis.entity.layout.Page;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.util.CryptoUtil;
-import site.sorghum.anno.util.JSONUtil;
 
 import java.beans.Transient;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 树视图

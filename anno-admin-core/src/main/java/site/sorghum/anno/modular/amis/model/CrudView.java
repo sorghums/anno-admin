@@ -1,40 +1,15 @@
 package site.sorghum.anno.modular.amis.model;
 
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.PrimaryKey;
-import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.*;
-import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
-import site.sorghum.amis.entity.input.Form;
-import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.layout.Page;
-import site.sorghum.anno.exception.BizException;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.util.CryptoUtil;
 
 import java.beans.Transient;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * crud视图

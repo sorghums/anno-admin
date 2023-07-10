@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl;
+package site.sorghum.anno.modular.ddl;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
@@ -6,7 +6,7 @@ import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.config.AnnoProperty;
+import site.sorghum.anno.common.config.AnnoProperty;
 import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 
