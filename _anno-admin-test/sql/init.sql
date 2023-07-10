@@ -64,7 +64,7 @@ create table sys_role
     id          varchar(20)      not null comment '主键'
         primary key,
     role_name   varchar(30)      not null comment '角色名称',
-    sort        int              not null comment '显示顺序'
+    sort        int              not null comment '显示顺序',
     enable      tinyint          not null comment '角色状态（1正常 0停用）',
     remark      varchar(500)     null comment '备注',
     create_by   varchar(255)     null comment '创建人',

@@ -51,10 +51,6 @@ public class CrudView extends Page {
         return (Crud) this.getBody().get(0);
     }
 
-
-
-    //----------------------静态方法初始化---------------------- 
-    
     public static CrudView of(){
         return crudBasePage();
     }

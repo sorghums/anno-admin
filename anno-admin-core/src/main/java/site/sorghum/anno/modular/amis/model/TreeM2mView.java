@@ -29,7 +29,6 @@ public class TreeM2mView extends Page {
         return treeM2mView();
     }
 
-
     private static TreeM2mView treeM2mView(){
         TreeM2mView treeM2mView = new TreeM2mView();
         Form treeForm = new Form();

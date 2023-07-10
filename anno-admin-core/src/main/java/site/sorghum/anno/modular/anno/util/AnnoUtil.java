@@ -64,6 +64,7 @@ public class AnnoUtil {
      * @param clazz clazz
      * @return {@link AnnoBaseProxy}<{@link T}>
      */
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> AnnoPreBaseProxy<T> getPreProxyInstance(Class<T> clazz) {
         List<Class<?>> classes = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : classes) {
@@ -214,11 +215,11 @@ public class AnnoUtil {
         return annoMain.annoTree().parentKey();
     }
 
-    public static <T> List<AnnoTreeDTO<String>> buildAnnoTree(List<T> datas,
+    public static <T> List<AnnoTreeDTO<String>> buildAnnoTree(List<T> data,
                                                               String label,
                                                               String key,
                                                               String parentKey) {
-        List<AnnoTreeDTO<String>> annoTreeDTOS = list2AnnoTreeNode(datas, label, key, parentKey);
+        List<AnnoTreeDTO<String>> annoTreeDTOS = list2AnnoTreeNode(data, label, key, parentKey);
         return listToTree(annoTreeDTOS);
     }
 
@@ -296,7 +297,7 @@ public class AnnoUtil {
     
     private static Object reflectGetValue(Object o,String field){
         if (o instanceof Map){
-            return ((Map) o).get(field);
+            return ((Map<?, ?>) o).get(field);
         }
         return ReflectUtil.getFieldValue(o,field);
     }

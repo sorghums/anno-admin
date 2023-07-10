@@ -11,7 +11,10 @@ import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.model.TreeM2mView;
 import site.sorghum.anno.modular.amis.model.TreeView;
+import site.sorghum.anno.modular.amis.process.processer.CrudM2mProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.CrudProcessorChain;
+import site.sorghum.anno.modular.amis.process.processer.TreeM2mProcessorChain;
+import site.sorghum.anno.modular.amis.process.processer.TreeProcessorChain;
 import site.sorghum.anno.util.JSONUtil;
 
 import java.net.URL;
@@ -57,18 +60,11 @@ public class TemplateUtil {
     public static CrudM2mView getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        CrudM2mView crudM2mView = CrudM2mView.of();
-        // 添加过滤
-        crudM2mView.addCrudFilter(clazz);
-        // 添加列
-        crudM2mView.addCrudColumns(clazz);
-        // 添加关联查询的表格信息
         properties.put("isM2m", true);
-        crudM2mView.addRelationCrudData(clazz, getCrudTemplate(clazz, properties));
-        // 添加编辑信息
-        crudM2mView.addCrudEditInfo(clazz);
-        // 添加删除对应关联关系信息的按钮
-        crudM2mView.addDeleteRelationEditInfo(clazz);
+        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
+        CrudM2mProcessorChain crudM2mProcessorChain = new CrudM2mProcessorChain();
+        crudM2mProcessorChain.doProcessor(wrapper, clazz, properties);
+        CrudM2mView crudM2mView = (CrudM2mView) wrapper.getAmisBase();
         stopWatch.stop();
         log.debug("crud模板：{}", JSONUtil.toJSONString(crudM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
@@ -85,13 +81,10 @@ public class TemplateUtil {
     public static TreeView getTreeTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        TreeView treeView = TreeView.of();
-        // 添加form
-        treeView.addTreeForm(clazz);
-        // 添加树边栏
-        treeView.addCommonTreeAside(clazz, properties);
-        // 添加自定义按钮
-        treeView.addTreeColumnButtonInfo(clazz);
+        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
+        TreeProcessorChain processorChain = new TreeProcessorChain();
+        processorChain.doProcessor(wrapper, clazz, properties);
+        TreeView treeView = (TreeView) wrapper.getAmisBase();
         stopWatch.stop();
         log.debug("tree模板：{}", JSONUtil.toJSONString(treeView));
         log.debug("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
@@ -101,7 +94,10 @@ public class TemplateUtil {
     public static TreeM2mView getTreeM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        TreeM2mView treeM2mView = TreeM2mView.of();
+        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
+        TreeM2mProcessorChain processorChain = new TreeM2mProcessorChain();
+        processorChain.doProcessor(wrapper, clazz, properties);
+        TreeM2mView treeM2mView = (TreeM2mView) wrapper.getAmisBase();
         stopWatch.stop();
         log.debug("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
