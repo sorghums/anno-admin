@@ -38,10 +38,10 @@ import java.util.stream.Collectors;
  * @author sorghum
  * @since 2023/05/20
  */
-@SuppressWarnings("unchecked")
 @Controller
 @Mapping("/system/anno")
 @Slf4j
+@SuppressWarnings("unchecked")
 public class AnnoController {
 
     @Inject
@@ -92,9 +92,8 @@ public class AnnoController {
     @Mapping("/{clazz}/save")
     @Post
     public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String, Object> param) {
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
-        T t = JSONUtil.parseObject(emptyStringIgnore(param), aClass);
+        T t = JSONUtil.parseObject(emptyStringIgnore(param), tableParam.getClazz());
         dbService.insert(tableParam, t);
         return AnnoResult.from(Result.succeed());
     }
@@ -183,20 +182,23 @@ public class AnnoController {
                                                                @Param boolean ignoreM2m,
                                                                @Param boolean reverseM2m,
                                                                @Body Map<String, String> param) {
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        QueryRequest<T> queryRequest = new QueryRequest<>();
-        queryRequest.setClazz(aClass);
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         String m2mSql = annoService.m2mSql(param);
+        String andSql = null;
         String inPrefix = " in (";
         if (reverseM2m) {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
             String joinThisClazzField = param.get("joinThisClazzField");
-            queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
+            andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
-        List<AnnoTreeDTO<String>> annoTreeDTOS = annoService.annoTrees(queryRequest);
-        return AnnoResult.from(Result.succeed(annoTreeDTOS));
+        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
+        if (andSql != null) {
+            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
+        }
+        List<T> list = dbService.list(tableParam, dbConditions);
+        return AnnoResult.succeed(annoService.annoTrees(tableParam.getClazz(),list));
     }
 
     @Mapping("/{clazz}/annoTreeSelectData")
@@ -204,33 +206,33 @@ public class AnnoController {
                                                          @Param boolean ignoreM2m,
                                                          @Param boolean reverseM2m,
                                                          @Body Map<String, String> param) {
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        QueryRequest<T> queryRequest = new QueryRequest<>();
-        queryRequest.setClazz(aClass);
+        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         String m2mSql = annoService.m2mSql(param);
+        String andSql = null;
         String inPrefix = " in (";
         if (reverseM2m) {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
             String joinThisClazzField = param.get("joinThisClazzField");
-            queryRequest.setAndSql(joinThisClazzField + inPrefix + m2mSql + ")");
+            andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
-        List<T> list = annoService.list(queryRequest);
+        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
+        if (andSql != null) {
+            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
+        }
+        List<T> list = dbService.list(tableParam, dbConditions);
         if (list == null || list.isEmpty()) {
             return AnnoResult.from(Result.succeed(Collections.emptyMap()));
         }
-        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(aClass))).collect(Collectors.toList());
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(tableParam.getClazz()))).collect(Collectors.toList());
         return AnnoResult.from(Result.succeed(MapUtil.of("m2mTree", data)));
     }
 
     @Mapping("/{clazz}/addM2m")
     public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
-        // 主表
-        Class<?> aClass = AnnoClazzCache.get(clazz);
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
-        Class<Object> mediumClass = (Class<Object>) AnnoClazzCache.get(mediumTableClass);
         TableParam<Object> tableParam = (TableParam<Object>) AnnoTableParamCache.get(mediumTableClass);
         String[] split;
         Object ids = param.get("ids");
@@ -259,8 +261,7 @@ public class AnnoController {
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
-
-            dbService.insert(tableParam,JSONUtil.parseObject(addValue, mediumClass));
+            dbService.insert(tableParam,JSONUtil.parseObject(addValue, tableParam.getClass()));
         }
         return AnnoResult.succeed();
     }

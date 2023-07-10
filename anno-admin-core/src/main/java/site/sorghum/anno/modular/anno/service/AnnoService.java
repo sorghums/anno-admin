@@ -16,13 +16,6 @@ import java.util.Map;
  * @since 2023/05/20
  */
 public interface AnnoService {
-    /**
-     * 分页查询
-     *
-     * @param queryRequest 页面请求
-     * @return {@link IPage}<{@link T}>
-     */
-    <T> IPage<T> page(QueryRequest<T> queryRequest);
 
     /**
      * sql查询
@@ -42,63 +35,11 @@ public interface AnnoService {
     <T> String m2mSql(Map<?,? > param);
 
     /**
-     * 分页查询
-     *
-     * @param queryRequest 页面请求
-     * @return {@link IPage}<{@link T}>
-     */
-    <T> List<T> list(QueryRequest<T> queryRequest);
-
-    /**
-     * 通过id查询
-     *
-     * @param clazz clazz
-     * @param id    id
-     */
-    <T> T queryById(Class<T> clazz, Serializable id);
-
-    /**
-     * 通过id 删除
-     *
-     * @param clazz clazz
-     * @param id    id
-     */
-    <T> void removeById(Class<T> clazz, Serializable id);
-
-    /**
-     * 通过组合条件删除
-     *
-     * @param clazz  clazz
-     * @param tuples 元组
-     */
-    <T> void removeByKvs(Class<T> clazz, List<Tuple> tuples);
-
-    /**
-     * 通过id 更新
-     *
-     * @param t t
-     */
-    <T> void updateById(T t);
-
-    /**
-     * 保存
-     *
-     * @param param 参数
-     */
-    <T> void save(T param);
-
-    /**
-     * 保存
-     *
-     * @param param 参数
-     */
-    <T> void onlySave(T param);
-
-    /**
      * Anno 树
      *
-     * @param request 请求
+     * @param tClass   t类
+     * @param dataList 数据列表
      * @return {@link List}<{@link AnnoTreeDTO}<{@link String}>>
      */
-    <T> List<AnnoTreeDTO<String>> annoTrees(QueryRequest<T> request);
+    <T> List<AnnoTreeDTO<String>> annoTrees(Class<T> tClass,List<T> dataList);
 }

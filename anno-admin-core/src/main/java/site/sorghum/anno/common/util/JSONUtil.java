@@ -54,8 +54,7 @@ public class JSONUtil {
         if (eval instanceof JSONArray) {
             throw new BizException("类型不匹配");
         }
-        if (eval instanceof JSONObject) {
-            JSONObject evalJson = (JSONObject) eval;
+        if (eval instanceof JSONObject evalJson) {
             return evalJson.toJavaObject(type);
         }
         return JSONObject.parseObject(JSON.toJSONString(obj), type);
