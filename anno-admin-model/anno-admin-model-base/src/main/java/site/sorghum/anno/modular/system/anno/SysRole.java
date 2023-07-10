@@ -70,8 +70,8 @@ public class SysRole extends BaseMetaModel implements Serializable {
     @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
-            mediumOtherField = "role_id",
-            mediumThisField = "permission_id",
+            mediumOtherField = "permission_id",
+            mediumThisField = "role_id",
             joinThisClazzField = "id"
     ))
     private Object roleButton;

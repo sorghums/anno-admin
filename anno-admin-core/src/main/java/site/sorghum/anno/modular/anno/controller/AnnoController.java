@@ -73,7 +73,7 @@ public class AnnoController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = param.get("joinThisClazzField").toString();
+            String joinThisClazzField = MapUtil.getStr(param,"joinThisClazzField");
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, aClass);
@@ -260,7 +260,7 @@ public class AnnoController {
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
-            dbService.insert(tableParam,JSONUtil.parseObject(addValue, tableParam.getClass()));
+            dbService.insert(tableParam,JSONUtil.parseObject(addValue, tableParam.getClazz()));
         }
         return AnnoResult.succeed();
     }

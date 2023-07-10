@@ -76,8 +76,9 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                         HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
                             put("joinValue", "${" + m2mJoinButton.joinThisClazzField() + "}");
                             put("joinCmd", Base64.encodeStr(m2mJoinButton.joinSql().getBytes(), false, true));
-                            put("mediumThisField", m2mJoinButton.mediumThisField());
-                            put("mediumOtherField", m2mJoinButton.mediumOtherField());
+                            // 处理上调换this和other的逻辑
+                            put("mediumThisField", m2mJoinButton.mediumOtherField());
+                            put("mediumOtherField", m2mJoinButton.mediumThisField());
                             put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
                             put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
                         }};
