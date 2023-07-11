@@ -6,6 +6,12 @@ import site.sorghum.amis.entity.function.Api;
 
 import java.util.List;
 
+/**
+ * 输入树
+ *
+ * @author Sorghum
+ * @since 2023/07/11
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InputTree extends FormItem {

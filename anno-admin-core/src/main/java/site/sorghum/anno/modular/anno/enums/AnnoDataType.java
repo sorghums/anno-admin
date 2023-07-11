@@ -57,14 +57,4 @@ public enum AnnoDataType {
         return TypeParserFactory.getTypeParser(annoDataType).parseDisplay(item,annoField);
     }
 
-    private static Map<String,Object> mergeObj(Object obj1, Object obj2){
-        HashMap<String, Object> map1 = JSONUtil.parseObject(obj1, HashMap.class);
-        HashMap<String, Object> map2 = JSONUtil.parseObject(obj2, HashMap.class);
-        map2.putAll(map1);
-        return map2;
-    }
-
-    private static Map<String,Object> mergeObj(Object obj1){
-        return JSONUtil.parseObject(obj1, HashMap.class);
-    }
 }

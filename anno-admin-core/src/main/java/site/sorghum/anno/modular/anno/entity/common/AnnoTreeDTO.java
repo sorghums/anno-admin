@@ -1,6 +1,9 @@
 package site.sorghum.anno.modular.anno.entity.common;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno.common.util.JSONUtil;
 
@@ -13,6 +16,9 @@ import java.util.List;
  * @since 2023/05/21
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AnnoTreeDTO<T> {
     /**
      * id

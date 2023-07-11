@@ -197,7 +197,9 @@ public class AnnoController {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
         List<T> list = dbService.list(tableParam, dbConditions);
-        return AnnoResult.succeed(annoService.annoTrees(tableParam.getClazz(),list));
+        List<AnnoTreeDTO<String>> annoTreeDTOS = annoService.annoTrees(tableParam.getClazz(), list);
+        annoTreeDTOS.add(0, AnnoTreeDTO.<String>builder().id("0").label("全部").value("").build());
+        return AnnoResult.succeed(annoTreeDTOS);
     }
 
     @Mapping("/{clazz}/annoTreeSelectData")
