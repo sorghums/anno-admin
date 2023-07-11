@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.function.Api;
 
+import java.util.Map;
+
 /**
  * 输入文件
  *
@@ -25,17 +27,17 @@ public class InputFile extends FormItem{
     /**
      * 默认只支持纯文本，要支持其他类型，请配置此属性为文件后缀.xxx
      */
-    String accept = "text/plain";
+    String accept;
 
     /**
      * 将文件以base64的形式，赋值给当前组件
      */
-    Boolean asBase64 = false;
+    Boolean asBase64;
 
     /**
      * 将文件以二进制的形式，赋值给当前组件
      */
-    Boolean asBlob = false;
+    Boolean asBlob;
 
     /**
      * 默认没有限制，当设置后，文件大小大于此值将不允许上传。单位为B
@@ -50,37 +52,37 @@ public class InputFile extends FormItem{
     /**
      * 是否多选。
      */
-    Boolean multiple = false;
+    Boolean multiple;
 
     /**
      * 是否为拖拽上传
      */
-    Boolean drag = false;
+    Boolean drag;
 
     /**
      * 拼接值
      */
-    Boolean joinValues = true;
+    Boolean joinValues;
 
     /**
      * 提取值
      */
-    Boolean extractValue = false;
+    Boolean extractValue;
 
     /**
      * 拼接符
      */
-    String delimiter = ",";
+    String delimiter;
 
     /**
      * 否选择完就自动开始上传
      */
-    Boolean autoUpload = true;
+    Boolean autoUpload;
 
     /**
      * 隐藏上传按钮
      */
-    Boolean hideUploadButton = false;
+    Boolean hideUploadButton;
 
     /**
      * 上传状态文案
@@ -90,22 +92,22 @@ public class InputFile extends FormItem{
     /**
      * 如果你不想自己存储，则可以忽略此属性。
      */
-    String fileField = "file";
+    String fileField;
 
     /**
      * 接口返回哪个字段用来标识文件名
      */
-    String nameField = "name";
+    String nameField;
 
     /**
      * 文件的值用那个字段来标识。
      */
-    String valueField = "url";
+    String valueField;
 
     /**
      * 文件下载地址的字段名。
      */
-    String urlField = "url";
+    String urlField;
 
     /**
      * 上传按钮的文字
@@ -115,12 +117,12 @@ public class InputFile extends FormItem{
     /**
      * 默认显示文件路径的时候会支持直接下载，可以支持加前缀如：http://xx.dom/filename= ，如果不希望这样，可以把当前配置项设置为 false。
      */
-    Boolean downloadUrl = false;
+    Boolean downloadUrl;
 
 /**
      * 默认显示文件路径的时候会支持直接下载，可以支持加前缀如：http://xx.dom/filename= ，如果不希望这样，可以把当前配置项设置为 false。
      */
-    String useChunk = "auto";
+    String useChunk;
 
     /**
      * 分块大小
@@ -160,7 +162,7 @@ public class InputFile extends FormItem{
     /**
      * 初表单反显时是否执行
      */
-    Boolean initAutoFill = true;
+    Boolean initAutoFill;
 
     @Data
     public static class StateText{

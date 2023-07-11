@@ -20,7 +20,7 @@ import java.util.Map;
 @Getter
 public enum AnnoDataType {
     STRING("input-text", "字符串","text"),
-    FILE("input-file", "文件","text"),
+    FILE("input-file", "文件","link"),
     IMAGE("input-image", "图片","static-image"),
     NUMBER("input-number", "数字","text"),
     DATE("input-date", "日期","text"),
@@ -28,7 +28,7 @@ public enum AnnoDataType {
     OPTIONS("select", "下拉框","text"),
     TREE("tree-select", "树形下拉框","input-tree"),
     RICH_TEXT("input-rich-text", "富文本","text"),
-    CODE_EDITOR("editor","代码编辑器","tpl"),
+    CODE_EDITOR("editor","代码编辑器","tpl")
     ;
 
     /**

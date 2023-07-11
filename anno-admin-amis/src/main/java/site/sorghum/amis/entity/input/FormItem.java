@@ -114,7 +114,7 @@ public class FormItem extends AmisBase {
     /**
      * 数据录入配置，自动填充或者参照录入
      */
-    private AutoFill autoFill;
+    private Object autoFill;
 
     /**
      * 整个表单静态方式展示(仅作展示态)

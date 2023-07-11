@@ -20,6 +20,7 @@ public class TypeParserFactory {
             case OPTIONS -> Solon.context().getBean(OptionsTypeParser.class);
             case TREE -> Solon.context().getBean(TreeTypeParser.class);
             case CODE_EDITOR -> Solon.context().getBean(CodeEditorTypeParser.class);
+            case FILE -> Solon.context().getBean(FileTypeParser.class);
             default -> Solon.context().getBean(DefaultTypeParser.class);
         };
     }

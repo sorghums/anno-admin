@@ -40,4 +40,12 @@ public class SystemController {
         UploadedFile file = ctx.file("file");
         return AnnoResult.succeed(res).withStatus(0);
     }
+
+    @Mapping(value = "/api/upload/file", multipart=true)
+    public AnnoResult<Map<String,Object>> uploadFile(Context ctx) throws Exception {
+        HashMap<String,Object> res = MapUtil.newHashMap();
+        res.put("value","https://solon.noear.org/img/solon/favicon.png");
+        UploadedFile file = ctx.file("file");
+        return AnnoResult.succeed(res).withStatus(0);
+    }
 }
