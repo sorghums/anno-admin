@@ -5,8 +5,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Component;
-import org.noear.wood.DbContext;
-import org.noear.wood.annotation.Db;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import org.noear.wood.wrap.ColumnWrap;
@@ -18,7 +16,6 @@ import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -88,7 +85,7 @@ public class AnnoEntityToTableGetter extends SampleEntityToTableGetter {
           digit = 6;
           defaultValue = "NOT NULL DEFAULT 0";
         }
-        case RICH_TEXT, EDITOR -> sqlType = Types.CLOB;
+        case RICH_TEXT, CODE_EDITOR -> sqlType = Types.CLOB;
         default -> { // FILE, IMAGE and others
           sqlType = Types.VARCHAR;
           size = 512;

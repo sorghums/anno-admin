@@ -7,9 +7,7 @@ import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.type.TypeParserFactory;
-import site.sorghum.anno.common.util.JSONUtil;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,7 +28,7 @@ public enum AnnoDataType {
     OPTIONS("select", "下拉框","text"),
     TREE("tree-select", "树形下拉框","input-tree"),
     RICH_TEXT("input-rich-text", "富文本","text"),
-    EDITOR("input-editor", "编辑器","text"),
+    CODE_EDITOR("editor","代码编辑器","code"),
     ;
 
     /**
