@@ -84,6 +84,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                                     setUrl("/system/anno/${clazz}/save");
                                 }});
                                 setId("simple-add-form");
+                                setSize("lg");
                                 setBody(formItems);
                                 // 刷新某个组件
                                 setOnEvent(new HashMap<>() {{

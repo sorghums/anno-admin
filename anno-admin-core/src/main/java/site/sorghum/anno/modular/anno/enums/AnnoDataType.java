@@ -28,7 +28,7 @@ public enum AnnoDataType {
     OPTIONS("select", "下拉框","text"),
     TREE("tree-select", "树形下拉框","input-tree"),
     RICH_TEXT("input-rich-text", "富文本","text"),
-    CODE_EDITOR("editor","代码编辑器","code"),
+    CODE_EDITOR("editor","代码编辑器","tpl"),
     ;
 
     /**

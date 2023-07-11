@@ -82,6 +82,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                                 new Form() {{
                                     setId("simple-edit-form");
                                     setWrapWithPanel(false);
+                                    setSize("lg");
                                     setApi(new Api() {{
                                         setMethod("post");
                                         setUrl("/system/anno/${clazz}/updateById");
