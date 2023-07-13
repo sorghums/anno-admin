@@ -12,12 +12,12 @@
         <relativePath/>
     </parent>
 
-    <groupId>site.sorghum</groupId>
+    <groupId>site.sorghum.anno</groupId>
     <artifactId>anno-admin</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1.M1</version>
 
     <packaging>pom</packaging>
-
+    <name>anno-admin</name>
     <description>
         Anno-Admin是一个开源项目，它通过注解生成后台管理系统。这个项目的目的是为了让开发者能够更加轻松地创建一个功能强大的后台管理系统，而不需要手动编写大量的代码。使用Anno-Admin，开发者只需要在代码中添加一些注解，就可以自动生成后台管理系统的各种功能，包括用户管理、权限管理、数据管理等等。这个项目非常适合那些需要快速开发后台管理系统的开发者，同时也非常适合那些想要学习注解和代码生成技术的开发者。
     </description>
@@ -35,6 +35,7 @@
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
         <module>anno-admin-db</module>
+        <module>anno-admin-solon-plugin</module>
     </modules>
 
     <properties>
@@ -53,17 +54,17 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>site.sorghum</groupId>
+                <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>site.sorghum</groupId>
+                <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>site.sorghum</groupId>
+                <groupId>site.sorghum.anno</groupId>
                 <artifactId>_anno-admin-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -104,4 +105,113 @@
             </snapshots>
         </repository>
     </repositories>
+
+    <url>https://gitee.com/cmeet/anno-admin</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:https://gitee.com/cmeet/anno-admin.git</connection>
+        <developerConnection>scm:https://gitee.com/cmeet/anno-admin.git</developerConnection>
+        <url> https://gitee.com/cmeet/anno-admin </url>
+    </scm>
+    <developers>
+        <developer>
+            <name>sorghum</name>
+            <email>sorghum2021@163.com</email>
+            <timezone>+8</timezone>
+        </developer>
+        <!-- 岂无嘉色在，留待后人来 -->
+    </developers>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.13</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!-- 生成java source.jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
