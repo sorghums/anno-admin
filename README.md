@@ -1,5 +1,5 @@
 # Anno-Admin
-
+## [文档地址](https://www.yuque.com/sorghums/anno-admin)
 [![cmeet/anno-admin](https://gitee.com/cmeet/anno-admin/widgets/widget_card.svg?colors=4183c4,ffffff,ffffff,e3e9ed,666666,9b9b9b)](https://gitee.com/cmeet/anno-admin)
 
 ### 交流群
