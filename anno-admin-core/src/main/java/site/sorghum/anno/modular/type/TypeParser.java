@@ -35,8 +35,8 @@ public interface TypeParser {
     FormItem parseEdit(FormItem formItem,AnnoField annoField);
 
     default Map<String,Object> mergeObj(Object obj1, Object obj2){
-        HashMap<String, Object> map1 = JSONUtil.parseObject(obj1, HashMap.class);
-        HashMap<String, Object> map2 = JSONUtil.parseObject(obj2, HashMap.class);
+        HashMap<String, Object> map1 = JSONUtil.toBean(obj1, HashMap.class);
+        HashMap<String, Object> map2 = JSONUtil.toBean(obj2, HashMap.class);
         map2.putAll(map1);
         return map2;
     }

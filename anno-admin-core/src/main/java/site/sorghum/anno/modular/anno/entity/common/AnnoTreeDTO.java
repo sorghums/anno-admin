@@ -50,7 +50,7 @@ public class AnnoTreeDTO<T> {
      */
     public static List<Options.Option> toOptions(List<AnnoTreeDTO<String>> annoTrees) {
         // 转换为 Options
-        String jsonString = JSONUtil.toJSONString(annoTrees);
+        String jsonString = JSONUtil.toJsonString(annoTrees);
         return JSONUtil.parseArray(jsonString, Options.Option.class);
     }
 }

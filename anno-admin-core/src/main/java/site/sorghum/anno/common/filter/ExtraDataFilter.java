@@ -26,7 +26,7 @@ public class ExtraDataFilter implements Filter {
         String extraData = null;
         HashMap<String,Object> bdMap;
         if (ctx.body().startsWith("{")) {
-            bdMap = JSONUtil.parseObject(ctx.body(),HashMap.class);
+            bdMap = JSONUtil.toBean(ctx.body(),HashMap.class);
             if (bdMap.containsKey("_extraData")) {
                 extraData = bdMap.get("_extraData").toString();
             }
@@ -40,7 +40,7 @@ public class ExtraDataFilter implements Filter {
         }
         if (bdMap != null && StrUtil.isNotBlank(extraData)) {
             try {
-                HashMap<String,Object> param = JSONUtil.parseObject(extraData,HashMap.class);
+                HashMap<String,Object> param = JSONUtil.toBean(extraData,HashMap.class);
                 param.forEach(
                         (k, v) -> {
                             if (v != null) {
@@ -49,7 +49,7 @@ public class ExtraDataFilter implements Filter {
                             }
                         }
                 );
-                ctx.bodyNew(JSONUtil.toJSONString(bdMap));
+                ctx.bodyNew(JSONUtil.toJsonString(bdMap));
             } catch (Exception e) {
                 ThrowableLogUtil.error(e);
             }

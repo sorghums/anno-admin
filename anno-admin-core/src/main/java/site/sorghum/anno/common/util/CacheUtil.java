@@ -39,10 +39,10 @@ public class CacheUtil {
         RMapCache<String, String> cache = redissonClient.getMapCache(mapKey, new StringCodec());
         if (cache.containsKey(memberKey)) {
             String value = cache.get(memberKey);
-            return JSONUtil.parseObject(value, clazz);
+            return JSONUtil.toBean(value, clazz);
         }
         T t = tSupplier.get();
-        cache.put(memberKey, JSONUtil.toJSONString(t), cacheSeconds, TimeUnit.SECONDS);
+        cache.put(memberKey, JSONUtil.toJsonString(t), cacheSeconds, TimeUnit.SECONDS);
         return t;
     }
 

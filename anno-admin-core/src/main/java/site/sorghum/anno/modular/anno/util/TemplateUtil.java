@@ -39,7 +39,7 @@ public class TemplateUtil {
         crudProcessorChain.doProcessor(wrapper,clazz,properties);
         CrudView crudView = ((CrudView) wrapper.getAmisBase());
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(crudView));
+        log.debug("crud模板：{}", JSONUtil.toJsonString(crudView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return crudView;
     }
@@ -60,7 +60,7 @@ public class TemplateUtil {
         crudM2mProcessorChain.doProcessor(wrapper, clazz, properties);
         CrudM2mView crudM2mView = (CrudM2mView) wrapper.getAmisBase();
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(crudM2mView));
+        log.debug("crud模板：{}", JSONUtil.toJsonString(crudM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return crudM2mView;
     }
@@ -80,7 +80,7 @@ public class TemplateUtil {
         processorChain.doProcessor(wrapper, clazz, properties);
         TreeView treeView = (TreeView) wrapper.getAmisBase();
         stopWatch.stop();
-        log.debug("tree模板：{}", JSONUtil.toJSONString(treeView));
+        log.debug("tree模板：{}", JSONUtil.toJsonString(treeView));
         log.debug("tree模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return treeView;
     }
@@ -93,7 +93,7 @@ public class TemplateUtil {
         processorChain.doProcessor(wrapper, clazz, properties);
         TreeM2mView treeM2mView = (TreeM2mView) wrapper.getAmisBase();
         stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJSONString(treeM2mView));
+        log.debug("crud模板：{}", JSONUtil.toJsonString(treeM2mView));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return treeM2mView;
     }

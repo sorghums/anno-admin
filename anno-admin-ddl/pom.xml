@@ -6,7 +6,7 @@
     <parent>
         <groupId>site.sorghum.anno</groupId>
         <artifactId>anno-admin</artifactId>
-        <version>0.0.1.M1</version>
+        <version>0.0.1.M2</version>
     </parent>
 
     <artifactId>anno-admin-ddl</artifactId>

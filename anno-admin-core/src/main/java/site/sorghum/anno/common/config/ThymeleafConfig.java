@@ -27,7 +27,7 @@ public class ThymeleafConfig {
         @SneakyThrows
         @Override
         public void serializeValue(Object object, Writer writer) {
-            writer.write(JSONUtil.toJSONString(object));
+            writer.write(JSONUtil.toJsonString(object));
         }
     }
 

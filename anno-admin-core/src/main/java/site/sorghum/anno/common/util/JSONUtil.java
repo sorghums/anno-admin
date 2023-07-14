@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class JSONUtil {
 
-    public static <T> T parseObject(Map<?,?> map, Class<T> objectClass) {
+    public static <T> T toBean(Map<?,?> map, Class<T> objectClass) {
         if (map instanceof JSONObject) {
             return ((JSONObject) map).toJavaObject(objectClass);
         }
@@ -27,25 +27,25 @@ public class JSONUtil {
         return jsonObject.toJavaObject(objectClass, JSONReader.Feature.SupportSmartMatch);
     }
 
-    public static <T> T parseObject(String json, Class<T> objectClass) {
+    public static <T> T toBean(String json, Class<T> objectClass) {
         return JSONObject.parseObject(json, objectClass);
     }
 
-    public static <T> T parseObject(Object object, Class<T> objectClass) {
+    public static <T> T toBean(Object object, Class<T> objectClass) {
         if (object instanceof Map) {
-            return parseObject((Map<?, ?>) object, objectClass);
+            return toBean((Map<?, ?>) object, objectClass);
         }
         if (object instanceof String) {
-            return parseObject((String) object, objectClass);
+            return toBean((String) object, objectClass);
         }
         return JSONObject.parseObject(JSONObject.toJSONString(object), objectClass);
     }
 
-    public static <T> T parseObject(URL url, Class<T> objectClass) {
+    public static <T> T toBean(URL url, Class<T> objectClass) {
         return JSON.parseObject(url, objectClass);
     }
 
-    public static <T> T copyObject(T object) {
+    public static <T> T copy(T object) {
         return JSON.copy(object);
     }
 
@@ -76,7 +76,7 @@ public class JSONUtil {
         return JSONPath.set(obj, path, value);
     }
 
-    public static String toJSONString(Object object) {
+    public static String toJsonString(Object object) {
         return JSON.toJSONString(object);
     }
 

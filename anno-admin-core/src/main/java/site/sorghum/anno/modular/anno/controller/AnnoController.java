@@ -92,7 +92,7 @@ public class AnnoController {
     @Post
     public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String, Object> param) {
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
-        T t = JSONUtil.parseObject(emptyStringIgnore(param), tableParam.getClazz());
+        T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
         dbService.insert(tableParam, t);
         return AnnoResult.from(Result.succeed());
     }
@@ -138,14 +138,14 @@ public class AnnoController {
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         dbService.update(tableParam,
                 CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(param.get(pkField.getName())).build()),
-                JSONUtil.parseObject(emptyStringIgnore(param), aClass));
+                JSONUtil.toBean(emptyStringIgnore(param), aClass));
         return AnnoResult.succeed();
     }
 
     @Mapping("/{clazz}/saveOrUpdate")
     public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String, Object> param) {
         Class<?> aClass = AnnoClazzCache.get(clazz);
-        T data = (T) JSONUtil.parseObject(emptyStringIgnore(param), aClass);
+        T data = (T) JSONUtil.toBean(emptyStringIgnore(param), aClass);
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         if (ReflectUtil.getFieldValue(data, AnnoUtil.getPkField(aClass)) == null) {
             dbService.insert(tableParam, data);
@@ -262,7 +262,7 @@ public class AnnoController {
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
-            dbService.insert(tableParam,JSONUtil.parseObject(addValue, tableParam.getClazz()));
+            dbService.insert(tableParam,JSONUtil.toBean(addValue, tableParam.getClazz()));
         }
         return AnnoResult.succeed();
     }

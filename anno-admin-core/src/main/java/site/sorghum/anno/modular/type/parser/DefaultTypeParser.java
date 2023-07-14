@@ -20,7 +20,7 @@ import java.util.Map;
 public class DefaultTypeParser implements TypeParser {
     @Override
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {
-        return JSONUtil.parseObject(amisBase, HashMap.class);
+        return JSONUtil.toBean(amisBase, HashMap.class);
     }
 
     @Override
