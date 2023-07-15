@@ -7,14 +7,11 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
-import site.sorghum.anno.db.param.RemoveParam;
-import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
-import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.Objects;
@@ -32,6 +29,9 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
+        MetadataManager metadataManager = new MetadataManager();
+        context.wrapAndPut(MetadataManager.class, metadataManager);
+
         // 扫描包
         context.beanScan(ANNO_BASE_PACKAGE);
         Class<?> source = Solon.app().source();
@@ -43,6 +43,9 @@ public class XPluginImp implements Plugin {
                 packages.addAll(CollUtil.newArrayList(value));
             }
         }
+
+        context.beanInject(metadataManager);
+
         for (String scanPackage : packages) {
             Set<Class<?>> classes = ClassUtil.scanPackage(scanPackage);
             for (Class<?> clazz : classes) {
@@ -51,10 +54,10 @@ public class XPluginImp implements Plugin {
                 }
                 AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
                 if (annoMain != null) {
+
+                    metadataManager.loadEntity(clazz);
                     // 缓存处理类
                     AnnoClazzCache.put(clazz.getSimpleName(), clazz);
-                    // 缓存表基础信息
-                    AnnoTableParamCache.put(clazz.getSimpleName(), buildFromClazz(clazz));
                 }
                 // 缓存字段信息
                 AnnoUtil.getAnnoFields(clazz).forEach(
@@ -67,25 +70,5 @@ public class XPluginImp implements Plugin {
         }
 
     }
-
-    public <T> TableParam<T> buildFromClazz(Class<T> clazz) {
-        TableParam<T> tableParam = new TableParam<>();
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-        String tableName = AnnoUtil.getTableName(clazz);
-        if (annoMain == null) {
-            return null;
-        }
-        tableParam.setClazz(clazz);
-        tableParam.setTableName(tableName);
-        tableParam.setColumns(AnnoUtil.getTableFields(clazz));
-        AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
-        if (annoRemove.removeType() == 0) {
-            tableParam.setRemoveParam(new RemoveParam());
-        }else {
-            tableParam.setRemoveParam(new RemoveParam(true,annoRemove.removeField(),annoRemove.removeValue(),annoRemove.notRemoveValue()));
-        }
-        return tableParam;
-    }
-
 
 }

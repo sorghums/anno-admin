@@ -19,6 +19,8 @@ import site.sorghum.anno.db.param.OrderByParam;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
@@ -48,6 +50,8 @@ public class AnnoController {
 
     @Inject
     DbService dbService;
+    @Inject
+    MetadataManager metadataManager;
 
     /**
      * 分页查询
@@ -64,7 +68,7 @@ public class AnnoController {
                                          @Param boolean ignoreM2m,
                                          @Param boolean reverseM2m,
                                          @Body Map<String, Object> param) {
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
+        AnEntity entity = metadataManager.getEntity(clazz);
         param = emptyStringIgnore(param);
         String m2mSql = annoService.m2mSql(param);
         String andSql = null;
@@ -76,13 +80,13 @@ public class AnnoController {
             String joinThisClazzField = MapUtil.getStr(param,"joinThisClazzField");
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
-        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, aClass);
+        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, entity.getClazz());
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        TableParam tableParam = AnnoTableParamCache.get(clazz);
         if (StrUtil.isNotEmpty(orderBy)) {
-            tableParam.getOrderByParam().addOrderByItem(new OrderByParam.OrderByItem(AnnoFieldCache.getSqlColumnByJavaName(aClass, orderBy), "asc".equals(orderDir)));
+            tableParam.getOrderByParam().addOrderByItem(new OrderByParam.OrderByItem(entity.getField(orderBy).getTableFieldName(), "asc".equals(orderDir)));
         }
         IPage<T> pageRes = dbService.page(tableParam, dbConditions, new PageParam(page, perPage));
         return AnnoResult.succeed(pageRes);

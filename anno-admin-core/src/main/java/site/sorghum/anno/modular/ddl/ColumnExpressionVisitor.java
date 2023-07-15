@@ -16,25 +16,25 @@ import java.util.Map;
  */
 public class ColumnExpressionVisitor extends ExpressionVisitorAdapter {
 
-  private final List<Map<String, Object>> list;
+    private final List<Map<String, Object>> list;
 
-  private final Map<Integer, String> indexToColumn;
+    private final Map<Integer, String> indexToColumn;
 
-  public ColumnExpressionVisitor(List<Map<String, Object>> list, Map<Integer, String> indexToColumn) {
-    this.list = list;
-    this.indexToColumn = indexToColumn;
-  }
-
-  @Override
-  public void visit(RowConstructor rowConstructor) {
-    ExpressionList exprList = rowConstructor.getExprList();
-    List<Expression> expressions = exprList.getExpressions();
-    Map<String, Object> columnToValue = new LinkedHashMap<>();
-    for (int i = 0; i < expressions.size(); i++) {
-      Expression expression = expressions.get(i);
-      columnToValue.put(indexToColumn.get(i), JSqlParserUtil.getExpressionValue(expression));
+    public ColumnExpressionVisitor(List<Map<String, Object>> list, Map<Integer, String> indexToColumn) {
+        this.list = list;
+        this.indexToColumn = indexToColumn;
     }
-    list.add(columnToValue);
 
-  }
+    @Override
+    public void visit(RowConstructor rowConstructor) {
+        ExpressionList exprList = rowConstructor.getExprList();
+        List<Expression> expressions = exprList.getExpressions();
+        Map<String, Object> columnToValue = new LinkedHashMap<>();
+        for (int i = 0; i < expressions.size(); i++) {
+            Expression expression = expressions.get(i);
+            columnToValue.put(indexToColumn.get(i), JSqlParserUtil.getExpressionValue(expression));
+        }
+        list.add(columnToValue);
+
+    }
 }

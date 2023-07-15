@@ -45,117 +45,117 @@ import java.util.stream.Collectors;
 @Component
 public class InitDataService {
 
-  @Db
-  DbContext dbContext;
+    @Db
+    DbContext dbContext;
 
-  @Inject
-  AnnoProperty annoProperty;
+    @Inject
+    AnnoProperty annoProperty;
 
-  public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
+    public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
 
-  public void init() throws Exception {
-    // wood 设置
-    WoodConfig.isSelectItemEmptyAsNull = true;
-    WoodConfig.isUsingValueNull = true;
+    public void init() throws Exception {
+        // wood 设置
+        WoodConfig.isSelectItemEmptyAsNull = true;
+        WoodConfig.isUsingValueNull = true;
 
-    // 初始化 init.sql
-    if (annoProperty.getIsAutoMaintainInitData()) {
-      initSql();
-    }
-
-
-  }
-
-  /**
-   * 读取 sql 文件，对比数据库中已有的数据，初始化数据或者升级历史数据
-   */
-  private void initSql() throws Exception {
-    List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
-        .stream()
-        .map(ResourceUtil::getResource)
-        .toList();
-    for (URL resource : resources) {
-      try {
-        initSql(resource);
-      } catch (Exception e) {
-        log.error("parse or execute sql error, resource: {}", resource);
-        throw e;
-      }
-    }
-  }
-
-  /**
-   * 对比数据库中已有的数据，初始化数据或者升级历史数据
-   *
-   * @param resource 预置数据文件
-   */
-  public void initSql(URL resource) throws Exception {
-    StopWatch stopWatch = new StopWatch("init sql");
-    stopWatch.start("read sql");
-    List<String> statements = ScriptUtils.getStatements(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8));
-    stopWatch.stop();
-
-    stopWatch.start("parse & execute sql");
-    for (String statement : statements) {
-
-      Statement parse = CCJSqlParserUtil.parse(statement);
-      // 先只处理
-      if (parse instanceof Insert) {
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<Integer, String> indexToColumn = new HashMap<>();
-        for (int index = 0; index < ((Insert) parse).getColumns().size(); index++) {
-          indexToColumn.put(index, ((Insert) parse).getColumns().get(index).getColumnName());
+        // 初始化 init.sql
+        if (annoProperty.getIsAutoMaintainInitData()) {
+            initSql();
         }
-        ItemsList itemsList = ((Insert) parse).getItemsList();
-        itemsList.accept(new ExpressionVisitorAdapter() {
-          @Override
-          public void visit(ExpressionList expressionList) {
-            Map<String, Object> row = new LinkedHashMap<>();
-            boolean isSingleValue = false;
-            for (int i = 0; i < expressionList.getExpressions().size(); i++) {
-              Expression expression = expressionList.getExpressions().get(i);
 
-              if (ReflectUtil.hasField(expression.getClass(), "value")) { // values 后只有一行数据
-                isSingleValue = true;
-                Object value = JSqlParserUtil.getExpressionValue(expression);
-                row.put(indexToColumn.get(i), value);
-              } else { // values 后有多行数据
-                expression.accept(new ColumnExpressionVisitor(list, indexToColumn));
-              }
-            }
-            if (isSingleValue) {
-              list.add(row);
-            }
-          }
-        });
 
-        for (Map<String, Object> map : list) {
-          String id = (String) map.get("id");
-          if (StrUtil.isBlank(id)) {
-            continue;
-          }
-          String tableName = ((Insert) parse).getTable().getName();
+    }
 
-          Set<String> keys = map.keySet().stream().filter(k -> !systemFields.contains(k)).collect(Collectors.toSet());
-          Map<String, Object> existMap = dbContext.table(tableName).whereEq("id", id).selectMap(String.join(",", keys));
-          if (CollUtil.isEmpty(existMap)) {
-            dbContext.table(tableName).setMap(map).insert();
-          } else {
-            systemFields.forEach(map::remove);
-            for (String key : keys) {
-              map.remove(key, existMap.get(key));
+    /**
+     * 读取 sql 文件，对比数据库中已有的数据，初始化数据或者升级历史数据
+     */
+    private void initSql() throws Exception {
+        List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
+            .stream()
+            .map(ResourceUtil::getResource)
+            .toList();
+        for (URL resource : resources) {
+            try {
+                initSql(resource);
+            } catch (Exception e) {
+                log.error("parse or execute sql error, resource: {}", resource);
+                throw e;
             }
-            if (!map.isEmpty()) {
-              dbContext.table(tableName).setMap(map).whereEq("id", id).update();
-            }
-          }
         }
-      }
     }
-    stopWatch.stop();
-    log.info("init sql({}) finished, time: {}ms", resource.getPath(), stopWatch.getTotal(TimeUnit.MILLISECONDS));
-    if (log.isDebugEnabled()) {
-      log.debug(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
+
+    /**
+     * 对比数据库中已有的数据，初始化数据或者升级历史数据
+     *
+     * @param resource 预置数据文件
+     */
+    public void initSql(URL resource) throws Exception {
+        StopWatch stopWatch = new StopWatch("init sql");
+        stopWatch.start("read sql");
+        List<String> statements = ScriptUtils.getStatements(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8));
+        stopWatch.stop();
+
+        stopWatch.start("parse & execute sql");
+        for (String statement : statements) {
+
+            Statement parse = CCJSqlParserUtil.parse(statement);
+            // 先只处理
+            if (parse instanceof Insert) {
+                List<Map<String, Object>> list = new ArrayList<>();
+                Map<Integer, String> indexToColumn = new HashMap<>();
+                for (int index = 0; index < ((Insert) parse).getColumns().size(); index++) {
+                    indexToColumn.put(index, ((Insert) parse).getColumns().get(index).getColumnName());
+                }
+                ItemsList itemsList = ((Insert) parse).getItemsList();
+                itemsList.accept(new ExpressionVisitorAdapter() {
+                    @Override
+                    public void visit(ExpressionList expressionList) {
+                        Map<String, Object> row = new LinkedHashMap<>();
+                        boolean isSingleValue = false;
+                        for (int i = 0; i < expressionList.getExpressions().size(); i++) {
+                            Expression expression = expressionList.getExpressions().get(i);
+
+                            if (ReflectUtil.hasField(expression.getClass(), "value")) { // values 后只有一行数据
+                                isSingleValue = true;
+                                Object value = JSqlParserUtil.getExpressionValue(expression);
+                                row.put(indexToColumn.get(i), value);
+                            } else { // values 后有多行数据
+                                expression.accept(new ColumnExpressionVisitor(list, indexToColumn));
+                            }
+                        }
+                        if (isSingleValue) {
+                            list.add(row);
+                        }
+                    }
+                });
+
+                for (Map<String, Object> map : list) {
+                    String id = (String) map.get("id");
+                    if (StrUtil.isBlank(id)) {
+                        continue;
+                    }
+                    String tableName = ((Insert) parse).getTable().getName();
+
+                    Set<String> keys = map.keySet().stream().filter(k -> !systemFields.contains(k)).collect(Collectors.toSet());
+                    Map<String, Object> existMap = dbContext.table(tableName).whereEq("id", id).selectMap(String.join(",", keys));
+                    if (CollUtil.isEmpty(existMap)) {
+                        dbContext.table(tableName).setMap(map).insert();
+                    } else {
+                        systemFields.forEach(map::remove);
+                        for (String key : keys) {
+                            map.remove(key, existMap.get(key));
+                        }
+                        if (!map.isEmpty()) {
+                            dbContext.table(tableName).setMap(map).whereEq("id", id).update();
+                        }
+                    }
+                }
+            }
+        }
+        stopWatch.stop();
+        log.info("init sql({}) finished, time: {}ms", resource.getPath(), stopWatch.getTotal(TimeUnit.MILLISECONDS));
+        if (log.isDebugEnabled()) {
+            log.debug(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
+        }
     }
-  }
 }
