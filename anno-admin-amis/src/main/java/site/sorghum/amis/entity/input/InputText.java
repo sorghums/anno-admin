@@ -76,11 +76,6 @@ public class InputText extends FormItem {
     Boolean trimContents;
 
     /**
-     * 文本内容为空时去掉这个值
-     */
-    Boolean clearValueOnEmpty;
-
-    /**
      * 是否可以创建，默认为可以，除非设置为 false 即只能选择选项中的值
      */
     Boolean creatable;

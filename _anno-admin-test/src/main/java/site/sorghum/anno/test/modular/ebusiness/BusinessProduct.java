@@ -19,9 +19,10 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
  * @author Sorghum
  * @since 2023/07/04
  */
-@Data @EqualsAndHashCode(callSuper = true)
+@Data
+@EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品",
-         annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class)
+        annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class)
 )
 @Table("business_product")
 public class BusinessProduct extends BaseMetaModel {
@@ -76,7 +77,7 @@ public class BusinessProduct extends BaseMetaModel {
             optionType = @AnnoOptionType(
                     value = {
                             @AnnoOptionType.OptionData(value = "0", label = "下架"),
-                            @AnnoOptionType.OptionData(value = "1", label ="上架")
+                            @AnnoOptionType.OptionData(value = "1", label = "上架")
                     }
             ),
             search = @AnnoSearch,

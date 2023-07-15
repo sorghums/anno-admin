@@ -69,9 +69,4 @@ public class InputNumber extends FormItem{
      * 清空输入内容时，组件值将设置为resetValue
      */
     String resetValue;
-
-    /**
-     * 内容为空时从数据域中删除该表单项对应的值
-     */
-    Boolean clearValueOnEmpty;
 }

@@ -152,6 +152,11 @@ public class FormItem extends AmisBase {
      */
     String size;
 
+    /**
+     * 为空时是否清空值
+     */
+    Boolean clearValueOnEmpty = true;
+
     @Data
     public static class AutoFill {
 

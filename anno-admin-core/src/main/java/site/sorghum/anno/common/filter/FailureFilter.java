@@ -12,6 +12,7 @@ import org.noear.solon.validation.ValidatorException;
 import org.noear.solon.validation.annotation.Logined;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.response.AnnoResult;
+import site.sorghum.anno.common.util.AnnoContextUtil;
 import site.sorghum.anno.common.util.ThrowableLogUtil;
 
 import java.time.format.DateTimeParseException;
@@ -29,6 +30,8 @@ public class FailureFilter implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         try {
             chain.doFilter(ctx);
+            // 请求完成后自动清除上下文
+            AnnoContextUtil.clearContext();
         } catch (ValidatorException e) {
             if(e.getAnnotation() instanceof Logined){
                 ctx.status(401);

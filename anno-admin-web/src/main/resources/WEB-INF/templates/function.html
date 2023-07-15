@@ -46,6 +46,7 @@
                 //
                 requestAdaptor(api) {
                     api.headers["anno-token"] = localStorage.getItem("anno-token");
+                    api.data = removeEmptyItem(JSON.stringify(api.data));
                     return api;
                 },
                 //
@@ -86,6 +87,21 @@
                 // toastPosition: 'top-right' | 'top-center' | 'top-left' | 'bottom-center' | 'bottom-left' | 'bottom-right' | 'center'
             });
     })();
+
+
+    function removeEmptyItem(jsonStr){
+        // 判断是不是json字符串
+        if (jsonStr == undefined || jsonStr == null || !jsonStr.startsWith("{")) {
+            return;
+        }
+        var dataJson = JSON.parse(jsonStr);
+        for (var key in dataJson) {
+            if (dataJson[key] == null || dataJson[key] == "") {
+                delete dataJson[key];
+            }
+        }
+        return dataJson;
+    }
 </script>
 </body>
 </html>

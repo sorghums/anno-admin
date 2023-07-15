@@ -1,12 +1,15 @@
 package site.sorghum.anno.common.filter;
 
 
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
+import site.sorghum.anno.common.util.AnnoContextUtil;
 import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.common.util.ThrowableLogUtil;
 
@@ -21,6 +24,8 @@ import java.util.HashMap;
 @Component
 @Slf4j
 public class ExtraDataFilter implements Filter {
+    private static final String EXTRA_DATA = "_extraData";
+
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         String extraData = null;
@@ -28,22 +33,22 @@ public class ExtraDataFilter implements Filter {
         if (ctx.body().startsWith("{")) {
             bdMap = JSONUtil.toBean(ctx.body(),HashMap.class);
             if (bdMap.containsKey("_extraData")) {
-                extraData = bdMap.get("_extraData").toString();
+                extraData = MapUtil.getStr(bdMap,EXTRA_DATA);
             }
         } else if (StrUtil.isBlank(ctx.body())) {
             bdMap = new HashMap<>();
         }else {
             bdMap = null;
         }
-        if (StrUtil.isNotBlank(ctx.param("_extraData"))) {
-            extraData = ctx.param("_extraData");
+        if (StrUtil.isNotBlank(ctx.param(EXTRA_DATA))) {
+            extraData = ctx.param(EXTRA_DATA);
         }
         if (bdMap != null && StrUtil.isNotBlank(extraData)) {
             try {
                 HashMap<String,Object> param = JSONUtil.toBean(extraData,HashMap.class);
                 param.forEach(
                         (k, v) -> {
-                            if (v != null) {
+                            if (ObjUtil.isNotEmpty(v)) {
                                 ctx.paramSet(k, v.toString());
                                 bdMap.put(k, v);
                             }
@@ -54,7 +59,7 @@ public class ExtraDataFilter implements Filter {
                 ThrowableLogUtil.error(e);
             }
         }
-
+        AnnoContextUtil.getContext().setRequestParams(bdMap);
         chain.doFilter(ctx);
     }
 }

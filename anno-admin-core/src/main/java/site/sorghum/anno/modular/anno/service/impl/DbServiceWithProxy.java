@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 
 import cn.hutool.core.collection.CollUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.IPage;
@@ -24,6 +25,7 @@ import java.util.List;
  * @since 2023/07/10
  */
 @Component(typed = true)
+@Slf4j
 public class DbServiceWithProxy implements DbService {
 
     @Inject(value = "dbServiceWood")

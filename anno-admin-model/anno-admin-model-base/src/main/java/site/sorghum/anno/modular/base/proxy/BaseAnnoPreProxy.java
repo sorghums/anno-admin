@@ -3,8 +3,11 @@ package site.sorghum.anno.modular.base.proxy;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
+import site.sorghum.anno.common.util.AnnoContextUtil;
 import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.base.model.BaseMetaModel;
@@ -20,7 +23,13 @@ import java.util.List;
  * @since 2023/05/26
  */
 @Component
+@Slf4j
 public class BaseAnnoPreProxy extends AnnoPreBaseProxy<BaseMetaModel> {
+
+    @Override
+    public void beforeFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+        log.info("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
+    }
 
     @Override
     public void beforeAdd(TableParam<BaseMetaModel> tableParam,BaseMetaModel data) {
