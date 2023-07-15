@@ -4,6 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.core.AopContext;
 import org.noear.solon.core.Plugin;
 import site.sorghum.anno.db.param.RemoveParam;
@@ -25,6 +26,7 @@ import java.util.Set;
  * @author sorghum
  * @since 2023/05/20
  */
+@ProxyComponent
 public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
 
@@ -63,7 +65,6 @@ public class XPluginImp implements Plugin {
                 );
             }
         }
-
 
     }
 
