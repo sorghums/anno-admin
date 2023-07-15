@@ -14,6 +14,7 @@ import site.sorghum.anno.modular.base.model.BaseMetaModel;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class BaseAnnoPreProxy extends AnnoPreBaseProxy<BaseMetaModel> {
+public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
 
     @Override
     public void beforeFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
@@ -38,14 +39,12 @@ public class BaseAnnoPreProxy extends AnnoPreBaseProxy<BaseMetaModel> {
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
         data.setCreateBy(getLoginName());
-        super.beforeAdd(tableParam,data);
     }
 
     @Override
     public void beforeUpdate(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, BaseMetaModel data) {
         data.setUpdateTime(LocalDateTime.now());
         data.setUpdateBy(getLoginName());
-        super.beforeUpdate(tableParam, dbConditions, data);
     }
 
 
@@ -61,4 +60,29 @@ public class BaseAnnoPreProxy extends AnnoPreBaseProxy<BaseMetaModel> {
         }
     }
 
+    // ----------------- 以下为默认实现 -----------------
+    @Override
+    public void afterAdd(BaseMetaModel data) {
+
+    }
+
+    @Override
+    public void afterUpdate(BaseMetaModel data) {
+
+    }
+
+    @Override
+    public void beforeDelete(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions) {
+
+    }
+
+    @Override
+    public void afterDelete(List<DbCondition> dbConditions) {
+
+    }
+
+    @Override
+    public void afterFetch(Collection<BaseMetaModel> dataList) {
+
+    }
 }

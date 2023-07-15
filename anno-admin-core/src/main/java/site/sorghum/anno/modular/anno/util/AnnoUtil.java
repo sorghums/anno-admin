@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import org.noear.solon.Solon;
 import org.noear.wood.annotation.PrimaryKey;
@@ -163,7 +164,11 @@ public class AnnoUtil {
      * @return {@link List<String>}
      */
     public static List<String> getTableFields(Class<?> clazz) {
-        return getAnnoFields(clazz).stream().map(field -> AnnotationUtil.getAnnotation(field, AnnoField.class)).map(AnnoField::tableFieldName).collect(Collectors.toList());
+        return getAnnoFields(clazz)
+                .stream()
+                .map(field -> AnnotationUtil.getAnnotation(field, AnnoField.class))
+                .map(AnnoField::tableFieldName)
+                .filter(StrUtil::isNotBlank).collect(Collectors.toList());
     }
 
     /**

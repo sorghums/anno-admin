@@ -13,7 +13,7 @@ import java.util.List;
  * @author sorghum
  * @since 2023/05/20
  */
-public class AnnoPreBaseProxy<T> {
+public interface AnnoPreBaseProxy<T> {
     /**
      * 之前添加
      * 增加前
@@ -21,17 +21,14 @@ public class AnnoPreBaseProxy<T> {
      * @param data       数据
      * @param tableParam 表参数
      */
-    public void beforeAdd(TableParam<T> tableParam,T data) {
-
-    }
+    public void beforeAdd(TableParam<T> tableParam,T data);
 
     /**
      * 增加后
      *
      * @param data 数据
      */
-    public void afterAdd(T data) {
-    }
+    public void afterAdd(T data);
 
     /**
      * 在更新之前
@@ -40,8 +37,7 @@ public class AnnoPreBaseProxy<T> {
      * @param dbConditions db条件
      * @param data            data
      */
-    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
-    }
+    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data);
 
 
     /**
@@ -49,8 +45,7 @@ public class AnnoPreBaseProxy<T> {
      *
      * @param data 数据
      */
-    public void afterUpdate(T data) {
-    }
+    public void afterUpdate(T data);
 
     /**
      * 在删除之前
@@ -58,17 +53,14 @@ public class AnnoPreBaseProxy<T> {
      * @param tableParam   表参数
      * @param dbConditions db条件
      */
-    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-
-    }
+    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions);
 
     /**
      * 删除后
      *
      * @param dbConditions db条件
      */
-    public void afterDelete(List<DbCondition> dbConditions) {
-    }
+    public void afterDelete(List<DbCondition> dbConditions);
 
     /**
      *
@@ -78,15 +70,13 @@ public class AnnoPreBaseProxy<T> {
      * @param dbConditions db条件
      * @param pageParam    页面参数
      */
-    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-    }
+    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam);
 
     /**
      * 返回结果后
      *
      * @param dataList 列表
      */
-    public void afterFetch(Collection<T> dataList) {
-    }
+    public void afterFetch(Collection<T> dataList);
 
 }

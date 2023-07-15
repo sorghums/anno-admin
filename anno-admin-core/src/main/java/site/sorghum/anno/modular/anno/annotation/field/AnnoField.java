@@ -27,10 +27,11 @@ public @interface AnnoField {
 
     /**
      * 表字段名
+     * 如果不设置，则默认其为虚拟列，不会在数据库中生成与查询
      *
      * @return {@link String}
      */
-    String tableFieldName();
+    String tableFieldName() default "";
 
     /**
      * 数据库中的字段长度，为 0 时使用 anno 设置的默认长度
@@ -48,7 +49,6 @@ public @interface AnnoField {
      * @return boolean
      */
     boolean show() default true;
-
 
     /**
      * 搜索信息

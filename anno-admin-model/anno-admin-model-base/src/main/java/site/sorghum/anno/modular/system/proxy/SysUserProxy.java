@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2023/06/30
  */
 @ProxyComponent
-public class SysUserProxy extends AnnoBaseProxy<SysUser> {
+public class SysUserProxy implements AnnoBaseProxy<SysUser> {
     @Override
     public void beforeAdd(TableParam<SysUser> tableParam,SysUser data) {
         if (StrUtil.isBlank(data.getMobile())) {
@@ -31,41 +31,33 @@ public class SysUserProxy extends AnnoBaseProxy<SysUser> {
         }
         // 重新设置密码
         data.setPassword(MD5Util.digestHex(data.getMobile() + ":" + data.getPassword()));
-        super.beforeAdd(tableParam,data);
     }
 
     @Override
     public void afterAdd(SysUser data) {
-        super.afterAdd(data);
     }
 
     @Override
     public void beforeUpdate(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, SysUser data) {
-        super.beforeUpdate(tableParam, dbConditions, data);
     }
 
     @Override
     public void afterUpdate(SysUser data) {
-        super.afterUpdate(data);
     }
 
     @Override
     public void beforeDelete(TableParam<SysUser> tableParam, List<DbCondition> dbConditions) {
-        super.beforeDelete(tableParam, dbConditions);
     }
 
     @Override
     public void afterDelete(List<DbCondition> dbConditions) {
-        super.afterDelete(dbConditions);
     }
 
     @Override
     public void beforeFetch(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-        super.beforeFetch(tableParam, dbConditions, pageParam);
     }
 
     @Override
     public void afterFetch(Collection<SysUser> dataList) {
-        super.afterFetch(dataList);
     }
 }

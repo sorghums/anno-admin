@@ -56,8 +56,8 @@ public class AnnoEntityToTableGetter extends SampleEntityToTableGetter {
       AnnoField annoField = field.getAnnotation(AnnoField.class);
       String columnName = annoField.tableFieldName();
       if (StrUtil.isBlank(columnName)) {
-        // 默认使用小写，下划线命名
-        columnName = StrUtil.toUnderlineCase(field.getName());
+        // 虚拟列，跳过
+        continue;
       }
 
       int sqlType;
