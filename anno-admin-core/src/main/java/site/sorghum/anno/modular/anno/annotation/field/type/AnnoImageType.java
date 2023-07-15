@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.lang.annotation.*;
 
 /**
- * Anno庵野图像类型
+ * Anno 图像类型
  *
  * @author sorghum
  * @since 2023/05/27

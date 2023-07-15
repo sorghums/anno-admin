@@ -83,9 +83,9 @@ public @interface AnnoField {
     AnnoImageType imageType() default @AnnoImageType;
 
     /**
-     * 选择类型
+     * 选择类型-树
      *
-     * @return {@link AnnoOptionType}
+     * @return {@link AnnoTreeType}
      */
     AnnoTreeType treeType() default @AnnoTreeType;
 }

@@ -8,9 +8,10 @@ import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.common.config.AnnoProperty;
 import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.MetadataManager;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 初始化数据库表结构和预置数据
@@ -21,28 +22,32 @@ import java.util.Collection;
 @Component
 public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
 
-  @Inject
-  AnnoEntityToTableGetter annoEntityToTableGetter;
-  @Inject
-  InitDataService initDataService;
-  @Db
-  DbContext dbContext;
-  @Inject
-  AnnoProperty annoProperty;
+    @Inject
+    AnnoEntityToTableGetter annoEntityToTableGetter;
+    @Inject
+    InitDataService initDataService;
+    @Db
+    DbContext dbContext;
+    @Inject
+    AnnoProperty annoProperty;
+    @Inject
+    MetadataManager metadataManager;
 
-  @Override
-  public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
-    // 维护 entity 对应的表结构
-    if (annoProperty.getIsAutoMaintainTable()) {
-      EntityToDdlGenerator generator = new EntityToDdlGenerator(dbContext, annoEntityToTableGetter);
-      Collection<Class<?>> classes = AnnoClazzCache.fetchAllClazz();
-      for (Class<?> clazz : classes) {
-        generator.autoMaintainTable(clazz);
-      }
+    @Override
+    public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
+        // 维护 entity 对应的表结构
+        if (annoProperty.getIsAutoMaintainTable()) {
+            EntityToDdlGenerator generator = new EntityToDdlGenerator(dbContext, annoEntityToTableGetter);
+            List<AnEntity> allEntity = metadataManager.getAllEntity();
+            for (AnEntity anEntity : allEntity) {
+                if (anEntity.isAutoMaintainTable()) {
+                    generator.autoMaintainTable(anEntity.getClazz());
+                }
+            }
+        }
+
+        // 初始化数据
+        initDataService.init();
     }
-
-    // 初始化数据
-    initDataService.init();
-  }
 
 }
