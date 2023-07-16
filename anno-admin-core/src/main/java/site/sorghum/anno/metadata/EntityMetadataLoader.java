@@ -6,11 +6,13 @@ import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.modular.anno.proxy.AnnoPreDefaultProxy;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 
@@ -18,6 +20,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.type.TypeParserFactory;
 
@@ -42,17 +43,17 @@ public enum AnnoDataType {
 
 
     @SneakyThrows
-    public static FormItem editorExtraInfo(FormItem item, AnnoField annoField) {
-        AnnoDataType annoDataType = annoField.dataType();
+    public static FormItem editorExtraInfo(FormItem item, AnField anField) {
+        AnnoDataType annoDataType = anField.getDataType();
         item.setType(annoDataType.getCode());
-        return TypeParserFactory.getTypeParser(annoDataType).parseEdit(item,annoField);
+        return TypeParserFactory.getTypeParser(annoDataType).parseEdit(item,anField);
     }
 
     @SneakyThrows
-    public static Map<String,Object> displayExtraInfo(AmisBase item, AnnoField annoField) {
-        AnnoDataType annoDataType = annoField.dataType();
+    public static Map<String,Object> displayExtraInfo(AmisBase item, AnField anField) {
+        AnnoDataType annoDataType = anField.getDataType();
         item.setType(annoDataType.getShowCode());
-        return TypeParserFactory.getTypeParser(annoDataType).parseDisplay(item,annoField);
+        return TypeParserFactory.getTypeParser(annoDataType).parseDisplay(item,anField);
     }
 
 }

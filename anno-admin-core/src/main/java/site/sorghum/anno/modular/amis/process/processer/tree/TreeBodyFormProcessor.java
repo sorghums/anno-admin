@@ -1,6 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer.tree;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
@@ -10,6 +11,9 @@ import site.sorghum.amis.entity.function.ButtonGroup;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.TreeSelect;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.TreeView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
@@ -33,28 +37,27 @@ import java.util.Map;
  */
 @Component
 public class TreeBodyFormProcessor implements BaseProcessor {
+    @Inject
+    MetadataManager metadataManager;
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         TreeView treeView = (TreeView) amisBaseWrapper.getAmisBase();
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-        String parentKey = annoMain.annoTree().parentKey();
-
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        String parentKey = anEntity.getTreeParentKey();
+        List<AnField> fields = anEntity.getFields();
         ArrayList<AmisBase> itemList = new ArrayList<>();
-        for (Field field : fields) {
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
-            PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
-            boolean required = annoField.edit().notNull();
-            String fieldName = field.getName();
+        for (AnField field : fields) {
+            boolean required = field.isEditNotNull();
+            String fieldName = field.getFieldName();
             FormItem formItem = new FormItem();
             formItem.setRequired(required);
             formItem.setName(fieldName);
-            formItem.setLabel(annoField.title());
-            formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
-            if (annoId != null) {
+            formItem.setLabel(field.getTitle());
+            formItem = AnnoDataType.editorExtraInfo(formItem, field);
+            if (field.isPrimaryKey()) {
                 formItem.setDisabled(true);
             }
-            if (!annoField.show()) {
+            if (!field.isShow()) {
                 formItem.setHidden(true);
             }
             if (parentKey.equals(fieldName)) {
@@ -62,7 +65,7 @@ public class TreeBodyFormProcessor implements BaseProcessor {
                 formItem.setId("parent-tree-select");
                 formItem.setRequired(required);
                 formItem.setName(fieldName);
-                formItem.setLabel(annoField.title());
+                formItem.setLabel(field.getTitle());
                 ((TreeSelect) formItem).setSource(
                         new Api() {{
                             setMethod("get");

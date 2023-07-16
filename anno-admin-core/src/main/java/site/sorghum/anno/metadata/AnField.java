@@ -137,7 +137,7 @@ public class AnField {
 
     @Data
     @AllArgsConstructor
-    static class OptionData {
+    public static class OptionData {
 
         /**
          * 页面显示的内容
@@ -205,7 +205,7 @@ public class AnField {
 
     @Data
     @AllArgsConstructor
-    static class TreeData {
+    public static class TreeData {
 
         /**
          * 节点id

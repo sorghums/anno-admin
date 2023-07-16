@@ -10,6 +10,7 @@ import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.Options;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
@@ -31,18 +32,18 @@ public class TreeTypeParser implements TypeParser {
 
     @SneakyThrows
     @Override
-    public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {
+    public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         Mapping mappingItem = new Mapping();
         HashMap<String, Object> mapping = new HashMap<>();
-        AnnoTreeType annoTreeType = annoField.treeType();
-        if (StrUtil.isNotBlank(annoTreeType.sql())){
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
+        String treeTypeSql = anField.getTreeTypeSql();
+        if (StrUtil.isNotBlank(treeTypeSql)){
+            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(treeTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 mapping.put(MapUtil.getStr(map,"id"),map.get("label"));
             }
         }else {
-            for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
-                mapping.put(treeData.value(),treeData.label());
+            for (AnField.TreeData treeData : anField.getTreeDatas()) {
+                mapping.put(treeData.getValue(),treeData.getLabel());
             }
         }
         mappingItem.setMap(mapping);
@@ -51,24 +52,25 @@ public class TreeTypeParser implements TypeParser {
 
     @SneakyThrows
     @Override
-    public FormItem parseEdit(FormItem formItem, AnnoField annoField) {
+    public FormItem parseEdit(FormItem formItem, AnField anField) {
         InputTree inputTree = new InputTree();
         BeanUtil.copyProperties(formItem,inputTree);
         List<Options.Option> optionItemList = new ArrayList<>();
-        AnnoTreeType annoTreeType = annoField.treeType();
-        if (StrUtil.isNotBlank(annoTreeType.sql())){
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoTreeType.sql()).getDataList().getMapList();
+        String treeTypeSql = anField.getTreeTypeSql();
+        if (StrUtil.isNotBlank(treeTypeSql)){
+            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(treeTypeSql).getDataList().getMapList();
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
                     mapList, "label", "id", "pid"
             );
             optionItemList = AnnoTreeDTO.toOptions(trees);
         }else {
             List<AnnoTreeDTO<String>> trees = new ArrayList<>();
-            for (AnnoTreeType.TreeData treeData : annoTreeType.value()) {
+            for (AnField.TreeData treeData : anField.getTreeDatas()) {
                 AnnoTreeDTO<String> tree = new AnnoTreeDTO<>();
-                tree.setLabel(treeData.label());
-                tree.setValue(treeData.value());
-                tree.setParentId(treeData.pid());
+                tree.setId(treeData.getId());
+                tree.setLabel(treeData.getLabel());
+                tree.setValue(treeData.getValue());
+                tree.setParentId(treeData.getPid());
                 trees.add(tree);
             }
             optionItemList = AnnoTreeDTO.toOptions(trees);

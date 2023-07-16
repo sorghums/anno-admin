@@ -1,9 +1,13 @@
 package site.sorghum.anno.modular.amis.process.processer.crudm2m;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.display.Table;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
@@ -18,19 +22,23 @@ import java.util.Map;
 
 @Component
 public class CrudM2mColumnProcessor implements BaseProcessor {
+
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudM2mView crudM2mView = (CrudM2mView) amisBaseWrapper.getAmisBase();
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        List<AnField> fields = anEntity.getFields();
         List<Map> amisColumns = new ArrayList<>();
-        for (Field field : fields) {
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
+        for (AnField field : fields) {
             Table.Column column = new Table.Column();
-            column.setName(field.getName());
-            column.setLabel(annoField.title());
+            column.setName(field.getFieldName());
+            column.setLabel(field.getTitle());
             column.setSortable(true);
-            Map<String, Object> amisColumn = AnnoDataType.displayExtraInfo(column, annoField);
-            if (!annoField.show()) {
+            Map<String, Object> amisColumn = AnnoDataType.displayExtraInfo(column, field);
+            if (!field.isShow()) {
                 amisColumn.put("toggled", false);
             }
             amisColumns.add(amisColumn);

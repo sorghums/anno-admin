@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
@@ -11,6 +12,9 @@ import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
@@ -33,35 +37,37 @@ import java.util.Map;
  */
 @Component
 public class CrudAddInfoProcessor implements BaseProcessor {
+
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         // 判断是否可以编辑
+        AnEntity anEntity = metadataManager.getEntity(clazz);
         List<Field> annoFields = AnnoUtil.getAnnoFields(clazz);
-        boolean canAdd = annoFields.stream().map(f -> f.getAnnotation(AnnoField.class)).anyMatch(annoField -> annoField.edit().addEnable());
+        List<AnField> anFields = anEntity.getFields();
+        boolean canAdd = anFields.stream().anyMatch(AnField::isAddEnable);
         if (!canAdd) {
             return;
         }
         List<AmisBase> formItems = new ArrayList<AmisBase>() {{
-            List<Field> fields = AnnoUtil.getAnnoFields(clazz);
-            for (Field field : fields) {
-                AnnoField annoField = field.getAnnotation(AnnoField.class);
-                PrimaryKey annoId = field.getAnnotation(PrimaryKey.class);
-                if (annoId != null) {
+            for (AnField field : anFields) {
+                if (field.isPrimaryKey()) {
                     add(new FormItem() {{
-                        setName(field.getName());
+                        setName(field.getFieldName());
                         setType("hidden");
                     }});
                     continue;
                 }
-                AnnoEdit edit = annoField.edit();
-                if (edit.addEnable()) {
+                if (field.isAddEnable()) {
                     FormItem formItem = new FormItem();
-                    formItem.setName(field.getName());
-                    formItem.setLabel(annoField.title());
-                    formItem.setRequired(edit.notNull());
-                    formItem.setPlaceholder(edit.placeHolder());
-                    formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                    formItem.setName(field.getFieldName());
+                    formItem.setLabel(field.getTitle());
+                    formItem.setRequired(field.isEditNotNull());
+                    formItem.setPlaceholder(field.getEditPlaceHolder());
+                    formItem = AnnoDataType.editorExtraInfo(formItem, field);
                     add(formItem);
                 }
             }

@@ -58,7 +58,24 @@ public class AnnoUtil {
     }
 
     public static AnnoPreProxy getAnnoPreProxy(Class<?> clazz) {
-        return AnnotationUtil.getAnnotation(clazz, AnnoPreProxy.class);
+        List<Class<?>> classes = AnnoUtil.findAllClass(clazz);
+        for (Class<?> aClass : classes) {
+            AnnoPreProxy annoPreProxy = AnnotationUtil.getAnnotation(aClass,AnnoPreProxy.class);
+            if (annoPreProxy == null) {
+                continue;
+            }
+            return annoPreProxy;
+        }
+        return new AnnoPreProxy(){
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return AnnoPreProxy.class;
+            }
+            @Override
+            public Class<? extends AnnoPreBaseProxy> value() {
+                return AnnoPreDefaultProxy.class;
+            }
+        };
     }
 
     /**
@@ -69,16 +86,8 @@ public class AnnoUtil {
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> AnnoPreBaseProxy<T> getPreProxyInstance(Class<T> clazz) {
-        List<Class<?>> classes = AnnoUtil.findAllClass(clazz);
-        for (Class<?> aClass : classes) {
-            AnnoPreProxy annoPreProxy = AnnoUtil.getAnnoPreProxy(aClass);
-            if (annoPreProxy == null) {
-                continue;
-            }
-            Class<? extends AnnoPreBaseProxy> value = annoPreProxy.value();
-            return Solon.context().getBean(value);
-        }
-        return Solon.context().getBean(AnnoPreDefaultProxy.class);
+        AnnoPreProxy annoPreProxy = AnnoUtil.getAnnoPreProxy(clazz);
+        return Solon.context().getBean(annoPreProxy.value());
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {

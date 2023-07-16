@@ -7,6 +7,7 @@ import site.sorghum.amis.entity.display.CodePopOver;
 import site.sorghum.amis.entity.display.CommonPopOver;
 import site.sorghum.amis.entity.input.CodeEditor;
 import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.type.TypeParser;
 
@@ -21,7 +22,7 @@ import java.util.Map;
 @Component
 public class CodeEditorTypeParser implements TypeParser {
     @Override
-    public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {
+    public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         CommonPopOver commonPopOver = new CommonPopOver();
         CodeEditor codeEditor = new CodeEditor(){{
             setDisabled(true);
@@ -36,7 +37,7 @@ public class CodeEditorTypeParser implements TypeParser {
     }
 
     @Override
-    public FormItem parseEdit(FormItem formItem, AnnoField annoField) {
+    public FormItem parseEdit(FormItem formItem, AnField anField) {
         CodeEditor codeEditor = new CodeEditor();
         BeanUtil.copyProperties(formItem, codeEditor);
         return codeEditor;

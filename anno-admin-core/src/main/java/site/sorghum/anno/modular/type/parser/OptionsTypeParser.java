@@ -9,6 +9,7 @@ import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.type.TypeParser;
@@ -30,18 +31,18 @@ public class OptionsTypeParser implements TypeParser {
 
     @SneakyThrows
     @Override
-    public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {
+    public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         Mapping mappingItem = new Mapping();
         HashMap<String, Object> mapping = new HashMap<>();
-        AnnoOptionType annoOptionType = annoField.optionType();
-        if (StrUtil.isNotBlank(annoOptionType.sql())) {
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
+        String optionTypeSql = anField.getOptionTypeSql();
+        if (StrUtil.isNotBlank(optionTypeSql)) {
+            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 mapping.put(map.get("value").toString(), map.get("label"));
             }
         } else {
-            for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
-                mapping.put(optionData.value(), optionData.label());
+            for (AnField.OptionData optionData : anField.getOptionDatas()) {
+                mapping.put(optionData.getValue(), optionData.getLabel());
             }
         }
         mappingItem.setMap(mapping);
@@ -50,13 +51,13 @@ public class OptionsTypeParser implements TypeParser {
 
     @SneakyThrows
     @Override
-    public FormItem parseEdit(FormItem formItem, AnnoField annoField) {
+    public FormItem parseEdit(FormItem formItem, AnField anField) {
         Options options = new Options();
         BeanUtil.copyProperties(formItem, options);
         List<Options.Option> optionItemList = new ArrayList<>();
-        AnnoOptionType annoOptionType = annoField.optionType();
-        if (StrUtil.isNotBlank(annoOptionType.sql())) {
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(annoOptionType.sql()).getDataList().getMapList();
+        String optionTypeSql = anField.getOptionTypeSql();
+        if (StrUtil.isNotBlank(optionTypeSql)) {
+            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 Options.Option optionItem = new Options.Option();
                 optionItem.setLabel(MapUtil.getStr(map, "label"));
@@ -64,10 +65,10 @@ public class OptionsTypeParser implements TypeParser {
                 optionItemList.add(optionItem);
             }
         } else {
-            for (AnnoOptionType.OptionData optionData : annoOptionType.value()) {
+            for (AnField.OptionData optionData : anField.getOptionDatas()) {
                 Options.Option optionItem = new Options.Option();
-                optionItem.setLabel(optionData.label());
-                optionItem.setValue(optionData.value());
+                optionItem.setLabel(optionData.getLabel());
+                optionItem.setValue(optionData.getValue());
                 optionItemList.add(optionItem);
             }
         }

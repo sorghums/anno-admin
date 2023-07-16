@@ -9,6 +9,7 @@ import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputFile;
 import site.sorghum.anno.common.util.JSONUtil;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.type.TypeParser;
 
@@ -24,7 +25,7 @@ import java.util.Map;
 @Component
 public class FileTypeParser implements TypeParser {
     @Override
-    public Map<String, Object> parseDisplay(AmisBase amisBase, AnnoField annoField) {
+    public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         Table.Column column = (Table.Column) amisBase;
         Link link = new Link();
         link.setType("static-link");
@@ -35,7 +36,7 @@ public class FileTypeParser implements TypeParser {
     }
 
     @Override
-    public FormItem parseEdit(FormItem formItem, AnnoField annoField) {
+    public FormItem parseEdit(FormItem formItem, AnField anField) {
         InputFile inputFile = new InputFile();
         BeanUtil.copyProperties(formItem, inputFile,"type");
         return inputFile;

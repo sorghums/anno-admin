@@ -2,6 +2,7 @@ package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
@@ -9,6 +10,9 @@ import site.sorghum.amis.entity.display.Group;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
@@ -32,10 +36,14 @@ import java.util.Map;
  */
 @Component
 public class CrudFilterProcessor implements BaseProcessor {
+
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
         // 获取过滤的模板
         Form form = new Form();
         form.setId("crud_filter");
@@ -52,18 +60,16 @@ public class CrudFilterProcessor implements BaseProcessor {
                 }}
         ));
         List<AmisBase> body = new ArrayList<>();
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        List<AnField> fields = anEntity.getFields();
         List<FormItem> amisColumns = new ArrayList<>();
-        for (Field field : fields) {
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
-            AnnoSearch search = annoField.search();
-            if (search.enable()) {
+        for (AnField field : fields) {
+            if (field.isSearchEnable()) {
                 FormItem formItem = new FormItem();
-                formItem.setName(field.getName());
-                formItem.setLabel(annoField.title());
-                formItem.setPlaceholder(search.placeHolder());
+                formItem.setName(field.getFieldName());
+                formItem.setLabel(field.getTitle());
+                formItem.setPlaceholder(field.getSearchPlaceHolder());
                 formItem.setSize("sm");
-                formItem = AnnoDataType.editorExtraInfo(formItem, annoField);
+                formItem = AnnoDataType.editorExtraInfo(formItem, field);
                 amisColumns.add(formItem);
             }
         }
@@ -97,8 +103,8 @@ public class CrudFilterProcessor implements BaseProcessor {
             data = new HashMap<>();
             form.setData(data);
         }
-        data.put("orderBy",annoMain.annoOrder().orderValue());
-        data.put("orderDir", annoMain.annoOrder().orderType());
+        data.put("orderBy",anEntity.getOrderValue());
+        data.put("orderDir", anEntity.getOrderType());
         // 写入到当前对象
         Crud crudBody = crudView.getCrudBody();
         crudBody.setFilter(form);
