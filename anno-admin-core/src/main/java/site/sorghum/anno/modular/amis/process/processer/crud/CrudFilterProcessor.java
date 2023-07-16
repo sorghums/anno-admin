@@ -74,6 +74,7 @@ public class CrudFilterProcessor implements BaseProcessor {
             }
         }
         if (amisColumns.size() == 0) {
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
             return;
         }
         // amisColumns 以4个为一组进行分组

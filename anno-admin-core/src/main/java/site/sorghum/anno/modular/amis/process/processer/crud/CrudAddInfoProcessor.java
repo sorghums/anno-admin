@@ -46,10 +46,10 @@ public class CrudAddInfoProcessor implements BaseProcessor {
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         // 判断是否可以编辑
         AnEntity anEntity = metadataManager.getEntity(clazz);
-        List<Field> annoFields = AnnoUtil.getAnnoFields(clazz);
         List<AnField> anFields = anEntity.getFields();
         boolean canAdd = anFields.stream().anyMatch(AnField::isAddEnable);
         if (!canAdd) {
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
             return;
         }
         List<AmisBase> formItems = new ArrayList<AmisBase>() {{

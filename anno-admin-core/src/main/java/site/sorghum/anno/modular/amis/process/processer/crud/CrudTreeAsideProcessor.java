@@ -2,16 +2,15 @@ package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.InputTree;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +23,12 @@ import java.util.Map;
  */
 @Component
 public class CrudTreeAsideProcessor implements BaseProcessor {
+    @Inject
+    MetadataManager metadataManager;
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-        AnnoLeftTree annoLeftTree = annoMain.annoLeftTree();
+        AnEntity anEntity = metadataManager.getEntity(clazz);
         InputTree tree = new InputTree();
         tree.setId("aside-input-tree");
         tree.setName("_cat");
@@ -53,17 +53,15 @@ public class CrudTreeAsideProcessor implements BaseProcessor {
                             put("eventName", "broadcast_aside_change");
                         }});
                         put("data", new HashMap<String, Object>() {{
-                            put(annoLeftTree.catKey(), "${_cat}");
+                            put(anEntity.getLeftTreeCatKey(), "${_cat}");
                         }});
                     }}
             ));
         }});
         tree.setOnEvent(event);
-        AnnoTree annoTree = annoMain.annoTree();
-        boolean enableTreeAside = annoLeftTree.enable() || (annoTree.enable() && annoTree.displayAsTree());
+        boolean enableTreeAside = anEntity.isEnableLeftTree() || (anEntity.isEnableTree() && anEntity.isTreeDisplayAsTree());
         if (enableTreeAside) {
             crudView.setAside(tree);
-            return;
         }
         chain.doProcessor(amisBaseWrapper, clazz, properties);
     }

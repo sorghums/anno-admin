@@ -102,6 +102,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setSearchNotNull(anno.search().notNull());
             anField.setSearchPlaceHolder(anno.search().placeHolder());
 
+            anField.setAddEnable(anno.edit().addEnable());
             anField.setEditEnable(anno.edit().editEnable());
             anField.setEditNotNull(anno.edit().notNull());
             anField.setEditPlaceHolder(anno.edit().placeHolder());

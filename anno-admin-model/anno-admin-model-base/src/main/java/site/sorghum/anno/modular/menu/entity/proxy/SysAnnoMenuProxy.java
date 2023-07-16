@@ -1,14 +1,15 @@
 package site.sorghum.anno.modular.menu.entity.proxy;
 
 import cn.hutool.core.util.StrUtil;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 
 import java.util.Collection;
@@ -23,6 +24,9 @@ import java.util.List;
 @ProxyComponent
 public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
 
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public void beforeAdd(TableParam<SysAnnoMenu> tableParam, SysAnnoMenu data) {
         String parseData = null;
@@ -34,10 +38,10 @@ public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
         //1. AnnoMain --> 转成菜单
         if ("annoMain".equals(data.getParseType())) {
             Class<?> targetClazz = AnnoClazzCache.get(data.getParseData());
-            AnnoMain annoMain = AnnoUtil.getAnnoMain(targetClazz);
+            AnEntity anEntity = metadataManager.getEntity(targetClazz);
             data.setParseType("anno");
             data.setHref("/system/config/amis/"+data.getParseData());
-            data.setTitle(StrUtil.isBlank(data.getTitle()) ? annoMain.name() : data.getTitle());
+            data.setTitle(StrUtil.isBlank(data.getTitle()) ? anEntity.getTitle() : data.getTitle());
             data.setOpenType("_iframe");
             data.setType(1);
         }

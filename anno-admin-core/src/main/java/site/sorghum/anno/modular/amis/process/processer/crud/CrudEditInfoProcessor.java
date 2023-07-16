@@ -48,6 +48,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
         List<AnField> fields = entity.getFields();
         boolean canEdit = fields.stream().anyMatch(AnField::isEditEnable);
         if (!canEdit) {
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
             return;
         }
         Crud crudBody = crudView.getCrudBody();
