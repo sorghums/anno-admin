@@ -1,5 +1,6 @@
 package site.sorghum.anno.metadata;
 
+import cn.hutool.core.lang.func.LambdaUtil;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.db.param.RemoveParam;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +77,16 @@ public class MetadataManager {
     }
 
     /**
+     * 获取表数据
+     *
+     * @param entityName entityName
+     * @return {@link TableParam}
+     */
+    public TableParam getTableName(String entityName) {
+        return AnnoTableParamCache.get(entityName);
+    }
+
+    /**
      * 获取所有实体的元数据（无序）
      */
     public List<AnEntity> getAllEntity() {
@@ -96,6 +108,17 @@ public class MetadataManager {
     }
 
     /**
+     * 获取实体类的元数据
+     *
+     * @param entityClass 实体类
+     * @return 元数据
+     */
+    public AnEntity getEntity(Class<?> entityClass) {
+        String entityName = entityMetadataLoader.getEntityName(entityClass);
+        return getEntity(entityName);
+    }
+
+    /**
      * 获取实体类的字段信息
      *
      * @param entityName 实体名
@@ -112,5 +135,22 @@ public class MetadataManager {
         return field;
     }
 
+    /**
+     * 获取实体类的字段信息
+     *
+     * @param clazz  clazz
+     * @param getter getter
+     * @return 字段信息
+     */
+    public <T> AnField getEntityField(Class<T> clazz, Function<T, ?> getter) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        AnEntity entity = getEntity(entityName);
+        String fieldName = LambdaUtil.getFieldName(t -> getter.apply((T) t));
+        AnField field = entity.getField(fieldName);
+        if (field == null) {
+            throw new BizException("field: %s is not found".formatted(fieldName));
+        }
+        return field;
+    }
 
 }
