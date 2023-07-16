@@ -13,6 +13,7 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setOrderType(annoMain.annoOrder().orderType());
         entity.setOrderValue(annoMain.annoOrder().orderValue());
 
+        entity.setPreProxy(AnnoUtil.getAnnoPreProxy(clazz).value());
         entity.setProxy(annoMain.annoProxy().value());
 
         entity.setEnablePermission(annoMain.annoPermission().enable());
@@ -64,16 +66,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setTreeDisplayAsTree(annoMain.annoTree().displayAsTree());
 
         // 逻辑删除
-        List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
-        for (Class<?> aClass : allClass) {
-            AnnoRemove annotation = AnnotationUtil.getAnnotation(aClass, AnnoRemove.class);
-            if (annotation != null) {
-                entity.setRemoveType(annotation.removeType());
-                entity.setRemoveField(annotation.removeField());
-                entity.setRemoveValue(annotation.removeValue());
-                entity.setNotRemoveValue(annotation.notRemoveValue());
-            }
-        }
+        AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
+        entity.setRemoveType(annoRemove.removeType());
+        entity.setRemoveField(annoRemove.removeField());
+        entity.setRemoveValue(annoRemove.removeValue());
+        entity.setNotRemoveValue(annoRemove.notRemoveValue());
 
         setAnFields(entity, clazz);
 
@@ -137,6 +134,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             // pk
             PrimaryKey primaryKey = AnnotationUtil.getAnnotation(field, PrimaryKey.class);
             if (primaryKey != null) {
+                anField.setPrimaryKey(true);
                 entity.setPkField(anField);
             }
 

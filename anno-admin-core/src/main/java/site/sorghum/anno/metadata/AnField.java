@@ -40,6 +40,11 @@ public class AnField {
     private String tableFieldName;
 
     /**
+     * 是否主键
+     */
+    private boolean primaryKey;
+
+    /**
      * 数据库中的字段长度，为 0 时使用 anno 设置的默认长度
      *
      * @see site.sorghum.anno.modular.anno.annotation.field.AnnoField#fieldSize()

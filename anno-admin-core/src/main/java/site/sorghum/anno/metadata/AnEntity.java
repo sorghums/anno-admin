@@ -10,6 +10,7 @@ import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
+import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +68,13 @@ public class AnEntity {
      * @see AnnoOrder#orderValue()
      */
     private String orderValue;
+
+    /**
+     * 前置代理类
+     *
+     * @see AnnoProxy#value()
+     */
+    private Class<? extends AnnoPreBaseProxy> preProxy;
 
     /**
      * 代理类
