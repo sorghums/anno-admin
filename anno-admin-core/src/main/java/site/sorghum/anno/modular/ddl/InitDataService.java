@@ -107,27 +107,7 @@ public class InitDataService {
                     indexToColumn.put(index, ((Insert) parse).getColumns().get(index).getColumnName());
                 }
                 ItemsList itemsList = ((Insert) parse).getItemsList();
-                itemsList.accept(new ExpressionVisitorAdapter() {
-                    @Override
-                    public void visit(ExpressionList expressionList) {
-                        Map<String, Object> row = new LinkedHashMap<>();
-                        boolean isSingleValue = false;
-                        for (int i = 0; i < expressionList.getExpressions().size(); i++) {
-                            Expression expression = expressionList.getExpressions().get(i);
-
-                            if (ReflectUtil.hasField(expression.getClass(), "value")) { // values 后只有一行数据
-                                isSingleValue = true;
-                                Object value = JSqlParserUtil.getExpressionValue(expression);
-                                row.put(indexToColumn.get(i), value);
-                            } else { // values 后有多行数据
-                                expression.accept(new ColumnExpressionVisitor(list, indexToColumn));
-                            }
-                        }
-                        if (isSingleValue) {
-                            list.add(row);
-                        }
-                    }
-                });
+                itemsList.accept(new ExpressionListVisitor(list, indexToColumn));
 
                 for (Map<String, Object> map : list) {
                     String id = (String) map.get("id");
