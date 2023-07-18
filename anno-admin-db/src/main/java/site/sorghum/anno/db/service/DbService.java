@@ -12,7 +12,7 @@ import java.util.List;
  * Sql构造器
  *
  * @author sorghum
- * @date 2023/07/07
+ * @since 2023/07/07
  */
 public interface DbService {
     /**

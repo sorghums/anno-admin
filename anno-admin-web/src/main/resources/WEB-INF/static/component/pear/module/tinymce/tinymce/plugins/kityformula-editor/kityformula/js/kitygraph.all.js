@@ -6069,7 +6069,7 @@ _p[43] = {
             refer = refer || "parent";
             /**
          * 由于新版chrome(dev 48.0)移除了getTransformToElement这个方法可能导致报错，这里做兼容处理
-         * @Date 2015-11-12
+         * @since 2015-11-12
          * @Editor Naixor
          */
             function getTransformToElement(target, source) {

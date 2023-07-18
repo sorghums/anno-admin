@@ -15,7 +15,7 @@ import site.sorghum.anno.modular.model.AnnoModule;
  * 基础模块
  *
  * @author sorghum
- * @date 2023/07/15
+ * @since 2023/07/15
  */
 @Slf4j
 @Component
