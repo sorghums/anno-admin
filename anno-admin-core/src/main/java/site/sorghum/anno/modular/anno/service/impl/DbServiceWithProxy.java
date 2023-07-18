@@ -5,8 +5,10 @@ import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.IPage;
+import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -31,7 +33,6 @@ import java.util.List;
 @Slf4j
 public class DbServiceWithProxy implements DbService {
 
-    @Inject(value = "dbServiceWood")
     DbService dbService;
 
     @Inject
@@ -39,6 +40,19 @@ public class DbServiceWithProxy implements DbService {
 
     @Inject
     MetadataManager metadataManager;
+
+    @Init
+    public void setDbService(@Inject(value = "${anno.db.type:wood}") String dbType) {
+        if ("wood".equals(dbType)) {
+            Solon.context().getBeanAsync(
+                "woodDbService", ds -> {
+                    dbService = (DbService) ds;
+                }
+            );
+        } else {
+            throw new AnnoDbException("不支持的数据库类型，仅支持wood。");
+        }
+    }
 
     @Override
     public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
@@ -48,8 +62,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions,pageParam);
-        proxyInstance.beforeFetch(tableParam, dbConditions,pageParam);
+        preProxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
+        proxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
         IPage<T> page = dbService.page(tableParam, dbConditions, pageParam);
         // 后置处理
         proxyInstance.afterFetch(page.getList());
@@ -64,8 +78,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions,null);
-        proxyInstance.beforeFetch(tableParam, dbConditions,null);
+        preProxyInstance.beforeFetch(tableParam, dbConditions, null);
+        proxyInstance.beforeFetch(tableParam, dbConditions, null);
         List<T> list = dbService.list(tableParam, dbConditions);
         // 后置处理
         preProxyInstance.afterFetch(list);
@@ -81,8 +95,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions,null);
-        proxyInstance.beforeFetch(tableParam, dbConditions,null);
+        preProxyInstance.beforeFetch(tableParam, dbConditions, null);
+        proxyInstance.beforeFetch(tableParam, dbConditions, null);
         T item = dbService.queryOne(tableParam, dbConditions);
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
@@ -99,8 +113,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeUpdate(tableParam, dbConditions,t);
-        proxyInstance.beforeUpdate(tableParam, dbConditions,t);
+        preProxyInstance.beforeUpdate(tableParam, dbConditions, t);
+        proxyInstance.beforeUpdate(tableParam, dbConditions, t);
         int update = dbService.update(tableParam, dbConditions, t);
         // 后置处理
         preProxyInstance.afterUpdate(t);

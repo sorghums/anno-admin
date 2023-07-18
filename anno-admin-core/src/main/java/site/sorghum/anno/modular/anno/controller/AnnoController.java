@@ -49,6 +49,7 @@ public class AnnoController {
 
     @Inject
     DbService dbService;
+
     @Inject
     MetadataManager metadataManager;
 
