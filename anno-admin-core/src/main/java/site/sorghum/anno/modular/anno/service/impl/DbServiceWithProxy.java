@@ -42,7 +42,8 @@ public class DbServiceWithProxy implements DbService {
     MetadataManager metadataManager;
 
     @Init
-    public void setDbService(@Inject(value = "${anno.db.type:wood}") String dbType) {
+    public void init() {
+        String dbType = Solon.cfg().get("anno.db.type", "wood");
         if ("wood".equals(dbType)) {
             Solon.context().getBeanAsync(
                 "dbServiceWood", ds -> {

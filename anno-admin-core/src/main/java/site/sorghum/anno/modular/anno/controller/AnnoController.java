@@ -203,7 +203,7 @@ public class AnnoController {
         }
         List<T> list = dbService.list(tableParam, dbConditions);
         List<AnnoTreeDTO<String>> annoTreeDTOS = annoService.annoTrees(tableParam.getClazz(), list);
-        annoTreeDTOS.add(0, AnnoTreeDTO.<String>builder().id("0").label("全部").value("").build());
+        annoTreeDTOS.add(0, AnnoTreeDTO.<String>builder().id("0").label("无选择").value("").build());
         return AnnoResult.succeed(annoTreeDTOS);
     }
 

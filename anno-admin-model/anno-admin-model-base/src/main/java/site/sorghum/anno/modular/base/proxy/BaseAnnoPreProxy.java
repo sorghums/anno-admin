@@ -29,7 +29,7 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
 
     @Override
     public void beforeFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-        log.info("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
+        log.debug("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
     }
 
     @Override
