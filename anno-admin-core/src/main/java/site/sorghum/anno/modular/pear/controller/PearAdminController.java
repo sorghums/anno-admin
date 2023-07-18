@@ -33,6 +33,10 @@ public class PearAdminController {
 
     @Mapping(value = "index.html")
     public ModelAndView index(Context ctx) {
+        if (!StpUtil.isLogin()){
+            ctx.redirect("/login.html");
+            return null;
+        }
         return new ModelAndView("index.html");
     }
 

@@ -45,7 +45,7 @@ public class DbServiceWithProxy implements DbService {
     public void setDbService(@Inject(value = "${anno.db.type:wood}") String dbType) {
         if ("wood".equals(dbType)) {
             Solon.context().getBeanAsync(
-                "woodDbService", ds -> {
+                "dbServiceWood", ds -> {
                     dbService = (DbService) ds;
                 }
             );
