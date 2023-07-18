@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.IPage;
@@ -10,6 +11,8 @@ import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
@@ -34,12 +37,16 @@ public class DbServiceWithProxy implements DbService {
     @Inject
     PermissionProxy permissionProxy;
 
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions,pageParam);
         proxyInstance.beforeFetch(tableParam, dbConditions,pageParam);
@@ -53,8 +60,9 @@ public class DbServiceWithProxy implements DbService {
     public <T> List<T> list(TableParam<T> tableParam, List<DbCondition> dbConditions) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions,null);
         proxyInstance.beforeFetch(tableParam, dbConditions,null);
@@ -69,8 +77,9 @@ public class DbServiceWithProxy implements DbService {
     public <T> T queryOne(TableParam<T> tableParam, List<DbCondition> dbConditions) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions,null);
         proxyInstance.beforeFetch(tableParam, dbConditions,null);
@@ -86,8 +95,9 @@ public class DbServiceWithProxy implements DbService {
     public <T> int update(TableParam<T> tableParam, List<DbCondition> dbConditions, T t) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.updatePermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeUpdate(tableParam, dbConditions,t);
         proxyInstance.beforeUpdate(tableParam, dbConditions,t);
@@ -102,8 +112,9 @@ public class DbServiceWithProxy implements DbService {
     public <T> long insert(TableParam<T> tableParam, T t) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.addPermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeAdd(tableParam, t);
         proxyInstance.beforeAdd(tableParam, t);
@@ -118,8 +129,9 @@ public class DbServiceWithProxy implements DbService {
     public <T> int delete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.deletePermission(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoUtil.getPreProxyInstance(clazz);
-        AnnoBaseProxy<T> proxyInstance = AnnoUtil.getProxyInstance(clazz);
+        AnEntity managerEntity = metadataManager.getEntity(clazz);
+        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeDelete(tableParam, dbConditions);
         proxyInstance.beforeDelete(tableParam, dbConditions);

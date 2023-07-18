@@ -5,9 +5,7 @@ import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +80,18 @@ public class MetadataManager {
      * @param entityName entityName
      * @return {@link TableParam}
      */
-    public TableParam getTableName(String entityName) {
+    public TableParam getTableParam(String entityName) {
+        return AnnoTableParamCache.get(entityName);
+    }
+
+    /**
+     * 获取表数据
+     *
+     * @param clazz clazz
+     * @return {@link TableParam}
+     */
+    public TableParam getTableParam(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
         return AnnoTableParamCache.get(entityName);
     }
 
