@@ -2,25 +2,22 @@ package site.sorghum.anno.metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
-import site.sorghum.anno.modular.anno.proxy.AnnoPreDefaultProxy;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +41,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
         AnEntity entity = new AnEntity();
         entity.setTitle(annoMain.name());
-        entity.setTableName(table.value());
+        if (table == null || StrUtil.isBlank(table.value())) {
+            entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
+        } else {
+            entity.setTableName(table.value());
+        }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
 
@@ -93,7 +94,13 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
             anField.setTitle(anno.title());
-            anField.setTableFieldName(anno.tableFieldName());
+            // 列名没有设置时，默认使用下划线
+            if (StrUtil.isBlank(anno.tableFieldName())) {
+                anField.setTableFieldName(StrUtil.toUnderlineCase(field.getName()));
+            } else {
+                anField.setTableFieldName(anno.tableFieldName());
+            }
+            anField.setFieldType(field.getType());
             anField.setFieldSize(anno.fieldSize());
             anField.setDefaultValue(anno.defaultValue());
             anField.setShow(anno.show());

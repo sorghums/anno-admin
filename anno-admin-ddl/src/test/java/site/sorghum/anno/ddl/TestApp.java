@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl.app;
+package site.sorghum.anno.ddl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
