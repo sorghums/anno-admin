@@ -36,9 +36,9 @@ public class AnnoServiceImpl implements AnnoService {
     public <T> String sql(Class<T> clazz,String sql) {
         try {
             // 如果有配置逻辑删除
-            AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
-            if (annoRemove.removeType() == 1) {
-                sql = sql + " and " + annoRemove.removeField() + " = " + annoRemove.notRemoveValue();
+            AnEntity anEntity = metadataManager.getEntity(clazz);
+            if (anEntity.getRemoveType() == 1) {
+                sql = sql + " and " + anEntity.getRemoveField() + " = " + anEntity.getNotRemoveValue();
             }
             return sql;
         } catch (Exception e) {
@@ -55,11 +55,10 @@ public class AnnoServiceImpl implements AnnoService {
         String mediumOtherField = MapUtil.getStr(param,"mediumOtherField");
         String otherValue =MapUtil.getStr(param,"joinValue");
         String mediumThisField = MapUtil.getStr(param,"mediumThisField");
-
-        Class<?> mediumCLass = AnnoClazzCache.get(MapUtil.getStr(param,"mediumTableClass"));
-        String mediumTable = AnnoUtil.getTableName(mediumCLass);
+        AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "mediumTableClass"));
+        String mediumTable = mediumEntity.getTableName();
         String sql = "select "+mediumThisField+" from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
-        return sql(mediumCLass,sql);
+        return sql(mediumEntity.getClazz(),sql);
     }
 
     @Override

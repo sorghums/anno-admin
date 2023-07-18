@@ -20,11 +20,10 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.service.AnnoService;
-import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
-import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
@@ -108,12 +107,12 @@ public class AnnoController {
         if (id == null) {
             id = _cat;
         }
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        Field pkField = AnnoUtil.getPkFieldItem(aClass);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        AnField pkField = anEntity.getPkField();
         if (pkField == null) {
             return AnnoResult.from(Result.failure("未找到主键"));
         }
-        T queryOne = (T) dbService.queryOne(AnnoTableParamCache.get(clazz), CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
+        T queryOne = (T) dbService.queryOne(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
         return AnnoResult.succeed(queryOne);
     }
 
@@ -126,9 +125,9 @@ public class AnnoController {
     @Mapping("/{clazz}/removeById")
     @Post
     public AnnoResult<String> removeById(@Path String clazz, @Param("id") String id) {
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        Field pkField = AnnoUtil.getPkFieldItem(aClass);
-        dbService.delete(AnnoTableParamCache.get(clazz), CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(id).build()));
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        AnField pkField = anEntity.getPkField();
+        dbService.delete(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
         return AnnoResult.succeed();
     }
 
@@ -137,29 +136,30 @@ public class AnnoController {
      */
     @Mapping("/{clazz}/updateById")
     public <T> AnnoResult<T> updateById(@Path String clazz, @Body Map<String, Object> param) {
-        Class<T> aClass = (Class<T>) AnnoClazzCache.get(clazz);
-        Field pkField = AnnoUtil.getPkFieldItem(aClass);
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        AnField pkField = anEntity.getPkField();
+        TableParam<T> tableParam = metadataManager.getTableParam(clazz);
+        T bean = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
         dbService.update(tableParam,
-                CollUtil.newArrayList(DbCondition.builder().field(AnnoUtil.getColumnName(pkField)).value(param.get(pkField.getName())).build()),
-                JSONUtil.toBean(emptyStringIgnore(param), aClass));
+            CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()),
+            bean);
         return AnnoResult.succeed();
     }
 
     @Mapping("/{clazz}/saveOrUpdate")
     public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String, Object> param) {
-        Class<?> aClass = AnnoClazzCache.get(clazz);
-        T data = (T) JSONUtil.toBean(emptyStringIgnore(param), aClass);
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
-        if (ReflectUtil.getFieldValue(data, AnnoUtil.getPkField(aClass)) == null) {
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        T data = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
+        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
+        AnField pkField = anEntity.getPkField();
+        if (pkField == null) {
+            return AnnoResult.from(Result.failure("未找到主键"));
+        }
+        if (ReflectUtil.getFieldValue(data, pkField.getFieldName()) == null) {
             dbService.insert(tableParam, data);
         } else {
-            Field pkField = AnnoUtil.getPkFieldItem(aClass);
-            if (pkField == null) {
-                return AnnoResult.from(Result.failure("未找到主键"));
-            }
             dbService.update(tableParam,
-                    CollUtil.newArrayList(DbCondition.builder().field(AnnoFieldCache.getSqlColumnByField(aClass,pkField)).value(param.get(pkField.getName())).build()),
+                    CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()),
                     data);
         }
         return AnnoResult.from(Result.succeed(data));
@@ -171,7 +171,7 @@ public class AnnoController {
         String otherValue = param.get("joinValue");
         String thisValue = param.get(param.get("joinThisClazzField"));
         String mediumThisField = param.get("mediumThisField");
-        TableParam<?> tableParam = AnnoTableParamCache.get(param.get("mediumTableClass"));
+        TableParam<?> tableParam = metadataManager.getTableParam(param.get("mediumTableClass"));
         ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
                 DbCondition.builder().field(mediumOtherField).value(otherValue).build(),
                 DbCondition.builder().field(mediumThisField).value(thisValue).build()
@@ -185,7 +185,7 @@ public class AnnoController {
                                                                @Param boolean ignoreM2m,
                                                                @Param boolean reverseM2m,
                                                                @Body Map<String, String> param) {
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
         String m2mSql = annoService.m2mSql(param);
         String andSql = null;
         String inPrefix = " in (";
@@ -211,7 +211,7 @@ public class AnnoController {
                                                          @Param boolean ignoreM2m,
                                                          @Param boolean reverseM2m,
                                                          @Body Map<String, String> param) {
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
         String m2mSql = annoService.m2mSql(param);
         String andSql = null;
         String inPrefix = " in (";
@@ -238,7 +238,7 @@ public class AnnoController {
     public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
-        TableParam<Object> tableParam = (TableParam<Object>) AnnoTableParamCache.get(mediumTableClass);
+        TableParam<Object> tableParam = (TableParam<Object>) metadataManager.getTableParam(mediumTableClass);
         String[] split;
         Object ids = param.get("ids");
         // 字段一
