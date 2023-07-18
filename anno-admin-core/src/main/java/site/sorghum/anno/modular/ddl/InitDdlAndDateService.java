@@ -37,11 +37,11 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
     public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator generator = new EntityToDdlGenerator(dbContext, annoEntityToTableGetter);
+            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
                 if (anEntity.isAutoMaintainTable()) {
-                    generator.autoMaintainTable(anEntity.getClazz());
+                    generator.autoMaintainTable(anEntity);
                 }
             }
         }

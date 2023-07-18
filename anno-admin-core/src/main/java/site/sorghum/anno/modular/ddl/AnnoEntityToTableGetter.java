@@ -1,21 +1,23 @@
 package site.sorghum.anno.modular.ddl;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
+import lombok.Setter;
 import org.noear.solon.annotation.Component;
-import org.noear.wood.annotation.PrimaryKey;
-import org.noear.wood.annotation.Table;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
-import site.sorghum.anno.ddl.entity2db.SampleEntityToTableGetter;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
+import site.sorghum.anno.ddl.DdlException;
+import site.sorghum.anno.ddl.entity2db.EntityToTableGetter;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
 
-import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,36 +27,28 @@ import java.util.List;
  * @since 2023/7/4 22:44
  */
 @Component
-public class AnnoEntityToTableGetter extends SampleEntityToTableGetter {
+public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
+
+    @Setter
+    private String defaultPkName = "id";
 
     @Override
-    public TableWrap getTable(Class<?> clazz) {
+    public TableWrap getTable(AnEntity anEntity) {
 
-        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-        Table table = AnnotationUtil.getAnnotation(clazz, Table.class);
-        String tableName = null;
-        if (table != null) {
-            tableName = table.value();
-        }
-        if (StrUtil.isBlank(tableName)) {
-            // 默认使用小写，下划线命名
-            tableName = StrUtil.toUnderlineCase(clazz.getSimpleName());
-        }
+        TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getTitle());
 
-        TableWrap tableWrap = new TableWrap(tableName, annoMain.name());
+        List<AnField> fields = anEntity.getFields();
 
-        List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
         // 将 id 字段放到第一位
-        Field idField = CollUtil.findOne(declaredFields, e -> e.getName().equals("id"));
-        ListUtil.swapTo(declaredFields, idField, 0);
+        AnField idField = CollUtil.findOne(fields, e -> e.getFieldName().equals(defaultPkName));
+        ListUtil.swapTo(fields, idField, 0);
 
-        for (Field field : declaredFields) {
+        for (AnField field : fields) {
             // 不是基本类型，跳过
-            if (!columnIsSupport(field)) {
+            if (!columnIsSupport(field.getFieldType())) {
                 continue;
             }
-            AnnoField annoField = field.getAnnotation(AnnoField.class);
-            String columnName = annoField.tableFieldName();
+            String columnName = field.getTableFieldName();
             if (StrUtil.isBlank(columnName)) {
                 // 虚拟列，跳过
                 continue;
@@ -65,11 +59,11 @@ public class AnnoEntityToTableGetter extends SampleEntityToTableGetter {
             Integer digit = null;
             String defaultValue = "DEFAULT NULL";
 
-            switch (annoField.dataType()) {
+            switch (field.getDataType()) {
                 // TREE 和 OPTIONS，通过 anno 注解获取不到字段类型，需要通过字段类型获取
-                // 默认类型是STRING，需要通过字段类型获取
+                // 默认类型是STRING，也需要通过字段类型获取
                 case STRING, TREE, OPTIONS -> {
-                    ColumnWrap column = getColumn(clazz, field);
+                    ColumnWrap column = getColumn(anEntity.getEntityName(), field);
                     sqlType = column.getSqlType();
                     size = column.getSize();
                     digit = column.getDigit();
@@ -89,25 +83,72 @@ public class AnnoEntityToTableGetter extends SampleEntityToTableGetter {
                 }
             }
 
-            if (AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null) {
+            // 主键
+            if (anEntity.getPkField().getFieldName().equals(field.getFieldName())) {
                 defaultValue = "NOT NULL";
                 tableWrap.addPk(columnName);
                 size = 32;
             }
 
-            if (annoField.fieldSize() != 0) {
-                size = annoField.fieldSize();
+            if (field.getFieldSize() != 0) {
+                size = field.getFieldSize();
             }
 
-            if (StrUtil.isNotBlank(annoField.defaultValue())) {
-                defaultValue = annoField.defaultValue();
+            if (StrUtil.isNotBlank(field.getDefaultValue())) {
+                defaultValue = field.getDefaultValue();
             }
 
-            ColumnWrap columnWrap = new ColumnWrap(columnName, sqlType, size, digit, defaultValue, annoField.title());
+            ColumnWrap columnWrap = new ColumnWrap(columnName, sqlType, size, digit, defaultValue, field.getTitle());
             tableWrap.addColumn(columnWrap);
         }
 
         return tableWrap;
     }
 
+    public ColumnWrap getColumn(String entityName, AnField field) {
+        String fieldName = field.getTableFieldName();
+        Class<?> fieldType = field.getFieldType();
+        int sqlType;
+        Integer size = null;
+        Integer digit = null;
+        String defaultValue = "DEFAULT NULL";
+        if (fieldName.equals(defaultPkName)) {
+            defaultValue = "NOT NULL";
+        }
+        if (fieldType == String.class) {
+            sqlType = Types.VARCHAR;
+            size = 254;
+        } else if (fieldType == LocalDate.class) {
+            sqlType = Types.DATE;
+        } else if (fieldType == LocalDateTime.class || fieldType == java.util.Date.class || fieldType == java.sql.Date.class) {
+            sqlType = Types.TIMESTAMP;
+        } else if (fieldType == Integer.class) {
+            sqlType = Types.INTEGER;
+        } else if (fieldType == Long.class) {
+            sqlType = Types.BIGINT;
+        } else if (fieldType == Float.class) {
+            sqlType = Types.FLOAT;
+        } else if (fieldType == Double.class) {
+            sqlType = Types.DOUBLE;
+        } else if (fieldType == BigDecimal.class) {
+            sqlType = Types.NUMERIC;
+            size = 25;
+            digit = 6;
+            defaultValue = "NOT NULL DEFAULT 0";
+        } else {
+            throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(entityName, field.getFieldName(), fieldType.getSimpleName()));
+        }
+
+        return new ColumnWrap(fieldName, sqlType, size, digit, defaultValue, null);
+    }
+
+    private boolean columnIsSupport(Class<?> fieldType) {
+        return ClassUtil.isBasicType(fieldType)
+            || CharSequence.class.isAssignableFrom(fieldType)
+            || Number.class.isAssignableFrom(fieldType)
+            || Date.class.isAssignableFrom(fieldType)
+            || java.sql.Date.class.isAssignableFrom(fieldType)
+            || LocalDate.class.isAssignableFrom(fieldType)
+            || LocalDateTime.class.isAssignableFrom(fieldType);
+    }
 }

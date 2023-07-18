@@ -1,4 +1,4 @@
-package site.sorghum.anno.ddl.app.entity;
+package site.sorghum.anno.ddl.entity;
 
 import lombok.Data;
 
