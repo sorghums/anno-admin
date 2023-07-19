@@ -23,10 +23,6 @@
             <artifactId>solon-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
@@ -52,6 +48,12 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${hikaricp.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-ddl</artifactId>
+            <version>${project.parent.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
