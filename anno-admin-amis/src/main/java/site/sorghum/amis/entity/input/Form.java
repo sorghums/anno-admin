@@ -3,6 +3,7 @@ package site.sorghum.amis.entity.input;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
@@ -52,7 +53,7 @@ public class Form extends AmisBase {
     /**
      * 默认的提交按钮名称，如果设置成空，则可以把默认按钮去掉。
      */
-    private String submitText = "提交";
+    private String submitText =  I18nUtil.getMessage("amis.form.submit");
 
     /**
      * Form 表单项集合

@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 
 /**
  * 位置选择器
@@ -35,7 +36,7 @@ public class LocationPicker extends FormItem{
     /**
      * 默认提示
      */
-    String placeholder = "请选择位置";
+    String placeholder = I18nUtil.getMessage("amis.location-picker.placeholder");
 
     /**
      * 默为百度/高德坐标，可设置为'gcj02', 高德地图不支持坐标转换

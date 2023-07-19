@@ -7,6 +7,7 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.i18n.I18nUtil;
 import org.noear.wood.IPage;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.param.DbCondition;
@@ -51,7 +52,7 @@ public class DbServiceWithProxy implements DbService {
                 }
             );
         } else {
-            throw new AnnoDbException("不支持的数据库类型，仅支持wood。");
+            throw new AnnoDbException(I18nUtil.getMessage("exception.db.orm"));
         }
     }
 

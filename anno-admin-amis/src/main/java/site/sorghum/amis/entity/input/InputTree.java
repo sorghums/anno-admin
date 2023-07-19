@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
 
 import java.util.List;
@@ -167,7 +168,7 @@ public class InputTree extends FormItem {
     /**
      * 创建顶级节点的悬浮提示
      */
-    String rootCreateTip = "添加一级节点";
+    String rootCreateTip = I18nUtil.getMessage("amis.input-tree.root-create-tip");
 
     /**
      * 最少选中的节点数

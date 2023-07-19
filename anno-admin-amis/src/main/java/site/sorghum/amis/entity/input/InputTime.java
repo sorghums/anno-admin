@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 
 /**
  * 输入时间
@@ -38,7 +39,7 @@ public class InputTime extends FormItem{
     /**
      * 占位文本
      */
-    String placeholder = "请选择时间";
+    String placeholder = I18nUtil.getMessage("amis.input-time.placeholder");
 
     /**
      * 是否可清除

@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public class CheckBoxes extends FormItem {
     /**
      * 创建新选项的按钮文本
      */
-    String createBtnLabel = "新增选项";
+    String createBtnLabel = I18nUtil.getMessage("amis.check-boxes.create-btn");
 
     /**
      * 	自定义新增表单项

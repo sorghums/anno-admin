@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
 
 import java.util.Map;
@@ -167,10 +168,10 @@ public class InputFile extends FormItem{
     @Data
     public static class StateText{
         String init = "";
-        String pending = "等待上传";
-        String uploading = "上传中";
-        String error = "上传出错";
-        String uploaded = "已上传";
+        String pending = I18nUtil.getMessage("amis.input-file.pending");
+        String uploading =  I18nUtil.getMessage("amis.input-file.uploading");
+        String error = I18nUtil.getMessage("amis.input-file.error");
+        String uploaded =  I18nUtil.getMessage("amis.input-file.uploaded");
         String ready = "";
     }
 }

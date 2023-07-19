@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
 
 /**
@@ -120,7 +121,7 @@ public class InputImage extends FormItem{
     /**
      * 上传按钮文案。支持tpl、schema形式配置。
      */
-    String uploadButtonLabel = "上传";
+    String uploadButtonLabel = I18nUtil.getMessage("amis.input-image.upload-btn");
 
     /**
      * 图片上传后是否进入裁剪模式

@@ -3,6 +3,7 @@ package site.sorghum.anno.db.service.impl;
 import lombok.SneakyThrows;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.ProxyComponent;
+import org.noear.solon.i18n.I18nUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
@@ -56,7 +57,7 @@ public class DbServiceWood implements DbService {
     public <T> T queryOne(TableParam<T> tableParam, List<DbCondition> dbConditions) {
         List<T> ts = list(tableParam, dbConditions);
         if (ts.size() > 1) {
-            throw new AnnoDbException("查询结果不唯一");
+            throw new AnnoDbException(I18nUtil.getMessage("exception.db.out-one"));
         }
         if (ts.size() == 0) {
             return null;

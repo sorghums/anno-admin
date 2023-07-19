@@ -96,6 +96,12 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.i18n</artifactId>
+        </dependency>
+    </dependencies>
     <repositories>
         <repository>
             <id>tencent</id>
