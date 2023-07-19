@@ -108,12 +108,14 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             setData(new HashMap<String, Object>() {{
                                 put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
                                 put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                                // 30分钟过期
+                                put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
                                 put("&", "$$");
                             }});
                             setMessages(
                                     new ApiMessage() {{
                                         setSuccess("操作成功");
-                                        setFailed("操作失败");
+                                        setFailed("操作失败，请刷新页面后重试。");
                                     }}
                             );
 

@@ -117,6 +117,8 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                                     setData(new HashMap<String, Object>() {{
                                         put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
                                         put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                                        // 30分钟过期
+                                        put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
                                         put("&", "$$");
                                     }});
                                     setMessages(

@@ -4,8 +4,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.redisson.api.RedissonClient;
-import org.redisson.solon.RedissonSupplier;
 
 import javax.sql.DataSource;
 
@@ -22,8 +20,4 @@ public class AnnoConfig {
         return ds;
     }
 
-    @Bean(value = "redisson", typed = true)
-    public RedissonClient redisson(@Inject("${redis.main}") RedissonSupplier supplier) {
-        return supplier.get();
-    }
 }

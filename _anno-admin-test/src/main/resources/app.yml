@@ -50,12 +50,7 @@ db.main:
   driverClassName: com.mysql.cj.jdbc.Driver
   username: root
   password: 123456
-redis.main:
-  config: |
-    singleServerConfig:
-      address: "redis://127.0.0.1:6379"
-      database: 8
-sa-token-dao:
+anno-admin:
   redis:
     server: "127.0.0.1:6379"
     db: 8

@@ -6,6 +6,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
+import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -18,8 +19,13 @@ import site.sorghum.anno.common.response.AnnoResult;
 public class SaConfig {
 
     @Bean
-    public SaTokenDao saTokenDaoInit(@Inject("${sa-token-dao.redis}") SaTokenDaoOfRedis saTokenDao) {
+    public SaTokenDao saTokenDaoInit(@Inject("${anno-admin.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
+    }
+
+    @Bean
+    public RedisClient redisClient(@Inject("${anno-admin.redis}") RedisClient client) {
+        return client;
     }
 
     @Bean(index = -100)  //-100，是顺序位（低值优先）

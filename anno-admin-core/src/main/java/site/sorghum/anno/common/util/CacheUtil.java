@@ -1,13 +1,11 @@
 package site.sorghum.anno.common.util;
 
+import org.noear.redisx.RedisClient;
+import org.noear.redisx.plus.RedisBucket;
+import org.noear.redisx.plus.RedisHash;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
-import org.redisson.api.RMapCache;
-import org.redisson.api.RedissonClient;
-import org.redisson.client.codec.StringCodec;
-
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 /**
@@ -19,16 +17,18 @@ import java.util.function.Supplier;
 @Component
 public class CacheUtil {
 
-    private static RedissonClient redissonClient;
+    private static RedisClient redisClient;
 
+    private static RedisBucket bucket;
     private static final String CACHE_PREFIX = "anno:cache";
 
     @Init
     public void init() {
         Solon.context().getBeanAsync(
-                RedissonClient.class,
+            RedisClient.class,
                 (bean) -> {
-                    redissonClient = bean;
+                    redisClient = bean;
+                    bucket =  redisClient.getBucket();
                 }
         );
     }
@@ -36,21 +36,22 @@ public class CacheUtil {
     public static <T> T getOrCreate(String sourceName, Supplier<T> tSupplier, Class<T> clazz, Long cacheSeconds, String... args) {
         String mapKey = buildKey(true, sourceName);
         String memberKey = buildKey(false, args);
-        RMapCache<String, String> cache = redissonClient.getMapCache(mapKey, new StringCodec());
-        if (cache.containsKey(memberKey)) {
-            String value = cache.get(memberKey);
-            return JSONUtil.toBean(value, clazz);
+        String buildKey = buildKey(false, mapKey, memberKey);
+
+        String storeStr;
+        if ((storeStr = bucket.get(buildKey)) != null){
+            return JSONUtil.toBean(storeStr, clazz);
         }
         T t = tSupplier.get();
-        cache.put(memberKey, JSONUtil.toJsonString(t), cacheSeconds, TimeUnit.SECONDS);
+        bucket.store(buildKey, JSONUtil.toJsonString(t), cacheSeconds.intValue());
         return t;
     }
 
     public static void remove(String sourceName, String... args) {
         String mapKey = buildKey(true, sourceName);
         String memberKey = buildKey(false, args);
-        RMapCache<String, String> cache = redissonClient.getMapCache(mapKey, new StringCodec());
-        cache.remove(memberKey);
+        String buildKey = buildKey(false, mapKey, memberKey);
+        bucket.remove(buildKey);
     }
 
     private static String buildKey(boolean prefix, String... args) {

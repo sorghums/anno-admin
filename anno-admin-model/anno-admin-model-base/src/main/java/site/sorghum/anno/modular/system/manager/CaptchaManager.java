@@ -4,18 +4,16 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.noear.redisx.RedisClient;
+import org.noear.redisx.plus.RedisBucket;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
-import org.redisson.api.RMapCache;
-import org.redisson.api.RedissonClient;
-import org.redisson.client.codec.StringCodec;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码管理
@@ -29,12 +27,12 @@ public class CaptchaManager {
     @Inject("${sgm.captcha.enable:true}")
     boolean enable;
 
-    RMapCache<String, String> cache;
+    RedisBucket bucket;
 
     @Init
     private void init() {
-        Solon.context().getBeanAsync(RedissonClient.class, redissonClient -> {
-            cache = redissonClient.getMapCache("anno-admin:captcha:admin", new StringCodec());
+        Solon.context().getBeanAsync(RedisClient.class, redisClient -> {
+            bucket = redisClient.getBucket();
         });
     }
 
@@ -80,10 +78,10 @@ public class CaptchaManager {
      */
     public void verifyCaptcha(String captchaKey, String captchaCode) {
         // 如果验证码开关关闭则不验证
-        if (Objects.equals(enable,false)){
+        if (Objects.equals(enable, false)) {
             return;
         }
-        String code = cache.get(captchaKey);
+        String code = getCache(captchaKey);
         if (!captchaCode.equals(code)) {
             throw new BizException("验证码错误");
         }
@@ -108,6 +106,15 @@ public class CaptchaManager {
      */
     private void addCacheCode(String key, String code, Integer seconds) {
         log.debug("验证码新增缓存key:{},code:{}", key, code);
-        cache.put(key, code, seconds, TimeUnit.SECONDS);
+        putCache(key, code, seconds);
     }
+
+    private void putCache(String key, String code, Integer seconds) {
+        bucket.store("anno-admin:captcha:admin:" +key, code, seconds);
+    }
+
+    private String getCache(String key) {
+        return bucket.get("anno-admin:captcha:admin:" +key);
+    }
+
 }

@@ -276,6 +276,11 @@ public class AnnoController {
     public AnnoResult<String> runJavaCmd(@Body Map<String, String> map) throws ClassNotFoundException {
         map.put("clazz", CryptoUtil.decrypt(map.get("clazz")));
         map.put("method", CryptoUtil.decrypt(map.get("method")));
+        map.put("expireTime", CryptoUtil.decrypt(map.get("expireTime")));
+        // 判断是否过期
+        if (Long.parseLong(map.get("expireTime")) < System.currentTimeMillis()) {
+            return AnnoResult.failure("页面已过期，请刷新页面重试。");
+        }
         Object bean = Solon.context().getBean(
                 Class.forName(map.get("clazz"))
         );
