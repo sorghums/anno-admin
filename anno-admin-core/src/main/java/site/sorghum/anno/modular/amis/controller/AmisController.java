@@ -27,9 +27,6 @@ import java.util.Map;
 @Mapping(value = "/system/config")
 public class AmisController {
 
-    @Inject("${anno-admin.theme:antd}")
-    String theme;
-
     @Inject
     MetadataManager metadataManager;
 
@@ -60,7 +57,6 @@ public class AmisController {
         ModelAndView modelAndView = new ModelAndView("function.html");
         modelAndView.put("amisJSON", template);
         modelAndView.put("properties", properties);
-        modelAndView.put("anno_theme", theme);
         return modelAndView;
     }
 
