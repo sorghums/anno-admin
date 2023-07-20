@@ -29,7 +29,7 @@ public class Table extends AmisBase {
     /**
      * 数据源, 绑定当前环境变量
      */
-    Api source;
+    Object source;
 
     /**
      * 是否固定表头

@@ -1,3 +1,5 @@
+import {registerLocale as register} from 'amis-core';
+
 amisRequire('amis').registerLocale('de-DE', {
   'Action.countDown': '${timeLeft} warten',
   'Alert.info': 'Systeminformationen',
@@ -55,6 +57,7 @@ amisRequire('amis').registerLocale('de-DE', {
   'Pagination.totalCount': 'total {{total}} items',
   'Date.titleYear': '',
   'Date.titleMonth': '',
+  'Date.titleQuarter': '',
   'Date.titleDate': '',
   'Date.titleTime': '',
   'Date.daysago': 'Vor {{days}} Tag(en)',
@@ -141,6 +144,7 @@ amisRequire('amis').registerLocale('de-DE', {
   'File.upload': 'Hochladen',
   'File.uploadFailed': 'Zurückgegebene Daten der Upload-API sind leer',
   'File.uploading': 'Wird hochgeladen...',
+  'File.imageAfterCrop': 'Beschnittenes Bild',
   'FormItem.autoFillLoadFailed':
     'Die Schnittstelle hat einen Fehler zurückgegeben, bitte sorgfältig prüfen',
   'FormItem.autoFillSuggest': 'Referenzdateneingabe',
@@ -154,6 +158,7 @@ amisRequire('amis').registerLocale('de-DE', {
   'Iframe.invalid': 'Ungültige Iframe-URL',
   'Iframe.invalidProtocol':
     'HTTP-URL-Iframe kann nicht in https verwendet werden',
+  'Image.dragTip': 'Zum Sortieren ziehen',
   'Image.upload': 'Bild hochladen',
   'Image.configError':
     'Es können nur eine Beschneidung oder mehrere festgelegt werden',
@@ -404,6 +409,7 @@ amisRequire('amis').registerLocale('de-DE', {
   'JSONSchema.description': 'Description',
   'JSONSchema.key': 'Key',
   'JSONSchema.array_items': 'Items',
-  'TimeNow': 'Jetzt'
+  'TimeNow': 'Jetzt',
+  'Steps.step': 'Schritt {{index}}'
 });
 

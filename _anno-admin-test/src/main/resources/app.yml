@@ -54,4 +54,6 @@ anno-admin:
   redis:
     server: "127.0.0.1:6379"
     db: 8
-    maxTotal: 200
+    maxTotal: '200'
+  # 主题：antd,cxd,sdk,ang
+  theme: 'ang'

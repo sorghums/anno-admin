@@ -49,7 +49,7 @@ public class Crud extends Table {
     /**
      * 数据映射接口返回某字段的值，不设置会默认使用接口返回的${items}或者${rows}，也可以设置成上层数据源的内容
      */
-    private Api source;
+    private String source =  "${list}";
 
     /**
      * 设置过滤器，当该表单提交后，会把数据带给当前 mode 刷新列表。

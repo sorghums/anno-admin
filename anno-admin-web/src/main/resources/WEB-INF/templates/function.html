@@ -9,7 +9,12 @@
             content="width=device-width, initial-scale=1, maximum-scale=1"
     />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
-    <link rel="stylesheet" href="/sdk/antd.css"/>
+    <link rel="stylesheet" th:href="'/sdk/'+${anno_theme}+'.css'"/>
+<!--    <link rel="stylesheet" href="/sdk/antd.css"/>-->
+<!--    <link rel="stylesheet" href="/sdk/sdk.css"/>-->
+<!--    <link rel="stylesheet" href="/sdk/ang.css"/>-->
+<!--    <link rel="stylesheet" href="/sdk/cxd.css"/>-->
+<!--    <link rel="stylesheet" href="/sdk/dark.css"/>-->
     <link rel="stylesheet" href="/sdk/helper.css"/>
     <link rel="stylesheet" href="/sdk/iconfont.css"/>
     <style>
@@ -21,6 +26,10 @@
             height: 100%;
             margin: 0;
             padding: 0;
+        }
+        /*自定义相关amis参数*/
+        :root {
+            --Tree-max-height: 800px;
         }
     </style>
 </head>
@@ -35,6 +44,7 @@
         // 解析字符串到json
         let amisJSON = [[${amisJSON}]];
         let properties = [[${properties}]];
+        let theme = [[${anno_theme}]];
         let amisScoped = amis.embed('#root', amisJSON,
             {data: properties},
             {
@@ -78,7 +88,7 @@
                 // confirm: content => {},
                 //
                 // 主题，默认是 default，还可以设置成 cxd 或 dark，但记得引用它们的 css，比如 sdk 目录下的 cxd.css
-                theme: 'antd'
+                theme: theme
                 //
                 // 用来实现用户行为跟踪，详细请查看左侧高级中的说明
                 // tracker: (eventTracker) => {},
