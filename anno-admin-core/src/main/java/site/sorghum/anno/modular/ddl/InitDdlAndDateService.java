@@ -1,5 +1,6 @@
 package site.sorghum.anno.modular.ddl;
 
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
@@ -7,6 +8,7 @@ import org.noear.solon.core.event.EventListener;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.common.config.AnnoProperty;
+import site.sorghum.anno.ddl.PlatformFactory;
 import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
@@ -37,7 +39,11 @@ public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent>
     public void onEvent(AppBeanLoadEndEvent appBeanLoadEndEvent) throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
+            PlatformFactory platformFactory = Solon.context().getBean(PlatformFactory.class);
+            if (platformFactory == null) {
+                platformFactory = new PlatformFactory();
+            }
+            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, platformFactory, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
                 if (anEntity.isAutoMaintainTable()) {
