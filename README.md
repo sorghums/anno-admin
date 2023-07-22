@@ -439,7 +439,7 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
 
 如果想要关闭改功能，可以添加配置：
 ```yaml
-anno:
+anno-admin:
   isAutoMaintainTable: false
 ```
 
@@ -455,7 +455,7 @@ anno:
 
 如果想要关闭改功能，可以添加配置：
 ```yaml
-anno:
+anno-admin:
   isAutoMaintainInitData: false
 ```
 

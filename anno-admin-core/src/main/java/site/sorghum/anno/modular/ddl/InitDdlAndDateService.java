@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.ddl;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since 2023/7/8 11:31
  */
 @Component
-public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
+public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent> {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
@@ -34,7 +34,7 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
     MetadataManager metadataManager;
 
     @Override
-    public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
+    public void onEvent(AppBeanLoadEndEvent appBeanLoadEndEvent) throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
             EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);

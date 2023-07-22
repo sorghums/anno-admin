@@ -55,5 +55,6 @@ anno-admin:
     server: "127.0.0.1:6379"
     db: 8
     maxTotal: '200'
+    password: q7link@G67
   # 主题：antd,cxd,ang
   theme: 'antd'
