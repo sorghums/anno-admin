@@ -4,6 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import lombok.SneakyThrows;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.view.thymeleaf.ThymeleafRender;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
@@ -31,6 +32,9 @@ public class ThymeleafConfig {
         }
     }
 
+    @Inject
+    AnnoProperty annoProperty;
+
     @Init
     public void init() {
         ThymeleafRender thymeleafRender = ThymeleafRender.global();
@@ -43,5 +47,7 @@ public class ThymeleafConfig {
                 .ifPresent(dialect -> {
                     ((StandardDialect) dialect).setJavaScriptSerializer(new FastJson2Serializer());
                 });
+
+        ThymeleafRender.global().putVariable("anno_theme", annoProperty.getTheme());
     }
 }
