@@ -139,7 +139,7 @@ public class MetadataManager {
 
         AnField field = entity.getField(fieldName);
         if (field == null) {
-            throw new BizException("field: %s is not found".formatted(fieldName));
+            throw new BizException("%s field: %s is not found".formatted(entityName, fieldName));
         }
         return field;
     }
@@ -147,17 +147,16 @@ public class MetadataManager {
     /**
      * 获取实体类的字段信息
      *
-     * @param clazz  clazz
-     * @param getter getter
+     * @param clazz  实体类
+     * @param fieldName 字段名
      * @return 字段信息
      */
-    public <T> AnField getEntityField(Class<T> clazz, Function<T, ?> getter) {
+    public <T> AnField getEntityField(Class<T> clazz, String fieldName) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
         AnEntity entity = getEntity(entityName);
-        String fieldName = LambdaUtil.getFieldName(t -> getter.apply((T) t));
         AnField field = entity.getField(fieldName);
         if (field == null) {
-            throw new BizException("field: %s is not found".formatted(fieldName));
+            throw new BizException("%s field: %s is not found".formatted(entityName, fieldName));
         }
         return field;
     }

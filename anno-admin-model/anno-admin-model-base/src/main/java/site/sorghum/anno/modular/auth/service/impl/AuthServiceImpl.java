@@ -1,11 +1,15 @@
 package site.sorghum.anno.modular.auth.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
+import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.util.MD5Util;
@@ -13,15 +17,22 @@ import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
 import site.sorghum.anno.modular.auth.service.AuthService;
+import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.model.AnMenu;
+import site.sorghum.anno.modular.model.AnnoModule;
 import site.sorghum.anno.modular.system.anno.SysPermission;
 import site.sorghum.anno.modular.system.anno.SysRole;
 import site.sorghum.anno.modular.system.anno.SysUser;
+import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
 import site.sorghum.anno.modular.system.dao.SysPermissionDao;
 import site.sorghum.anno.modular.system.dao.SysRoleDao;
 import site.sorghum.anno.modular.system.dao.SysUserDao;
 
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +51,10 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
 
     @Db
     SysPermissionDao sysPermissionDao;
+    @Db
+    SysAnnoMenuDao sysAnnoMenuDao;
+    @Db
+    DbContext dbContext;
     @Inject
     MetadataManager metadataManager;
 
@@ -166,5 +181,62 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     @Override
     public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
         initPermissions();
+        initMenus();
+    }
+
+    /**
+     * 初始化菜单数据
+     */
+    public void initMenus() throws SQLException {
+        List<AnnoModule> annoModules = Solon.context().getBeansOfType(AnnoModule.class);
+        for (AnnoModule annoModule : annoModules) {
+            List<AnMenu> anMenus = annoModule.initEntityMenus();
+            if (CollUtil.isEmpty(anMenus)) {
+                continue;
+            }
+            for (AnMenu anMenu : anMenus) {
+                SysAnnoMenu sysAnnoMenu = sysAnnoMenuDao.selectById(anMenu.getId());
+                Map<String, Object> map = new HashMap<>();
+                if (sysAnnoMenu == null) {
+                    sysAnnoMenu = new SysAnnoMenu();
+                    sysAnnoMenu.setId(anMenu.getId());
+                    sysAnnoMenu.setTitle(anMenu.getTitle());
+                    sysAnnoMenu.setType(anMenu.getType());
+                    sysAnnoMenu.setSort(anMenu.getSort());
+                    sysAnnoMenu.setOpenType("_iframe");
+                    sysAnnoMenu.setIcon(anMenu.getIcon());
+                    if (anMenu.getEntity() != null) {
+                        sysAnnoMenu.setHref("/system/config/amis/" + anMenu.getEntity().getEntityName());
+                        if (anMenu.getEntity().isEnablePermission()) {
+                            sysAnnoMenu.setPermissionId(anMenu.getEntity().getTableName());
+                        }
+                    }
+                    sysAnnoMenu.setParseType("annoMain");
+                    sysAnnoMenu.setParentId(anMenu.getParentId());
+                    sysAnnoMenu.setDelFlag(0);
+                    sysAnnoMenuDao.insert(sysAnnoMenu, true);
+                } else {
+                    if (!StrUtil.equals(anMenu.getTitle(), sysAnnoMenu.getTitle())) {
+                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "title").getTableFieldName(), anMenu.getTitle());
+                    }
+                    if (!Objects.equals(anMenu.getSort(), sysAnnoMenu.getSort())) {
+                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "sort").getTableFieldName(), anMenu.getSort());
+                    }
+                    if (!StrUtil.equals(anMenu.getIcon(), sysAnnoMenu.getIcon())) {
+                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "icon").getTableFieldName(), anMenu.getIcon());
+                    }
+                    if (!StrUtil.equals(anMenu.getParentId(), sysAnnoMenu.getParentId())) {
+                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "parentId").getTableFieldName(), anMenu.getParentId());
+                    }
+                    if (CollUtil.isNotEmpty(map)) {
+                        dbContext.table(metadataManager.getEntity(SysAnnoMenu.class).getTableName())
+                            .setMap(map)
+                            .whereEq("id", anMenu.getId())
+                            .update();
+                    }
+                }
+
+            }
+        }
     }
 }
