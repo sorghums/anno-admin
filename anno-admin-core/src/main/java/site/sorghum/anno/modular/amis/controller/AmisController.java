@@ -82,10 +82,10 @@ public class AmisController {
         if (template == null){
             template = TemplateUtil.getCrudTemplate(anEntity.getClazz(),properties);
         }
-        ModelAndView modelAndView = new ModelAndView("function.html");
-        modelAndView.put("amisJSON", template);
-        modelAndView.put("properties", properties);
-        return AnnoResult.succeed(JSONUtil.toBean(template,Map.class));
+        Map<String,Object> returnMap = new HashMap<>();
+        returnMap.put("amisJSON", JSONUtil.toBean(template,Map.class));
+        returnMap.put("properties", JSONUtil.toBean(properties,Map.class));
+        return AnnoResult.succeed(returnMap);
     }
 
     @Mapping(value = "/amis-m2m/{clazz}")

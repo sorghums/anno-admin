@@ -88,5 +88,5 @@ public class BusinessProduct extends BaseMetaModel {
             title = "运费",
             tableFieldName = "product_freight",
             edit = @AnnoEdit)
-    Long productFreight;
+    String productFreight;
 }
