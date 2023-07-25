@@ -58,6 +58,9 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     @Inject
     MetadataManager metadataManager;
 
+    @Inject
+    AuthService authService;
+
     public void initPermissions() {
         // 初始化的时候，进行Db的注入
         List<AnEntity> allEntity = metadataManager.getAllEntity();
@@ -138,7 +141,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
             throw new BizException("用户不存在");
         }
         // 清除缓存
-        this.removePermissionCacheList(sysUser.getId());
+        this.removePermRoleCacheList(sysUser.getId());
         if (!sysUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
         }
@@ -162,8 +165,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     @Override
     @Cache(key = "permissionList", seconds = 60 * 60 * 2)
     public List<String> permissionList(String userId) {
-        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
-        List<String> roleIds = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        List<String> roleIds = authService.roleList(userId);
         if (roleIds.contains("admin")) {
             List<SysPermission> sysPermissions = sysPermissionDao.list();
             return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
@@ -173,8 +175,15 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     }
 
     @Override
-    @CacheRemove(keys = "permissionList")
-    public void removePermissionCacheList(String userId) {
+    @Cache(key = "roleList", seconds = 60 * 60 * 2)
+    public List<String> roleList(String userId) {
+        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
+        return sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    @CacheRemove(keys = "permissionList,roleList")
+    public void removePermRoleCacheList(String userId) {
         // 清除缓存
     }
 

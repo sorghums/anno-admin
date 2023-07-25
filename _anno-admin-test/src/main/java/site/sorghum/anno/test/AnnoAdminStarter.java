@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.SolonMain;
+import org.noear.solon.web.cors.CrossHandler;
 import org.noear.wood.IPage;
 import org.noear.wood.WoodConfig;
 import site.sorghum.anno.db.service.DbService;
@@ -32,6 +33,7 @@ public class AnnoAdminStarter {
                 log.debug("===[Wood] sql: {}", cmd.text);
                 log.debug("===[Wood] var: {}", cmd.paramMap());
             });
+            app.before(new CrossHandler().allowedOrigins("*"));
         });
     }
 }
