@@ -43,7 +43,7 @@ public class BusinessProductCat extends BaseMetaModel {
             tableFieldName = "sort",
             edit = @AnnoEdit
     )
-    String sort;
+    Integer sort;
 
 
     @AnnoField(

@@ -1,0 +1,1 @@
+import{Y as t}from"./index-03f59e71.js";const r=()=>t("div",{className:"card content-box",children:t("span",{className:"text",children:"BatchImport \u{1F353}\u{1F347}\u{1F348}\u{1F349}"})});export{r as default};
