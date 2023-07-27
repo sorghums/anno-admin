@@ -77,6 +77,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
         List<Action> actions = filter.getActions();
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel("新增");
+        dialogButton.setIcon("fa fa-plus pull-left");
         dialogButton.setLevel("primary");
         dialogButton.setDialog(
                 new DialogButton.Dialog() {{
