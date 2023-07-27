@@ -11,7 +11,6 @@ import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
-import site.sorghum.amis.entity.function.AnAmis;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
@@ -65,9 +64,9 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                                 setFooterClassName("p-xs m-xs h-1/2");
                                 setActions(new ArrayList<>());
                                 setBody(
-                                    new AnAmis() {{
-                                        setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
-                                        setDefaultProps(Map.of(o2MJoinButton.joinOtherClazzField(), "${" + o2MJoinButton.joinThisClazzField() + "}"));
+                                    new IFrame() {{
+                                        setType("iframe");
+                                        setSrc("/amisSingle/index/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
                                     }}
                                 );
                             }}
@@ -82,6 +81,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                             put("mediumOtherField", m2mJoinButton.mediumThisField());
                             put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
                             put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
+                            put("isM2m", true);
                         }};
                         action.setLabel(annoButton.name());
                         ((DrawerButton) action).setDrawer(
@@ -93,10 +93,9 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                                 setHeaderClassName("p-none m-none h-0");
                                 setFooterClassName("p-xs m-xs h-1/2");
                                 setBody(
-                                    new AnAmis() {{
-                                        setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
-                                        setDefaultProps(queryMap);
-                                        setParam(Map.of("isM2m", true));
+                                    new IFrame() {{
+                                        setType("iframe");
+                                        setSrc("/amisSingle/index/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                                     }}
                                 );
                                 setActions(new ArrayList<Action>());

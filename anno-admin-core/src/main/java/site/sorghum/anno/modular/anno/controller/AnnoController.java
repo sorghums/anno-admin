@@ -246,7 +246,7 @@ public class AnnoController {
         String mediumThisField = param.get("mediumThisField").toString();
         // 字段二
         String mediumOtherField = param.get("mediumOtherField").toString();
-        String mediumOtherValue = getStringValueDeppIn(param,"joinValue");
+        String mediumOtherValue = param.get("joinValue").toString();
 
         if (ids instanceof List) {
             List<String> idList = (List) ids;
@@ -302,22 +302,5 @@ public class AnnoController {
             }
         }
         return nParam;
-    }
-
-    private static<T> T getStringValueDeppIn(Map map,String key){
-        if (map.containsKey(key)){
-            Object value = map.get(key);
-            if (value instanceof String){
-                if (value.toString().startsWith("${") && value.toString().endsWith("}")){
-                    String newKey = value.toString().substring(2,value.toString().length()-1);
-                    return getStringValueDeppIn(map,newKey);
-                }
-                return (T) value;
-            }else {
-                return (T) value;
-            }
-        }else {
-            return null;
-        }
     }
 }

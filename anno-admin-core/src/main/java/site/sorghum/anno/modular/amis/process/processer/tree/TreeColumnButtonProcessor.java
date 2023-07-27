@@ -57,9 +57,9 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                         setFooterClassName("p-xs m-xs h-1/2");
                         setActions(new ArrayList<>());
                         setBody(
-                            new AnAmis() {{
-                                setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
-                                setDefaultProps(Map.of(o2MJoinButton.joinOtherClazzField(), "${" + o2MJoinButton.joinThisClazzField() + "}"));
+                            new IFrame() {{
+                                setType("iframe");
+                                setSrc("/amisSingle/index/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
                             }}
                         );
                     }}
@@ -73,6 +73,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                     put("mediumOtherField", m2mJoinButton.mediumOtherField());
                     put("mediumTableClass", m2mJoinButton.mediumTableClass().getSimpleName());
                     put("joinThisClazzField", m2mJoinButton.joinThisClazzField());
+                    put("isM2m", true);
                 }};
                 action.setLabel(annoButton.name());
                 ((DrawerButton) action).setDrawer(
@@ -84,10 +85,9 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                         setHeaderClassName("p-none m-none h-0");
                         setFooterClassName("p-xs m-xs h-1/2");
                         setBody(
-                            new AnAmis() {{
-                                setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
-                                setDefaultProps(queryMap);
-                                setParam(Map.of("isM2m", true));
+                            new IFrame() {{
+                                setType("iframe");
+                                setSrc("/amisSingle/index/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
                             }}
                         );
                         setActions(new ArrayList<Action>());
