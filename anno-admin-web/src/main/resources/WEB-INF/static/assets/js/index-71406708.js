@@ -1,1 +1,0 @@
-import{Y as e,$ as r}from"./index-03f59e71.js";const s=()=>e("div",{className:"card content-box",children:r("span",{className:"text",children:["MyBlog \uFF1A",e("a",{href:"http://www.spicyboy.cn",target:"_blank",rel:"noreferrer",children:"http://www.spicyboy.cn"})," ","\u{1F352}\u{1F349}\u{1F34A}"]})});export{s as default};
