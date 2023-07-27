@@ -77,7 +77,6 @@ public class CrudAddInfoProcessor implements BaseProcessor {
         List<Action> actions = filter.getActions();
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel("新增");
-        dialogButton.setIcon("fa fa-plus pull-left");
         dialogButton.setLevel("primary");
         dialogButton.setDialog(
                 new DialogButton.Dialog() {{
@@ -90,7 +89,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                                     setUrl("/system/anno/${clazz}/save");
                                 }});
                                 setId("simple-add-form");
-                                setSize("lg");
+                                setSize("md");
                                 setBody(formItems);
                                 // 刷新某个组件
                                 setOnEvent(new HashMap<>() {{

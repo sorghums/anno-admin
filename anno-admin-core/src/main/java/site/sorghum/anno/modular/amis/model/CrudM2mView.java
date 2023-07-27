@@ -49,10 +49,6 @@ public class CrudM2mView extends Page {
                                 put("_cat", "${_cat}");
                                 put("_extraData", "${extraData}");
                                 put("&", "$$");
-                                put("mediumTableClass","${mediumTableClass}");
-                                put("mediumThisField","${mediumThisField}");
-                                put("mediumOtherField","${mediumOtherField}");
-                                put("joinValue","${joinValue}");
                             }}
                     );
                 }}
