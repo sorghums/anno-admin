@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSON;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import site.sorghum.anno.common.response.AnnoResult;
@@ -64,7 +65,7 @@ public class AmisController {
 
     @Mapping(value = "/amisJson/{clazz}")
     @SaIgnore
-    public AnnoResult<Object> amisJson(String clazz, Context context) {
+    public AnnoResult<Object> amisJson(String clazz, Context context, @Param("isM2m" ) boolean isM2m) {
         HashMap<String, Object> data = new HashMap<>(context.paramMap());
         AnEntity anEntity = metadataManager.getEntity(clazz);
         Object template = null;
@@ -74,17 +75,28 @@ public class AmisController {
             this.putAll(data);
             put("extraData", JSON.toJSONString(data));
         }};
-        // 添加树类
-        if (anEntity.isEnableTree() && anEntity.isTreeDisplayAsTree()){
-            template = TemplateUtil.getTreeTemplate(anEntity.getClazz(),properties);
-        }
-        // 添加crud类
-        if (template == null){
-            template = TemplateUtil.getCrudTemplate(anEntity.getClazz(),properties);
+        if (!isM2m) {
+            // 添加树类
+            if (anEntity.isEnableTree() && anEntity.isTreeDisplayAsTree()) {
+                template = TemplateUtil.getTreeTemplate(anEntity.getClazz(), properties);
+            }
+            // 添加crud类
+            if (template == null) {
+                template = TemplateUtil.getCrudTemplate(anEntity.getClazz(), properties);
+            }
+        }else {
+            // 添加树类
+            if (anEntity.isEnableTree() && anEntity.isTreeDisplayAsTree()){
+                template = TemplateUtil.getTreeM2mTemplate(anEntity.getClazz(),properties);
+            }
+            // 添加crud类
+            if (template == null){
+                template = TemplateUtil.getCrudM2mTemplate(anEntity.getClazz(),properties);
+            }
         }
         Map<String,Object> returnMap = new HashMap<>();
-        returnMap.put("amisJSON", JSONUtil.toBean(template,Map.class));
-        returnMap.put("properties", JSONUtil.toBean(properties,Map.class));
+        returnMap.put("amisJSON", JSONUtil.toBean(template, HashMap.class));
+        returnMap.put("properties", properties);
         return AnnoResult.succeed(returnMap);
     }
 

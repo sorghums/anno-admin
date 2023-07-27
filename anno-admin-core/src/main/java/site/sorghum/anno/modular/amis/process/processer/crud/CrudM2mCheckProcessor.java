@@ -52,6 +52,10 @@ public class CrudM2mCheckProcessor implements BaseProcessor {
             setData(new HashMap<String, Object>(){{
                 put("&", "$$");
                 put("_extraData", "${extraData}");
+                put("mediumTableClass","${mediumTableClass}");
+                put("mediumThisField","${mediumThisField}");
+                put("mediumOtherField","${mediumOtherField}");
+                put("joinValue","${joinValue}");
             }});
             setMessages(new ApiMessage(){{
                 setSuccess("操作成功");

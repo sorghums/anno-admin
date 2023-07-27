@@ -9,6 +9,7 @@ import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
+import site.sorghum.amis.entity.function.AnAmis;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.anno.modular.amis.model.TreeView;
@@ -47,21 +48,21 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 action = new DrawerButton();
                 action.setLabel(annoButton.name());
                 ((DrawerButton) action).setDrawer(
-                        new DrawerButton.Drawer() {{
-                            setShowCloseButton(false);
-                            setPosition("right");
-                            setCloseOnOutside(true);
-                            setSize("xl");
-                            setHeaderClassName("p-none m-none h-0");
-                            setFooterClassName("p-xs m-xs h-1/2");
-                            setActions(new ArrayList<>());
-                            setBody(
-                                    new IFrame() {{
-                                        setType("iframe");
-                                        setSrc("/system/config/amis/" + o2MJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + o2MJoinButton.joinOtherClazzField() + "=${" + o2MJoinButton.joinThisClazzField() + "}");
-                                    }}
-                            );
-                        }}
+                    new DrawerButton.Drawer() {{
+                        setShowCloseButton(false);
+                        setPosition("right");
+                        setCloseOnOutside(true);
+                        setSize("xl");
+                        setHeaderClassName("p-none m-none h-0");
+                        setFooterClassName("p-xs m-xs h-1/2");
+                        setActions(new ArrayList<>());
+                        setBody(
+                            new AnAmis() {{
+                                setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
+                                setDefaultProps(Map.of(o2MJoinButton.joinOtherClazzField(), "${" + o2MJoinButton.joinThisClazzField() + "}"));
+                            }}
+                        );
+                    }}
                 );
             } else if (m2mJoinButton.enable()) {
                 action = new DrawerButton();
@@ -75,21 +76,22 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 }};
                 action.setLabel(annoButton.name());
                 ((DrawerButton) action).setDrawer(
-                        new DrawerButton.Drawer() {{
-                            setCloseOnEsc(true);
-                            setCloseOnOutside(true);
-                            setSize("xl");
-                            setShowCloseButton(false);
-                            setHeaderClassName("p-none m-none h-0");
-                            setFooterClassName("p-xs m-xs h-1/2");
-                            setBody(
-                                    new IFrame() {{
-                                        setType("iframe");
-                                        setSrc("/system/config/amis-m2m/" + m2mJoinButton.joinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
-                                    }}
-                            );
-                            setActions(new ArrayList<Action>());
-                        }}
+                    new DrawerButton.Drawer() {{
+                        setCloseOnEsc(true);
+                        setCloseOnOutside(true);
+                        setSize("xl");
+                        setShowCloseButton(false);
+                        setHeaderClassName("p-none m-none h-0");
+                        setFooterClassName("p-xs m-xs h-1/2");
+                        setBody(
+                            new AnAmis() {{
+                                setTargetClass(m2mJoinButton.joinAnnoMainClazz().getSimpleName());
+                                setDefaultProps(queryMap);
+                                setParam(Map.of("isM2m", true));
+                            }}
+                        );
+                        setActions(new ArrayList<Action>());
+                    }}
                 );
             } else if (StrUtil.isNotBlank(annoButton.jumpUrl())) {
                 action.setLabel(annoButton.name());
@@ -102,24 +104,24 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 action.setLabel(annoButton.name());
                 action.setActionType("ajax");
                 action.setApi(
-                        new Api() {{
-                            setMethod("post");
-                            setUrl("/system/anno/runJavaCmd");
-                            setData(new HashMap<String, Object>() {{
-                                put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
-                                put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
-                                // 30分钟过期
-                                put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
-                                put("&", "$$");
-                            }});
-                            setMessages(
-                                    new ApiMessage() {{
-                                        setSuccess("操作成功");
-                                        setFailed("操作失败，请刷新页面后重试。");
-                                    }}
-                            );
+                    new Api() {{
+                        setMethod("post");
+                        setUrl("/system/anno/runJavaCmd");
+                        setData(new HashMap<String, Object>() {{
+                            put("clazz", CryptoUtil.encrypt(annoButton.javaCmd().beanClass().getName()));
+                            put("method", CryptoUtil.encrypt(annoButton.javaCmd().methodName()));
+                            // 30分钟过期
+                            put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
+                            put("&", "$$");
+                        }});
+                        setMessages(
+                            new ApiMessage() {{
+                                setSuccess("操作成功");
+                                setFailed("操作失败，请刷新页面后重试。");
+                            }}
+                        );
 
-                        }}
+                    }}
                 );
             } else {
                 continue;

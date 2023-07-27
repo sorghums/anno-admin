@@ -198,6 +198,8 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
      */
     public void initMenus() throws SQLException {
         List<AnnoModule> annoModules = Solon.context().getBeansOfType(AnnoModule.class);
+        annoModules.forEach(AnnoModule::printModelInfo);
+        annoModules.forEach(AnnoModule::run);
         for (AnnoModule annoModule : annoModules) {
             List<AnMenu> anMenus = annoModule.initEntityMenus();
             if (CollUtil.isEmpty(anMenus)) {

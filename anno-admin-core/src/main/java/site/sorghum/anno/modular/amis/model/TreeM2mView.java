@@ -46,6 +46,10 @@ public class TreeM2mView extends Page {
                         put("ids","${m2mTree}");
                         put("_extraData","${extraData}");
                         put("clearAll","true");
+                        put("mediumTableClass","${mediumTableClass}");
+                        put("mediumThisField","${mediumThisField}");
+                        put("mediumOtherField","${mediumOtherField}");
+                        put("joinValue","${joinValue}");
                     }});
                     setMessages(new ApiMessage(){{
                         setSuccess("操作成功");

@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.amis.process.processer.tree;
+package site.sorghum.anno.modular.amis.process.processer.treem2m;
 
 import org.noear.solon.annotation.Component;
 import site.sorghum.amis.entity.AmisBaseWrapper;

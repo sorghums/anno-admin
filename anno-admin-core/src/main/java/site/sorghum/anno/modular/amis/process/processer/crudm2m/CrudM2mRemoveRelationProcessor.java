@@ -39,6 +39,10 @@ public class CrudM2mRemoveRelationProcessor implements BaseProcessor {
                     setData(new JSONObject() {{
                         put("&", "$$");
                         put("_extraData", "${extraData}");
+                        put("mediumTableClass","${mediumTableClass}");
+                        put("mediumThisField","${mediumThisField}");
+                        put("mediumOtherField","${mediumOtherField}");
+                        put("joinValue","${joinValue}");
                     }});
                     setMessages(
                             new ApiMessage() {{

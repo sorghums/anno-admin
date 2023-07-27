@@ -4,8 +4,7 @@ import org.noear.solon.Solon;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
-import site.sorghum.anno.modular.amis.process.processer.crudm2m.*;
-import site.sorghum.anno.modular.amis.process.processer.tree.TreeM2mViewInitProcessor;
+import site.sorghum.anno.modular.amis.process.processer.treem2m.TreeM2mViewInitProcessor;
 
 import java.util.List;
 import java.util.Map;

@@ -49,6 +49,10 @@ public class CrudView extends Page {
                         put("ignoreM2m", false);
                         put("reverseM2m", false);
                         put("_extraData", "${extraData}");
+                        put("mediumTableClass","${mediumTableClass}");
+                        put("mediumThisField","${mediumThisField}");
+                        put("mediumOtherField","${mediumOtherField}");
+                        put("joinValue","${joinValue}");
                     }});
                 }}
         );
@@ -61,7 +65,7 @@ public class CrudView extends Page {
                                 put("type","operation");
                                 put("label","操作");
                                 put("buttons",new ArrayList<>());
-                                put("fixed","right");
+                                put("fixed","");
                             }}
                     );
                 }}

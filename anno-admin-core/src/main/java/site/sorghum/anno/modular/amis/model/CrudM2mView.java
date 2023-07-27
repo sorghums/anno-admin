@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.display.*;
+import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.layout.Page;
 
@@ -48,6 +49,10 @@ public class CrudM2mView extends Page {
                                 put("_cat", "${_cat}");
                                 put("_extraData", "${extraData}");
                                 put("&", "$$");
+                                put("mediumTableClass","${mediumTableClass}");
+                                put("mediumThisField","${mediumThisField}");
+                                put("mediumOtherField","${mediumOtherField}");
+                                put("joinValue","${joinValue}");
                             }}
                     );
                 }}
@@ -115,7 +120,7 @@ public class CrudM2mView extends Page {
                             put("type", "operation");
                             put("label", "操作");
                             put("buttons", new ArrayList<>());
-                            put("fixed", 100);
+                            put("fixed", "100");
                         }}
                 )
         );
