@@ -2,7 +2,6 @@ package site.sorghum.anno.modular.amis.process.processer.tree;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Action;
@@ -11,19 +10,16 @@ import site.sorghum.amis.entity.function.ButtonGroup;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.TreeSelect;
+import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.amis.model.TreeView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
-import site.sorghum.anno.common.util.JSONUtil;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

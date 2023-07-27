@@ -9,11 +9,9 @@ import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
-import site.sorghum.anno.metadata.AnField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.modular.type.TypeParser;
 import site.sorghum.anno.common.util.DbContextUtil;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.modular.type.TypeParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;

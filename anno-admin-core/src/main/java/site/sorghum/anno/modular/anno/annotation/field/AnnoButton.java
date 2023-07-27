@@ -18,7 +18,7 @@ public @interface AnnoButton {
      *
      * @return {@link String}
      */
-    String name() default "";
+    String name();
 
 
     /**
@@ -178,5 +178,11 @@ public @interface AnnoButton {
         boolean enable() default true;
 
     }
+
+    /**
+     * 权限码
+     * 默认为空，不进行权限控制
+     */
+    String permissionCode() default "";
 
 }

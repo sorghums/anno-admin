@@ -3,7 +3,6 @@ package site.sorghum.amis.entity.layout;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.function.Api;
 
 import java.util.List;
 

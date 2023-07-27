@@ -1,7 +1,5 @@
 package site.sorghum.anno.modular.amis.process;
 
-import org.noear.solon.core.handle.Context;
-import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 
 import java.util.Map;

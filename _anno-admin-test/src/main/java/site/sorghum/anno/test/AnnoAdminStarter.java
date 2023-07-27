@@ -5,16 +5,8 @@ import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.web.cors.CrossHandler;
-import org.noear.wood.IPage;
 import org.noear.wood.WoodConfig;
-import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.RemoveParam;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
-import site.sorghum.anno.modular.system.anno.SysRole;
-
-import java.util.ArrayList;
 
 /**
  * Ano 管理入门

@@ -5,8 +5,6 @@ import lombok.EqualsAndHashCode;
 import org.noear.solon.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
 
-import java.util.Map;
-
 /**
  * 输入文件
  *

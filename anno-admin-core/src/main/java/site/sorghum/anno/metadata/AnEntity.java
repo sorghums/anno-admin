@@ -2,13 +2,7 @@ package site.sorghum.anno.metadata;
 
 import lombok.Data;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoOrder;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoProxy;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoTree;
+import site.sorghum.anno.modular.anno.annotation.clazz.*;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 

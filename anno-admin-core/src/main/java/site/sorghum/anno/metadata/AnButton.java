@@ -144,4 +144,10 @@ public class AnButton {
     private String javaCmdMethodName;
 
 
+    /**
+     * 按钮权限码
+     *
+     * @see site.sorghum.anno.modular.anno.annotation.field.AnnoButton#permissionCode()
+     */
+    private String permissionCode;
 }

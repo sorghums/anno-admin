@@ -155,11 +155,13 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
     }
 
     private List<AnButton> getAnButton(Class<?> clazz) {
+        ArrayList<AnButton> anButtons = new ArrayList<>();
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);
         for (Field buttonField : annoButtonFields) {
             AnnoButton anno = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
             AnButton anButton = new AnButton();
             anButton.setName(anno.name());
+            anButton.setPermissionCode(anno.permissionCode());
             anButton.setSize(anno.size());
             anButton.setJsCmd(anno.jsCmd());
             anButton.setJumpUrl(anno.jumpUrl());
@@ -183,7 +185,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
             anButton.setJavaCmdBeanClass(anno.javaCmd().beanClass());
             anButton.setJavaCmdMethodName(anno.javaCmd().methodName());
+            anButtons.add(anButton);
         }
-        return null;
+        return anButtons;
     }
 }

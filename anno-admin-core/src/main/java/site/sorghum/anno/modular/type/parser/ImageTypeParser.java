@@ -5,8 +5,6 @@ import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Image;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.metadata.AnField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.type.TypeParser;
 
 import java.util.Map;

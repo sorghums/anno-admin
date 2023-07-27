@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.anno.proxy;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.StrUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.metadata.AnEntity;
@@ -74,8 +75,8 @@ public class PermissionProxy {
         checkPermission(metadataManager.getEntity(clazz), DELETE);
     }
 
-    private void checkPermission(AnEntity anEntity, String delete) {
-        if (isSystemRun()) {
+    public void checkPermission(AnEntity anEntity, String code) {
+        if (isSystemRun() || StrUtil.isBlank(code)) {
             return;
         }
         boolean enable = anEntity.isEnablePermission();
@@ -84,7 +85,7 @@ public class PermissionProxy {
         }
         String baseCode = anEntity.getPermissionCode();
         // 校验权限
-        StpUtil.checkPermission(baseCode + ":" + delete);
+        StpUtil.checkPermission(baseCode + ":" + code);
     }
 
     private boolean isSystemRun(){

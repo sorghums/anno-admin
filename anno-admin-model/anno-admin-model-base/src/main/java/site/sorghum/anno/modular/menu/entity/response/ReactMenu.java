@@ -8,7 +8,6 @@ import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * vue菜单

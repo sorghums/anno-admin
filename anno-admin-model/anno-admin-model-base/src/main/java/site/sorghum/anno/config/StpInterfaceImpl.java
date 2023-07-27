@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.auth.service.AuthService;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

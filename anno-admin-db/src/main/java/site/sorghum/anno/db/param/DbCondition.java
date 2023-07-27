@@ -1,13 +1,10 @@
 package site.sorghum.anno.db.param;
 
-import lombok.*;
-import org.noear.solon.core.util.ReflectUtil;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.noear.wood.DbTableQuery;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 查询参数
