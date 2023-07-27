@@ -25,5 +25,12 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.web.staticfiles</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>${sa-token.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
