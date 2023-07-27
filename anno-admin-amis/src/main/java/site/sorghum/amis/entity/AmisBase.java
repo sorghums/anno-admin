@@ -44,5 +44,5 @@ public class AmisBase {
     /**
      * 调试模式
      */
-    Boolean debug= true;
+    Boolean debug= false;
 }
