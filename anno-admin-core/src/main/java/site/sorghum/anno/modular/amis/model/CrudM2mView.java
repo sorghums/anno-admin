@@ -3,7 +3,8 @@ package site.sorghum.anno.modular.amis.model;
 import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.amis.entity.display.*;
+import site.sorghum.amis.entity.display.Crud;
+import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.layout.Page;
 
@@ -115,7 +116,7 @@ public class CrudM2mView extends Page {
                             put("type", "operation");
                             put("label", "操作");
                             put("buttons", new ArrayList<>());
-                            put("fixed", 100);
+                            put("fixed", "100");
                         }}
                 )
         );

@@ -27,7 +27,6 @@ import site.sorghum.anno.modular.anno.service.AnnoService;
 import site.sorghum.anno.modular.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
-import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -247,6 +246,7 @@ public class AnnoController {
         // 字段二
         String mediumOtherField = param.get("mediumOtherField").toString();
         String mediumOtherValue = param.get("joinValue").toString();
+
         if (ids instanceof List) {
             List<String> idList = (List) ids;
             split = idList.toArray(new String[0]);

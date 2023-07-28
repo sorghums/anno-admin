@@ -10,8 +10,12 @@ import lombok.SneakyThrows;
 import org.noear.solon.Solon;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.common.exception.BizException;
+import site.sorghum.anno.common.util.JSONUtil;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.metadata.AnEntity;
+import site.sorghum.anno.metadata.AnField;
+import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
@@ -357,23 +361,17 @@ public class AnnoUtil {
     public static <T> List<DbCondition> simpleEntity2conditions(Object entity, Class<T> clazz) {
         ArrayList<DbCondition> conditions = new ArrayList<>();
         if (entity instanceof Map map) {
-            Field[] fields = org.noear.solon.core.util.ReflectUtil.getDeclaredFields(clazz);
-            for (Field field : fields) {
-                String sqlColumn = AnnoFieldCache.getSqlColumnByField(clazz, field);
-                Object value = map.get(field.getName());
-                if (sqlColumn != null && value != null) {
-                    conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
-                }
-            }
-            return conditions;
+            entity = JSONUtil.toBean(JSONUtil.toJsonString(map), clazz);
         }
         if (entity.getClass() != clazz) {
             throw new IllegalArgumentException("entity must be instance of " + clazz.getName());
         }
-        Field[] fields = ReflectUtil.getFields(clazz);
-        for (Field field : fields) {
-            String sqlColumn = AnnoFieldCache.getSqlColumnByField(clazz, field);
-            Object value = field.get(entity);
+        MetadataManager metadataManager = Solon.context().getBean(MetadataManager.class);
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        List<AnField> anFields = anEntity.getFields();
+        for (AnField anField : anFields) {
+            String sqlColumn = anField.getTableFieldName();
+            Object value = ReflectUtil.getFieldValue(entity, anField.getFieldName());
             if (sqlColumn != null && value != null) {
                 conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
             }

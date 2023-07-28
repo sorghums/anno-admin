@@ -10,13 +10,11 @@ import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputTree;
 import site.sorghum.amis.entity.input.Options;
+import site.sorghum.anno.common.util.DbContextUtil;
 import site.sorghum.anno.metadata.AnField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.modular.type.TypeParser;
-import site.sorghum.anno.common.util.DbContextUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

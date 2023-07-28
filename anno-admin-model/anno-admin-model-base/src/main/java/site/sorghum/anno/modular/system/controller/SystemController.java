@@ -7,9 +7,9 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
+import site.sorghum.anno.common.response.AnnoResult;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
-import site.sorghum.anno.common.response.AnnoResult;
 
 import java.util.HashMap;
 import java.util.Map;

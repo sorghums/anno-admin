@@ -40,11 +40,13 @@ public class AnnoModule implements Runnable {
 
     @Override
     public void run() {
-        printModelInfo();
     }
 
+    /**
+     * 打印模块信息
+     */
     public void printModelInfo() {
-        log.info("【🚀🚀🚀 ===> AnnoModule: {}, desc: {} 】", modelName, modelDesc);
+        log.info("【🚀🚀🚀 ===> AnnoModule: {}, 描述: {} 】", modelName, modelDesc);
     }
 
 
@@ -104,5 +106,22 @@ public class AnnoModule implements Runnable {
 
         anMenu.setEntity(metadataManager.getEntity(entityClass));
         return anMenu;
+    }
+
+
+    private String rightPadString(String orginalString, int length, String padString) {
+        StringBuilder newString = new StringBuilder(orginalString);
+        while (newString.length() < length) {
+            newString.append(padString);
+        }
+        return newString.toString();
+    }
+
+    private String leftPadString(String orginalString, int length, String padString) {
+        StringBuilder newString = new StringBuilder(orginalString);
+        while (newString.length() < length) {
+            newString.insert(0, padString);
+        }
+        return newString.toString();
     }
 }

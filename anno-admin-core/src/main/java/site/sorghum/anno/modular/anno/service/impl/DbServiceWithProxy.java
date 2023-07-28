@@ -19,7 +19,6 @@ import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
-import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.ArrayList;
 import java.util.List;

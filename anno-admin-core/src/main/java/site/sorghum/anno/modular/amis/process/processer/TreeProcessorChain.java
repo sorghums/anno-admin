@@ -1,12 +1,11 @@
 package site.sorghum.anno.modular.amis.process.processer;
 
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
-import site.sorghum.anno.modular.amis.process.processer.tree.TreeBodyFormProcessor;
 import site.sorghum.anno.modular.amis.process.processer.tree.TreeAsideProcessor;
+import site.sorghum.anno.modular.amis.process.processer.tree.TreeBodyFormProcessor;
 import site.sorghum.anno.modular.amis.process.processer.tree.TreeColumnButtonProcessor;
 import site.sorghum.anno.modular.amis.process.processer.tree.TreeViewInitProcessor;
 

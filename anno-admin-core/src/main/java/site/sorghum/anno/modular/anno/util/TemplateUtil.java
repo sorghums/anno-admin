@@ -3,6 +3,7 @@ package site.sorghum.anno.modular.anno.util;
 import cn.hutool.core.date.StopWatch;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.amis.entity.AmisBaseWrapper;
+import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.modular.amis.model.CrudM2mView;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.model.TreeM2mView;
@@ -11,7 +12,6 @@ import site.sorghum.anno.modular.amis.process.processer.CrudM2mProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.CrudProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.TreeM2mProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.TreeProcessorChain;
-import site.sorghum.anno.common.util.JSONUtil;
 
 import java.util.Map;
 

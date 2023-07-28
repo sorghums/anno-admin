@@ -82,7 +82,7 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 重置密码按钮
      */
-    @AnnoButton(name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
+    @AnnoButton(permissionCode = "resetPwd",name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
     private Object resetPwdButton;
 
 }

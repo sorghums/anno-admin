@@ -3,8 +3,6 @@ package site.sorghum.anno.common.util;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.SmUtil;
-import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.symmetric.AES;
 
 import javax.crypto.SecretKey;

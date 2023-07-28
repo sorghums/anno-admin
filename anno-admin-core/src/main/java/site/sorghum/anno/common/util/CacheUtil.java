@@ -2,10 +2,10 @@ package site.sorghum.anno.common.util;
 
 import org.noear.redisx.RedisClient;
 import org.noear.redisx.plus.RedisBucket;
-import org.noear.redisx.plus.RedisHash;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Init;
+
 import java.util.function.Supplier;
 
 /**

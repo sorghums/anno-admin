@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
-import site.sorghum.amis.entity.function.Api;
 
 import java.util.List;
 import java.util.Map;

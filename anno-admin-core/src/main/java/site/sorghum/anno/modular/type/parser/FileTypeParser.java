@@ -1,19 +1,15 @@
 package site.sorghum.anno.modular.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.map.MapUtil;
 import org.noear.solon.annotation.Component;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Link;
 import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputFile;
-import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.metadata.AnField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.type.TypeParser;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

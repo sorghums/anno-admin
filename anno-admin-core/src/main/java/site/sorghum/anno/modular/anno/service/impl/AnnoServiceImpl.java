@@ -9,10 +9,8 @@ import org.noear.solon.annotation.ProxyComponent;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.modular.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.modular.anno.service.AnnoService;
-import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 
 import java.util.List;

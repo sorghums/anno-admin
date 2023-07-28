@@ -6,7 +6,6 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.modular.auth.service.AuthService;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return Collections.emptyList();
+        return authService.roleList(loginId.toString());
     }
 
 }

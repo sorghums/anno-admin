@@ -49,6 +49,10 @@ public class SaConfig {
                             .setServer("anno-server")
                             // 是否可以在iframe显示视图： DENY=不可以 | SAMEORIGIN=同域下可以 | ALLOW-FROM uri=指定域名下可以
                             .setHeader("X-Frame-Options", "SAMEORIGIN")
+                            .addHeader("Access-Control-Allow-Origin", SaHolder.getRequest().getHeader("Origin"))
+                            .addHeader("Access-Control-Allow-Methods", "*")
+                            .addHeader("Access-Control-Allow-Headers", "anno-token,content-type,*")
+                            .addHeader("Access-Control-Allow-Credentials", "true")
                             // 是否启用浏览器默认XSS防护： 0=禁用 | 1=启用 | 1; mode=block 启用, 并在检查到XSS攻击时，停止渲染页面
                             .setHeader("X-XSS-Protection", "1; mode=block")
                             // 禁用浏览器内容嗅探

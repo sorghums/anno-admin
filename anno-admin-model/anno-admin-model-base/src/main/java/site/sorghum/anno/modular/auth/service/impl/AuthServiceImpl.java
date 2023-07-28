@@ -13,6 +13,7 @@ import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.util.MD5Util;
+import site.sorghum.anno.metadata.AnButton;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
@@ -51,12 +52,18 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
 
     @Db
     SysPermissionDao sysPermissionDao;
+
     @Db
     SysAnnoMenuDao sysAnnoMenuDao;
+
     @Db
     DbContext dbContext;
+
     @Inject
     MetadataManager metadataManager;
+
+    @Inject
+    AuthService authService;
 
     public void initPermissions() {
         // 初始化的时候，进行Db的注入
@@ -65,9 +72,27 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
             if (anEntity.isEnablePermission()) {
                 String baseCode = anEntity.getPermissionCode();
                 String baseName = anEntity.getPermissionCodeTranslate();
+                // 按钮权限每次必查
+                List<AnButton> anButtons = anEntity.getButtons();
+                for (AnButton anButton : anButtons) {
+                    if (StrUtil.isNotBlank(anButton.getPermissionCode())){
+                        String buttonCode = baseCode + ":" + anButton.getPermissionCode();
+                        SysPermission sysPermission = sysPermissionDao.selectById(buttonCode);
+                        if (sysPermission != null && sysPermission.getId() != null) {
+                            continue;
+                        }
+                        SysPermission buttonPermission = new SysPermission();
+                        buttonPermission.setId(buttonCode);
+                        buttonPermission.setParentId(baseCode);
+                        buttonPermission.setCode(buttonCode);
+                        buttonPermission.setName(baseName + ":" + anButton.getName());
+                        buttonPermission.setDelFlag(0);
+                        sysPermissionDao.insert(buttonPermission, true);
+                    }
+                }
                 SysPermission sysPermission = sysPermissionDao.selectById(baseCode);
                 if (sysPermission != null && sysPermission.getId() != null) {
-                    return;
+                    continue;
                 }
 
                 SysPermission basePermission = new SysPermission();
@@ -138,7 +163,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
             throw new BizException("用户不存在");
         }
         // 清除缓存
-        this.removePermissionCacheList(sysUser.getId());
+        this.removePermRoleCacheList(sysUser.getId());
         if (!sysUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
         }
@@ -162,8 +187,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     @Override
     @Cache(key = "permissionList", seconds = 60 * 60 * 2)
     public List<String> permissionList(String userId) {
-        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
-        List<String> roleIds = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        List<String> roleIds = authService.roleList(userId);
         if (roleIds.contains("admin")) {
             List<SysPermission> sysPermissions = sysPermissionDao.list();
             return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
@@ -173,8 +197,15 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     }
 
     @Override
-    @CacheRemove(keys = "permissionList")
-    public void removePermissionCacheList(String userId) {
+    @Cache(key = "roleList", seconds = 60 * 60 * 2)
+    public List<String> roleList(String userId) {
+        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
+        return sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    @CacheRemove(keys = "permissionList,roleList")
+    public void removePermRoleCacheList(String userId) {
         // 清除缓存
     }
 
@@ -189,6 +220,8 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
      */
     public void initMenus() throws SQLException {
         List<AnnoModule> annoModules = Solon.context().getBeansOfType(AnnoModule.class);
+        annoModules.forEach(AnnoModule::printModelInfo);
+        annoModules.forEach(AnnoModule::run);
         for (AnnoModule annoModule : annoModules) {
             List<AnMenu> anMenus = annoModule.initEntityMenus();
             if (CollUtil.isEmpty(anMenus)) {

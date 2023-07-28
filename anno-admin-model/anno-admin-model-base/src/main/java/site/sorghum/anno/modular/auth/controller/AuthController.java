@@ -4,15 +4,14 @@ import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
+import site.sorghum.anno.common.response.AnnoResult;
+import site.sorghum.anno.modular.anno.proxy.PermissionProxy;
+import site.sorghum.anno.modular.auth.response.UserInfo;
 import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.system.anno.SysUser;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
-import site.sorghum.anno.common.response.AnnoResult;
 
 import java.util.Map;
 
@@ -33,7 +32,11 @@ public class AuthController {
     @Inject
     CaptchaManager captchaManager;
 
+    @Inject
+    PermissionProxy permissionProxy;
+
     @Mapping(value = "/login", method = MethodType.POST,consumes = "application/json")
+    @Post
     public AnnoResult<String> login(@Body Map<String ,String> user) {
         // 获得系列参数
         String mobile = user.get("mobile");
@@ -69,8 +72,20 @@ public class AuthController {
         }
         // 登录用户
         SysUser sysUser = authService.getUserById(loginId);
+        sysUser.setPassword(null);
         StpUtil.getSession().set("user", sysUser);
-        authService.removePermissionCacheList(loginId);
+        authService.removePermRoleCacheList(loginId);
         return AnnoResult.succeed("清除成功");
+    }
+
+    @Mapping(value = "/me", method = MethodType.GET)
+    public AnnoResult<UserInfo> me(){
+        UserInfo userInfo = new UserInfo();
+        SysUser sysUser = (SysUser) StpUtil.getSession().get("user");
+        userInfo.setName(sysUser.getName());
+        userInfo.setAvatar(sysUser.getAvatar());
+        userInfo.setPerms(StpUtil.getPermissionList());
+        userInfo.setRoles(StpUtil.getRoleList());
+        return AnnoResult.succeed(userInfo);
     }
 }

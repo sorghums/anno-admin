@@ -1,6 +1,5 @@
 package site.sorghum.anno.metadata;
 
-import cn.hutool.core.lang.func.LambdaUtil;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.db.param.RemoveParam;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
