@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>site.sorghum.anno</groupId>
-        <artifactId>anno-admin</artifactId>
+        <artifactId>anno-admin-parent</artifactId>
         <version>0.0.1.M2</version>
     </parent>
 
-    <artifactId>anno-admin-core</artifactId>
+    <artifactId>anno-admin</artifactId>
 
     <properties>
         <bcprov.version>1.73</bcprov.version>

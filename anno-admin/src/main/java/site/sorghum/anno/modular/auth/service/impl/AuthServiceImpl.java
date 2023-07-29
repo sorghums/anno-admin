@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.ProxyComponent;
-import org.noear.solon.core.event.AppLoadEndEvent;
+import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CacheRemove;
@@ -42,8 +42,8 @@ import java.util.stream.Collectors;
  * @author Sorghum
  * @since 2023/06/27
  */
-@ProxyComponent
-public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEvent> {
+@ProxyComponent(index = 100)
+public class AuthServiceImpl implements AuthService, EventListener<AppBeanLoadEndEvent> {
     @Db
     SysUserDao sysUserDao;
 
@@ -141,6 +141,9 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
                 deletePermission.setDelFlag(0);
 
                 sysPermissionDao.insert(deletePermission, true);
+
+                // 按钮权限
+
             }
         }
 
@@ -210,7 +213,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
     }
 
     @Override
-    public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
+    public void onEvent(AppBeanLoadEndEvent appLoadEndEvent) throws Throwable {
         initPermissions();
         initMenus();
     }
@@ -239,6 +242,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppLoadEndEve
                     sysAnnoMenu.setOpenType("_iframe");
                     sysAnnoMenu.setIcon(anMenu.getIcon());
                     if (anMenu.getEntity() != null) {
+                        sysAnnoMenu.setParseData(anMenu.getEntity().getEntityName());
                         sysAnnoMenu.setHref("/system/config/amis/" + anMenu.getEntity().getEntityName());
                         if (anMenu.getEntity().isEnablePermission()) {
                             sysAnnoMenu.setPermissionId(anMenu.getEntity().getTableName());

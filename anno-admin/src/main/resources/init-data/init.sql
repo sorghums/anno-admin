@@ -1,10 +1,10 @@
-insert into sys_anno_menu (id, parent_id, title, type, open_type, sort, icon, href, permission_id, create_by, create_time, del_flag, update_by, update_time) values
+insert into sys_anno_menu (id, parent_id, title, type, open_type, sort, icon, href, permission_id, parse_data, create_by, create_time, del_flag, update_by, update_time) values
 ('10', '', '系统菜单', 0, '_iframe', 0, 'layui-icon layui-icon-console', '', 'sys_user', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
-('11', '10', '菜单管理', 1, '_iframe', 995, 'layui-icon layui-icon-console', '/system/config/amis/SysAnnoMenu', 'sys_anno_menu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
-('12', '10', '权限管理', 1, '_iframe', 996, 'layui-icon layui-icon-console', '/system/config/amis/SysPermission', 'sys_permission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
-('13', '10', '用户管理', 1, '_iframe', 997, 'layui-icon layui-icon-console', '/system/config/amis/SysUser', 'sys_user', null, null, 0, null, '2023-06-29 20:13:47.910000'),
-('14', '10', '角色管理', 1, '_iframe', 998, 'layui-icon layui-icon-console', '/system/config/amis/SysRole', 'sys_role', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
-('15', '10', '组织管理', 1, '_iframe', 999, 'layui-icon layui-icon-console', '/system/config/amis/SysOrg', 'sys_org', null, null, 0, null, '2023-06-29 20:13:35.706000');
+('11', '10', '菜单管理', 1, '_iframe', 995, 'layui-icon layui-icon-console', '/system/config/amis/SysAnnoMenu', 'sys_anno_menu', 'SysAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
+('12', '10', '权限管理', 1, '_iframe', 996, 'layui-icon layui-icon-console', '/system/config/amis/SysPermission', 'sys_permission', 'SysPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
+('13', '10', '用户管理', 1, '_iframe', 997, 'layui-icon layui-icon-console', '/system/config/amis/SysUser', 'sys_user', 'SysUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
+('14', '10', '角色管理', 1, '_iframe', 998, 'layui-icon layui-icon-console', '/system/config/amis/SysRole', 'sys_role', 'SysRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
+('15', '10', '组织管理', 1, '_iframe', 999, 'layui-icon layui-icon-console', '/system/config/amis/SysOrg', 'sys_org', 'SysOrg', null, null, 0, null, '2023-06-29 20:13:35.706000');
 
 insert into sys_org (id, org_name, create_by, create_time, del_flag, update_by, update_time) values
 ('1674391485808001024', '标准组织', null, '2023-06-29 20:16:53.563000', 0, null, '2023-06-29 20:16:53.563000');

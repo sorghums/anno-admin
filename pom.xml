@@ -8,12 +8,12 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.3.7</version>
+        <version>2.4.1-M2</version>
         <relativePath/>
     </parent>
 
     <groupId>site.sorghum.anno</groupId>
-    <artifactId>anno-admin</artifactId>
+    <artifactId>anno-admin-parent</artifactId>
     <version>0.0.1.M2</version>
 
     <packaging>pom</packaging>
@@ -23,13 +23,11 @@
     </description>
     <modules>
         <!-- 核心包 -->
-        <module>anno-admin-core</module>
+        <module>anno-admin</module>
         <!-- AMIS包 -->
         <module>anno-admin-amis</module>
         <!-- 静态资源的WEB包 -->
         <module>anno-admin-web</module>
-        <!-- 拓展包-->
-        <module>anno-admin-model</module>
         <!-- 自动生成表结构 -->
         <module>anno-admin-ddl</module>
         <!-- 测试类 -->
@@ -69,7 +67,7 @@
         <dependencies>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
-                <artifactId>anno-admin-core</artifactId>
+                <artifactId>anno-admin</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
