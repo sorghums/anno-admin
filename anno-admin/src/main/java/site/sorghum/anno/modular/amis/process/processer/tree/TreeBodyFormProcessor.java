@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer.tree;
 
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Action;
@@ -31,10 +31,11 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component
+@Named
 public class TreeBodyFormProcessor implements BaseProcessor {
     @Inject
     MetadataManager metadataManager;
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         TreeView treeView = (TreeView) amisBaseWrapper.getAmisBase();
@@ -63,21 +64,21 @@ public class TreeBodyFormProcessor implements BaseProcessor {
                 formItem.setName(fieldName);
                 formItem.setLabel(field.getTitle());
                 ((TreeSelect) formItem).setSource(
-                        new Api() {{
-                            setMethod("get");
-                            setUrl("/system/anno/${treeClazz}/annoTrees");
-                        }}
+                    new Api() {{
+                        setMethod("get");
+                        setUrl("/system/anno/${treeClazz}/annoTrees");
+                    }}
                 );
             }
             itemList.add(formItem);
         }
         Form crudForm = treeView.getCrudForm();
         crudForm.setBody(itemList);
-        ButtonGroup crudButtonGroup =treeView.getCrudButtonGroup();
+        ButtonGroup crudButtonGroup = treeView.getCrudButtonGroup();
         List<Action> actions = crudButtonGroup.getButtons();
         Action action = actions.get(1);
         Map<String, Object> onEvent =
-                action.getOnEvent();
+            action.getOnEvent();
         // 设置${_parentKey}的值
         String parentPk = AnnoUtil.getParentPk(clazz);
         JSONUtil.write(onEvent, "$.click.actions[1].args.value", new HashMap<>() {{

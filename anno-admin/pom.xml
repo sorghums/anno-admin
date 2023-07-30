@@ -30,38 +30,26 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>solon.boot.jlhttp</artifactId>
-                    <groupId>org.noear</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.boot.undertow</artifactId>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.logging.logback</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.thymeleaf</artifactId>
-        </dependency>
-
 
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>sa-token-solon-plugin</artifactId>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-core</artifactId>
+            <version>${sa-token.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>redisx</artifactId>
@@ -69,12 +57,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>wood-solon-plugin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>wood.plus</artifactId>
-            <version>${wood.version}</version>
+            <artifactId>wood</artifactId>
         </dependency>
 
         <dependency>

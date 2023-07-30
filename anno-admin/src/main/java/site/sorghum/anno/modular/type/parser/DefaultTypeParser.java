@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.type.parser;
 
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.anno.common.util.JSONUtil;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class DefaultTypeParser implements TypeParser {
     @Override
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {

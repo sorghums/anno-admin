@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.amis.process.processer.treem2m;
 
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.model.TreeM2mView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component
+@Named
 public class TreeM2mViewInitProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {

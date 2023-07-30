@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer;
 
-import org.noear.solon.Solon;
 import site.sorghum.amis.entity.AmisBaseWrapper;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.treem2m.TreeM2mViewInitProcessor;
@@ -23,14 +23,14 @@ public class TreeM2mProcessorChain implements BaseProcessorChain {
      */
     private final AtomicInteger index = new AtomicInteger(0);
     private static final List<Class<? extends BaseProcessor>> PROCESSORS = List.of(
-            // 初始化
-            TreeM2mViewInitProcessor.class
+        // 初始化
+        TreeM2mViewInitProcessor.class
     );
 
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties) {
         if (index.get() < PROCESSORS.size()) {
-            Solon.context().getBean(PROCESSORS.get(index.getAndIncrement())).doProcessor(amisBaseWrapper, clazz, properties, this);
+            AnnoBeanUtils.getBean(PROCESSORS.get(index.getAndIncrement())).doProcessor(amisBaseWrapper, clazz, properties, this);
         }
     }
 }

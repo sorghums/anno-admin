@@ -3,9 +3,9 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
@@ -22,8 +22,7 @@ import java.util.Map;
  * @author sorghum
  * @since 2023/05/20
  */
-@SuppressWarnings("unchecked")
-@ProxyComponent
+@Named
 @Slf4j
 public class AnnoServiceImpl implements AnnoService {
 
@@ -31,7 +30,7 @@ public class AnnoServiceImpl implements AnnoService {
     MetadataManager metadataManager;
 
     @Override
-    public <T> String sql(Class<T> clazz,String sql) {
+    public <T> String sql(Class<T> clazz, String sql) {
         try {
             // 如果有配置逻辑删除
             AnEntity anEntity = metadataManager.getEntity(clazz);
@@ -41,26 +40,26 @@ public class AnnoServiceImpl implements AnnoService {
             return sql;
         } catch (Exception e) {
             log.error("AnnoService.page error:{}", e.getMessage());
-            throw new BizException("权限不足或系统异常",e);
+            throw new BizException("权限不足或系统异常", e);
         }
     }
 
     @Override
-    public <T> String m2mSql(Map<?,? > param) {
-        if (StrUtil.isBlank(MapUtil.getStr(param,"mediumTableClass"))){
+    public <T> String m2mSql(Map<?, ?> param) {
+        if (StrUtil.isBlank(MapUtil.getStr(param, "mediumTableClass"))) {
             return "";
         }
-        String mediumOtherField = MapUtil.getStr(param,"mediumOtherField");
-        String otherValue =MapUtil.getStr(param,"joinValue");
-        String mediumThisField = MapUtil.getStr(param,"mediumThisField");
+        String mediumOtherField = MapUtil.getStr(param, "mediumOtherField");
+        String otherValue = MapUtil.getStr(param, "joinValue");
+        String mediumThisField = MapUtil.getStr(param, "mediumThisField");
         AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "mediumTableClass"));
         String mediumTable = mediumEntity.getTableName();
-        String sql = "select "+mediumThisField+" from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
-        return sql(mediumEntity.getClazz(),sql);
+        String sql = "select " + mediumThisField + " from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
+        return sql(mediumEntity.getClazz(), sql);
     }
 
     @Override
-    public <T> List<AnnoTreeDTO<String>> annoTrees(Class<T> tClass,List<T> dataList) {
+    public <T> List<AnnoTreeDTO<String>> annoTrees(Class<T> tClass, List<T> dataList) {
         try {
             AnEntity anEntity = metadataManager.getEntity(tClass);
             return AnnoUtil.buildAnnoTree(dataList, anEntity.getTreeLabel(), anEntity.getTreeKey(), anEntity.getTreeParentKey());

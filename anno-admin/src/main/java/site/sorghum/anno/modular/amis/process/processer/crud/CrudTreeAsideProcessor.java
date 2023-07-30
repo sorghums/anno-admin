@@ -1,8 +1,8 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.InputTree;
@@ -21,12 +21,13 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class CrudTreeAsideProcessor implements BaseProcessor {
     @Inject
     MetadataManager metadataManager;
+
     @Override
-    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
+    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         AnEntity anEntity = metadataManager.getEntity(clazz);
         InputTree tree = new InputTree();
@@ -47,15 +48,15 @@ public class CrudTreeAsideProcessor implements BaseProcessor {
         Map<String, Object> event = new HashMap<>();
         event.put("change", new HashMap<String, Object>() {{
             put("actions", CollUtil.newArrayList(
-                    new HashMap<String, Object>() {{
-                        put("actionType", "broadcast");
-                        put("args", new HashMap<String, Object>() {{
-                            put("eventName", "broadcast_aside_change");
-                        }});
-                        put("data", new HashMap<String, Object>() {{
-                            put(anEntity.getLeftTreeCatKey(), "${_cat}");
-                        }});
-                    }}
+                new HashMap<String, Object>() {{
+                    put("actionType", "broadcast");
+                    put("args", new HashMap<String, Object>() {{
+                        put("eventName", "broadcast_aside_change");
+                    }});
+                    put("data", new HashMap<String, Object>() {{
+                        put(anEntity.getLeftTreeCatKey(), "${_cat}");
+                    }});
+                }}
             ));
         }});
         tree.setOnEvent(event);

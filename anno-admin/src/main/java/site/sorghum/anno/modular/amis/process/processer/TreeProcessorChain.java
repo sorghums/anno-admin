@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer;
 
-import org.noear.solon.Solon;
 import site.sorghum.amis.entity.AmisBaseWrapper;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
 import site.sorghum.anno.modular.amis.process.BaseProcessorChain;
 import site.sorghum.anno.modular.amis.process.processer.tree.TreeAsideProcessor;
@@ -25,19 +25,20 @@ public class TreeProcessorChain implements BaseProcessorChain {
      */
     private final AtomicInteger index = new AtomicInteger(0);
     private static final List<Class<? extends BaseProcessor>> PROCESSORS = List.of(
-            // 树视图初始化处理器
-            TreeViewInitProcessor.class,
-            // 树表单处理器
-            TreeBodyFormProcessor.class,
-            // 树边栏处理器
-            TreeAsideProcessor.class,
-            // 树列按钮处理器
-            TreeColumnButtonProcessor.class
+        // 树视图初始化处理器
+        TreeViewInitProcessor.class,
+        // 树表单处理器
+        TreeBodyFormProcessor.class,
+        // 树边栏处理器
+        TreeAsideProcessor.class,
+        // 树列按钮处理器
+        TreeColumnButtonProcessor.class
     );
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties) {
         if (index.get() < PROCESSORS.size()) {
-            Solon.context().getBean(PROCESSORS.get(index.getAndIncrement())).doProcessor(amisBaseWrapper, clazz, properties, this);
+            AnnoBeanUtils.getBean(PROCESSORS.get(index.getAndIncrement())).doProcessor(amisBaseWrapper, clazz, properties, this);
         }
     }
 }

@@ -1,8 +1,8 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
@@ -29,14 +29,14 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class CrudFilterProcessor implements BaseProcessor {
 
     @Inject
     MetadataManager metadataManager;
 
     @Override
-    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
+    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         AnEntity anEntity = metadataManager.getEntity(clazz);
         // 获取过滤的模板
@@ -44,15 +44,15 @@ public class CrudFilterProcessor implements BaseProcessor {
         form.setId("crud_filter");
         form.setTitle("条件搜索");
         form.setActions(CollUtil.newArrayList(
-                new Action() {{
-                    setType("submit");
-                    setLevel("primary");
-                    setLabel("搜索");
-                }},
-                new Action() {{
-                    setType("reset");
-                    setLabel("重置");
-                }}
+            new Action() {{
+                setType("submit");
+                setLevel("primary");
+                setLabel("搜索");
+            }},
+            new Action() {{
+                setType("reset");
+                setLabel("重置");
+            }}
         ));
         List<AmisBase> body = new ArrayList<>();
         List<AnField> fields = anEntity.getFields();
@@ -81,17 +81,17 @@ public class CrudFilterProcessor implements BaseProcessor {
         });
         form.setBody(body);
         form.setOnEvent(
-                new HashMap<>() {{
-                    put("broadcast_aside_change",
-                            new HashMap<>(){{
-                                put("actions",CollUtil.newArrayList(new HashMap<>() {{
-                                                                        put("actionType", "reload");
-                                                                        put("componentId", "crud_template_main");
-                                                                    }}
-                                ));
-                            }}
-                    );
-                }}
+            new HashMap<>() {{
+                put("broadcast_aside_change",
+                    new HashMap<>() {{
+                        put("actions", CollUtil.newArrayList(new HashMap<>() {{
+                                                                 put("actionType", "reload");
+                                                                 put("componentId", "crud_template_main");
+                                                             }}
+                        ));
+                    }}
+                );
+            }}
         );
         // 设置默认排序数据
         Map<String, Object> data = form.getData();
@@ -99,7 +99,7 @@ public class CrudFilterProcessor implements BaseProcessor {
             data = new HashMap<>();
             form.setData(data);
         }
-        data.put("orderBy",anEntity.getOrderValue());
+        data.put("orderBy", anEntity.getOrderValue());
         data.put("orderDir", anEntity.getOrderType());
         // 写入到当前对象
         Crud crudBody = crudView.getCrudBody();

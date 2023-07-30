@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.system.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.annotation.ProxyComponent;
+import jakarta.inject.Named;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.util.MD5Util;
 import site.sorghum.anno.db.param.DbCondition;
@@ -19,7 +19,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/30
  */
-@ProxyComponent
+@Named
 public class SysUserProxy implements AnnoBaseProxy<SysUser> {
     @Override
     public void beforeAdd(TableParam<SysUser> tableParam,SysUser data) {

@@ -4,8 +4,8 @@ import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
 
@@ -15,7 +15,7 @@ import site.sorghum.anno.metadata.MetadataManager;
  * @author Sorghum
  * @since 2023/06/05
  */
-@Component
+@Named
 public class PermissionProxy {
 
     @Inject
@@ -38,7 +38,7 @@ public class PermissionProxy {
     }
 
     public void fetchPermission(Class<?> clazz) {
-        if (isSystemRun()){
+        if (isSystemRun()) {
             return;
         }
         AnEntity anEntity = metadataManager.getEntity(clazz);
@@ -88,7 +88,7 @@ public class PermissionProxy {
         StpUtil.checkPermission(baseCode + ":" + code);
     }
 
-    private boolean isSystemRun(){
+    private boolean isSystemRun() {
         SaRequest request = SaHolder.getRequest();
         return request == null || request.getSource() == null;
     }

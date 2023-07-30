@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>site.sorghum.anno</groupId>
+        <artifactId>anno-admin-parent</artifactId>
+        <version>0.0.1.M2</version>
+    </parent>
+
+    <artifactId>anno-admin-solon-starter</artifactId>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>solon.boot.jlhttp</artifactId>
+                    <groupId>org.noear</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.undertow</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.logging.logback</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>sa-token-solon-plugin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>wood-solon-plugin</artifactId>
+        </dependency>
+    </dependencies>
+</project>

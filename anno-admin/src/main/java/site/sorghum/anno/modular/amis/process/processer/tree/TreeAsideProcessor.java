@@ -1,8 +1,8 @@
 package site.sorghum.anno.modular.amis.process.processer.tree;
 
 import cn.hutool.core.collection.CollUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.InputTree;
@@ -21,7 +21,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component
+@Named
 public class TreeAsideProcessor implements BaseProcessor {
 
     @Inject
@@ -49,15 +49,15 @@ public class TreeAsideProcessor implements BaseProcessor {
         Map<String, Object> event = new HashMap<>();
         event.put("change", new HashMap<String, Object>() {{
             put("actions", CollUtil.newArrayList(
-                    new HashMap<String, Object>() {{
-                        put("actionType", "broadcast");
-                        put("args", new HashMap<String, Object>() {{
-                            put("eventName", "broadcast_aside_change");
-                        }});
-                        put("data", new HashMap<String, Object>() {{
-                            put("_cat", "${_cat}");
-                        }});
-                    }}
+                new HashMap<String, Object>() {{
+                    put("actionType", "broadcast");
+                    put("args", new HashMap<String, Object>() {{
+                        put("eventName", "broadcast_aside_change");
+                    }});
+                    put("data", new HashMap<String, Object>() {{
+                        put("_cat", "${_cat}");
+                    }});
+                }}
             ));
         }});
         tree.setOnEvent(event);

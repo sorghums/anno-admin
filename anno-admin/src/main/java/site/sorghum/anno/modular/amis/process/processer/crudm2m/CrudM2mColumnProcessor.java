@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer.crudm2m;
 
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.display.Table;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Named
 public class CrudM2mColumnProcessor implements BaseProcessor {
 
     @Inject

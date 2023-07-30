@@ -2,14 +2,11 @@ package site.sorghum.anno.modular.anno.service.impl;
 
 
 import cn.hutool.core.collection.CollUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.i18n.I18nUtil;
 import org.noear.wood.IPage;
-import site.sorghum.anno.db.exception.AnnoDbException;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -29,10 +26,11 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component(typed = true)
 @Slf4j
+@Named("dbServiceWithProxy")
 public class DbServiceWithProxy implements DbService {
 
+    @Inject
     DbService dbService;
 
     @Inject
@@ -41,27 +39,13 @@ public class DbServiceWithProxy implements DbService {
     @Inject
     MetadataManager metadataManager;
 
-    @Init
-    public void init() {
-        String dbType = Solon.cfg().get("anno.db.type", "wood");
-        if ("wood".equals(dbType)) {
-            Solon.context().getBeanAsync(
-                "dbServiceWood", ds -> {
-                    dbService = (DbService) ds;
-                }
-            );
-        } else {
-            throw new AnnoDbException(I18nUtil.getMessage("exception.db.orm"));
-        }
-    }
-
     @Override
     public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
         proxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
@@ -76,8 +60,8 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
@@ -93,8 +77,8 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.fetchPermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
@@ -111,8 +95,8 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.updatePermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeUpdate(tableParam, dbConditions, t);
         proxyInstance.beforeUpdate(tableParam, dbConditions, t);
@@ -128,8 +112,8 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.addPermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeAdd(tableParam, t);
         proxyInstance.beforeAdd(tableParam, t);
@@ -145,8 +129,8 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.deletePermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = Solon.context().getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = Solon.context().getBean(managerEntity.getProxy());
+        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
+        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeDelete(tableParam, dbConditions);
         proxyInstance.beforeDelete(tableParam, dbConditions);

@@ -1,8 +1,8 @@
 package site.sorghum.anno;
 
 
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Component;
 import site.sorghum.anno.modular.model.AnnoModule;
 
 /**
@@ -12,7 +12,7 @@ import site.sorghum.anno.modular.model.AnnoModule;
  * @since 2023/07/15
  */
 @Slf4j
-@Component
+@Named
 public class BaseAnnoModule extends AnnoModule {
 
     public BaseAnnoModule() {

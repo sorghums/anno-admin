@@ -3,13 +3,11 @@ package site.sorghum.anno.modular.system.manager;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.RandomUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.redisx.RedisClient;
-import org.noear.redisx.plus.RedisBucket;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
+import site.sorghum.anno.common.config.AnnoProperty;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.modular.system.entity.response.CaptchaResponse;
 
@@ -21,20 +19,15 @@ import java.util.Objects;
  * @author Sorghum
  * @since 2023/04/28
  */
-@Component
 @Slf4j
+@Named
 public class CaptchaManager {
-    @Inject("${sgm.captcha.enable:true}")
-    boolean enable;
 
-    RedisBucket bucket;
+    @Inject
+    private AnnoProperty annoProperty;
 
-    @Init
-    private void init() {
-        Solon.context().getBeanAsync(RedisClient.class, redisClient -> {
-            bucket = redisClient.getBucket();
-        });
-    }
+    @Inject
+    private RedisClient redisClient;
 
     /**
      * 创建图片验证码
@@ -78,7 +71,7 @@ public class CaptchaManager {
      */
     public void verifyCaptcha(String captchaKey, String captchaCode) {
         // 如果验证码开关关闭则不验证
-        if (Objects.equals(enable, false)) {
+        if (Objects.equals(annoProperty.isCaptchaEnable(), false)) {
             return;
         }
         String code = getCache(captchaKey);
@@ -110,11 +103,11 @@ public class CaptchaManager {
     }
 
     private void putCache(String key, String code, Integer seconds) {
-        bucket.store("anno-admin:captcha:admin:" +key, code, seconds);
+        redisClient.getBucket().store("anno-admin:captcha:admin:" + key, code, seconds);
     }
 
     private String getCache(String key) {
-        return bucket.get("anno-admin:captcha:admin:" +key);
+        return redisClient.getBucket().get("anno-admin:captcha:admin:" + key);
     }
 
 }

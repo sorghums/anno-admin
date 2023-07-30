@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.anno.proxy;
 
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -14,8 +14,8 @@ import java.util.List;
  * @author sorghum
  * @since 2023/05/20
  */
-@Component
-public class AnnoPreDefaultProxy<T> implements AnnoPreBaseProxy<T>{
+@Named
+public class AnnoPreDefaultProxy<T> implements AnnoPreBaseProxy<T> {
     @Override
     public void beforeAdd(TableParam<T> tableParam, T data) {
 

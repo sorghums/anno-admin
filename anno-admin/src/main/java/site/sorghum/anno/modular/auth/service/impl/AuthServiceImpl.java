@@ -2,15 +2,14 @@ package site.sorghum.anno.modular.auth.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
-import org.noear.solon.core.event.AppBeanLoadEndEvent;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.data.annotation.CacheRemove;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.cache.Cache;
+import site.sorghum.anno.cache.CacheRemove;
+import site.sorghum.anno.cache.Proxy;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.util.MD5Util;
 import site.sorghum.anno.metadata.AnButton;
@@ -42,8 +41,9 @@ import java.util.stream.Collectors;
  * @author Sorghum
  * @since 2023/06/27
  */
-@ProxyComponent(index = 100)
-public class AuthServiceImpl implements AuthService, EventListener<AppBeanLoadEndEvent> {
+@Named
+@Proxy
+public class AuthServiceImpl implements AuthService {
     @Db
     SysUserDao sysUserDao;
 
@@ -75,7 +75,7 @@ public class AuthServiceImpl implements AuthService, EventListener<AppBeanLoadEn
                 // 按钮权限每次必查
                 List<AnButton> anButtons = anEntity.getButtons();
                 for (AnButton anButton : anButtons) {
-                    if (StrUtil.isNotBlank(anButton.getPermissionCode())){
+                    if (StrUtil.isNotBlank(anButton.getPermissionCode())) {
                         String buttonCode = baseCode + ":" + anButton.getPermissionCode();
                         SysPermission sysPermission = sysPermissionDao.selectById(buttonCode);
                         if (sysPermission != null && sysPermission.getId() != null) {
@@ -212,17 +212,11 @@ public class AuthServiceImpl implements AuthService, EventListener<AppBeanLoadEn
         // 清除缓存
     }
 
-    @Override
-    public void onEvent(AppBeanLoadEndEvent appLoadEndEvent) throws Throwable {
-        initPermissions();
-        initMenus();
-    }
-
     /**
      * 初始化菜单数据
      */
     public void initMenus() throws SQLException {
-        List<AnnoModule> annoModules = Solon.context().getBeansOfType(AnnoModule.class);
+        List<AnnoModule> annoModules = AnnoBeanUtils.getBeansOfType(AnnoModule.class);
         annoModules.forEach(AnnoModule::printModelInfo);
         annoModules.forEach(AnnoModule::run);
         for (AnnoModule annoModule : annoModules) {

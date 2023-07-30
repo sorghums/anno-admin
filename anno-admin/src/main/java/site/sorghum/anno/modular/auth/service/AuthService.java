@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.auth.service;
 
-import org.noear.solon.data.annotation.Cache;
+import site.sorghum.anno.cache.Cache;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 2023/06/27
  */
 public interface AuthService {
-    public void resetPwd(Map<String,Object> props);
+    public void resetPwd(Map<String, Object> props);
 
     public SysUser verifyLogin(String mobile, String pwd);
 

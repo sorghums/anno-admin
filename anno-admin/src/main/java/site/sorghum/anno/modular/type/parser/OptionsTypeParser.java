@@ -3,13 +3,14 @@ package site.sorghum.anno.modular.type.parser;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Named;
 import lombok.SneakyThrows;
-import org.noear.solon.annotation.Component;
+import org.noear.wood.DbContext;
+import org.noear.wood.annotation.Db;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
-import site.sorghum.anno.common.util.DbContextUtil;
 import site.sorghum.anno.metadata.AnField;
 import site.sorghum.anno.modular.type.TypeParser;
 
@@ -24,8 +25,11 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/06
  */
-@Component
+@Named
 public class OptionsTypeParser implements TypeParser {
+
+    @Db
+    DbContext dbContext;
 
     @SneakyThrows
     @Override
@@ -34,7 +38,7 @@ public class OptionsTypeParser implements TypeParser {
         HashMap<String, Object> mapping = new HashMap<>();
         String optionTypeSql = anField.getOptionTypeSql();
         if (StrUtil.isNotBlank(optionTypeSql)) {
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(optionTypeSql).getDataList().getMapList();
+            List<Map<String, Object>> mapList = dbContext.sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 mapping.put(map.get("value").toString(), map.get("label"));
             }
@@ -55,7 +59,7 @@ public class OptionsTypeParser implements TypeParser {
         List<Options.Option> optionItemList = new ArrayList<>();
         String optionTypeSql = anField.getOptionTypeSql();
         if (StrUtil.isNotBlank(optionTypeSql)) {
-            List<Map<String, Object>> mapList = DbContextUtil.dbContext().sql(optionTypeSql).getDataList().getMapList();
+            List<Map<String, Object>> mapList = dbContext.sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 Options.Option optionItem = new Options.Option();
                 optionItem.setLabel(MapUtil.getStr(map, "label"));

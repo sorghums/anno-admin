@@ -1,8 +1,13 @@
 package site.sorghum.anno.modular.type;
 
-import org.noear.solon.Solon;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.type.parser.*;
+import site.sorghum.anno.modular.type.parser.CodeEditorTypeParser;
+import site.sorghum.anno.modular.type.parser.DefaultTypeParser;
+import site.sorghum.anno.modular.type.parser.FileTypeParser;
+import site.sorghum.anno.modular.type.parser.ImageTypeParser;
+import site.sorghum.anno.modular.type.parser.OptionsTypeParser;
+import site.sorghum.anno.modular.type.parser.TreeTypeParser;
 
 /**
  * @author Sorghum
@@ -16,12 +21,12 @@ public class TypeParserFactory {
      */
     public static TypeParser getTypeParser(AnnoDataType dataType) {
         return switch (dataType) {
-            case IMAGE -> Solon.context().getBean(ImageTypeParser.class);
-            case OPTIONS -> Solon.context().getBean(OptionsTypeParser.class);
-            case TREE -> Solon.context().getBean(TreeTypeParser.class);
-            case CODE_EDITOR -> Solon.context().getBean(CodeEditorTypeParser.class);
-            case FILE -> Solon.context().getBean(FileTypeParser.class);
-            default -> Solon.context().getBean(DefaultTypeParser.class);
+            case IMAGE -> AnnoBeanUtils.getBean(ImageTypeParser.class);
+            case OPTIONS -> AnnoBeanUtils.getBean(OptionsTypeParser.class);
+            case TREE -> AnnoBeanUtils.getBean(TreeTypeParser.class);
+            case CODE_EDITOR -> AnnoBeanUtils.getBean(CodeEditorTypeParser.class);
+            case FILE -> AnnoBeanUtils.getBean(FileTypeParser.class);
+            default -> AnnoBeanUtils.getBean(DefaultTypeParser.class);
         };
     }
 }

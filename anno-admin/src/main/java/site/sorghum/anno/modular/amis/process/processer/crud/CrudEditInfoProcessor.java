@@ -1,8 +1,8 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.map.MapUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
@@ -29,15 +29,16 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class CrudEditInfoProcessor implements BaseProcessor {
 
     @Inject
     MetadataManager metadataManager;
 
     @Override
-    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
-        AnEntity entity = metadataManager.getEntity(clazz);;
+    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
+        AnEntity entity = metadataManager.getEntity(clazz);
+        ;
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         // 判断是否可以编辑
         List<AnField> fields = entity.getFields();
@@ -49,7 +50,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
         Crud crudBody = crudView.getCrudBody();
         List<Map> columns = crudBody.getColumns();
         Map columnJson = columns.stream().filter(column -> "操作".equals(MapUtil.getStr(column, "label"))).findFirst().orElseThrow(
-                () -> new BizException("操作列不存在")
+            () -> new BizException("操作列不存在")
         );
         Object buttons = columnJson.get("buttons");
         if (buttons instanceof List<?> buttonList) {
@@ -77,21 +78,21 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                 }
             }};
             dialogButton.setDialog(
-                    new DialogButton.Dialog() {{
-                        setTitle("编辑");
-                        setBody(
-                                new Form() {{
-                                    setId("simple-edit-form");
-                                    setWrapWithPanel(false);
-                                    setSize("lg");
-                                    setApi(new Api() {{
-                                        setMethod("post");
-                                        setUrl("/system/anno/${clazz}/updateById");
-                                    }});
-                                    setBody(formItems);
-                                }}
-                        );
-                    }}
+                new DialogButton.Dialog() {{
+                    setTitle("编辑");
+                    setBody(
+                        new Form() {{
+                            setId("simple-edit-form");
+                            setWrapWithPanel(false);
+                            setSize("lg");
+                            setApi(new Api() {{
+                                setMethod("post");
+                                setUrl("/system/anno/${clazz}/updateById");
+                            }});
+                            setBody(formItems);
+                        }}
+                    );
+                }}
             );
             buttonListMap.add(dialogButton);
         }

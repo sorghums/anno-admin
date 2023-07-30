@@ -2,8 +2,8 @@ package site.sorghum.anno.modular.amis.process.processer.tree;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.display.IFrame;
@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component
+@Named
 public class TreeColumnButtonProcessor implements BaseProcessor {
 
     @Inject
@@ -52,7 +52,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
         for (AnButton anButton : anButtons) {
             try {
                 permissionProxy.checkPermission(anEntity, anButton.getPermissionCode());
-            }catch (Exception e){
+            } catch (Exception e) {
                 continue;
             }
             Action action = new Action();

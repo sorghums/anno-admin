@@ -3,13 +3,13 @@ package site.sorghum.anno.modular.ddl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.insert.Insert;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
@@ -21,7 +21,11 @@ import site.sorghum.anno.common.util.ScriptUtils;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -32,7 +36,7 @@ import java.util.stream.Collectors;
  * @since 2023/7/9 11:49
  */
 @Slf4j
-@Component
+@Named
 public class InitDataService {
 
     @Db

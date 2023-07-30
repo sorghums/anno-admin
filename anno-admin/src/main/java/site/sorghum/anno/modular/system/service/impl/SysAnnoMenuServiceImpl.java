@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.system.service.impl;
 
-import org.noear.solon.annotation.ProxyComponent;
+import jakarta.inject.Named;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
 import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/30
  */
-@ProxyComponent
+@Named
 public class SysAnnoMenuServiceImpl implements SysAnnoMenuService {
     @Db
     SysAnnoMenuDao sysAnnoMenuDao;

@@ -19,8 +19,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-lib</artifactId>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>wood-solon-plugin</artifactId>
+            <artifactId>wood</artifactId>
         </dependency>
 
         <!-- 测试 -->

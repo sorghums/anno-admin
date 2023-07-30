@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.anno.modular.amis.model.CrudView;
 import site.sorghum.anno.modular.amis.process.BaseProcessor;
@@ -14,10 +14,10 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class CrudViewInitProcessor implements BaseProcessor {
     @Override
-    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
+    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudView page = CrudView.of();
         amisBaseWrapper.setAmisBase(page);
         chain.doProcessor(amisBaseWrapper, clazz, properties);

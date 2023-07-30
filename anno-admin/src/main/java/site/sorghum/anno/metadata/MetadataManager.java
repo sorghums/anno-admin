@@ -1,6 +1,8 @@
 package site.sorghum.anno.metadata;
 
-import org.noear.solon.annotation.Inject;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -18,15 +20,14 @@ import java.util.stream.Collectors;
  * @author songyinyin
  * @since 2023/7/12 21:32
  */
+@Named
 public class MetadataManager {
 
     private final Map<String, AnEntity> entityMap = new ConcurrentHashMap<>();
 
+
     @Inject
     private EntityMetadataLoader entityMetadataLoader;
-    @Inject(required = false)
-    private CustomizedMetadataLoader customizedMetadataLoader;
-
 
     /**
      * 从实体类中加载元数据
@@ -47,6 +48,7 @@ public class MetadataManager {
      * 加载自定义元数据
      */
     public void loadCustomized(Object object) {
+        CustomizedMetadataLoader customizedMetadataLoader = AnnoBeanUtils.getBean(CustomizedMetadataLoader.class);
         if (entityMap.containsKey(customizedMetadataLoader.getEntityName(object))) {
             return;
         }
@@ -145,7 +147,7 @@ public class MetadataManager {
     /**
      * 获取实体类的字段信息
      *
-     * @param clazz  实体类
+     * @param clazz     实体类
      * @param fieldName 字段名
      * @return 字段信息
      */

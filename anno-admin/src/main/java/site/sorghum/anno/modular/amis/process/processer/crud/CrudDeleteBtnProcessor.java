@@ -1,7 +1,7 @@
 package site.sorghum.anno.modular.amis.process.processer.crud;
 
 import cn.hutool.core.map.MapUtil;
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.function.Action;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/07
  */
-@Component
+@Named
 public class CrudDeleteBtnProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){

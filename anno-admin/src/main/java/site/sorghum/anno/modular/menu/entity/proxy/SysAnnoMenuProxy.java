@@ -1,8 +1,8 @@
 package site.sorghum.anno.modular.menu.entity.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.ProxyComponent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/07/03
  */
-@ProxyComponent
+@Named
 public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
 
     @Inject
@@ -40,7 +40,7 @@ public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
             Class<?> targetClazz = AnnoClazzCache.get(data.getParseData());
             AnEntity anEntity = metadataManager.getEntity(targetClazz);
             data.setParseType("anno");
-            data.setHref("/system/config/amis/"+data.getParseData());
+            data.setHref("/system/config/amis/" + data.getParseData());
             data.setTitle(StrUtil.isBlank(data.getTitle()) ? anEntity.getTitle() : data.getTitle());
             data.setOpenType("_iframe");
             data.setType(1);

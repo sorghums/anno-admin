@@ -3,8 +3,8 @@ package site.sorghum.anno.modular.base.proxy;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
+import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Component;
 import site.sorghum.anno.common.util.AnnoContextUtil;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/05/26
  */
-@Component
+@Named
 @Slf4j
 public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
 
@@ -33,7 +33,7 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     }
 
     @Override
-    public void beforeAdd(TableParam<BaseMetaModel> tableParam,BaseMetaModel data) {
+    public void beforeAdd(TableParam<BaseMetaModel> tableParam, BaseMetaModel data) {
         data.setId(IdUtil.getSnowflakeNextIdStr());
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());

@@ -1,8 +1,7 @@
 package site.sorghum.anno.db.service.impl;
 
+import jakarta.inject.Named;
 import lombok.SneakyThrows;
-import org.noear.solon.annotation.Condition;
-import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.i18n.I18nUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
@@ -23,8 +22,7 @@ import java.util.List;
  * @author sorghum
  * @since 2023/07/07
  */
-@ProxyComponent(name = "dbServiceWood")
-@Condition(onClass = DbContext.class)
+@Named("dbServiceWood")
 public class DbServiceWood implements DbService {
 
     /**
@@ -42,8 +40,8 @@ public class DbServiceWood implements DbService {
     public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         return dbTableQuery
-                .limit((pageParam.getPage() - 1) * pageParam.getLimit(), pageParam.getLimit())
-                .selectPage(tableParam.getColumnStr(), tableParam.getClazz());
+            .limit((pageParam.getPage() - 1) * pageParam.getLimit(), pageParam.getLimit())
+            .selectPage(tableParam.getColumnStr(), tableParam.getClazz());
     }
 
     @SneakyThrows
@@ -79,9 +77,9 @@ public class DbServiceWood implements DbService {
     public <T> long insert(TableParam<T> tableParam, T t) {
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = dbContext.
-                table(tableParam.getTableName()).
-                setEntityIf(t, (k, v) -> v != null);
-        if (removeParam.getLogic()){
+            table(tableParam.getTableName()).
+            setEntityIf(t, (k, v) -> v != null);
+        if (removeParam.getLogic()) {
             dbTableQuery.set(removeParam.getRemoveColumn(), removeParam.getNotRemoveValue());
         }
         return dbTableQuery.insert();

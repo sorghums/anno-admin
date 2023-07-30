@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.amis.process.processer.crudm2m;
 
 import cn.hutool.core.map.MapUtil;
 import com.alibaba.fastjson2.JSONObject;
-import org.noear.solon.annotation.Component;
+import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.function.Action;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/07/10
  */
-@Component
+@Named
 public class CrudM2mRemoveRelationProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
@@ -33,20 +33,20 @@ public class CrudM2mRemoveRelationProcessor implements BaseProcessor {
         delete.setLabel("删除关联关系");
         delete.setConfirmText("您确认要删除关联关系吗?");
         delete.setApi(
-                new Api() {{
-                    setMethod("post");
-                    setUrl("/system/anno/${clazz}/remove-relation");
-                    setData(new JSONObject() {{
-                        put("&", "$$");
-                        put("_extraData", "${extraData}");
-                    }});
-                    setMessages(
-                            new ApiMessage() {{
-                                setSuccess("操作成功");
-                                setFailed("操作失败");
-                            }}
-                    );
-                }}
+            new Api() {{
+                setMethod("post");
+                setUrl("/system/anno/${clazz}/remove-relation");
+                setData(new JSONObject() {{
+                    put("&", "$$");
+                    put("_extraData", "${extraData}");
+                }});
+                setMessages(
+                    new ApiMessage() {{
+                        setSuccess("操作成功");
+                        setFailed("操作失败");
+                    }}
+                );
+            }}
         );
         Crud crudBody = crudM2mView.getCrudBody();
         // 读取现有的列

@@ -1,8 +1,6 @@
 package site.sorghum.anno.common.config;
 
 import lombok.Data;
-import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Inject;
 
 /**
  * anno 配置项
@@ -11,8 +9,6 @@ import org.noear.solon.annotation.Inject;
  * @since 2023/7/9 17:47
  */
 @Data
-@Inject(value = "${anno-admin}", required = false)
-@Configuration
 public class AnnoProperty {
 
     /**
@@ -29,4 +25,9 @@ public class AnnoProperty {
      * 前端主题样式：默认为 antd，可选项为 antd、sdk、ang、cxd、dark
      */
     private String theme = "antd";
+
+    /**
+     * 是否开启验证码，默认为 true 开启
+     */
+    private boolean captchaEnable = true;
 }

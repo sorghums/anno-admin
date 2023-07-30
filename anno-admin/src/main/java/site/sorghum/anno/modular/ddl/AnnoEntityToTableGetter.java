@@ -4,8 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Named;
 import lombok.Setter;
-import org.noear.solon.annotation.Component;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
 import site.sorghum.anno.ddl.DdlException;
@@ -26,7 +26,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/7/4 22:44
  */
-@Component
+@Named
 public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     @Setter

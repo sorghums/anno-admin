@@ -1,10 +1,10 @@
 package site.sorghum.anno.modular.model;
 
 
+import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.metadata.MetadataManager;
 
 import java.util.List;

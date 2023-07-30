@@ -7,9 +7,9 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
-import org.noear.solon.Solon;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.common.exception.BizException;
 import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.db.param.DbCondition;
@@ -28,7 +28,11 @@ import site.sorghum.anno.modular.anno.proxy.AnnoPreDefaultProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -58,23 +62,24 @@ public class AnnoUtil {
     public static <T> AnnoBaseProxy<T> getProxyInstance(Class<T> clazz) {
         AnnoMain annoMain = getAnnoMain(clazz);
         Class<? extends AnnoBaseProxy<T>> proxyClazz = (Class<? extends AnnoBaseProxy<T>>) annoMain.annoProxy().value();
-        return Solon.context().getBean(proxyClazz);
+        return AnnoBeanUtils.getBean(proxyClazz);
     }
 
     public static AnnoPreProxy getAnnoPreProxy(Class<?> clazz) {
         List<Class<?>> classes = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : classes) {
-            AnnoPreProxy annoPreProxy = AnnotationUtil.getAnnotation(aClass,AnnoPreProxy.class);
+            AnnoPreProxy annoPreProxy = AnnotationUtil.getAnnotation(aClass, AnnoPreProxy.class);
             if (annoPreProxy == null) {
                 continue;
             }
             return annoPreProxy;
         }
-        return new AnnoPreProxy(){
+        return new AnnoPreProxy() {
             @Override
             public Class<? extends Annotation> annotationType() {
                 return AnnoPreProxy.class;
             }
+
             @Override
             public Class<? extends AnnoPreBaseProxy> value() {
                 return AnnoPreDefaultProxy.class;
@@ -91,7 +96,7 @@ public class AnnoUtil {
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static <T> AnnoPreBaseProxy<T> getPreProxyInstance(Class<T> clazz) {
         AnnoPreProxy annoPreProxy = AnnoUtil.getAnnoPreProxy(clazz);
-        return Solon.context().getBean(annoPreProxy.value());
+        return AnnoBeanUtils.getBean(annoPreProxy.value());
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {
@@ -178,10 +183,10 @@ public class AnnoUtil {
      */
     public static List<String> getTableFields(Class<?> clazz) {
         return getAnnoFields(clazz)
-                .stream()
-                .map(field -> AnnotationUtil.getAnnotation(field, AnnoField.class))
-                .map(AnnoField::tableFieldName)
-                .filter(StrUtil::isNotBlank).collect(Collectors.toList());
+            .stream()
+            .map(field -> AnnotationUtil.getAnnotation(field, AnnoField.class))
+            .map(AnnoField::tableFieldName)
+            .filter(StrUtil::isNotBlank).collect(Collectors.toList());
     }
 
     /**
@@ -295,15 +300,15 @@ public class AnnoUtil {
                                                                    String key,
                                                                    String parentKey) {
         return datas.stream().map(
-                d -> {
-                    AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
-                    annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
-                    annoTreeDto.setLabel(simpleToString(reflectGetValue(d, label)));
-                    annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
-                    annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
-                    annoTreeDto.setChildren(new ArrayList<>());
-                    return annoTreeDto;
-                }
+            d -> {
+                AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
+                annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
+                annoTreeDto.setLabel(simpleToString(reflectGetValue(d, label)));
+                annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
+                annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
+                annoTreeDto.setChildren(new ArrayList<>());
+                return annoTreeDto;
+            }
         ).collect(Collectors.toList());
     }
 
@@ -366,7 +371,7 @@ public class AnnoUtil {
         if (entity.getClass() != clazz) {
             throw new IllegalArgumentException("entity must be instance of " + clazz.getName());
         }
-        MetadataManager metadataManager = Solon.context().getBean(MetadataManager.class);
+        MetadataManager metadataManager = AnnoBeanUtils.getBean(MetadataManager.class);
         AnEntity anEntity = metadataManager.getEntity(clazz);
         List<AnField> anFields = anEntity.getFields();
         for (AnField anField : anFields) {

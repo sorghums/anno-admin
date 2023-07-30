@@ -1,9 +1,9 @@
 package site.sorghum.anno.ddl.entity2db;
 
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.Setter;
-import org.noear.solon.core.util.ReflectUtil;
 import org.noear.wood.utils.NamingUtils;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
@@ -34,7 +34,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
         String tableName = StrUtil.toUnderlineCase(simpleName);
         TableWrap tableWrap = new TableWrap(tableName, null);
 
-        Field[] declaredFields = ReflectUtil.getDeclaredFields(clazz);
+        Field[] declaredFields = ReflectUtil.getFields(clazz);
         for (Field field : declaredFields) {
             // 默认主键
             if (StrUtil.isNotBlank(defaultPkName) && defaultPkName.equals(field.getName())) {
