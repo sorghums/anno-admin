@@ -12,34 +12,21 @@
     <artifactId>anno-admin</artifactId>
 
     <properties>
-        <bcprov.version>1.73</bcprov.version>
+
     </properties>
 
     <dependencies>
-
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-amis</artifactId>
         </dependency>
-
-
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>${fastjson2.version}</version>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-db</artifactId>
         </dependency>
-
-
-
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>sa-token-solon-plugin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>redisx</artifactId>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-ddl</artifactId>
         </dependency>
 
         <dependency>
@@ -52,66 +39,59 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.boot.undertow</artifactId>
         </dependency>
-
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.logback</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-db</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.view.thymeleaf</artifactId>
         </dependency>
 
+
         <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-ddl</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+            <version>${fastjson2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>sa-token-solon-plugin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>redisx</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>wood-solon-plugin</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>wood.plus</artifactId>
             <version>${wood.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-cache</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-log</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
             <version>${hutool.version}</version>
         </dependency>
-
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
@@ -119,14 +99,9 @@
         </dependency>
 
         <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-amis</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.view.thymeleaf</artifactId>
+            <artifactId>solon-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

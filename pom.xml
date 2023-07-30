@@ -39,10 +39,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <erupt.version>1.11.6</erupt.version>
         <mysql.ver>8.0.32</mysql.ver>
-        <jboss.version>3.4.3.Final</jboss.version>
-        <xnio.version>3.8.9.Final</xnio.version>
         <jsqlparser.version>4.6</jsqlparser.version>
 
         <java.version>17</java.version>
@@ -77,33 +74,24 @@
             </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
-                <artifactId>_anno-admin-test</artifactId>
+                <artifactId>anno-admin-amis</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit5.version}</version>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-db</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.jboss.logging</groupId>
-                <artifactId>jboss-logging</artifactId>
-                <version>${jboss.version}</version>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-ddl</artifactId>
+                <version>${project.version}</version>
             </dependency>
+
             <dependency>
-                <groupId>io.undertow</groupId>
-                <artifactId>undertow-core</artifactId>
-                <version>${undertow.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.xnio</groupId>
-                <artifactId>xnio-api</artifactId>
-                <version>${xnio.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.xnio</groupId>
-                <artifactId>xnio-nio</artifactId>
-                <version>${xnio.version}</version>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>_anno-admin-test</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
