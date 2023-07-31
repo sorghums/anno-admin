@@ -19,6 +19,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-i18n</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>jakarta.inject</groupId>
             <artifactId>jakarta.inject-api</artifactId>
         </dependency>

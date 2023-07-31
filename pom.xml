@@ -59,14 +59,6 @@
             <version>${lombok.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.i18n</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-i18n</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
