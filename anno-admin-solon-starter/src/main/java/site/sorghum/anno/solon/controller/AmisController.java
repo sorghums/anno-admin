@@ -5,8 +5,8 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
-import site.sorghum.anno.common.response.AnnoResult;
-import site.sorghum.anno.modular.amis.controller.AmisBaseController;
+import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.amis.controller.AmisBaseController;
 
 import java.util.HashMap;
 

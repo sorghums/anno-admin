@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import site.sorghum.anno.modular.auth.service.AuthService;
+import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.util.List;
 

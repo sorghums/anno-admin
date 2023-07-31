@@ -6,7 +6,7 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.wood.WoodConfig;
-import site.sorghum.anno.modular.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.annotation.global.AnnoScan;
 
 /**
  * Ano 管理入门

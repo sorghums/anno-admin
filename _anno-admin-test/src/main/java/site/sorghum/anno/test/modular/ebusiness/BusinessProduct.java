@@ -3,15 +3,15 @@ package site.sorghum.anno.test.modular.ebusiness;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
-import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.modular.anno.annotation.field.type.AnnoTreeType;
-import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.model.BaseMetaModel;
+import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
+import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.field.AnnoEdit;
+import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.AnnoSearch;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 /**
  * 电商商品

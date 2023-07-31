@@ -16,8 +16,8 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno.ddl.entity2db.SampleEntityToTableGetter;
+import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
+import site.sorghum.anno._ddl.entity2db.SampleEntityToTableGetter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

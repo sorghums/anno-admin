@@ -37,7 +37,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.model.BaseMetaModel;
+import site.sorghum.anno.modular.preinstall.model.BaseMetaModel;
 
 
 /**
@@ -104,7 +104,7 @@ public class SysAnnoMenu extends BaseMetaModel {
 系统组织代码：
 
 ```java
-package site.sorghum.anno.modular.system.ao;
+package site.sorghum.anno.modular.preplugin.ao;
 
 
 import lombok.Data;
@@ -116,7 +116,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.modular.base.model.BaseMetaModel;
+import site.sorghum.anno.modular.preinstall.model.BaseMetaModel;
 
 /**
  * 系统组织
@@ -157,7 +157,7 @@ public class SysOrg extends BaseMetaModel {
 系统角色代码：
 
 ```java
-package site.sorghum.anno.modular.system.ao;
+package site.sorghum.anno.modular.preplugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -170,7 +170,7 @@ import site.sorghum.anno.modular.anno.annotation.field.AnnoField;
 import site.sorghum.anno.modular.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
-import site.sorghum.anno.modular.base.model.BaseMetaModel;
+import site.sorghum.anno.modular.preinstall.model.BaseMetaModel;
 
 import java.io.Serializable;
 
@@ -241,7 +241,7 @@ public class SysRole extends BaseMetaModel implements Serializable {
 系统用户代码：
 
 ```java
-package site.sorghum.anno.modular.system.ao;
+package site.sorghum.anno.modular.preplugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -258,8 +258,8 @@ import site.sorghum.anno.modular.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.modular.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.modular.anno.enums.AnnoDataType;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.base.model.BaseOrgMetaModel;
-import site.sorghum.anno.modular.system.proxy.SysUserProxy;
+import site.sorghum.anno.modular.preinstall.model.BaseOrgMetaModel;
+import proxy.site.sorghum.anno.pre.plugin.SysUserProxy;
 
 import java.io.Serializable;
 

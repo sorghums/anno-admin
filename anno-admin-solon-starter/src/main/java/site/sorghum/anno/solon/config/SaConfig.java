@@ -10,7 +10,7 @@ import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import site.sorghum.anno.common.response.AnnoResult;
+import site.sorghum.anno._common.response.AnnoResult;
 
 /**
  * @author Sorghum

@@ -3,7 +3,7 @@ package site.sorghum.anno.solon.config;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import site.sorghum.anno.common.config.AnnoProperty;
+import site.sorghum.anno._common.config.AnnoProperty;
 
 /**
  * @author songyinyin

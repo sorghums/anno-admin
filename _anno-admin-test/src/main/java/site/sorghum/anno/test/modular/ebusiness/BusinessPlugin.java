@@ -1,8 +1,8 @@
 package site.sorghum.anno.test.modular.ebusiness;
 
 import org.noear.solon.annotation.Component;
-import site.sorghum.anno.modular.plugin.AnPluginMenu;
-import site.sorghum.anno.modular.plugin.AnnoPlugin;
+import site.sorghum.anno.plugin.AnPluginMenu;
+import site.sorghum.anno.plugin.AnnoPlugin;
 
 import java.util.ArrayList;
 import java.util.List;

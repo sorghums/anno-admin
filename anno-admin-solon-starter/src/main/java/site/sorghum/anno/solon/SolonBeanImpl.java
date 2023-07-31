@@ -1,7 +1,7 @@
 package site.sorghum.anno.solon;
 
 import org.noear.solon.core.AopContext;
-import site.sorghum.anno.common.AnnoBean;
+import site.sorghum.anno._common.AnnoBean;
 
 import java.util.List;
 

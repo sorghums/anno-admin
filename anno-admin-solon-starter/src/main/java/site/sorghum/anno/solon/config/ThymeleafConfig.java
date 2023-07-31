@@ -10,8 +10,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.serializer.IStandardJavaScriptSerializer;
-import site.sorghum.anno.common.config.AnnoProperty;
-import site.sorghum.anno.common.util.JSONUtil;
+import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._common.util.JSONUtil;
 
 import java.io.Writer;
 import java.util.Set;

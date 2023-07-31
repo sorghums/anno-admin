@@ -2,10 +2,10 @@ package site.sorghum.anno.solon.controller;
 
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
-import site.sorghum.anno.common.response.AnnoResult;
-import site.sorghum.anno.modular.menu.controller.MenuBaseController;
-import site.sorghum.anno.modular.menu.entity.response.ReactMenu;
-import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.pre.plugin.controller.MenuBaseController;
+import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
+import site.sorghum.anno.pre.plugin.entity.response.SysAnnoMenuResponse;
 
 import java.util.List;
 import java.util.Map;

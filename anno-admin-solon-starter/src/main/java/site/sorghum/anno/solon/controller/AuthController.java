@@ -7,9 +7,9 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.MethodType;
-import site.sorghum.anno.common.response.AnnoResult;
-import site.sorghum.anno.modular.auth.controller.AuthBaseController;
-import site.sorghum.anno.modular.auth.response.UserInfo;
+import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.pre.plugin.controller.AuthBaseController;
+import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
 
 import java.util.Map;
 
