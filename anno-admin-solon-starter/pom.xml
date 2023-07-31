@@ -63,5 +63,10 @@
             <groupId>org.noear</groupId>
             <artifactId>wood-solon-plugin</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.staticfiles</artifactId>
+        </dependency>
     </dependencies>
 </project>

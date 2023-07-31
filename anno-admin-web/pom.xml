@@ -8,29 +8,5 @@
         <artifactId>anno-admin-parent</artifactId>
         <version>0.0.1.M2</version>
     </parent>
-
     <artifactId>anno-admin-web</artifactId>
-
-    <properties>
-
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.thymeleaf</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.web.staticfiles</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-core</artifactId>
-            <version>${sa-token.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>
