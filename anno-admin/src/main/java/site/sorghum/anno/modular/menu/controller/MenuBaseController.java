@@ -8,7 +8,7 @@ import jakarta.inject.Inject;
 import site.sorghum.anno.common.response.AnnoResult;
 import site.sorghum.anno.common.util.JSONUtil;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.ao.SysAnnoMenu;
 import site.sorghum.anno.modular.menu.entity.response.ReactMenu;
 import site.sorghum.anno.modular.menu.entity.response.SysAnnoMenuResponse;
 import site.sorghum.anno.modular.system.service.SysAnnoMenuService;

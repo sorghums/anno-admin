@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.model;
+package site.sorghum.anno.modular.plugin;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
@@ -9,7 +9,7 @@ import site.sorghum.anno.metadata.AnEntity;
  * @since 2023/7/22 20:09
  */
 @Data
-public class AnMenu {
+public class AnPluginMenu {
 
     /**
      * 菜单id，父级菜单需要设置该字段

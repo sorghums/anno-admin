@@ -23,7 +23,7 @@ Anno-Admin是一个后端基于Solon框架,前端Hooks Admin项目,前端渲染�
 系统菜单代码：
 
 ```java
-package site.sorghum.anno.modular.menu.entity.anno;
+package site.sorghum.anno.modular.menu.entity.ao;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
@@ -102,8 +102,9 @@ public class SysAnnoMenu extends BaseMetaModel {
 ![image.png](img/系统组织.png)
 
 系统组织代码：
+
 ```java
-package site.sorghum.anno.modular.system.anno;
+package site.sorghum.anno.modular.system.ao;
 
 
 import lombok.Data;
@@ -154,8 +155,9 @@ public class SysOrg extends BaseMetaModel {
 ![image.png](img/系统角色.png)
 
 系统角色代码：
+
 ```java
-package site.sorghum.anno.modular.system.anno;
+package site.sorghum.anno.modular.system.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -177,20 +179,20 @@ import java.io.Serializable;
 @AnnoMain(name = "角色管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"))
 @Table("sys_role")
-public class SysRole  extends BaseMetaModel implements Serializable {
+public class SysRole extends BaseMetaModel implements Serializable {
 
     /**
      * 角色名称
      */
-    @AnnoField(title = "角色名称", tableFieldName = "role_name",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入角色名称",notNull = true))
+    @AnnoField(title = "角色名称", tableFieldName = "role_name", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入角色名称", notNull = true))
     String roleName;
 
     /**
      * 排序
      */
-    @AnnoField(title = "排序", tableFieldName = "sort",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入排序",notNull = true))
+    @AnnoField(title = "排序", tableFieldName = "sort", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入排序", notNull = true))
     Integer sort;
 
     /**
@@ -208,7 +210,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "用户",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysUser.class,
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,
@@ -222,7 +224,7 @@ public class SysRole  extends BaseMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "权限",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
             mediumOtherField = "role_id",
@@ -237,8 +239,9 @@ public class SysRole  extends BaseMetaModel implements Serializable {
 ![image.png](img/系统用户.png)
 
 系统用户代码：
+
 ```java
-package site.sorghum.anno.modular.system.anno;
+package site.sorghum.anno.modular.system.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -264,7 +267,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
-        annoProxy =@AnnoProxy(value = SysUserProxy.class))
+        annoProxy = @AnnoProxy(value = SysUserProxy.class))
 @Table("sys_user")
 public class SysUser extends BaseOrgMetaModel implements Serializable {
 
@@ -275,25 +278,25 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
             tableFieldName = "avatar",
             dataType = AnnoDataType.IMAGE,
             edit = @AnnoEdit(placeHolder = "请上传用户头像"),
-            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER,thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE))
+            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE))
     private String avatar;
     /**
      * 手机号
      */
-    @AnnoField(title = "手机号", tableFieldName = "mobile",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入手机号",notNull = true))
+    @AnnoField(title = "手机号", tableFieldName = "mobile", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true))
     private String mobile;
     /**
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
-            edit = @AnnoEdit(placeHolder = "请输入密码",notNull = true,editEnable = false),show = false)
+            edit = @AnnoEdit(placeHolder = "请输入密码", notNull = true, editEnable = false), show = false)
     private String password;
     /**
      * 用户名
      */
-    @AnnoField(title = "用户名", tableFieldName = "name",search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入用户名",notNull = true))
+    @AnnoField(title = "用户名", tableFieldName = "name", search = @AnnoSearch(),
+            edit = @AnnoEdit(placeHolder = "请输入用户名", notNull = true))
     private String name;
 
     /**
@@ -311,7 +314,7 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "角色",m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysRole.class,
             mediumTable = "sys_user_role",
             mediumTableClass = SysUserRole.class,

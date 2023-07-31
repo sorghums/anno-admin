@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.menu.entity.anno;
+package site.sorghum.anno.modular.menu.entity.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

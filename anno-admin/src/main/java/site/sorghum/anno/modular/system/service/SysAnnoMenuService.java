@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.system.service;
 
-import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.ao.SysAnnoMenu;
 
 import java.util.List;
 

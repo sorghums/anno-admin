@@ -8,7 +8,7 @@ import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.modular.system.anno.SysUser;
+import site.sorghum.anno.modular.system.ao.SysUser;
 
 import java.util.Collection;
 import java.util.List;

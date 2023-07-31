@@ -11,7 +11,7 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.modular.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.modular.base.model.BaseMetaModel;
-import site.sorghum.anno.modular.system.anno.SysUser;
+import site.sorghum.anno.modular.system.ao.SysUser;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

@@ -20,7 +20,6 @@
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-i18n</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>

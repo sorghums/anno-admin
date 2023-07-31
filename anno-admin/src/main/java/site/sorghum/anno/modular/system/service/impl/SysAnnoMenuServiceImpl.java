@@ -2,7 +2,7 @@ package site.sorghum.anno.modular.system.service.impl;
 
 import jakarta.inject.Named;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.ao.SysAnnoMenu;
 import site.sorghum.anno.modular.system.dao.SysAnnoMenuDao;
 import site.sorghum.anno.modular.system.service.SysAnnoMenuService;
 

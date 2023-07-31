@@ -10,7 +10,7 @@ import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.modular.anno.util.AnnoClazzCache;
-import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.ao.SysAnnoMenu;
 
 import java.util.Collection;
 import java.util.List;

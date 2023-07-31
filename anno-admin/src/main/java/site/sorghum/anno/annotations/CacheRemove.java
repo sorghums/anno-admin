@@ -1,4 +1,4 @@
-package site.sorghum.anno.anno;
+package site.sorghum.anno.annotations;
 
 import java.lang.annotation.*;
 

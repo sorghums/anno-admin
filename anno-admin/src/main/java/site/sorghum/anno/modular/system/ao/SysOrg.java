@@ -1,4 +1,4 @@
-package site.sorghum.anno.modular.system.anno;
+package site.sorghum.anno.modular.system.ao;
 
 
 import lombok.Data;

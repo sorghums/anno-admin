@@ -3,7 +3,7 @@ package site.sorghum.anno.modular.menu.entity.response;
 import cn.hutool.core.util.RandomUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import site.sorghum.anno.modular.menu.entity.anno.SysAnnoMenu;
+import site.sorghum.anno.modular.menu.entity.ao.SysAnnoMenu;
 
 import java.util.HashMap;
 import java.util.List;

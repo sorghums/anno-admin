@@ -3,7 +3,7 @@ package site.sorghum.anno;
 
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import site.sorghum.anno.modular.model.AnnoModule;
+import site.sorghum.anno.modular.plugin.AnnoPlugin;
 
 /**
  * 基础模块
@@ -13,9 +13,9 @@ import site.sorghum.anno.modular.model.AnnoModule;
  */
 @Slf4j
 @Named
-public class BaseAnnoModule extends AnnoModule {
+public class BaseAnnoPlugin extends AnnoPlugin {
 
-    public BaseAnnoModule() {
+    public BaseAnnoPlugin() {
         super("基础模块", "包含B端用户，角色，组织，权限等。");
     }
 

@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import site.sorghum.anno.common.response.AnnoResult;
 import site.sorghum.anno.modular.auth.response.UserInfo;
 import site.sorghum.anno.modular.auth.service.AuthService;
-import site.sorghum.anno.modular.system.anno.SysUser;
+import site.sorghum.anno.modular.system.ao.SysUser;
 import site.sorghum.anno.modular.system.manager.CaptchaManager;
 
 import java.util.Map;
