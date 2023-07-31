@@ -10,20 +10,13 @@ import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.ProxyComponent;
-import org.noear.solon.core.AopContext;
-import org.noear.solon.core.BeanBuilder;
-import org.noear.solon.core.BeanInjector;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.*;
 import org.noear.solon.data.annotation.Cache;
 import org.noear.solon.data.annotation.CachePut;
 import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.data.annotation.Tran;
 import org.noear.solon.data.around.CacheInterceptor;
 import org.noear.solon.data.around.CachePutInterceptor;
 import org.noear.solon.data.around.CacheRemoveInterceptor;
-import org.noear.solon.data.around.TranInterceptor;
 import org.noear.solon.data.cache.CacheLib;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.CacheServiceWrapConsumer;
@@ -32,7 +25,8 @@ import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorImp;
 import org.noear.solon.proxy.ProxyUtil;
 import org.noear.solon.proxy.integration.UnsupportedUtil;
-import site.sorghum.anno.cache.Proxy;
+import site.sorghum.anno.anno.Primary;
+import site.sorghum.anno.anno.Proxy;
 import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.metadata.MetadataManager;
 import site.sorghum.anno.modular.anno.annotation.clazz.AnnoMain;
@@ -42,7 +36,10 @@ import site.sorghum.anno.modular.anno.util.AnnoFieldCache;
 import site.sorghum.anno.modular.anno.util.AnnoUtil;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -152,7 +149,12 @@ public class XPluginImp implements Plugin {
 
         @Override
         public void doInject(VarHolder varH, Inject anno) {
-            context.beanInject(varH, "");
+            Annotation[] annotations = varH.getAnnoS();
+            String beanName = Optional.ofNullable(annotations).stream().flatMap(Arrays::stream)
+                .filter(annotation -> annotation.annotationType().equals(Named.class))
+                .findFirst()
+                .map(annotation -> ((Named) annotation).value()).orElse("");
+            context.beanInject(varH, beanName);
         }
     }
 
@@ -171,8 +173,11 @@ public class XPluginImp implements Plugin {
             }
             // 添加bean形态处理
             context.beanShapeRegister(clz, bw, clz);
+            // 是否是typed
+            Primary primary = clz.getAnnotation(Primary.class);
+            boolean typed = Optional.ofNullable(primary).map(Primary::value).orElse(true);
             // 注册到容器
-            context.beanRegister(bw, anno.value(), true);
+            context.beanRegister(bw, anno.value(), typed);
             // 尝试提取函数
             context.beanExtract(bw);
 

@@ -31,6 +31,7 @@ import java.util.List;
 public class DbServiceWithProxy implements DbService {
 
     @Inject
+    @Named("dbServiceWood")
     DbService dbService;
 
     @Inject

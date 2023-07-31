@@ -1,6 +1,4 @@
-package site.sorghum.anno.cache;
-
-import org.noear.solon.annotation.Note;
+package site.sorghum.anno.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

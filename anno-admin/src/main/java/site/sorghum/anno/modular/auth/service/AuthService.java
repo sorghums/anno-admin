@@ -1,6 +1,6 @@
 package site.sorghum.anno.modular.auth.service;
 
-import site.sorghum.anno.cache.Cache;
+import site.sorghum.anno.anno.Cache;
 import site.sorghum.anno.modular.system.anno.SysUser;
 
 import java.util.List;

@@ -1,12 +1,6 @@
-package site.sorghum.anno.cache;
+package site.sorghum.anno.anno;
 
-import org.noear.solon.annotation.Note;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 缓存更新注解器（之前有缓存才会被更新；不然无法进行类型检测）
