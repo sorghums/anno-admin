@@ -1,7 +1,6 @@
 package site.sorghum.anno.common.response;
 
 import lombok.Data;
-import org.noear.solon.core.handle.Result;
 
 /**
  * Anno结果
@@ -12,6 +11,7 @@ import org.noear.solon.core.handle.Result;
 @Data
 public class AnnoResult<T> {
     private static final int SUCCEED_CODE = 0;
+    private static final int FAILURE_CODE = 400;
     /**
      * 状态码
      */
@@ -80,7 +80,7 @@ public class AnnoResult<T> {
      */
     
     public static <T> AnnoResult<T> failure() {
-        return new AnnoResult<>(Result.FAILURE_CODE, "");
+        return new AnnoResult<>(AnnoResult.FAILURE_CODE, "");
     }
 
     /**
@@ -109,7 +109,7 @@ public class AnnoResult<T> {
 
     
     public static <T> AnnoResult<T> failure(String msg) {
-        return new AnnoResult<>(Result.FAILURE_CODE, msg);
+        return new AnnoResult<>(AnnoResult.FAILURE_CODE, msg);
     }
 
 

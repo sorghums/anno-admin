@@ -3,9 +3,9 @@ package site.sorghum.anno.modular.file;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
+import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.noear.solon.Utils;
 import site.sorghum.anno.common.config.AnnoProperty;
 
 
@@ -22,7 +22,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
 
     @Override
     public FileInfo uploadFile(FileInfo fileInfo) {
-        String guid = Utils.guid();
+        String guid = IdUtil.fastUUID();
         String localFilePath = annoProperty.getLocalFilePath();
         String fileName = fileInfo.getFileName();
         String suffix = FileNameUtil.getSuffix(fileName);
