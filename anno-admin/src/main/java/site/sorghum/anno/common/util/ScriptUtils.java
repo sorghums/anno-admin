@@ -2,7 +2,6 @@ package site.sorghum.anno.common.util;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import org.noear.solon.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import site.sorghum.anno.ddl.DdlException;
@@ -138,7 +137,7 @@ public abstract class ScriptUtils {
    * @see #EOF_STATEMENT_SEPARATOR
    */
   public static void executeSqlScript(Connection connection, Reader resource, boolean continueOnError,
-                                      boolean ignoreFailedDrops, String commentPrefix, @Nullable String separator,
+                                      boolean ignoreFailedDrops, String commentPrefix,  String separator,
                                       String blockCommentStartDelimiter, String blockCommentEndDelimiter) throws ScriptException {
 
     executeSqlScript(connection, resource, continueOnError, ignoreFailedDrops,
@@ -177,7 +176,7 @@ public abstract class ScriptUtils {
    * @since 5.2
    */
   public static void executeSqlScript(Connection connection, Reader resource, boolean continueOnError,
-                                      boolean ignoreFailedDrops, String[] commentPrefixes, @Nullable String separator,
+                                      boolean ignoreFailedDrops, String[] commentPrefixes,  String separator,
                                       String blockCommentStartDelimiter, String blockCommentEndDelimiter) throws ScriptException {
 
     try {
@@ -243,7 +242,7 @@ public abstract class ScriptUtils {
         DEFAULT_BLOCK_COMMENT_START_DELIMITER, DEFAULT_BLOCK_COMMENT_END_DELIMITER);
   }
 
-  private static List<String> getStatements(Reader resource, String[] commentPrefixes, @Nullable String separator, String blockCommentStartDelimiter, String blockCommentEndDelimiter) {
+  private static List<String> getStatements(Reader resource, String[] commentPrefixes,  String separator, String blockCommentStartDelimiter, String blockCommentEndDelimiter) {
     String script;
     try {
       script = readScript(resource, separator, commentPrefixes, blockCommentEndDelimiter);
@@ -286,7 +285,7 @@ public abstract class ScriptUtils {
    * @return a {@code String} containing the script lines
    * @throws IOException in case of I/O errors
    */
-  static String readScript(Reader resource, @Nullable String separator,
+  static String readScript(Reader resource,  String separator,
                            String[] commentPrefixes, String blockCommentEndDelimiter) throws IOException {
 
     try (LineNumberReader lnr = new LineNumberReader(resource)) {
@@ -314,8 +313,8 @@ public abstract class ScriptUtils {
    * This is an internal API and will likely be removed in Spring Framework 6.0.
    */
   @Deprecated
-  public static String readScript(LineNumberReader lineNumberReader, @Nullable String commentPrefix,
-                                  @Nullable String separator, @Nullable String blockCommentEndDelimiter) throws IOException {
+  public static String readScript(LineNumberReader lineNumberReader,  String commentPrefix,
+                                   String separator,  String blockCommentEndDelimiter) throws IOException {
 
     String[] commentPrefixes = (commentPrefix != null) ? new String[]{commentPrefix} : null;
     return readScript(lineNumberReader, commentPrefixes, separator, blockCommentEndDelimiter);
@@ -342,8 +341,8 @@ public abstract class ScriptUtils {
    * This is an internal API and will likely be removed in Spring Framework 6.0.
    */
   @Deprecated
-  public static String readScript(LineNumberReader lineNumberReader, @Nullable String[] commentPrefixes,
-                                  @Nullable String separator, @Nullable String blockCommentEndDelimiter) throws IOException {
+  public static String readScript(LineNumberReader lineNumberReader,  String[] commentPrefixes,
+                                   String separator,  String blockCommentEndDelimiter) throws IOException {
 
     String currentStatement = lineNumberReader.readLine();
     StringBuilder scriptBuilder = new StringBuilder();
@@ -361,7 +360,7 @@ public abstract class ScriptUtils {
     return scriptBuilder.toString();
   }
 
-  private static void appendSeparatorToScriptIfNecessary(StringBuilder scriptBuilder, @Nullable String separator) {
+  private static void appendSeparatorToScriptIfNecessary(StringBuilder scriptBuilder,  String separator) {
     if (separator == null) {
       return;
     }
@@ -397,7 +396,7 @@ public abstract class ScriptUtils {
    *                                   (typically <code>"*&#47;"</code>)
    * @since 5.2.16
    */
-  private static boolean containsStatementSeparator(@Nullable Reader resource, String script,
+  private static boolean containsStatementSeparator( Reader resource, String script,
                                                     String separator, String[] commentPrefixes, String blockCommentStartDelimiter,
                                                     String blockCommentEndDelimiter) {
 
@@ -451,7 +450,7 @@ public abstract class ScriptUtils {
     return false;
   }
 
-  public static String buildMessage(String message, @Nullable Reader resource) {
+  public static String buildMessage(String message,  Reader resource) {
     return String.format("Failed to parse SQL script from resource [%s]: %s",
         (resource == null ? "<unknown>" : resource), message);
   }
@@ -539,7 +538,7 @@ public abstract class ScriptUtils {
    * This is an internal API and will likely be removed in Spring Framework 6.0.
    */
   @Deprecated
-  public static void splitSqlScript(@Nullable Reader resource, String script,
+  public static void splitSqlScript( Reader resource, String script,
                                     String separator, String commentPrefix, String blockCommentStartDelimiter,
                                     String blockCommentEndDelimiter, List<String> statements) throws ScriptException {
 
@@ -577,7 +576,7 @@ public abstract class ScriptUtils {
    * This is an internal API and will likely be removed in Spring Framework 6.0.
    */
   @Deprecated
-  public static void splitSqlScript(@Nullable Reader resource, String script,
+  public static void splitSqlScript( Reader resource, String script,
                                     String separator, String[] commentPrefixes, String blockCommentStartDelimiter,
                                     String blockCommentEndDelimiter, List<String> statements) {
 

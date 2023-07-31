@@ -1,7 +1,6 @@
 package site.sorghum.anno.common.response;
 
 import lombok.Data;
-import org.noear.solon.annotation.Note;
 import org.noear.solon.core.handle.Result;
 
 /**
@@ -28,18 +27,6 @@ public class AnnoResult<T> {
      */
     String msg;
 
-    public static<T> AnnoResult<T> from(Result<T> result){
-        AnnoResult<T> annoResult = new AnnoResult<>();
-        annoResult.status = result.getCode();
-        if (annoResult.status == 200){
-            // 200 为成功
-            annoResult.status = 0;
-        }
-        annoResult.data = result.getData();
-        annoResult.msg = result.getDescription();
-        return annoResult;
-    }
-
     public AnnoResult(){
         this.status = AnnoResult.SUCCEED_CODE;
         this.msg = "";
@@ -65,7 +52,7 @@ public class AnnoResult<T> {
     /**
      * 成功的空结果
      */
-    @Note("成功的空结果")
+    
     public static <T> AnnoResult<T> succeed() {
         return new AnnoResult<>(AnnoResult.SUCCEED_CODE, "");
     }
@@ -73,17 +60,17 @@ public class AnnoResult<T> {
     /**
      * 成功的结果
      */
-    @Note("成功的结果")
+    
     public static <T> AnnoResult<T> succeed(T data) {
         return new AnnoResult<>(data);
     }
 
-    @Note("成功的结果")
+    
     public static <T> AnnoResult<T> succeed(T data, String status) {
         return new AnnoResult<>(AnnoResult.SUCCEED_CODE, status, data);
     }
 
-    @Note("成功的结果")
+    
     public static <T> AnnoResult<T> succeed(T data, int status) {
         return new AnnoResult<>(status, "", data);
     }
@@ -91,7 +78,7 @@ public class AnnoResult<T> {
     /**
      * 成功的空结果
      */
-    @Note("失败的空结果")
+    
     public static <T> AnnoResult<T> failure() {
         return new AnnoResult<>(Result.FAILURE_CODE, "");
     }
@@ -99,7 +86,7 @@ public class AnnoResult<T> {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
+    
     public static <T> AnnoResult<T> failure(int status) {
         return failure(status, "");
     }
@@ -107,7 +94,7 @@ public class AnnoResult<T> {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
+    
     public static <T> AnnoResult<T> failure(int status, String msg) {
         return new AnnoResult<>(status, msg);
     }
@@ -115,12 +102,12 @@ public class AnnoResult<T> {
     /**
      * 失败的结果
      */
-    @Note("失败的结果")
+    
     public static <T> AnnoResult<T> failure(int status, String msg, T data) {
         return new AnnoResult<>(status, msg, data);
     }
 
-    @Note("失败的结果")
+    
     public static <T> AnnoResult<T> failure(String msg) {
         return new AnnoResult<>(Result.FAILURE_CODE, msg);
     }

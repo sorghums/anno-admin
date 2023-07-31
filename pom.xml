@@ -34,6 +34,7 @@
         <module>_anno-admin-test</module>
         <module>anno-admin-db</module>
         <module>anno-admin-solon-starter</module>
+        <module>anno-admin-i18n</module>
     </modules>
 
     <properties>
@@ -60,6 +61,10 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.i18n</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-i18n</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -93,6 +98,11 @@
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-ddl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-i18n</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

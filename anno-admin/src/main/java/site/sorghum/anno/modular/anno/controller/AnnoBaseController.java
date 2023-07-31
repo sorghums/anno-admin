@@ -7,8 +7,6 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.Solon;
-import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
 import site.sorghum.anno.common.AnnoBeanUtils;
 import site.sorghum.anno.common.response.AnnoResult;
@@ -56,7 +54,7 @@ public class AnnoBaseController {
     /**
      * 分页查询
      *
-     * @return {@link Result}<{@link IPage}<{@link T}>>
+     * @return {@link AnnoResult}<{@link IPage}<{@link T}>>
      */
     public <T> AnnoResult<IPage<T>> page(String clazz,
                                          int page,
@@ -94,7 +92,7 @@ public class AnnoBaseController {
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
         dbService.insert(tableParam, t);
-        return AnnoResult.from(Result.succeed());
+        return AnnoResult.succeed();
     }
 
     public <T> AnnoResult<T> queryById(String clazz, String pkValue, String _cat) {
@@ -105,7 +103,7 @@ public class AnnoBaseController {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         AnField pkField = anEntity.getPkField();
         if (pkField == null) {
-            return AnnoResult.from(Result.failure("未找到主键"));
+            return AnnoResult.failure("未找到主键");
         }
         T queryOne = (T) dbService.queryOne(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
         return AnnoResult.succeed(queryOne);
@@ -145,7 +143,7 @@ public class AnnoBaseController {
         TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
         AnField pkField = anEntity.getPkField();
         if (pkField == null) {
-            return AnnoResult.from(Result.failure("未找到主键"));
+            return AnnoResult.failure("未找到主键");
         }
         if (ReflectUtil.getFieldValue(data, pkField.getFieldName()) == null) {
             dbService.insert(tableParam, data);
@@ -154,7 +152,7 @@ public class AnnoBaseController {
                 CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()),
                 data);
         }
-        return AnnoResult.from(Result.succeed(data));
+        return AnnoResult.succeed(data);
     }
 
     public <T> AnnoResult<T> removeRelation(String clazz, Map<String, String> param) throws SQLException {
@@ -168,7 +166,7 @@ public class AnnoBaseController {
             DbCondition.builder().field(mediumThisField).value(thisValue).build()
         );
         dbService.delete(tableParam, dbConditions);
-        return AnnoResult.from(Result.succeed());
+        return AnnoResult.succeed();
     }
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
@@ -217,10 +215,10 @@ public class AnnoBaseController {
         }
         List<T> list = dbService.list(tableParam, dbConditions);
         if (list == null || list.isEmpty()) {
-            return AnnoResult.from(Result.succeed(Collections.emptyMap()));
+            return AnnoResult.succeed(Collections.emptyMap());
         }
         List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(tableParam.getClazz()))).collect(Collectors.toList());
-        return AnnoResult.from(Result.succeed(MapUtil.of("m2mTree", data)));
+        return AnnoResult.succeed(MapUtil.of("m2mTree", data));
     }
 
     public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {

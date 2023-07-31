@@ -2,7 +2,7 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.solon.i18n.I18nUtil;
+import site.sorghum.anno.i18n.I18nUtil;
 
 /**
  * 位置选择器
