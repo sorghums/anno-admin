@@ -3,10 +3,9 @@ package site.sorghum.anno.modular.file;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.noear.solon.Utils;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Condition;
-import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.common.config.AnnoProperty;
 
 
@@ -16,8 +15,7 @@ import site.sorghum.anno.common.config.AnnoProperty;
  * @author Sorghum
  * @since 2023/07/28
  */
-@Component(typed = true)
-@Condition(onMissingBean = AnFileService.class)
+@Named
 public class LocalAnFileServiceImpl implements AnFileService {
     @Inject
     private AnnoProperty annoProperty;
