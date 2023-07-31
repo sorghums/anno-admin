@@ -1,10 +1,13 @@
 package site.sorghum.anno.solon.init;
 
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.AppBeanLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.util.ResourceUtil;
+import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.common.config.AnnoProperty;
@@ -12,11 +15,11 @@ import site.sorghum.anno.ddl.PlatformFactory;
 import site.sorghum.anno.ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno.metadata.AnEntity;
 import site.sorghum.anno.metadata.MetadataManager;
-import site.sorghum.anno.modular.auth.service.AuthService;
 import site.sorghum.anno.modular.auth.service.impl.AuthServiceImpl;
 import site.sorghum.anno.modular.ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno.modular.ddl.InitDataService;
 
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -25,6 +28,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/7/8 11:31
  */
+@Slf4j
 @Component
 public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent> {
 
@@ -59,7 +63,18 @@ public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent>
         }
 
         // 初始化数据
-        initDataService.init();
+        List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
+            .stream()
+            .map(ResourceUtil::getResource)
+            .toList();
+        for (URL resource : resources) {
+            try {
+                initDataService.init(resource);
+            } catch (Exception e) {
+                log.error("parse or execute sql error, resource: {}", resource);
+                throw e;
+            }
+        }
 
         authService.initPermissions();
         authService.initMenus();

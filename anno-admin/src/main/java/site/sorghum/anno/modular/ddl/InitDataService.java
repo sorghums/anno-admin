@@ -10,8 +10,6 @@ import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.insert.Insert;
-import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
@@ -47,35 +45,17 @@ public class InitDataService {
 
     public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
 
-    public void init() throws Exception {
+    public void init(URL resource) throws Exception {
         // wood 设置
         WoodConfig.isSelectItemEmptyAsNull = true;
         WoodConfig.isUsingValueNull = true;
 
         // 初始化 init.sql
         if (annoProperty.getIsAutoMaintainInitData()) {
-            initSql();
+            initSql(resource);
         }
 
 
-    }
-
-    /**
-     * 读取 sql 文件，对比数据库中已有的数据，初始化数据或者升级历史数据
-     */
-    private void initSql() throws Exception {
-        List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
-            .stream()
-            .map(ResourceUtil::getResource)
-            .toList();
-        for (URL resource : resources) {
-            try {
-                initSql(resource);
-            } catch (Exception e) {
-                log.error("parse or execute sql error, resource: {}", resource);
-                throw e;
-            }
-        }
     }
 
     /**
@@ -83,7 +63,7 @@ public class InitDataService {
      *
      * @param resource 预置数据文件
      */
-    public void initSql(URL resource) throws Exception {
+    private void initSql(URL resource) throws Exception {
         StopWatch stopWatch = new StopWatch("init sql");
         stopWatch.start("read sql");
         List<String> statements = ScriptUtils.getStatements(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8));
