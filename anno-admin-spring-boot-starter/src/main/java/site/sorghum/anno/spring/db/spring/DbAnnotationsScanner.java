@@ -4,7 +4,6 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import jakarta.inject.Inject;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import org.springframework.beans.BeansException;
@@ -24,7 +23,7 @@ import java.lang.reflect.Field;
  */
 @Configuration
 @Order(Ordered.LOWEST_PRECEDENCE)
-public class MustQuickComponentScanner implements InstantiationAwareBeanPostProcessor {
+public class DbAnnotationsScanner implements InstantiationAwareBeanPostProcessor {
     /**
      * 统计注入耗时
      */
