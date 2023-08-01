@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/anno-admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  web:
+    resources:
+      static-locations: classpath:/WEB-INF/static/
+  thymeleaf:
+    prefix: classpath:/WEB-INF/templates/
+    suffix: .html
+anno-admin:
+  redis:
+    server: "127.0.0.1:6379"
+    db: 8
+    maxTotal: '200'
+  # 主题：antd,cxd,ang
+  theme: 'antd'
+server:
+  port: 8855

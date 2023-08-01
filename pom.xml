@@ -35,6 +35,7 @@
         <module>anno-admin-db</module>
         <module>anno-admin-solon-starter</module>
         <module>anno-admin-i18n</module>
+        <module>anno-admin-spring-boot-starter</module>
     </modules>
 
     <properties>

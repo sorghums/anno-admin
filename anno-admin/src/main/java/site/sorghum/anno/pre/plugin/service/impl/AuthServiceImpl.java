@@ -62,9 +62,6 @@ public class AuthServiceImpl implements AuthService {
     @Inject
     MetadataManager metadataManager;
 
-    @Inject
-    AuthService authService;
-
     public void initPermissions() {
         // 初始化的时候，进行Db的注入
         List<AnEntity> allEntity = metadataManager.getAllEntity();
@@ -190,7 +187,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Cache(key = "permissionList", seconds = 60 * 60 * 2)
     public List<String> permissionList(String userId) {
-        List<String> roleIds = authService.roleList(userId);
+        List<String> roleIds = AnnoBeanUtils.getBean(AuthService.class).roleList(userId);
         if (roleIds.contains("admin")) {
             List<SysPermission> sysPermissions = sysPermissionDao.list();
             return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
