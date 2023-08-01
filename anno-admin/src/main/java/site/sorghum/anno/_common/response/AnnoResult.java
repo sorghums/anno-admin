@@ -1,6 +1,7 @@
 package site.sorghum.anno._common.response;
 
 import lombok.Data;
+import site.sorghum.anno._common.util.JSONUtil;
 
 /**
  * Anno结果
@@ -127,5 +128,9 @@ public class AnnoResult<T> {
         this.data = data;
         return this;
     }
-    
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonString(this);
+    }
 }

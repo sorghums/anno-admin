@@ -20,7 +20,10 @@ public class AmisController extends AmisBaseController {
 
     @RequestMapping(value = "/amisJson/{clazz}")
     @SaIgnore
-    public AnnoResult<Object> amisJson(@PathVariable String clazz, @RequestParam("isM2m") boolean isM2m,@RequestBody HashMap<String, Object> paramMap) {
+    public AnnoResult<Object> amisJson(@PathVariable String clazz, @RequestParam(value = "isM2m",defaultValue = "false") boolean isM2m,@RequestBody(required = false) HashMap paramMap) {
+        if (paramMap == null) {
+            paramMap = new HashMap<>();
+        }
         return super.toJson(clazz, paramMap, isM2m);
     }
 

@@ -2,10 +2,7 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.map.MapUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import site.sorghum.anno._common.response.AnnoResult;

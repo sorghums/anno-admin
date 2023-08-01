@@ -9,6 +9,7 @@ import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,24 +32,24 @@ public class DbController extends BaseDbController {
      */
     @PostMapping("/{clazz}/page")
     public <T> AnnoResult<IPage<T>> page(@PathVariable String clazz,
-                                         @RequestParam(required = false) int page,
-                                         @RequestParam(required = false) int perPage,
+                                         @RequestParam int page,
+                                         @RequestParam int perPage,
                                          @RequestParam(required = false) String orderBy,
                                          @RequestParam(required = false) String orderDir,
-                                         @RequestParam(required = false) boolean ignoreM2m,
-                                         @RequestParam(required = false) boolean reverseM2m,
+                                         @RequestParam boolean ignoreM2m,
+                                         @RequestParam boolean reverseM2m,
                                          @RequestParam(required = false) Map<String, Object> param) {
 
         return super.page(clazz, page, perPage, orderBy, orderDir, ignoreM2m, reverseM2m, param);
     }
 
     @PostMapping("/{clazz}/save")
-    public <T> AnnoResult<T> save(@PathVariable String clazz, @RequestBody Map<String, Object> param) {
+    public <T> AnnoResult<T> save(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.save(clazz, param);
     }
 
     @PostMapping("/{clazz}/queryById")
-    public <T> AnnoResult<T> queryById(@PathVariable String clazz, @RequestParam String pkValue, @RequestParam String _cat) {
+    public <T> AnnoResult<T> queryById(@PathVariable String clazz, @RequestParam(required = false) String pkValue, @RequestParam(required = false) String _cat) {
         return super.queryById(clazz, pkValue, _cat);
     }
 
@@ -67,43 +68,55 @@ public class DbController extends BaseDbController {
      * 通过ID 更新
      */
     @PostMapping("/{clazz}/updateById")
-    public <T> AnnoResult<T> updateById(@PathVariable String clazz, @RequestBody Map<String, Object> param) {
+    public <T> AnnoResult<T> updateById(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.updateById(clazz, param);
     }
 
     @PostMapping("/{clazz}/saveOrUpdate")
-    public <T> AnnoResult<T> saveOrUpdate(@PathVariable String clazz, @RequestBody Map<String, Object> param) {
+    public <T> AnnoResult<T> saveOrUpdate(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.saveOrUpdate(clazz, param);
     }
 
     @PostMapping("/{clazz}/remove-relation")
-    public <T> AnnoResult<T> removeRelation(@PathVariable String clazz, @RequestBody Map<String, String> param) throws SQLException {
+    public <T> AnnoResult<T> removeRelation(@PathVariable String clazz, @RequestBody HashMap param) throws SQLException {
         return super.removeRelation(clazz, param);
     }
 
-    @PostMapping("/{clazz}/annoTrees")
+    @RequestMapping("/{clazz}/annoTrees")
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@PathVariable String clazz,
-                                                               @RequestParam boolean ignoreM2m,
-                                                               @RequestParam boolean reverseM2m,
-                                                               @RequestBody Map<String, String> param) {
+                                                               @RequestParam(defaultValue = "false") boolean ignoreM2m,
+                                                               @RequestParam(defaultValue = "false") boolean reverseM2m,
+                                                               @RequestBody(required = false) HashMap param) {
+        if (param == null) {
+            param = new HashMap<>();
+        }
         return super.annoTrees(clazz, ignoreM2m, reverseM2m, param);
     }
 
-    @PostMapping("/{clazz}/annoTreeSelectData")
+    @RequestMapping("/{clazz}/annoTreeSelectData")
     public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(@PathVariable String clazz,
-                                                        @RequestParam boolean ignoreM2m,
-                                                        @RequestParam boolean reverseM2m,
-                                                        @RequestBody Map<String, String> param) {
+                                                        @RequestParam(defaultValue = "false") boolean ignoreM2m,
+                                                        @RequestParam(defaultValue = "false") boolean reverseM2m,
+                                                        @RequestBody(required = false) Map<String, String> param) {
+        if (param == null) {
+            param = new HashMap<>();
+        }
         return super.annoTreeSelectData(clazz, ignoreM2m, reverseM2m, param);
     }
 
     @PostMapping("/{clazz}/addM2m")
-    public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param, @RequestParam boolean clearAll) {
+    public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param, @RequestParam(defaultValue = "false") boolean clearAll) {
+        if (param == null) {
+            param = new HashMap<>();
+        }
         return super.addM2m(clazz, param, clearAll);
     }
 
     @PostMapping(value = "runJavaCmd",consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@RequestBody Map<String, String> map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@RequestBody HashMap map) throws ClassNotFoundException {
+        if (map == null) {
+            map = new HashMap<>();
+        }
         return super.runJavaCmd(map);
     }
 
