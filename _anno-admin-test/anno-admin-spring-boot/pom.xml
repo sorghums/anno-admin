@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>site.sorghum.anno</groupId>
+        <artifactId>_anno-admin-test</artifactId>
+        <version>0.0.1.M2</version>
+    </parent>
+
+    <artifactId>anno-admin-spring-boot</artifactId>
+    <packaging>jar</packaging>
+
+    <name>anno-admin-spring-boot</name>
+
+    <properties>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-web</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-spring-boot-starter</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.ver}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikaricp.version}</version>
+        </dependency>
+    </dependencies>
+</project>

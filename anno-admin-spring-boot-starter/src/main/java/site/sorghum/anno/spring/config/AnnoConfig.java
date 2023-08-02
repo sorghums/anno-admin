@@ -1,13 +1,14 @@
 package site.sorghum.anno.spring.config;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
+import org.noear.wood.DbContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import site.sorghum.anno._common.AnnoBean;
@@ -15,16 +16,15 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nService;
 import site.sorghum.anno.i18n.I18nUtil;
+import site.sorghum.anno.spring.auth.StpInterfaceImpl;
 
-import java.beans.ConstructorProperties;
+import javax.sql.DataSource;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,8 +32,9 @@ import java.util.Set;
  * @since 2023/7/30 12:16
  */
 @Configuration
+@ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE})
 public class AnnoConfig {
-    private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
+    public static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
 
     @Bean
     @Primary
@@ -42,10 +43,20 @@ public class AnnoConfig {
         return new AnnoProperty();
     }
 
+    @Bean
+    public DbContext dbContext(DataSource dataSource){
+        return new DbContext(dataSource);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StpInterfaceImpl stpInterfaceImpl(){
+        return new StpInterfaceImpl();
+    }
 
     @PostConstruct
-    public AnnoBean annoBean(){
-        AnnoBean annoBean =  new AnnoBean(){
+    public AnnoBean annoBean() {
+        AnnoBean annoBean = new AnnoBean() {
             @Override
             public <T> T getBean(String name) {
                 return SpringUtil.getBean(name);
@@ -63,13 +74,7 @@ public class AnnoConfig {
         };
         AnnoBeanUtils.setBean(annoBean);
         Set<String> packages = CollUtil.newHashSet(ANNO_BASE_PACKAGE);
-//        AnnoScan annotation = AnnotationUtil.getAnnotation(source, AnnoScan.class);
-//        if (Objects.nonNull(annotation)) {
-//            String[] value = annotation.scanPackage();
-//            if (value.length > 0) {
-//                packages.addAll(CollUtil.newArrayList(value));
-//            }
-//        }
+
         // 加载 anno 元数据
         loadMetadata(packages);
 
@@ -82,8 +87,8 @@ public class AnnoConfig {
         return annoBean;
     }
 
-    public void loadMetadata(Set<String> packages){
-        MetadataManager metadataManager =  SpringUtil.getBean(MetadataManager.class);
+    public void loadMetadata(Set<String> packages) {
+        MetadataManager metadataManager = SpringUtil.getBean(MetadataManager.class);
 
         for (String scanPackage : packages) {
             Set<Class<?>> classes = ClassUtil.scanPackage(scanPackage);
@@ -100,10 +105,10 @@ public class AnnoConfig {
                 }
                 // 缓存字段信息
                 AnnoUtil.getAnnoFields(clazz).forEach(
-                        field -> {
-                            String columnName = AnnoUtil.getColumnName(field);
-                            AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field);
-                        }
+                    field -> {
+                        String columnName = AnnoUtil.getColumnName(field);
+                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field);
+                    }
                 );
             }
         }

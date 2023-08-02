@@ -10,51 +10,14 @@
     </parent>
 
     <artifactId>_anno-admin-test</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>anno-admin-solon</module>
+        <module>anno-admin-spring-boot</module>
+    </modules>
 
     <properties>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-web</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-solon-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.ver}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>${hikaricp.version}</version>
-        </dependency>
-
-        <!-- 测试 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-
-        <plugins>
-            <plugin>
-                <groupId>org.noear</groupId>
-                <artifactId>solon-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

@@ -1,4 +1,4 @@
-package site.sorghum.anno.spring.db.spring;
+package site.sorghum.anno.spring.config;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.date.StopWatch;
@@ -9,9 +9,8 @@ import org.noear.wood.annotation.Db;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import site.sorghum.anno.spring.db.util.InjectUtil;
+import site.sorghum.anno.spring.util.InjectUtil;
 
 import java.lang.reflect.Field;
 
@@ -22,7 +21,7 @@ import java.lang.reflect.Field;
  * @since 2022/09/29
  */
 @Configuration
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order()
 public class DbAnnotationsScanner implements InstantiationAwareBeanPostProcessor {
     /**
      * 统计注入耗时

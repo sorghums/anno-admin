@@ -1,9 +1,8 @@
-package site.sorghum.anno.spring.config;
+package site.sorghum.anno.spring.auth;
 
 import cn.dev33.satoken.stp.StpInterface;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/04/27
  */
-@Component
 @Slf4j
 public class StpInterfaceImpl implements StpInterface {
 

@@ -1,0 +1,3 @@
+site.sorghum.anno.spring.config.AnnoConfig
+site.sorghum.anno.spring.config.SaConfig
+site.sorghum.anno.spring.config.DbAnnotationsScanner

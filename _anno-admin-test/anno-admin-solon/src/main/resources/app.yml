@@ -1,4 +1,4 @@
-server.port: 8080
+server.port: 8866
 solon.serialization.json:
   dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
   dateAsTimeZone: 'GMT+8'

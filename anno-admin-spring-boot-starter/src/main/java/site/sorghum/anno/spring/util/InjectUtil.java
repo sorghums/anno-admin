@@ -1,4 +1,4 @@
-package site.sorghum.anno.spring.db.util;
+package site.sorghum.anno.spring.util;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ReflectUtil;

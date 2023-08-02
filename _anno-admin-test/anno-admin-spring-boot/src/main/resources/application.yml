@@ -13,7 +13,7 @@ spring:
 anno-admin:
   redis:
     server: "127.0.0.1:6379"
-    db: 8
+    db: 9
     maxTotal: '200'
   # 主题：antd,cxd,ang
   theme: 'antd'
