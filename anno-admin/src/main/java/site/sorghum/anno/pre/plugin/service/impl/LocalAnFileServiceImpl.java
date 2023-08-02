@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.config.AnnoProperty;
@@ -28,7 +29,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
         String localFilePath = annoProperty.getLocalFilePath();
         String fileName = fileInfo.getFileName();
         String suffix = FileNameUtil.getSuffix(fileName);
-        String originalPath = fileInfo.getOriginalPath();
+        String originalPath = StrUtil.isBlank(fileInfo.getOriginalPath()) ? "common" : fileInfo.getOriginalPath();
         byte[] bytes = fileInfo.getBytes();
         // 获取年
         String year = String.valueOf(DateUtil.thisYear());
@@ -37,7 +38,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
         // 获取日
         String day = String.valueOf(DateUtil.thisDayOfMonth());
         String fileUrl = AnFileService.joinPath( "anLocal",originalPath, year, month, day, guid + "." + suffix);
-        FileUtil.writeBytes(bytes, localFilePath + fileName);
+        FileUtil.writeBytes(bytes,fileUrl);
         fileInfo.setFileUrl(fileUrl);
         return fileInfo;
     }

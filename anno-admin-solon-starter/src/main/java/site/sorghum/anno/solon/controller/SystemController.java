@@ -1,16 +1,16 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.hutool.core.map.MapUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.pre.plugin.controller.SystemBaseController;
 import site.sorghum.anno.pre.plugin.entity.response.CaptchaResponse;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,19 +29,16 @@ public class SystemController extends SystemBaseController {
         return super.captcha();
     }
 
-    @Mapping(value = "/api/upload", multipart=true)
-    public AnnoResult<Map<String,Object>> upload(Context ctx) throws Exception {
-        HashMap<String,Object> res = MapUtil.newHashMap();
-        res.put("value","https://solon.noear.org/img/solon/favicon.png");
-        UploadedFile file = ctx.file("file");
-        return AnnoResult.succeed(res).withStatus(0);
+    @Mapping(value = "/api/upload",multipart = true)
+    @Post
+    public AnnoResult<Map<String,Object>> upload(UploadedFile file,Context context) throws Exception {
+        Map<String, List<UploadedFile>> stringListMap = context.filesMap();
+        return super.uploadFile(file.getContent(),file.getName());
     }
 
-    @Mapping(value = "/api/upload/file", multipart=true)
+    @Mapping(value = "/api/upload/file")
     public AnnoResult<Map<String,Object>> uploadFile(Context ctx) throws Exception {
-        HashMap<String,Object> res = MapUtil.newHashMap();
-        res.put("value","https://solon.noear.org/img/solon/favicon.png");
-        UploadedFile file = ctx.file("file");
-        return AnnoResult.succeed(res).withStatus(0);
+        UploadedFile filed = ctx.file("file");
+        return super.uploadFile(filed.getContent(),filed.getName());
     }
 }

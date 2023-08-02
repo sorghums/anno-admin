@@ -1,7 +1,6 @@
 package site.sorghum.anno.spring.filter;
 
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,13 +9,11 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.ThrowableLogUtil;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 /**
@@ -26,7 +23,7 @@ import java.util.HashMap;
  * @since 2023/02/24
  */
 @Configuration
-@WebFilter(urlPatterns = "/*",filterName = "extraDataFilter")
+@WebFilter(urlPatterns = "/*", filterName = "extraDataFilter")
 @Slf4j
 public class ExtraDataFilter implements Filter {
     private static final String EXTRA_DATA = "_extraData";
@@ -39,20 +36,25 @@ public class ExtraDataFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String extraData = null;
-        HashMap<String,Object> bdMap;
-        if (!(servletRequest instanceof HttpServletRequest)){
-            filterChain.doFilter(servletRequest,servletResponse);
+        HashMap<String, Object> bdMap;
+        if (!(servletRequest instanceof HttpServletRequest)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+        }
+        // 如果是文件上传则不进行处理
+        if (servletRequest.getContentType() != null && servletRequest.getContentType().startsWith("multipart/form-data")) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
         }
         RequestWrapper requestWrapper = new RequestWrapper(servletRequest);
         String body = requestWrapper.getBody();
         if (body.startsWith("{")) {
-            bdMap = JSONUtil.toBean(body,HashMap.class);
+            bdMap = JSONUtil.toBean(body, HashMap.class);
             if (bdMap.containsKey("_extraData")) {
-                extraData = MapUtil.getStr(bdMap,EXTRA_DATA);
+                extraData = MapUtil.getStr(bdMap, EXTRA_DATA);
             }
         } else if (StrUtil.isBlank(body)) {
             bdMap = new HashMap<>();
-        }else {
+        } else {
             bdMap = null;
         }
         if (StrUtil.isNotBlank(requestWrapper.getParameter(EXTRA_DATA))) {
@@ -60,7 +62,7 @@ public class ExtraDataFilter implements Filter {
         }
         if (bdMap != null && StrUtil.isNotBlank(extraData)) {
             try {
-                HashMap<String,Object> param = JSONUtil.toBean(extraData,HashMap.class);
+                HashMap<String, Object> param = JSONUtil.toBean(extraData, HashMap.class);
                 param.forEach(
                         (k, v) -> {
                             if (ObjUtil.isNotEmpty(v)) {
@@ -81,7 +83,7 @@ public class ExtraDataFilter implements Filter {
             }
         }
         AnnoContextUtil.getContext().setRequestParams(bdMap);
-        filterChain.doFilter(requestWrapper,servletResponse);
+        filterChain.doFilter(requestWrapper, servletResponse);
     }
 
     @Override

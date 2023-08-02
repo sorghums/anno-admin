@@ -28,6 +28,10 @@ public class ExtraDataFilter implements Filter {
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        if (ctx.isMultipart()){
+            chain.doFilter(ctx);
+            return;
+        }
         String extraData = null;
         HashMap<String,Object> bdMap;
         if (ctx.body().startsWith("{")) {

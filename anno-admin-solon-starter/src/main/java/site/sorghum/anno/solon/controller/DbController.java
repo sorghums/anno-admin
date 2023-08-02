@@ -2,12 +2,7 @@ package site.sorghum.anno.solon.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Path;
-import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
@@ -43,8 +38,8 @@ public class DbController extends BaseDbController {
                                          @Param int perPage,
                                          @Param String orderBy,
                                          @Param String orderDir,
-                                         @Param boolean ignoreM2m,
-                                         @Param boolean reverseM2m,
+                                         @Param(defaultValue = "false") boolean ignoreM2m,
+                                         @Param(defaultValue = "false") boolean reverseM2m,
                                          @Body Map<String, Object> param) {
 
         return super.page(clazz, page, perPage, orderBy, orderDir, ignoreM2m, reverseM2m, param);
@@ -94,16 +89,16 @@ public class DbController extends BaseDbController {
 
     @Mapping("/{clazz}/annoTrees")
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
-                                                               @Param boolean ignoreM2m,
-                                                               @Param boolean reverseM2m,
+                                                               @Param(defaultValue = "false") boolean ignoreM2m,
+                                                               @Param(defaultValue = "false") boolean reverseM2m,
                                                                @Body Map<String, String> param) {
         return super.annoTrees(clazz, ignoreM2m, reverseM2m, param);
     }
 
     @Mapping("/{clazz}/annoTreeSelectData")
     public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(@Path String clazz,
-                                                        @Param boolean ignoreM2m,
-                                                        @Param boolean reverseM2m,
+                                                        @Param(defaultValue = "false") boolean ignoreM2m,
+                                                        @Param(defaultValue = "false") boolean reverseM2m,
                                                         @Body Map<String, String> param) {
         return super.annoTreeSelectData(clazz, ignoreM2m, reverseM2m, param);
     }

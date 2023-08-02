@@ -36,8 +36,8 @@ public class DbController extends BaseDbController {
                                          @RequestParam int perPage,
                                          @RequestParam(required = false) String orderBy,
                                          @RequestParam(required = false) String orderDir,
-                                         @RequestParam boolean ignoreM2m,
-                                         @RequestParam boolean reverseM2m,
+                                         @RequestParam(defaultValue = "false") boolean ignoreM2m,
+                                         @RequestParam(defaultValue = "false") boolean reverseM2m,
                                          @RequestParam(required = false) Map<String, Object> param) {
 
         return super.page(clazz, page, perPage, orderBy, orderDir, ignoreM2m, reverseM2m, param);
