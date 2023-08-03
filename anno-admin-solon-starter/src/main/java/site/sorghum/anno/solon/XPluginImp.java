@@ -11,16 +11,6 @@ import jakarta.transaction.Transactional;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.ProxyComponent;
 import org.noear.solon.core.*;
-import org.noear.solon.data.annotation.Cache;
-import org.noear.solon.data.annotation.CachePut;
-import org.noear.solon.data.annotation.CacheRemove;
-import org.noear.solon.data.around.CacheInterceptor;
-import org.noear.solon.data.around.CachePutInterceptor;
-import org.noear.solon.data.around.CacheRemoveInterceptor;
-import org.noear.solon.data.cache.CacheLib;
-import org.noear.solon.data.cache.CacheService;
-import org.noear.solon.data.cache.CacheServiceWrapConsumer;
-import org.noear.solon.data.cache.LocalCacheService;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorImp;
 import org.noear.solon.proxy.ProxyUtil;
@@ -63,7 +53,7 @@ public class XPluginImp implements Plugin {
 
         context.beanBuilderAdd(Named.class, new NamedBeanBuilder(context));
 
-        cacheAndTran(context);
+        tranSupport(context);
 
         // 扫描包
         context.beanScan(ANNO_BASE_PACKAGE);
@@ -87,25 +77,11 @@ public class XPluginImp implements Plugin {
     /**
      * 缓存和事务支持
      */
-    private static void cacheAndTran(AopContext context) {
+    private static void tranSupport(AopContext context) {
         // 添加事务控制支持，see: org.noear.solon.data.integration.XPluginImp
         if (Solon.app().enableTransaction()) {
             context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
-
             context.beanInterceptorAdd(Transactional.class, new TransactionalInterceptor(), 121);
-        }
-
-        // 添加缓存控制支持，see: org.noear.solon.data.integration.XPluginImp
-        if (Solon.app().enableCaching()) {
-            CacheLib.cacheServiceAddIfAbsent("", LocalCacheService.instance);
-
-            context.subWrapsOfType(CacheService.class, new CacheServiceWrapConsumer());
-
-            context.lifecycle(-99, () -> {
-                if (!context.hasWrap(CacheService.class)) {
-                    context.wrapAndPut(CacheService.class, LocalCacheService.instance);
-                }
-            });
         }
     }
 
