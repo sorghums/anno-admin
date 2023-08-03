@@ -2,7 +2,7 @@
 
 <h1 align="center"> Anno Admin</h1>
 <h3 align="center">零前端代码，注解驱动，轻松拓展实现界面化CRUD</h3>
-<h3 align="center"><a href="https://erupt.xyz" target="_blank">https://www.erupt.xyz</a></h3>
+<h3 align="center"><a href="https://www.yuque.com/sorghums/anno-admin" target="_blank">文档地址</a></h3>
 
 ---
 
