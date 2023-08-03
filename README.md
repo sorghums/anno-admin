@@ -10,7 +10,7 @@
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/star.svg?theme=dark" alt="Gitee star"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/fork.svg?theme=dark" alt="Gitee fork"></a>
-    <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/sorghums/anno-admin/erupt?style=social" alt="GitHub stars"></a>
+    <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/stars/sorghums/anno-admin?style=social" alt="GitHub stars"></a>
     <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/forks/sorghums/anno-admin?style=social" alt="GitHub forks"></a>
 </p>
 
