@@ -1,25 +1,76 @@
-# Anno-Admin
-## [文档地址](https://www.yuque.com/sorghums/anno-admin)
-[![cmeet/anno-admin](https://gitee.com/cmeet/anno-admin/widgets/widget_card.svg?colors=4183c4,ffffff,ffffff,e3e9ed,666666,9b9b9b)](https://gitee.com/cmeet/anno-admin)
+中文 &nbsp; | &nbsp; [English](./README-EN.md)
 
-### 交流群
+<h1 align="center"> Anno Admin</h1>
+<h3 align="center">零前端代码，注解驱动，轻松拓展实现界面化CRUD</h3>
+<h3 align="center"><a href="https://erupt.xyz" target="_blank">https://www.erupt.xyz</a></h3>
 
-![image.png](img/微信群.jpg)
-#### !!! 同时支持SpringBoot/Solon框架
-#### Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理系统，在原项目上轻松拓展实现界面化CRUD。
+---
 
-Solon框架是一个轻量级的Java Web框架，具有高性能、低内存占用、易于扩展等特点。
-后端支持SpringBoot 3.x ,Solon框架，前端基于Hooks Admin的模板。
-Anno-Admin利用Solon/Spring框架的优势，通过注解的方式自动生成后台管理系统的各种功能，大大减少了开发者的工作量。使用Anno-Admin，开发者只需要关注业务逻辑的实现，无需手动编写大量的重复代码，从而提高了开发效率。同时，Anno-Admin也为想要学习注解和代码生成技术的开发者提供了一个很好的学习平台。总之，Anno-Admin是一个非常实用、易用、高效的后台管理系统开发工具，值得开发者们去尝试和使用。
-## 特点
-通过注解生成后台管理系统
-支持用户管理、权限管理、数据管理等功能
-简化后台管理系统的开发流程
-适合快速开发后台管理系统的开发者
-适合想要学习注解和代码生成技术的开发者
-## 使用方法
-在项目中添加Anno-Admin的依赖
-在代码中添加注解，指定需要生成的后台管理系统功能
+<p align="center">
+    <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
+    <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/erupt/erupt/badge/star.svg?theme=dark" alt="Gitee star"></a>
+    <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/erupt/erupt/badge/fork.svg?theme=dark" alt="Gitee fork"></a>
+    <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/stars/erupts/erupt?style=social" alt="GitHub stars"></a>
+    <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/forks/erupts/erupt?style=social" alt="GitHub forks"></a>
+</p>
+
+<p align="center">
+    <a href="https://github.com/sorghums/anno-admin">Github 仓库</a> &nbsp; | &nbsp; 
+    <a href="https://gitee.com/cmeet/anno-admin">码云仓库</a> &nbsp; | &nbsp; 
+    <a href="https://www.yuque.com/sorghums/anno-admin" target="_blank"><b>📕 使用文档</b></a>
+</p>
+
+---
+
+<p align="center"><img src="./img/微信群.jpg" height="150" alt="logo"/></p>
+
+---
+
+## 🚀 简介 | Intro
+Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理系统，在原项目上轻松拓展实现界面化CRUD。
+
+零前端代码、零 CURD、自动建表，仅需 **一个类文件** + 简洁的注解配置，快速开发企业级 Admin 管理后台。
+
+高扩展性，支持CURD自由扩展、自定义数据源、逻辑删除、LDAP、OSS。
+
+提供企业级中后台管理系统的全栈解决方案，大幅压缩研发周期，专注核心业务。
+
+> 完美取代 **代码生成器**，开发后台管理系统更优解！
+
+
+## 🌈 特性 | Features
+
++ **适配主流框架**：支持**Solon** / **Spring Boot**
+
++ **自动建表**：表结构自动生成，无需手动建表
+
++ **易于上手**：会简单的 **Spring Boot / Solon** 基础知识即可
+
++ **使用简单**：仅需了解 **@AnnoMain** 与 **@AnnoField** 两个注解即可上手开发
+
++ **代码简洁**：仅需一个 `.java` 文件, template、controller、service、dao 都不需要创建
+
++ **功能强大**：动态条件处理，逻辑删除等
+
++ **数据源**：支持：MySQL，持续拓展中。
+
++ **高扩展性**：支持自定义数据源实现、动态权限管理、**自定义 OSS**
+
++ **大量组件**：时间选择、**一对多**、图片上传、代码编辑器、自动完成、树、**多对多**、地图等多类组件
+
++ **丰富展示**：普通文本、**二维码**、链接、图片、HTML、代码段等
+
+---
+
++ **低侵入性**：几乎所有功能都围绕注解而展开，不影响Spring Boot / Solon其他功能或三方库库的使用
+
++ **前后端分离**：后端与前端可分开部署
+
++ **响应式布局**：支持PC端手机端等各种规格的设备中使用
+
++ **前端零代码**：前端布局自动构建，一行前端代码都不用写
+
++ **无需二次开发**：仅需引用 jar 包即可 ！
 ## 演示
 系统菜单：
 ![image.png](img/系统菜单.png)
