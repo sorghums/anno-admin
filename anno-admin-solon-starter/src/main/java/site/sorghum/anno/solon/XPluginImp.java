@@ -106,10 +106,6 @@ public class XPluginImp implements Plugin {
                     context.wrapAndPut(CacheService.class, LocalCacheService.instance);
                 }
             });
-
-            context.beanInterceptorAdd(CachePut.class, new CachePutInterceptor(), 110);
-            context.beanInterceptorAdd(CacheRemove.class, new CacheRemoveInterceptor(), 110);
-            context.beanInterceptorAdd(Cache.class, new CacheInterceptor(), 111);
         }
     }
 

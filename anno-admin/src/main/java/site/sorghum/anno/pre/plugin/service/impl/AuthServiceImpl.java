@@ -6,8 +6,6 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno._annotations.Cache;
-import site.sorghum.anno._annotations.CacheRemove;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;

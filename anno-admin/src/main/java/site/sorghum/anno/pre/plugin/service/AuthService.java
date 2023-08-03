@@ -1,6 +1,5 @@
 package site.sorghum.anno.pre.plugin.service;
 
-import site.sorghum.anno._annotations.Cache;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
 
 import java.util.List;
