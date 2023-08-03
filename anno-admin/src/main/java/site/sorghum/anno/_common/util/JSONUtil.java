@@ -18,6 +18,10 @@ import java.util.Map;
  */
 public class JSONUtil {
 
+    public static <T> List<T> toBeanList(String json, Class<T> objectClass) {
+        return JSONArray.parseArray(json, objectClass);
+    }
+
     public static <T> T toBean(Map<?,?> map, Class<T> objectClass) {
         if (map instanceof JSONObject) {
             return ((JSONObject) map).toJavaObject(objectClass);
@@ -78,9 +82,5 @@ public class JSONUtil {
 
     public static String toJsonString(Object object) {
         return JSON.toJSONString(object);
-    }
-
-    public static List<Options.Option> parseArray(String jsonString, Class<Options.Option> optionClass) {
-        return JSONArray.parseArray(jsonString, optionClass);
     }
 }

@@ -23,7 +23,6 @@ public interface AuthService {
 
     public List<String> permissionList(String userId);
 
-    @Cache(key = "roleList", seconds = 60 * 60 * 2)
     List<String> roleList(String userId);
 
     void removePermRoleCacheList(String userId);

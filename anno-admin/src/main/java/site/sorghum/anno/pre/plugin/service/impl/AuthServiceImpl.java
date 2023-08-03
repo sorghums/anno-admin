@@ -11,6 +11,7 @@ import site.sorghum.anno._annotations.CacheRemove;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.AnButton;
 import site.sorghum.anno._metadata.AnEntity;
@@ -185,28 +186,42 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Cache(key = "permissionList", seconds = 60 * 60 * 2)
     public List<String> permissionList(String userId) {
+        String key = "permissionList:" + userId;
+        if (CacheUtil.containsCache(key)) {
+            return CacheUtil.getCacheList(key, String.class);
+        }
         List<String> roleIds = AnnoBeanUtils.getBean(AuthService.class).roleList(userId);
+        List<String> permissionCodes;
         if (roleIds.contains("admin")) {
             List<SysPermission> sysPermissions = sysPermissionDao.list();
-            return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+            permissionCodes =  sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+        }else {
+            List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
+            permissionCodes = sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
         }
-        List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
-        return sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+        CacheUtil.putCache(key, permissionCodes, 60 * 60 * 2);
+        return permissionCodes;
     }
 
     @Override
-    @Cache(key = "roleList", seconds = 60 * 60 * 2)
     public List<String> roleList(String userId) {
+        String key = "roleList:" + userId;
+        if (CacheUtil.containsCache(key)) {
+            return CacheUtil.getCacheList(key, String.class);
+        }
         List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
-        return sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        List<String> roleList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        CacheUtil.putCache(key, roleList, 60 * 60 * 2);
+        return roleList;
     }
 
     @Override
-    @CacheRemove(keys = "permissionList,roleList")
     public void removePermRoleCacheList(String userId) {
-        // 清除缓存
+        String keyOne = "roleList:" + userId;
+        String keyTwo = "permissionList:" + userId;
+        CacheUtil.delKey(keyOne);
+        CacheUtil.delKey(keyTwo);
     }
 
     /**
@@ -258,9 +273,9 @@ public class AuthServiceImpl implements AuthService {
                     }
                     if (CollUtil.isNotEmpty(map)) {
                         dbContext.table(metadataManager.getEntity(SysAnnoMenu.class).getTableName())
-                            .setMap(map)
-                            .whereEq("id", anPluginMenu.getId())
-                            .update();
+                                .setMap(map)
+                                .whereEq("id", anPluginMenu.getId())
+                                .update();
                     }
                 }
 
