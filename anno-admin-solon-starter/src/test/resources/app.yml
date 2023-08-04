@@ -1,0 +1,20 @@
+solon.logging.appender:
+  console:
+    pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(${PID:-}) --- %-15([%15.15thread]) %-56(%cyan(%-40.40logger{39}%L)) : %msg%n"
+# 记录器级别的配置示例
+solon.logging.logger:
+  "root": # 默认记录器配置
+    level: info
+  "site.sorghum":
+    level: debug
+db.main:
+  schema: anno_admin
+  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: 123456
+anno-admin:
+  redis:
+    server: "127.0.0.1:6379"
+    db: 8
+    maxTotal: '200'

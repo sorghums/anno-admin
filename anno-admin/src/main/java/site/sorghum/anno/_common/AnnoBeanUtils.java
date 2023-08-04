@@ -1,5 +1,7 @@
 package site.sorghum.anno._common;
 
+import site.sorghum.anno._metadata.MetadataManager;
+
 import java.util.List;
 
 /**
@@ -24,5 +26,9 @@ public class AnnoBeanUtils {
 
     public static <T> List<T> getBeansOfType(Class<T> type) {
         return annoBean.getBeansOfType(type);
+    }
+
+    public static MetadataManager metadataManager() {
+        return annoBean.getBean(MetadataManager.class);
     }
 }
