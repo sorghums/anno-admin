@@ -13,7 +13,6 @@ import org.noear.solon.validation.annotation.Logined;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.AnnoContextUtil;
-import site.sorghum.anno._common.util.ThrowableLogUtil;
 
 import java.time.format.DateTimeParseException;
 
@@ -33,31 +32,40 @@ public class FailureFilter implements Filter {
             // 请求完成后自动清除上下文
             AnnoContextUtil.clearContext();
         } catch (ValidatorException e) {
-            if(e.getAnnotation() instanceof Logined){
+            if (e.getAnnotation() instanceof Logined) {
                 ctx.status(401);
-            }else {
+            } else {
+                ctx.status(500);
                 ctx.render(AnnoResult.failure(e.getCode(), e.getMessage()));
             }
-        } catch (BizException e){
-            ThrowableLogUtil.error(e);
+        } catch (BizException e) {
+            ctx.status(500);
+
+            log.error(e.getMessage(), e);
             ctx.render(AnnoResult.failure(e.getMessage()));
-        } catch (DateTimeParseException e){
-            ThrowableLogUtil.error(e);
+        } catch (DateTimeParseException e) {
+            log.error(e.getMessage(), e);
+
+            ctx.status(500);
             ctx.render(AnnoResult.failure("日期格式化出错"));
-        } catch (IllegalArgumentException e){
-            ThrowableLogUtil.error(e);
-            log.error("参数错误 ==>",e);
-            ctx.render(AnnoResult.failure( "非法参数"));
-        } catch (SaTokenException e){
-            ThrowableLogUtil.error(e);
-            if (e instanceof NotPermissionException){
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
+
+            ctx.status(400);
+            ctx.render(AnnoResult.failure("非法参数"));
+        } catch (SaTokenException e) {
+            log.error(e.getMessage(), e);
+
+            ctx.status(401);
+            if (e instanceof NotPermissionException) {
                 ctx.render(AnnoResult.failure("权限不足"));
                 return;
             }
             ctx.render(AnnoResult.failure(e.getMessage()));
-        }catch (Exception e){
-            log.error("未知异常 ==>",e);
-            ThrowableLogUtil.error(e);
+        } catch (Exception e) {
+            log.error("未知异常 ==>", e);
+
+            ctx.status(500);
             ctx.render(AnnoResult.failure("系统异常，请联系管理员"));
         }
     }
