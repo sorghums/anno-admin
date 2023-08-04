@@ -1,9 +1,9 @@
 package site.sorghum.anno.pre.plugin.dao;
 
-import org.noear.wood.BaseMapper;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.pre.plugin.ao.SysPermission;
+import site.sorghum.anno.pre.suppose.AnnoBaseMapper;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @since 2023/06/29
  */
 @Namespace("site.sorghum.anno.modular.system.dao")
-public interface SysPermissionDao extends BaseMapper<SysPermission> {
+public interface SysPermissionDao extends AnnoBaseMapper<SysPermission> {
     /**
      * 根据用户id查询系统权限
      *

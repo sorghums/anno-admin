@@ -1,9 +1,9 @@
 package site.sorghum.anno.pre.plugin.dao;
 
-import org.noear.wood.BaseMapper;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.suppose.AnnoBaseMapper;
 
 /**
  * 系统用户
@@ -12,7 +12,7 @@ import site.sorghum.anno.pre.plugin.ao.SysUser;
  * @since 2023/06/29
  */
 @Namespace("site.sorghum.anno.modular.system.dao")
-public interface SysUserDao extends BaseMapper<SysUser> {
+public interface SysUserDao extends AnnoBaseMapper<SysUser> {
 
     /**
      * 根据用户手机号查询用户
