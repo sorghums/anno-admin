@@ -3,7 +3,7 @@ package site.sorghum.anno.pre.plugin.dao;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.pre.plugin.ao.SysPermission;
-import site.sorghum.anno.pre.suppose.AnnoBaseMapper;
+import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 
