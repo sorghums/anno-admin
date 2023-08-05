@@ -4,9 +4,9 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.anno.util.AnnoTableParamCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +93,16 @@ public class MetadataManager {
     public TableParam getTableParam(Class<?> clazz) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
         return AnnoTableParamCache.get(entityName);
+    }
+
+    /**
+     * 获取表数据（直接存缓存中获取的，不可以修改，修改后会影响缓存的内容）
+     *
+     * @param clazz clazz
+     */
+    public TableParam getTableParamImmutable(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        return AnnoTableParamCache.getImmutable(entityName);
     }
 
     /**

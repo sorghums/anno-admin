@@ -28,7 +28,16 @@ public class BaseDaoTest {
     SysUserDao userDao;
 
     @Test
-    public void testBatchAdd() {
+    public void testInsert() {
+        userDao.delete(m -> m.whereLk("name", "testUser_%"));
+        List<SysUser> uerList = getUerList(1);
+        userDao.insert(uerList.get(0), true);
+        Long count = userDao.selectCount(m -> m.whereLk("name", "testUser_%"));
+        Assert.assertEquals(1L, count.longValue());
+    }
+
+    @Test
+    public void testInsertList() {
         userDao.delete(m -> m.whereLk("name", "testUser_%"));
 
         List<SysUser> uerList = getUerList(1000);

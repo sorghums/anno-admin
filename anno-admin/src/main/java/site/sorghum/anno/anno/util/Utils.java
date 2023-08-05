@@ -3,13 +3,13 @@ package site.sorghum.anno.anno.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.db.param.TableParam;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public class Utils {
     public static <T> List<AnnoTreeDTO<String>> toTrees(List<T> dataList) {
         init();
         if (CollUtil.isEmpty(dataList)) {
-            return Collections.emptyList();
+            return new ArrayList<>(1);
         }
         AnEntity anEntity = metadataManager.getEntity(dataList.get(0).getClass());
         return AnnoUtil.buildAnnoTree(dataList, anEntity.getTreeLabel(), anEntity.getTreeKey(), anEntity.getTreeParentKey());

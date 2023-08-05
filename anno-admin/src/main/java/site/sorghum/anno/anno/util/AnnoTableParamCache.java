@@ -35,7 +35,7 @@ public class AnnoTableParamCache {
      * @param key 关键
      * @return {@link Class}<{@link ?}>
      */
-    public static synchronized TableParam<?> get(String key){
+    public static TableParam<?> get(String key){
         TableParam<?> tableParam = STRING_TABLE_PARAM_CACHE.get(key);
         // 复制一份，防止被修改
         TableParam<?> returnParam = new TableParam<>();
@@ -44,6 +44,15 @@ public class AnnoTableParamCache {
         returnParam.setColumns(new ArrayList<>(tableParam.getColumns()));
         returnParam.setRemoveParam(tableParam.getRemoveParam());
         return returnParam;
+    }
+
+    /**
+     * 获取缓存（不可修改）
+     *
+     * @param entityName 实体名称
+     */
+    public static TableParam<?> getImmutable(String entityName){
+        return STRING_TABLE_PARAM_CACHE.get(entityName);
     }
 
 }
