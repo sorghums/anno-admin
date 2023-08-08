@@ -16,7 +16,7 @@ import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno._common.util.CryptoUtil;
-import site.sorghum.anno._metadata.AnButton;
+import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -54,17 +54,17 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
     List<Map> columns = crudBody.getColumns();
     for (Map columnJson : columns) {
       if ("操作".equals(MapUtil.getStr(columnJson, "label"))) {
-        List<AnButton> anButtons = anEntity.getButtons();
-        for (AnButton anButton : anButtons) {
+        List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
+        for (AnColumnButton anColumnButton : anColumnButtons) {
           try {
-            permissionProxy.checkPermission(anEntity, anButton.getPermissionCode());
+            permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
           } catch (Exception e) {
             continue;
           }
           Action action = new Action();
-          if (anButton.isO2mEnable()) {
+          if (anColumnButton.isO2mEnable()) {
             action = new DrawerButton();
-            action.setLabel(anButton.getName());
+            action.setLabel(anColumnButton.getName());
             ((DrawerButton) action).setDrawer(
                 new DrawerButton.Drawer() {{
                   setShowCloseButton(false);
@@ -77,24 +77,24 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                   setBody(
                       new IFrame() {{
                         setType("iframe");
-                        setSrc("/index#/amisSingle/index/" + anButton.getO2mJoinMainClazz().getSimpleName() + "?" + anButton.getO2mJoinOtherField() + "=${" + anButton.getO2mJoinThisField() + "}");
+                        setSrc("/index#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
                       }}
                   );
                 }}
             );
-          } else if (anButton.isM2mEnable()) {
+          } else if (anColumnButton.isM2mEnable()) {
             action = new DrawerButton();
             HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
-              put("joinValue", "${" + anButton.getM2mJoinThisClazzField() + "}");
-              put("joinCmd", Base64.encodeStr(anButton.getM2mJoinSql().getBytes(), false, true));
+              put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+              put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
               // 处理上调换this和other的逻辑
-              put("mediumThisField", anButton.getM2mMediumOtherField());
-              put("mediumOtherField", anButton.getM2mMediumThisField());
-              put("mediumTableClass", anButton.getM2mMediumTableClass().getSimpleName());
-              put("joinThisClazzField", anButton.getM2mJoinThisClazzField());
+              put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+              put("mediumOtherField", anColumnButton.getM2mMediumThisField());
+              put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
+              put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
               put("isM2m", true);
             }};
-            action.setLabel(anButton.getName());
+            action.setLabel(anColumnButton.getName());
             ((DrawerButton) action).setDrawer(
                 new DrawerButton.Drawer() {{
                   setCloseOnEsc(true);
@@ -106,29 +106,29 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                   setBody(
                       new IFrame() {{
                         setType("iframe");
-                        setSrc("/index#/amisSingle/index/" + anButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+                        setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                       }}
                   );
                   setActions(new ArrayList<Action>());
                 }}
             );
-          } else if (StrUtil.isNotBlank(anButton.getJumpUrl())) {
-            action.setLabel(anButton.getName());
+          } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
+            action.setLabel(anColumnButton.getName());
             action.setActionType("url");
-            action.setUrl(anButton.getJumpUrl());
-          } else if (StrUtil.isNotBlank(anButton.getJsCmd())) {
-            action.setLabel(anButton.getName());
-            action.setOnClick(anButton.getJsCmd());
-          } else if (anButton.isJavaCmdEnable()) {
-            action.setLabel(anButton.getName());
+            action.setUrl(anColumnButton.getJumpUrl());
+          } else if (StrUtil.isNotBlank(anColumnButton.getJsCmd())) {
+            action.setLabel(anColumnButton.getName());
+            action.setOnClick(anColumnButton.getJsCmd());
+          } else if (anColumnButton.isJavaCmdEnable()) {
+            action.setLabel(anColumnButton.getName());
             action.setActionType("ajax");
             action.setApi(
                 new Api() {{
                   setMethod("post");
                   setUrl("/system/anno/runJavaCmd");
                   setData(new HashMap<String, Object>() {{
-                    put("clazz", CryptoUtil.encrypt(anButton.getJavaCmdBeanClass().getName()));
-                    put("method", CryptoUtil.encrypt(anButton.getJavaCmdMethodName()));
+                    put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
+                    put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
                     // 30分钟过期
                     put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
                     put("&", "$$");

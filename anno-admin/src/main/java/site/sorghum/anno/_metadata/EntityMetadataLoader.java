@@ -8,6 +8,7 @@ import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
@@ -78,8 +79,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
         setAnFields(entity, clazz);
 
-        List<AnButton> anButtons = getAnButton(clazz);
-        entity.setButtons(anButtons);
+        List<AnColumnButton> anColumnButtons = getAnButton(clazz);
+        entity.setColumnButtons(anColumnButtons);
+
+        List<AnTableButton> anTableButtons = getAnTableButton(clazz);
+        entity.setTableButtons(anTableButtons);
+
         return entity;
     }
 
@@ -154,32 +159,55 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setFields(anFields);
     }
 
-    private List<AnButton> getAnButton(Class<?> clazz) {
-        ArrayList<AnButton> anButtons = new ArrayList<>();
+    private List<AnColumnButton> getAnButton(Class<?> clazz) {
+        ArrayList<AnColumnButton> anColumnButtons = new ArrayList<>();
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);
         for (Field buttonField : annoButtonFields) {
             AnnoButton anno = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
-            AnButton anButton = new AnButton();
+            AnColumnButton anColumnButton = new AnColumnButton();
+            anColumnButton.setName(anno.name());
+            anColumnButton.setPermissionCode(anno.permissionCode());
+            anColumnButton.setSize(anno.size());
+            anColumnButton.setJsCmd(anno.jsCmd());
+            anColumnButton.setJumpUrl(anno.jumpUrl());
+
+            // 一对多
+            anColumnButton.setO2mEnable(anno.o2mJoinButton().enable());
+            anColumnButton.setO2mJoinMainClazz(anno.o2mJoinButton().joinAnnoMainClazz());
+            anColumnButton.setO2mJoinThisField(anno.o2mJoinButton().joinThisClazzField());
+            anColumnButton.setO2mJoinOtherField(anno.o2mJoinButton().joinOtherClazzField());
+
+            // 多对多
+            anColumnButton.setM2mEnable(anno.m2mJoinButton().enable());
+            anColumnButton.setM2mJoinAnnoMainClazz(anno.m2mJoinButton().joinAnnoMainClazz());
+            anColumnButton.setM2mJoinSql(anno.m2mJoinButton().joinSql());
+            anColumnButton.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());
+            anColumnButton.setM2mMediumTableClass(anno.m2mJoinButton().mediumTableClass());
+            anColumnButton.setM2mMediumOtherField(anno.m2mJoinButton().mediumOtherField());
+            anColumnButton.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
+
+            // java cmd
+            anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());
+            anColumnButton.setJavaCmdBeanClass(anno.javaCmd().beanClass());
+            anColumnButton.setJavaCmdMethodName(anno.javaCmd().methodName());
+            anColumnButtons.add(anColumnButton);
+        }
+        return anColumnButtons;
+    }
+
+    private List<AnTableButton> getAnTableButton(Class<?> clazz) {
+        ArrayList<AnTableButton> anButtons = new ArrayList<>();
+        AnnoMain main = AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
+        AnnoTableButton[] annoTableButtons = main.annoTableButton();
+        for (AnnoTableButton anno : annoTableButtons) {
+
+            AnTableButton anButton = new AnTableButton();
             anButton.setName(anno.name());
             anButton.setPermissionCode(anno.permissionCode());
             anButton.setSize(anno.size());
             anButton.setJsCmd(anno.jsCmd());
             anButton.setJumpUrl(anno.jumpUrl());
 
-            // 一对多
-            anButton.setO2mEnable(anno.o2mJoinButton().enable());
-            anButton.setO2mJoinMainClazz(anno.o2mJoinButton().joinAnnoMainClazz());
-            anButton.setO2mJoinThisField(anno.o2mJoinButton().joinThisClazzField());
-            anButton.setO2mJoinOtherField(anno.o2mJoinButton().joinOtherClazzField());
-
-            // 多对多
-            anButton.setM2mEnable(anno.m2mJoinButton().enable());
-            anButton.setM2mJoinAnnoMainClazz(anno.m2mJoinButton().joinAnnoMainClazz());
-            anButton.setM2mJoinSql(anno.m2mJoinButton().joinSql());
-            anButton.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());
-            anButton.setM2mMediumTableClass(anno.m2mJoinButton().mediumTableClass());
-            anButton.setM2mMediumOtherField(anno.m2mJoinButton().mediumOtherField());
-            anButton.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
 
             // java cmd
             anButton.setJavaCmdEnable(anno.javaCmd().enable());

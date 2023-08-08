@@ -111,7 +111,15 @@ public class AnEntity {
         return fieldMap.get(fieldName);
     }
 
-    private List<AnButton> buttons;
+    /**
+     * 行级按钮
+     */
+    private List<AnColumnButton> columnButtons;
+
+    /**
+     * 表级按钮
+     */
+    private List<AnTableButton> tableButtons;
 
     /**
      * 逻辑删除类型： 0 物理删除 1 逻辑删除

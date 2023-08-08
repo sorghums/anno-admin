@@ -4,14 +4,14 @@ import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 
 /**
- * 按钮信息
+ * 行级按钮信息
  *
  * @author songyinyin
  * @see AnnoButton
  * @since 2023/7/9 22:24
  */
 @Data
-public class AnButton {
+public class AnColumnButton {
 
     /**
      * 字段名

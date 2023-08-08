@@ -11,7 +11,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
-import site.sorghum.anno._metadata.AnButton;
+import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -69,10 +69,10 @@ public class AuthServiceImpl implements AuthService {
                 String baseCode = anEntity.getPermissionCode();
                 String baseName = anEntity.getPermissionCodeTranslate();
                 // 按钮权限每次必查
-                List<AnButton> anButtons = anEntity.getButtons();
-                for (AnButton anButton : anButtons) {
-                    if (StrUtil.isNotBlank(anButton.getPermissionCode())) {
-                        String buttonCode = baseCode + ":" + anButton.getPermissionCode();
+                List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
+                for (AnColumnButton anColumnButton : anColumnButtons) {
+                    if (StrUtil.isNotBlank(anColumnButton.getPermissionCode())) {
+                        String buttonCode = baseCode + ":" + anColumnButton.getPermissionCode();
                         SysPermission sysPermission = sysPermissionDao.selectById(buttonCode);
                         if (sysPermission != null && sysPermission.getId() != null) {
                             continue;
@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
                         buttonPermission.setId(buttonCode);
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
-                        buttonPermission.setName(baseName + ":" + anButton.getName());
+                        buttonPermission.setName(baseName + ":" + anColumnButton.getName());
                         buttonPermission.setDelFlag(0);
                         sysPermissionDao.insert(buttonPermission, true);
                     }

@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
@@ -22,7 +23,11 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品",
-        annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class)
+        annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class),
+        annoTableButton = {
+                @AnnoTableButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}"),
+                @AnnoTableButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮');"),
+        }
 )
 @Table("business_product")
 public class BusinessProduct extends BaseMetaModel {

@@ -55,4 +55,11 @@ public @interface AnnoMain {
      * @return {@link AnnoTree}
      */
     AnnoTree annoTree() default @AnnoTree(enable = false, parentKey = "", key = "", label = "", displayAsTree = false);
+
+    /**
+     * Anno 表按钮
+     *
+     * @return {@link AnnoTableButton[]}
+     */
+    AnnoTableButton[] annoTableButton() default {};
 }
