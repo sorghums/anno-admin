@@ -15,6 +15,8 @@ import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorImp;
 import org.noear.solon.proxy.ProxyUtil;
 import org.noear.solon.proxy.integration.UnsupportedUtil;
+import org.noear.solon.web.staticfiles.StaticMappings;
+import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -71,6 +73,9 @@ public class XPluginImp implements Plugin {
         loadMetadata(context, packages);
 
         AnnoBeanUtils.setBean(new SolonBeanImpl(context));
+
+        // 前端静态文件
+        StaticMappings.add("/", new ClassPathStaticRepository("META-INF/anno-admin-ui"));
 
     }
 
