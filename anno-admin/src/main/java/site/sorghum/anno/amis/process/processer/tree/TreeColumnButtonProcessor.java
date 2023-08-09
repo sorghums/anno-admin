@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
+import site.sorghum.amis.entity.display.DialogButton;
 import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
@@ -57,27 +58,25 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
             }
             Action action = new Action();
             if (anColumnButton.isO2mEnable()) {
-                action = new DrawerButton();
+                action = new DialogButton();
                 action.setLabel(anColumnButton.getName());
-                ((DrawerButton) action).setDrawer(
-                    new DrawerButton.Drawer() {{
-                        setShowCloseButton(false);
-                        setPosition("right");
-                        setCloseOnOutside(true);
-                        setSize("xl");
-                        setHeaderClassName("p-none m-none h-0");
-                        setFooterClassName("p-xs m-xs h-1/2");
+                ((DialogButton) action).setDialog(
+                    new DialogButton.Dialog() {{
+                        setTitle(anColumnButton.getName());
+                        setShowCloseButton(true);
+                        setSize(anColumnButton.getO2mWindowSize());
                         setActions(new ArrayList<>());
                         setBody(
                             new IFrame() {{
                                 setType("iframe");
+                                setHeight(anColumnButton.getO2mWindowHeight());
                                 setSrc("/index#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
                             }}
                         );
                     }}
                 );
             } else if (anColumnButton.isM2mEnable()) {
-                action = new DrawerButton();
+                action = new DialogButton();
                 HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
                     put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                     put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
@@ -88,17 +87,16 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                     put("isM2m", true);
                 }};
                 action.setLabel(anColumnButton.getName());
-                ((DrawerButton) action).setDrawer(
-                    new DrawerButton.Drawer() {{
+                ((DialogButton) action).setDialog(
+                    new DialogButton.Dialog() {{
+                        setTitle(anColumnButton.getName());
                         setCloseOnEsc(true);
-                        setCloseOnOutside(true);
-                        setSize("xl");
-                        setShowCloseButton(false);
-                        setHeaderClassName("p-none m-none h-0");
-                        setFooterClassName("p-xs m-xs h-1/2");
+                        setSize(anColumnButton.getM2mWindowSize());
+                        setShowCloseButton(true);
                         setBody(
                             new IFrame() {{
                                 setType("iframe");
+                                setHeight(anColumnButton.getM2mWindowHeight());
                                 setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumOtherField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                             }}
                         );

@@ -17,7 +17,7 @@ import org.noear.wood.wrap.TableWrap;
  * @since 2023/7/4 11:50
  */
 @Slf4j
-@SolonTest(AnnoAdminStarter.class)
+@SolonTest(AnnoSolonAdminStarter.class)
 @RunWith(SolonJUnit4ClassRunner.class)
 public class EntityToDdlTest {
 

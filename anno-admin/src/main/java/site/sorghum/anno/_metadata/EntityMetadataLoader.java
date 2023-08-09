@@ -176,6 +176,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anColumnButton.setO2mJoinMainClazz(anno.o2mJoinButton().joinAnnoMainClazz());
             anColumnButton.setO2mJoinThisField(anno.o2mJoinButton().joinThisClazzField());
             anColumnButton.setO2mJoinOtherField(anno.o2mJoinButton().joinOtherClazzField());
+            anColumnButton.setO2mWindowSize(anno.o2mJoinButton().windowSize());
+            anColumnButton.setO2mWindowHeight(anno.o2mJoinButton().windowHeight());
 
             // 多对多
             anColumnButton.setM2mEnable(anno.m2mJoinButton().enable());
@@ -185,6 +187,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anColumnButton.setM2mMediumTableClass(anno.m2mJoinButton().mediumTableClass());
             anColumnButton.setM2mMediumOtherField(anno.m2mJoinButton().mediumOtherField());
             anColumnButton.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
+            anColumnButton.setM2mWindowSize(anno.m2mJoinButton().windowSize());
+            anColumnButton.setM2mWindowHeight(anno.m2mJoinButton().windowHeight());
 
             // java cmd
             anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());

@@ -92,6 +92,19 @@ public @interface AnnoButton {
         String joinOtherClazzField() default "";
 
         /**
+         * 弹出窗口大小
+         * xs、sm、md、lg、xl、full
+         * @return {@link String}
+         */
+        String windowSize() default "xl";
+
+        /**
+         * 弹出窗口高度
+         * @return {@link String}
+         */
+        String windowHeight() default "700px";
+
+        /**
          * 启用
          *
          * @return boolean
@@ -125,13 +138,6 @@ public @interface AnnoButton {
          */
         String joinThisClazzField() default "";
 
-        /**
-         * 启用
-         *
-         * @return boolean
-         */
-        boolean enable() default true;
-
 
         /**
          * 中间表的类
@@ -153,6 +159,26 @@ public @interface AnnoButton {
          * @return {@link String}
          */
         String mediumThisField() default "";
+
+        /**
+         * 弹出窗口大小
+         * xs、sm、md、lg、xl、full
+         * @return {@link String}
+         */
+        String windowSize() default "xl";
+
+        /**
+         * 弹出窗口高度
+         * @return {@link String}
+         */
+        String windowHeight() default "700px";
+
+        /**
+         * 启用
+         *
+         * @return boolean
+         */
+        boolean enable() default true;
     }
 
     @interface JavaCmd {

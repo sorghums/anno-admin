@@ -75,6 +75,20 @@ public class AnColumnButton {
     private String o2mJoinOtherField;
 
     /**
+     * 一对多：窗口大小
+     *
+     * @see AnnoButton.O2MJoinButton#windowSize()
+     */
+    private String o2mWindowSize;
+
+    /**
+     * 一对多：窗口高度
+     *
+     * @see AnnoButton.O2MJoinButton#windowHeight()
+     */
+    private String o2mWindowHeight;
+
+    /**
      * 多对多是否启用
      *
      * @see AnnoButton.M2MJoinButton#enable()
@@ -122,6 +136,20 @@ public class AnColumnButton {
      * @see AnnoButton.M2MJoinButton#mediumThisField()
      */
     private String m2mMediumThisField;
+
+    /**
+     * 多对多：窗口大小
+     *
+     * @see AnnoButton.M2MJoinButton#windowSize()
+     */
+    private String m2mWindowSize;
+
+    /**
+     * 多对多：窗口高度
+     *
+     * @see AnnoButton.M2MJoinButton#windowHeight()
+     */
+    private String m2mWindowHeight;
 
     /**
      * JavaCmd：启用

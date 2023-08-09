@@ -32,6 +32,7 @@ public class Utils {
     }
 
     public static <T> String m2mSql(Map<?, ?> param) {
+        init();
         if (StrUtil.isBlank(MapUtil.getStr(param, "mediumTableClass"))) {
             return "";
         }
@@ -46,6 +47,7 @@ public class Utils {
 
 
     private static <T> String sql(Class<T> clazz, String sql) {
+        init();
         // 如果有配置逻辑删除
         TableParam tableParam = metadataManager.getTableParam(clazz);
         if (tableParam.getRemoveParam().getLogic()) {

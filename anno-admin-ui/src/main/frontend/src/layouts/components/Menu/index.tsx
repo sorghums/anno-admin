@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, Spin } from "antd";
-import { findAllBreadcrumb, getOpenKeys, handleRouter } from "@/utils/util";
+import { findAllBreadcrumb, handleRouter } from "@/utils/util";
 import { setMenuList } from "@/redux/modules/menu/action";
 import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
 import { setAuthRouter } from "@/redux/modules/auth/action";
