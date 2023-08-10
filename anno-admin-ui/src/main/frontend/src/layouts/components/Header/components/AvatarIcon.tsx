@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { Avatar, Modal, Menu, Dropdown, message } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import {ExclamationCircleOutlined, UserOutlined} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
@@ -83,7 +83,7 @@ const AvatarIcon = (props: any) => {
 	return (
 		<>
 			<Dropdown overlay={menu} placement="bottom" arrow trigger={["click"]}>
-				<Avatar size="large" src={ finalHeadAvatar } />
+				<Avatar icon={<UserOutlined/>} src={finalHeadAvatar}/>
 			</Dropdown>
 			<InfoModal innerRef={infoRef}></InfoModal>
 			<PasswordModal innerRef={passRef}></PasswordModal>
