@@ -36,7 +36,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
         TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getTitle());
 
-        List<AnField> fields = anEntity.getFields();
+        List<AnField> fields = anEntity.getDbAnFields();
 
         // 将 id 字段放到第一位
         AnField idField = CollUtil.findOne(fields, e -> e.getFieldName().equals(defaultPkName));

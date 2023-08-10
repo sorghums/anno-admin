@@ -27,6 +27,12 @@ public class AnField {
     private String fieldName;
 
     /**
+     * 虚拟列
+     * @see AnnoField#virtualColumn()
+     */
+    private boolean virtualColumn = false;
+
+    /**
      * 标题
      *
      * @see AnnoField#title()

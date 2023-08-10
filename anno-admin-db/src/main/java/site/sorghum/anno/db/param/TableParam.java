@@ -43,6 +43,12 @@ public class TableParam<T> {
      */
     OrderByParam orderByParam = new OrderByParam();
 
+
+    /**
+     * 虚拟表
+     */
+    boolean virtualTable = false;
+
     public void addColumn(String column) {
         if (this.columns == null) {
             this.columns = new ArrayList<>();

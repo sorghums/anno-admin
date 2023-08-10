@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
+import org.noear.wood.impl.IPageImpl;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -16,6 +17,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Anno用户数据库操作处理程序
@@ -47,7 +49,10 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
         proxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
-        IPage<T> page = dbService.page(tableParam, dbConditions, pageParam);
+        IPage<T> page = virtualProcess(tableParam.isVirtualTable(),
+            () -> dbService.page(tableParam, dbConditions, pageParam),
+            () -> new IPageImpl<>(new ArrayList<>(), 0, 0)
+        );
         // 后置处理
         proxyInstance.afterFetch(page.getList());
         return page;
@@ -63,7 +68,10 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
-        List<T> list = dbService.list(tableParam, dbConditions);
+        List<T> list = virtualProcess(tableParam.isVirtualTable(),
+            () -> dbService.list(tableParam, dbConditions),
+            ArrayList::new
+        );
         // 后置处理
         preProxyInstance.afterFetch(list);
         proxyInstance.afterFetch(list);
@@ -80,12 +88,15 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
-        T item = dbService.queryOne(tableParam, dbConditions);
+        T item = virtualProcess(tableParam.isVirtualTable(),
+            () -> dbService.queryOne(tableParam, dbConditions),
+            () -> null
+        );
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         preProxyInstance.afterFetch(list);
         proxyInstance.afterFetch(list);
-        return item;
+        return !list.isEmpty() ? list.get(0) : null;
     }
 
     @Override
@@ -98,7 +109,10 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeUpdate(tableParam, dbConditions, t);
         proxyInstance.beforeUpdate(tableParam, dbConditions, t);
-        int update = dbService.update(tableParam, dbConditions, t);
+        int update = virtualProcess(tableParam.isVirtualTable(),
+            () ->  dbService.update(tableParam, dbConditions, t),
+            () -> 0
+        );
         // 后置处理
         preProxyInstance.afterUpdate(t);
         proxyInstance.afterUpdate(t);
@@ -115,7 +129,10 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeAdd(tableParam, t);
         proxyInstance.beforeAdd(tableParam, t);
-        long insert = dbService.insert(tableParam, t);
+        long insert = virtualProcess(tableParam.isVirtualTable(),
+            () ->  dbService.insert(tableParam, t),
+            () -> 0L
+        );
         // 后置处理
         preProxyInstance.afterAdd(t);
         proxyInstance.afterAdd(t);
@@ -132,10 +149,20 @@ public class DbServiceWithProxy implements DbService {
         // 前置处理
         preProxyInstance.beforeDelete(tableParam, dbConditions);
         proxyInstance.beforeDelete(tableParam, dbConditions);
-        int delete = dbService.delete(tableParam, dbConditions);
+        int delete = virtualProcess(tableParam.isVirtualTable(),
+            () ->  dbService.delete(tableParam, dbConditions),
+            () -> 0
+        );
         // 后置处理
         preProxyInstance.afterDelete(dbConditions);
         proxyInstance.afterDelete(dbConditions);
         return delete;
+    }
+
+    private <T> T virtualProcess(boolean isVirtual,Supplier<T> supplier,Supplier<T>  defaultSupplier){
+        if (isVirtual){
+            return defaultSupplier.get();
+        }
+        return supplier.get();
     }
 }

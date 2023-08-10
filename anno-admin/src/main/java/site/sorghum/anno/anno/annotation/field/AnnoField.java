@@ -88,4 +88,10 @@ public @interface AnnoField {
      * @return {@link AnnoTreeType}
      */
     AnnoTreeType treeType() default @AnnoTreeType;
+
+    /**
+     * 是否是虚拟列，不会在数据库中生成与查询
+     * 可不绑定虚拟表独立使用
+     */
+    boolean virtualColumn() default false;
 }

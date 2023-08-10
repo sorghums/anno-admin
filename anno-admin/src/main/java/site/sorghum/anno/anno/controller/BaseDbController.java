@@ -79,7 +79,7 @@ public class BaseDbController {
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        TableParam tableParam = AnnoTableParamCache.get(clazz);
+        TableParam tableParam = metadataManager.getTableParam(clazz);
         if (StrUtil.isNotEmpty(orderBy)) {
             tableParam.getOrderByParam().addOrderByItem(new OrderByParam.OrderByItem(entity.getField(orderBy).getTableFieldName(), "asc".equals(orderDir)));
         }

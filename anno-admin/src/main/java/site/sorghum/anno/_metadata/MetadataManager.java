@@ -64,13 +64,15 @@ public class MetadataManager {
 
         tableParam.setClazz(entity.getClazz());
         tableParam.setTableName(entity.getTableName());
-        List<String> columns = entity.getFields().stream().map(AnField::getTableFieldName).collect(Collectors.toList());
+        List<String> columns = entity.getDbAnFields().stream().map(AnField::getTableFieldName).collect(Collectors.toList());
         tableParam.setColumns(columns);
         if (entity.getRemoveType() == 0) {
             tableParam.setRemoveParam(new RemoveParam());
         } else {
             tableParam.setRemoveParam(new RemoveParam(true, entity.getRemoveField(), entity.getRemoveValue(), entity.getNotRemoveValue()));
         }
+        // 设置是否虚拟表
+        tableParam.setVirtualTable(entity.isVirtualTable());
         AnnoTableParamCache.put(entity.getEntityName(), tableParam);
     }
 

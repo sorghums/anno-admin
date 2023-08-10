@@ -35,6 +35,13 @@ public class AnEntity {
     private String tableName;
 
     /**
+     * 是否虚拟表
+     *
+     * @see AnnoMain#virtualTable()
+     */
+    private boolean virtualTable = false;
+
+    /**
      * 是否自动维护表结构
      */
     private boolean isAutoMaintainTable = true;
@@ -109,6 +116,10 @@ public class AnEntity {
             return null;
         }
         return fieldMap.get(fieldName);
+    }
+
+    public List<AnField> getDbAnFields() {
+        return fields.stream().filter(anField -> !anField.isVirtualColumn()).collect(Collectors.toList());
     }
 
     /**

@@ -43,6 +43,7 @@ public class AnnoTableParamCache {
         returnParam.setClazz(tableParam.getClazz());
         returnParam.setColumns(new ArrayList<>(tableParam.getColumns()));
         returnParam.setRemoveParam(tableParam.getRemoveParam());
+        returnParam.setVirtualTable(tableParam.isVirtualTable());
         return returnParam;
     }
 

@@ -62,4 +62,9 @@ public @interface AnnoMain {
      * @return {@link AnnoTableButton[]}
      */
     AnnoTableButton[] annoTableButton() default {};
+
+    /**
+     * 是否是虚拟表[将不走数据库]
+     */
+    boolean virtualTable() default false;
 }

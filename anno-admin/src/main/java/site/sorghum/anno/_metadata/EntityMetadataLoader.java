@@ -47,6 +47,10 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         } else {
             entity.setTableName(table.value());
         }
+        entity.setVirtualTable(annoMain.virtualTable());
+        if (annoMain.virtualTable()){
+            entity.setAutoMaintainTable(false);
+        }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
 
@@ -98,6 +102,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             AnnoField anno = AnnotationUtil.getAnnotation(field, AnnoField.class);
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
+            anField.setVirtualColumn(anno.virtualColumn());
             anField.setTitle(anno.title());
             // 列名没有设置时，默认使用下划线
             if (StrUtil.isBlank(anno.tableFieldName())) {
@@ -105,6 +110,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             } else {
                 anField.setTableFieldName(anno.tableFieldName());
             }
+
             anField.setFieldType(field.getType());
             anField.setFieldSize(anno.fieldSize());
             anField.setDefaultValue(anno.defaultValue());
