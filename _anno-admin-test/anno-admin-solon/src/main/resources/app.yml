@@ -57,3 +57,7 @@ anno-admin:
     maxTotal: '200'
   # 主题：antd,cxd,ang
   theme: 'antd'
+#添加静态目录映射
+solon.staticfiles.mappings:
+  - path: '/'
+    repository: 'classpath:/WEB-INF/anno-admin-ui/'

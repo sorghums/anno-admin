@@ -70,7 +70,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getO2mWindowHeight());
-                                setSrc("/index#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
                             }}
                         );
                     }}
@@ -97,7 +97,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getM2mWindowHeight());
-                                setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumOtherField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumOtherField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                             }}
                         );
                         setActions(new ArrayList<>());

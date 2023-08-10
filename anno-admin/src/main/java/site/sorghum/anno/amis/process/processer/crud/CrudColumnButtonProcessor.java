@@ -76,7 +76,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                       new IFrame() {{
                         setType("iframe");
                         setHeight(anColumnButton.getO2mWindowHeight());
-                        setSrc("/index#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+                        setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
                       }}
                   );
                 }}
@@ -104,7 +104,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                       new IFrame() {{
                         setType("iframe");
                         setHeight(anColumnButton.getM2mWindowHeight());
-                        setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+                        setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                       }}
                   );
                   setActions(new ArrayList<>());

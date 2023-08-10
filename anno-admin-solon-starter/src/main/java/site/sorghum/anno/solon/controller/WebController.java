@@ -20,15 +20,10 @@ public class WebController {
     @Mapping(value = "/")
     public void first(Context ctx) {
         if (StpUtil.isLogin()){
-            ctx.redirect("/index#/home/index");
+            ctx.redirect("/index.html#/home/index");
             return;
         }
-        ctx.redirect("/index#/login");
-    }
-
-    @Mapping(value = "/index")
-    public ModelAndView index(Context ctx) {
-        return new ModelAndView("index.html");
+        ctx.redirect("/index.html#/login");
     }
 
 }

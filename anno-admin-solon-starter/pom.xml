@@ -26,9 +26,10 @@
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
+
         <dependency>
             <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-web</artifactId>
+            <artifactId>anno-admin-ui</artifactId>
         </dependency>
 
         <dependency>
@@ -48,10 +49,6 @@
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.logback</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.view.thymeleaf</artifactId>
         </dependency>
 
         <dependency>

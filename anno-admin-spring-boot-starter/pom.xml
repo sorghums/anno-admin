@@ -22,9 +22,10 @@
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
+
         <dependency>
             <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-web</artifactId>
+            <artifactId>anno-admin-ui</artifactId>
         </dependency>
 
         <dependency>
@@ -61,11 +62,6 @@
             <groupId>org.noear</groupId>
             <artifactId>wood.plus</artifactId>
             <version>${wood.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.dev33</groupId>

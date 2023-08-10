@@ -6,10 +6,7 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/anno-admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   web:
     resources:
-      static-locations: classpath:/WEB-INF/static/
-  thymeleaf:
-    prefix: classpath:/WEB-INF/templates/
-    suffix: .html
+      static-locations: classpath:/WEB-INF/anno-admin-ui/
   messages:
     basename: i18n/messages
 anno-admin:

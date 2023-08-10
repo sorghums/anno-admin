@@ -1,1 +1,0 @@
-import{a as e,j as t}from"./index-964316a3.js";const r=()=>e("div",{className:"card content-box",children:t("span",{className:"text",children:["Gitee \u4ED3\u5E93\uFF1A",e("a",{href:"https://gitee.com/laramie/Hooks-Admin",target:"_blank",rel:"noreferrer",children:"https://gitee.com/laramie/Hooks-Admin"})," ","\u{1F352}\u{1F349}\u{1F34A}"]})});export{r as default};

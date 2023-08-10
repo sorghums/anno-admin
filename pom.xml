@@ -26,16 +26,19 @@
         <!-- AMIS包 -->
         <module>anno-admin-amis</module>
         <!-- 静态资源的WEB包 -->
-        <module>anno-admin-web</module>
+        <module>anno-admin-ui</module>
         <!-- 自动生成表结构 -->
         <module>anno-admin-ddl</module>
+        <!-- 数据库支持模块 -->
+        <module>anno-admin-db</module>
+        <!-- 国际化支持模块 -->
+        <module>anno-admin-i18n</module>
+        <!-- 快速引入包 -->
+        <module>anno-admin-solon-starter</module>
+        <module>anno-admin-spring-boot-starter</module>
+
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
-        <module>anno-admin-db</module>
-        <module>anno-admin-solon-starter</module>
-        <module>anno-admin-i18n</module>
-        <module>anno-admin-spring-boot-starter</module>
-        <module>anno-admin-ui</module>
     </modules>
 
     <properties>
@@ -80,7 +83,7 @@
             </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
-                <artifactId>anno-admin-web</artifactId>
+                <artifactId>anno-admin-ui</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

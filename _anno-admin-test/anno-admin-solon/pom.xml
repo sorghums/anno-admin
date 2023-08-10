@@ -20,7 +20,6 @@
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-ui</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

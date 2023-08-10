@@ -29,9 +29,11 @@ public class SaConfig implements WebMvcConfigurer {
 
     @Bean
     @ConfigurationProperties(prefix = "anno-admin.redis")
-    public  Properties redisClientProperties(){
+    public Properties redisClientProperties() {
         return new Properties();
-    };
+    }
+
+    ;
 
     @Bean
     public RedisClient redisClient(Properties redisClientProperties) {
@@ -43,9 +45,10 @@ public class SaConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
-                .addPathPatterns("/**")
-                .excludePathPatterns("/favicon.ico")
-                .excludePathPatterns("/assets/**");
+            .addPathPatterns("/**")
+            .excludePathPatterns("/favicon.ico")
+            .excludePathPatterns("/assets/**")
+            .excludePathPatterns("/index.html");
     }
 
 }

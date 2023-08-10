@@ -82,15 +82,7 @@
             </resource>
             <resource>
                 <directory>target/dist</directory>
-                <targetPath>META-INF/anno-admin-ui/static</targetPath>
-                <filtering>true</filtering>
-                <excludes>
-                    <exclude>*.html</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>target/dist/index.html</directory>
-                <targetPath>META-INF/anno-admin-ui/templates</targetPath>
+                <targetPath>WEB-INF/anno-admin-ui</targetPath>
                 <filtering>false</filtering>
             </resource>
         </resources>

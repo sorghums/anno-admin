@@ -50,7 +50,7 @@ public class SaConfig {
                     .setHeader("X-Frame-Options", "SAMEORIGIN")
                     .addHeader("Access-Control-Allow-Origin", SaHolder.getRequest().getHeader("Origin"))
                     .addHeader("Access-Control-Allow-Methods", "*")
-                    .addHeader("Access-Control-Allow-Headers", "anno-token,content-type,*")
+                    .addHeader("Access-Control-Allow-Headers", "anno-token,content-type")
                     .addHeader("Access-Control-Allow-Credentials", "true")
                     // 是否启用浏览器默认XSS防护： 0=禁用 | 1=启用 | 1; mode=block 启用, 并在检查到XSS攻击时，停止渲染页面
                     .setHeader("X-XSS-Protection", "1; mode=block")

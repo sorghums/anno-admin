@@ -2,11 +2,11 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 
+import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -22,13 +22,11 @@ public class WebController {
 
     @GetMapping(value = "/")
     public void first(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        response.sendRedirect("/index#/login");
-    }
-
-    @GetMapping(value = "/index")
-    public ModelAndView index() {
-        return new ModelAndView("index.html");
+        if (StpUtil.isLogin()){
+            response.sendRedirect("/index.html#/home/index");
+            return;
+        }
+        response.sendRedirect("/index.html#/login");
     }
 
 }
