@@ -46,4 +46,9 @@ export namespace Login {
 		image: string;
 		key: string;
 	}
+
+	export interface ResMe {
+		avatar: string;
+		name: string;
+	}
 }

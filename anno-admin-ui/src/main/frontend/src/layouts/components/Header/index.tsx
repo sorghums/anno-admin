@@ -7,10 +7,22 @@ import Language from "./components/Language";
 import Theme from "./components/Theme";
 import Fullscreen from "./components/Fullscreen";
 import "./index.less";
+import {useEffect, useState} from "react";
+import { apiMe } from "@/api/modules/login";
 
 const LayoutHeader = () => {
 	const { Header } = Layout;
-
+	const [userName, setUserName] = useState("AnnoAdmin");
+	const [headAvatar, setHeadAvatar] = useState("https://solon.noear.org/img/solon/favicon.png");
+	// 发送请求获取用户信息
+	useEffect(() => {
+		apiMe().then(
+            (res) => {
+                setUserName(res.data?.name as string);
+                setHeadAvatar(res.data?.avatar as string);
+			}
+		)
+	}, []);
 	return (
 		<Header>
 			<div className="header-lf">
@@ -19,11 +31,11 @@ const LayoutHeader = () => {
 			</div>
 			<div className="header-ri">
 				<AssemblySize />
-				<Language />
 				<Theme />
-				<Fullscreen />
-				<span className="username">Hooks</span>
-				<AvatarIcon />
+				<span className="username">
+					{userName}
+				</span>
+				<AvatarIcon headAvatar = {headAvatar}/>
 			</div>
 		</Header>
 	);

@@ -8,6 +8,7 @@ import { setToken } from "@/redux/modules/global/action";
 import PasswordModal from "./PasswordModal";
 import InfoModal from "./InfoModal";
 import avatar from "@/assets/images/avatar.png";
+import {apiLogout, apiRefreshUserInfo} from "@/api/modules/login";
 
 const AvatarIcon = (props: any) => {
 	const { setToken } = props;
@@ -29,8 +30,10 @@ const AvatarIcon = (props: any) => {
 			cancelText: "取消",
 			onOk: () => {
 				setToken("");
-				message.success("退出登录成功！");
-				navigate("/login");
+				apiLogout().then((res) => {
+					message.success("退出登录成功！");
+					navigate("/login");
+				});
 			}
 		});
 	};
@@ -55,6 +58,15 @@ const AvatarIcon = (props: any) => {
 					onClick: () => passRef.current!.showModal({ name: 11 })
 				},
 				{
+					key: "1001",
+					label: <span className="dropdown-item">清除缓存</span>,
+					onClick: () => {
+						apiRefreshUserInfo().then((res) => {
+							message.success("清除缓存成功！");
+						});
+					}
+				},
+				{
 					type: "divider"
 				},
 				{
@@ -65,10 +77,13 @@ const AvatarIcon = (props: any) => {
 			]}
 		></Menu>
 	);
+	// 获取上层组件传递的头像对象 headAvatar
+	const { headAvatar } = props;
+	const finalHeadAvatar = headAvatar || avatar;
 	return (
 		<>
 			<Dropdown overlay={menu} placement="bottom" arrow trigger={["click"]}>
-				<Avatar size="large" src={avatar} />
+				<Avatar size="large" src={ finalHeadAvatar } />
 			</Dropdown>
 			<InfoModal innerRef={infoRef}></InfoModal>
 			<PasswordModal innerRef={passRef}></PasswordModal>
