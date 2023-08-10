@@ -1,4 +1,16 @@
 /*自定义相关amis参数*/
 :root {
 	--Tree-max-height: 800px;
+	--animation-duration: 0.35s;
+	--Panel-heading-bg: #1990ff17;
+}
+
+.antd-Table-table > thead > tr > th{
+	background: var(--Panel-heading-bg);
+	backdrop-filter: blur(10px);
+}
+
+.antd-Modal-overlay {
+	backdrop-filter: blur(10px);
+	background: rgb(0 0 0 / 29%);
 }
