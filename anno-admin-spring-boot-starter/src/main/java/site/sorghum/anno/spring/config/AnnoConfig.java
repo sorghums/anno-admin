@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import org.noear.wood.DbContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,12 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.i18n.I18nService;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.spring.auth.StpInterfaceImpl;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -55,7 +56,7 @@ public class AnnoConfig {
     }
 
     @PostConstruct
-    public AnnoBean annoBean() {
+    public void init() {
         AnnoBean annoBean = new AnnoBean() {
             @Override
             public <T> T getBean(String name) {
@@ -78,13 +79,8 @@ public class AnnoConfig {
         // 加载 anno 元数据
         loadMetadata(packages);
 
-        I18nUtil.setI18nService(new I18nService() {
-            @Override
-            public String getMessage(String key) {
-                return key;
-            }
-        });
-        return annoBean;
+        MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
+        I18nUtil.setI18nService(key -> messageSource.getMessage(key, null, Locale.getDefault()));
     }
 
     public void loadMetadata(Set<String> packages) {

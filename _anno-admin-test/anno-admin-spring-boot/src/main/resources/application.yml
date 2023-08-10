@@ -10,6 +10,8 @@ spring:
   thymeleaf:
     prefix: classpath:/WEB-INF/templates/
     suffix: .html
+  messages:
+    basename: i18n/messages
 anno-admin:
   redis:
     server: "127.0.0.1:6379"
