@@ -10,8 +10,8 @@ import java.util.*;
  */
 public class BiHashMap<K, V> implements Map<K, V> {
 
-    private Map<K, V> keyValueMap = new HashMap<K, V>();
-    private Map<V, K> valueKeyMap = new HashMap<V, K>();
+    private Map<K, V> keyValueMap = new HashMap<>();
+    private Map<V, K> valueKeyMap = new HashMap<>();
     
     @Override
     public int size() {

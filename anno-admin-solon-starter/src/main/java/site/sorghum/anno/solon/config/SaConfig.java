@@ -37,13 +37,9 @@ public class SaConfig {
             .addExclude("/favicon.ico")
             .addExclude("/solon-admin/api/**")
             // 认证函数: 每次请求执行
-            .setAuth(req -> {
-                SaRouter.match("/**", StpUtil::checkLogin);
-            })
+            .setAuth(req -> SaRouter.match("/**", StpUtil::checkLogin))
             // 异常处理函数：每次认证函数发生异常时执行此函数 //包括注解异常
-            .setError(e -> {
-                return AnnoResult.failure(e.getMessage());
-            })
+            .setError(e -> AnnoResult.failure(e.getMessage()))
             // 前置函数：在每次认证函数之前执行
             .setBeforeAuth(req -> {
                 // ---------- 设置一些安全响应头 ----------

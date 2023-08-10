@@ -29,7 +29,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     public RequestWrapper(ServletRequest request) throws IOException {
         super((HttpServletRequest) request);
         servletInputStreamWrapper = new ServletInputStreamWrapper(super.getInputStream());
-        if(super.getParameterMap().size() > 0){
+        if(!super.getParameterMap().isEmpty()){
             paramMap = new HashMap<>(super.getParameterMap());
         }
     }

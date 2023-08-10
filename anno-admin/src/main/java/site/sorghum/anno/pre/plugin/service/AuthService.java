@@ -12,15 +12,15 @@ import java.util.Map;
  * @since 2023/06/27
  */
 public interface AuthService {
-    public void resetPwd(Map<String, Object> props);
+    void resetPwd(Map<String, Object> props);
 
-    public SysUser verifyLogin(String mobile, String pwd);
+    SysUser verifyLogin(String mobile, String pwd);
 
-    public SysUser getUserByMobile(String mobile);
+    SysUser getUserByMobile(String mobile);
 
-    public SysUser getUserById(String id);
+    SysUser getUserById(String id);
 
-    public List<String> permissionList(String userId);
+    List<String> permissionList(String userId);
 
     List<String> roleList(String userId);
 

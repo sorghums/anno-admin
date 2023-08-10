@@ -16,13 +16,15 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/sorghums/anno-admin">Github 仓库</a> &nbsp; | &nbsp; 
     <a href="https://gitee.com/cmeet/anno-admin">码云仓库</a> &nbsp; | &nbsp; 
+    <a href="https://github.com/sorghums/anno-admin">Github 仓库</a> &nbsp; | &nbsp; 
     <a href="https://www.yuque.com/sorghums/anno-admin" target="_blank"><b>📕 使用文档</b></a>
 </p>
 
 ---
-
+<p align="center">
+微信群:
+</p>
 <p align="center"><img src="./img/微信群.jpg" height="150" alt="logo"/></p>
 
 ---

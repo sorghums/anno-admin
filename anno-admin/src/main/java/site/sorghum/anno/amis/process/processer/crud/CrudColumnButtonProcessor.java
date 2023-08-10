@@ -83,15 +83,15 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
             );
           } else if (anColumnButton.isM2mEnable()) {
             action = new DialogButton();
-            HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
-              put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
-              put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-              // 处理上调换this和other的逻辑
-              put("mediumThisField", anColumnButton.getM2mMediumOtherField());
-              put("mediumOtherField", anColumnButton.getM2mMediumThisField());
-              put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
-              put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
-              put("isM2m", true);
+            HashMap<String, Object> queryMap = new HashMap<>() {{
+                put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+                put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
+                // 处理上调换this和other的逻辑
+                put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+                put("mediumOtherField", anColumnButton.getM2mMediumThisField());
+                put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
+                put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
+                put("isM2m", true);
             }};
             action.setLabel(anColumnButton.getName());
             ((DialogButton) action).setDialog(
@@ -107,7 +107,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                         setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
                       }}
                   );
-                  setActions(new ArrayList<Action>());
+                  setActions(new ArrayList<>());
                 }}
             );
           } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
@@ -124,12 +124,12 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                 new Api() {{
                   setMethod("post");
                   setUrl("/system/anno/runJavaCmd");
-                  setData(new HashMap<String, Object>() {{
-                    put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
-                    put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
-                    // 30分钟过期
-                    put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
-                    put("&", "$$");
+                  setData(new HashMap<>() {{
+                      put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
+                      put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
+                      // 30分钟过期
+                      put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
+                      put("&", "$$");
                   }});
                   setMessages(
                       new ApiMessage() {{

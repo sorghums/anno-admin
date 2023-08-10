@@ -60,7 +60,7 @@ public class MetadataManager {
 
     private void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
-        TableParam tableParam = new TableParam();
+        TableParam<?> tableParam = new TableParam<>();
 
         tableParam.setClazz(entity.getClazz());
         tableParam.setTableName(entity.getTableName());

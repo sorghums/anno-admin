@@ -248,7 +248,7 @@ public class BaseDbController {
             tableParam.getRemoveParam().setLogic(true);
         }
         for (String mediumThisValue : split) {
-            Map<String, Object> addValue = new HashMap<String, Object>() {{
+            Map<String, Object> addValue = new HashMap<>() {{
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
@@ -273,7 +273,7 @@ public class BaseDbController {
     }
 
     private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
-        Map<String, Object> nParam = new HashMap<String, Object>();
+        Map<String, Object> nParam = new HashMap<>();
         for (String key : param.keySet()) {
             Object item = param.get(key);
             if (item instanceof String sItem) {

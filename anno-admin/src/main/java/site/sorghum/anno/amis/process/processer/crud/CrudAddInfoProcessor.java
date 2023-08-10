@@ -47,7 +47,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
             chain.doProcessor(amisBaseWrapper, clazz, properties);
             return;
         }
-        List<AmisBase> formItems = new ArrayList<AmisBase>() {{
+        List<AmisBase> formItems = new ArrayList<>() {{
             for (AnField field : anFields) {
                 if (field.isPrimaryKey()) {
                     add(new FormItem() {{

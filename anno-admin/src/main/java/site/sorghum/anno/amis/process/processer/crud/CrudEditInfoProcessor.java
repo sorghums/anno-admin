@@ -38,7 +38,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         AnEntity entity = metadataManager.getEntity(clazz);
-        ;
+
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         // 判断是否可以编辑
         List<AnField> fields = entity.getFields();

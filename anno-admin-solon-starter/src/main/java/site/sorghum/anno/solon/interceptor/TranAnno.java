@@ -21,21 +21,14 @@ public class TranAnno implements Tran {
 
     @Override
     public TranPolicy policy() {
-        switch (transactional.value()) {
-            case REQUIRES_NEW:
-                return TranPolicy.requires_new;
-            case SUPPORTS:
-                return TranPolicy.supports;
-            case NOT_SUPPORTED:
-                return TranPolicy.not_supported;
-            case MANDATORY:
-                return TranPolicy.mandatory;
-            case NEVER:
-                return TranPolicy.never;
-            case REQUIRED:
-            default:
-                return TranPolicy.required;
-        }
+        return switch (transactional.value()) {
+            case REQUIRES_NEW -> TranPolicy.requires_new;
+            case SUPPORTS -> TranPolicy.supports;
+            case NOT_SUPPORTED -> TranPolicy.not_supported;
+            case MANDATORY -> TranPolicy.mandatory;
+            case NEVER -> TranPolicy.never;
+            default -> TranPolicy.required;
+        };
     }
 
     @Override

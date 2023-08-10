@@ -114,17 +114,17 @@ public class AnnoResult<T> {
     }
 
 
-    public AnnoResult withStatus(int status){
+    public AnnoResult<T> withStatus(int status){
         this.status = status;
         return this;
     }
 
-    public AnnoResult withMsg(String msg){
+    public AnnoResult<T> withMsg(String msg){
         this.msg = msg;
         return this;
     }
 
-    public AnnoResult withData(T data){
+    public AnnoResult<T> withData(T data){
         this.data = data;
         return this;
     }

@@ -29,7 +29,7 @@ public interface AnFileService {
      * @param paths 路径
      * @return 拼接后的路径
      */
-    public static String joinPath(String ...paths){
+    static String joinPath(String... paths){
         StringBuilder sb = new StringBuilder();
         for (String path : paths) {
             sb.append(path);

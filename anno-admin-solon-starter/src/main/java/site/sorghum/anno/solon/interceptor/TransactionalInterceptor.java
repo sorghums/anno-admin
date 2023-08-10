@@ -19,9 +19,7 @@ public class TransactionalInterceptor implements Interceptor {
         if (annotation == null) {
             return inv.invoke();
         }
-        TranUtils.execute(new TranAnno(annotation), () -> {
-            val0.value = inv.invoke();
-        });
+        TranUtils.execute(new TranAnno(annotation), () -> val0.value = inv.invoke());
 
         return val0.value;
     }

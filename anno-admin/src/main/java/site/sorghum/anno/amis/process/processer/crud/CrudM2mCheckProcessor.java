@@ -49,7 +49,7 @@ public class CrudM2mCheckProcessor implements BaseProcessor {
         insertRelations.setApi(new Api(){{
             setMethod("post");
             setUrl("/system/anno/${clazz}/addM2m");
-            setData(new HashMap<String, Object>(){{
+            setData(new HashMap<>() {{
                 put("&", "$$");
                 put("_extraData", "${extraData}");
             }});

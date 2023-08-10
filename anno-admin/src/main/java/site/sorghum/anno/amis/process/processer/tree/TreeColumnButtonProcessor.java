@@ -77,7 +77,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 );
             } else if (anColumnButton.isM2mEnable()) {
                 action = new DialogButton();
-                HashMap<String, Object> queryMap = new HashMap<String, Object>() {{
+                HashMap<String, Object> queryMap = new HashMap<>() {{
                     put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                     put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
                     put("mediumThisField", anColumnButton.getM2mMediumOtherField());
@@ -100,7 +100,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                                 setSrc("/index#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumOtherField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                             }}
                         );
-                        setActions(new ArrayList<Action>());
+                        setActions(new ArrayList<>());
                     }}
                 );
             } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
@@ -117,7 +117,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                     new Api() {{
                         setMethod("post");
                         setUrl("/system/anno/runJavaCmd");
-                        setData(new HashMap<String, Object>() {{
+                        setData(new HashMap<>() {{
                             put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
                             put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
                             // 30分钟过期

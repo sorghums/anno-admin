@@ -26,7 +26,7 @@ public class AmisBaseController {
     public AnnoResult<Object> toJson(String clazz, Map<String, Object> data, boolean isM2m) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         Object template = null;
-        Map<String, Object> properties = new HashMap<String, Object>() {{
+        Map<String, Object> properties = new HashMap<>() {{
             put("clazz", clazz);
             put("treeClazz", AnnoUtil.getTreeClass(anEntity.getClazz()));
             this.putAll(data);

@@ -66,8 +66,7 @@ public class JSONUtil {
 
     public static <T> List<T> readList(Object obj, String path, Class<T> type) {
         Object eval = JSONPath.eval(obj, path);
-        if (eval instanceof JSONArray) {
-            JSONArray evalArray = (JSONArray) eval;
+        if (eval instanceof JSONArray evalArray) {
             return evalArray.toJavaList(type);
         }
         if (eval instanceof JSONObject) {

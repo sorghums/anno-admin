@@ -45,9 +45,7 @@ public class ThymeleafConfig {
         dialects.stream()
                 .filter(dialect -> dialect instanceof StandardDialect)
                 .findAny()
-                .ifPresent(dialect -> {
-                    ((StandardDialect) dialect).setJavaScriptSerializer(new FastJson2Serializer());
-                });
+                .ifPresent(dialect -> ((StandardDialect) dialect).setJavaScriptSerializer(new FastJson2Serializer()));
 
         ThymeleafRender.global().putVariable("anno_theme", annoProperty.getTheme());
     }
