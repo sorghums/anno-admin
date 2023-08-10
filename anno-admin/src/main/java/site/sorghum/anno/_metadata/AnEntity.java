@@ -118,6 +118,10 @@ public class AnEntity {
         return fieldMap.get(fieldName);
     }
 
+    /**
+     * 获取数据库字段
+     * [排除虚拟列字段]
+     */
     public List<AnField> getDbAnFields() {
         return fields.stream().filter(anField -> !anField.isVirtualColumn()).collect(Collectors.toList());
     }

@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.proxy;
 
 import jakarta.inject.Named;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -52,7 +53,7 @@ public class AnnoDefaultProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public void afterFetch(Collection<T> dataList) {
+    public void afterFetch(AnnoPage<T> page) {
 
     }
 }

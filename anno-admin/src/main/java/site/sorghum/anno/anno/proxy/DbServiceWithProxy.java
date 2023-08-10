@@ -7,6 +7,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
 import org.noear.wood.impl.IPageImpl;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -54,8 +55,10 @@ public class DbServiceWithProxy implements DbService {
             () -> new IPageImpl<>(new ArrayList<>(), 0, 0)
         );
         // 后置处理
-        proxyInstance.afterFetch(page.getList());
-        return page;
+        AnnoPage<T> annoPage = new AnnoPage<>(true, page.getList(), page.getTotal(), page.getSize(), page.getPages());
+        proxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(annoPage);
+        return new IPageImpl<>(annoPage.getList(), annoPage.getTotal(), annoPage.getSize());
     }
 
     @Override
@@ -73,9 +76,10 @@ public class DbServiceWithProxy implements DbService {
             ArrayList::new
         );
         // 后置处理
-        preProxyInstance.afterFetch(list);
-        proxyInstance.afterFetch(list);
-        return list;
+        AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
+        preProxyInstance.afterFetch(annoPage);
+        proxyInstance.afterFetch(annoPage);
+        return annoPage.getList();
     }
 
     @Override
@@ -94,9 +98,10 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
-        preProxyInstance.afterFetch(list);
-        proxyInstance.afterFetch(list);
-        return !list.isEmpty() ? list.get(0) : null;
+        AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
+        preProxyInstance.afterFetch(annoPage);
+        proxyInstance.afterFetch(annoPage);
+        return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
 
     @Override

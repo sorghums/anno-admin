@@ -48,7 +48,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             entity.setTableName(table.value());
         }
         entity.setVirtualTable(annoMain.virtualTable());
-        if (annoMain.virtualTable()){
+        if (entity.isVirtualTable()){
+            // 虚拟表不需要维护
             entity.setAutoMaintainTable(false);
         }
         entity.setClazz(clazz);
@@ -98,6 +99,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
     private void setAnFields(AnEntity entity, Class<?> clazz) {
         List<Field> fields = AnnoUtil.getAnnoFields(clazz);
         List<AnField> anFields = new ArrayList<>();
+        boolean virtualTable = entity.isVirtualTable();
         for (Field field : fields) {
             AnnoField anno = AnnotationUtil.getAnnotation(field, AnnoField.class);
             AnField anField = new AnField();
@@ -106,7 +108,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setTitle(anno.title());
             // 列名没有设置时，默认使用下划线
             if (StrUtil.isBlank(anno.tableFieldName())) {
-                anField.setTableFieldName(StrUtil.toUnderlineCase(field.getName()));
+                if (virtualTable || anno.virtualColumn()){
+                    anField.setTableFieldName(field.getName());
+                }else {
+                    anField.setTableFieldName(StrUtil.toUnderlineCase(field.getName()));
+                }
             } else {
                 anField.setTableFieldName(anno.tableFieldName());
             }

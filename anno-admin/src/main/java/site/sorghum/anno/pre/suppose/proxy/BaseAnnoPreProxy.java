@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -82,7 +83,7 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     }
 
     @Override
-    public void afterFetch(Collection<BaseMetaModel> dataList) {
-
+    public void afterFetch(AnnoPage<BaseMetaModel> page) {
+        
     }
 }

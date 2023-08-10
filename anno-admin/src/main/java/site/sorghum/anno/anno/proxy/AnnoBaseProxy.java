@@ -1,5 +1,6 @@
 package site.sorghum.anno.anno.proxy;
 
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -73,9 +74,9 @@ public interface AnnoBaseProxy<T> {
     /**
      * 返回结果后
      *
-     * @param dataList 列表
+     * @param page 分页结果数据
      */
-    void afterFetch(Collection<T> dataList);
+    void afterFetch(AnnoPage<T> page);
 
 
 }

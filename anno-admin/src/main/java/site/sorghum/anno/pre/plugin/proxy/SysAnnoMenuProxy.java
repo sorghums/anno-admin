@@ -3,6 +3,7 @@ package site.sorghum.anno.pre.plugin.proxy;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -80,7 +81,7 @@ public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
     }
 
     @Override
-    public void afterFetch(Collection<SysAnnoMenu> dataList) {
+    public void afterFetch(AnnoPage<SysAnnoMenu> page) {
 
     }
 }

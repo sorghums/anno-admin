@@ -373,7 +373,12 @@ public class AnnoUtil {
         }
         MetadataManager metadataManager = AnnoBeanUtils.getBean(MetadataManager.class);
         AnEntity anEntity = metadataManager.getEntity(clazz);
-        List<AnField> anFields = anEntity.getDbAnFields();
+        List<AnField> anFields;
+        if (anEntity.isVirtualTable()){
+            anFields = anEntity.getFields();
+        }else {
+            anFields = anEntity.getDbAnFields();
+        }
         for (AnField anField : anFields) {
             String sqlColumn = anField.getTableFieldName();
             Object value = ReflectUtil.getFieldValue(entity, anField.getFieldName());
