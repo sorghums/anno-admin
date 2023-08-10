@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.AnnotationAttributes;
+import org.springframework.core.type.AnnotationMetadata;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -37,6 +40,7 @@ import java.util.Set;
 public class AnnoConfig {
     public static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
 
+
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "anno-admin")
@@ -55,8 +59,19 @@ public class AnnoConfig {
         return new StpInterfaceImpl();
     }
 
+
     @PostConstruct
     public void init() {
+        String[] basePackage = this.getBasePackage(AnnoScanConfig.importingClassMetadata);
+        Set<String> packages = CollUtil.newHashSet(basePackage);
+        packages.add(AnnoConfig.ANNO_BASE_PACKAGE);
+
+        // 加载 anno 元数据
+        loadMetadata(packages);
+
+        MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
+        I18nUtil.setI18nService(key -> messageSource.getMessage(key, null, Locale.getDefault()));
+
         AnnoBean annoBean = new AnnoBean() {
             @Override
             public <T> T getBean(String name) {
@@ -74,14 +89,8 @@ public class AnnoConfig {
             }
         };
         AnnoBeanUtils.setBean(annoBean);
-        Set<String> packages = CollUtil.newHashSet(ANNO_BASE_PACKAGE);
-
-        // 加载 anno 元数据
-        loadMetadata(packages);
-
-        MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
-        I18nUtil.setI18nService(key -> messageSource.getMessage(key, null, Locale.getDefault()));
     }
+
 
     public void loadMetadata(Set<String> packages) {
         MetadataManager metadataManager = SpringUtil.getBean(MetadataManager.class);
@@ -108,5 +117,13 @@ public class AnnoConfig {
                 );
             }
         }
+    }
+
+    private String[] getBasePackage(AnnotationMetadata metadata) {
+        AnnotationAttributes attributes = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(AnnoScan.class.getName()));
+        if (attributes == null) {
+            return new String[]{};
+        }
+        return attributes.getStringArray("scanPackage");
     }
 }
