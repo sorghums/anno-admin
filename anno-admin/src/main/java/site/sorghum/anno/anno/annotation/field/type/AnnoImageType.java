@@ -42,14 +42,14 @@ public @interface AnnoImageType {
      *
      * @return int
      */
-    int width() default 0;
+    int width() default 50;
 
     /**
      * 高度 px
      *
      * @return int
      */
-    int height() default 0;
+    int height() default 50;
 
 
     /**

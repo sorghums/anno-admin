@@ -4,7 +4,7 @@
 	--animation-duration: 0.25s;
 	--Panel-heading-bg: #1990ff17;
 	--colors-brand-5: #1990ff;
-
+	--global-blur: blur(5px);
 }
 
 .antd-Table-table > thead > tr > th{
@@ -29,12 +29,12 @@
 }
 
 .antd-Modal-overlay {
-	backdrop-filter: blur(10px);
+	backdrop-filter: var(--global-blur);
 	background: rgba(0, 0, 0, 0.22);
 }
 
 .antd-Drawer-overlay.in {
-	backdrop-filter: blur(10px);
+	backdrop-filter: var(--global-blur);
 	background: rgba(0, 0, 0, 0.22);
 }
 
@@ -55,5 +55,9 @@
 
 .container .ant-layout .ant-layout-content {
 	padding: 0;
+}
+
+.antd-Table-table > tbody > tr > td, .antd-Table-table > tbody > tr > th {
+	vertical-align: middle;
 }
 

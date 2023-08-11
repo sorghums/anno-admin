@@ -13,6 +13,7 @@ import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
 
 import { AnAmis } from "@/components/Amis/AnAmis";
+import {apiGetGlobalConfig} from "@/api/modules/config";
 
 const injectAmisItem = (item: any) => {
 	console.trace(item);
@@ -20,7 +21,6 @@ const injectAmisItem = (item: any) => {
 const App = (props: any) => {
 	const { language, assemblySize, themeConfig, setLanguage } = props;
 	const [i18nLocale, setI18nLocale] = useState(zhCN);
-
 	// 注册 amis 组件
 	injectAmisItem(AnAmis);
 	// 全局使用主题
