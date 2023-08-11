@@ -4,6 +4,7 @@ import "amis/lib/themes/antd.css";
 import "amis/lib/helper.css";
 import "amis/sdk/iconfont.css";
 import "./index.less";
+import "/src/styles/amisCommon.less";
 import axios from "axios";
 import copy from "copy-to-clipboard";
 

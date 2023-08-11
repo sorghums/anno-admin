@@ -34,7 +34,7 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
             tableFieldName = "avatar",
             dataType = AnnoDataType.IMAGE,
             edit = @AnnoEdit(placeHolder = "请上传用户头像"),
-            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE))
+            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE,width = 50,height = 50))
     private String avatar;
     /**
      * 手机号
