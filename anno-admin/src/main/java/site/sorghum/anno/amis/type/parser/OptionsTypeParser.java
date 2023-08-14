@@ -1,6 +1,7 @@
 package site.sorghum.anno.amis.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -63,10 +64,10 @@ public class OptionsTypeParser implements TypeParser {
             for (Object data : dataList) {
                 mapping.put(
                     ReflectUtil.getFieldValue(data, optionAnnoClass.getIdKey()),
-                    ReflectUtil.getFieldValue(data, optionAnnoClass.getValueKey())
+                    ReflectUtil.getFieldValue(data, optionAnnoClass.getLabelKey())
                 );
             }
-        } else {
+        } else if (CollUtil.isNotEmpty(anField.getOptionDatas())){
             for (AnField.OptionData optionData : anField.getOptionDatas()) {
                 mapping.put(optionData.getValue(), optionData.getLabel());
             }
@@ -99,11 +100,11 @@ public class OptionsTypeParser implements TypeParser {
             );
             for (Object data : dataList) {
                 Options.Option optionItem = new Options.Option();
-                optionItem.setLabel(StrUtil.toString(ReflectUtil.getFieldValue(data, optionAnnoClass.getValueKey())));
+                optionItem.setLabel(StrUtil.toString(ReflectUtil.getFieldValue(data, optionAnnoClass.getLabelKey())));
                 optionItem.setValue(StrUtil.toString(ReflectUtil.getFieldValue(data, optionAnnoClass.getIdKey())));
                 optionItemList.add(optionItem);
             }
-        } else {
+        } else if (CollUtil.isNotEmpty(anField.getOptionDatas())){
             for (AnField.OptionData optionData : anField.getOptionDatas()) {
                 Options.Option optionItem = new Options.Option();
                 optionItem.setLabel(optionData.getLabel());

@@ -6,10 +6,8 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 import java.io.Serializable;
@@ -44,14 +42,6 @@ public class SysPermission extends BaseMetaModel implements Serializable {
     /**
      * 父权限id
      */
-    @AnnoField(title = "父权限", tableFieldName = "parent_id",
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(sql = "select id as value,name as label from sys_permission where del_flag = 0 order by id desc"))
+    @AnnoField(title = "父权限", tableFieldName = "parent_id",search = @AnnoSearch())
     private String parentId;
-
-    @AnnoButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
-    private Object jump2BaiduButton;
-
-    @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
-    private Object jsCmd;
 }

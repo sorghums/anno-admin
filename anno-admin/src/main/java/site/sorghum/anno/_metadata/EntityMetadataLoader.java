@@ -1,7 +1,6 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
@@ -126,6 +125,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setSearchEnable(anno.search().enable());
             anField.setSearchNotNull(anno.search().notNull());
             anField.setSearchPlaceHolder(anno.search().placeHolder());
+            anField.setSearchSize(anno.search().size());
 
             anField.setAddEnable(anno.edit().addEnable());
             anField.setEditEnable(anno.edit().editEnable());
@@ -137,7 +137,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setOptionTypeSql(anno.optionType().sql());
             AnnoOptionType.OptionAnnoClass optionAnnoClass = anno.optionType().optionAnno();
             anField.setOptionAnnoClass(
-                new AnField.OptionAnnoClass(optionAnnoClass.valueKey(),optionAnnoClass.idKey(),optionAnnoClass.annoClass())
+                new AnField.OptionAnnoClass(optionAnnoClass.labelKey(),optionAnnoClass.idKey(),optionAnnoClass.annoClass())
             );
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
             List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
@@ -155,13 +155,15 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // 选择类型-树
             anField.setTreeTypeSql(anno.treeType().sql());
+            AnnoTreeType.TreeAnnoClass treeAnnoClass = anno.treeType().treeAnno();
+            anField.setTreeOptionAnnoClass(
+                new AnField.TreeAnnoClass(treeAnnoClass.annoClass(),treeAnnoClass.idKey(),treeAnnoClass.labelKey(),treeAnnoClass.pidKey())
+            );
             AnnoTreeType.TreeData[] treeData = anno.treeType().value();
-            if (ArrayUtil.isNotEmpty(treeData)) {
-                List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
-                    .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
-                    .collect(Collectors.toList());
-                anField.setTreeDatas(treeDataList);
-            }
+            List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
+                .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
+                .collect(Collectors.toList());
+            anField.setTreeDatas(treeDataList);
 
             // pk
             PrimaryKey primaryKey = AnnotationUtil.getAnnotation(field, PrimaryKey.class);

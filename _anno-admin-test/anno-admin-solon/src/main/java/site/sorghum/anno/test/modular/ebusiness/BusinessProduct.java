@@ -103,4 +103,16 @@ public class BusinessProduct extends BaseMetaModel {
 
     @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
     private Object jsCmd;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "虚拟商品多对多", m2mJoinButton = @AnnoButton.M2MJoinButton(
+        joinAnnoMainClazz = BusinessVirtualTable.class,
+        mediumTableClass = BusinessVirtualProduct.class,
+        mediumOtherField = "product_id",
+        mediumThisField = "product_id",
+        joinThisClazzField = "id"
+    ))
+    private Object rvButton;
 }

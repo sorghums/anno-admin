@@ -6,12 +6,15 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.pre.plugin.ao.SysRole;
+import site.sorghum.anno.pre.plugin.ao.SysUserRole;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 /**
@@ -24,7 +27,6 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品虚拟表",
     virtualTable = true,
-    annoLeftTree = @AnnoLeftTree(catKey = "productCatId", treeClass = BusinessProductCat.class),
     annoProxy = @AnnoProxy(value = BusinessVirtualTableProxy.class),
     annoTableButton = {
         @AnnoTableButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}"),
@@ -65,7 +67,7 @@ public class BusinessVirtualTable extends BaseMetaModel {
         title = "商品分类",
         dataType = AnnoDataType.TREE,
         virtualColumn = true,
-        treeType = @AnnoTreeType(sql = "SELECT id,cat_name as label,parent_id as pid FROM business_product_cat where del_flag = 0"),
+        treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = BusinessProductCat.class, labelKey = "catName", pidKey = "parentId")),
         search = @AnnoSearch,
         edit = @AnnoEdit)
     String productCatId;
@@ -95,4 +97,28 @@ public class BusinessVirtualTable extends BaseMetaModel {
         virtualColumn = true,
         edit = @AnnoEdit)
     Long productFreight;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "分类商品多对多", m2mJoinButton = @AnnoButton.M2MJoinButton(
+        joinAnnoMainClazz = BusinessProductCat.class,
+        mediumTableClass = BusinessCatProduct.class,
+        mediumOtherField = "cat_id",
+        mediumThisField = "product_id",
+        joinThisClazzField = "id"
+    ))
+    private Object roleButton;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "虚拟商品多对多", m2mJoinButton = @AnnoButton.M2MJoinButton(
+        joinAnnoMainClazz = BusinessProduct.class,
+        mediumTableClass = BusinessVirtualProduct.class,
+        mediumOtherField = "product_id",
+        mediumThisField = "product_id",
+        joinThisClazzField = "id"
+    ))
+    private Object rvButton;
 }

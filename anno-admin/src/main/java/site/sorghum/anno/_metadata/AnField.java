@@ -99,6 +99,13 @@ public class AnField {
     private String searchPlaceHolder;
 
     /**
+     * 搜索框 大小
+     *
+     * @see AnnoSearch#size()
+     */
+    private String searchSize;
+
+    /**
      * 编辑 是否开启
      *
      * @see AnnoEdit#editEnable()
@@ -153,7 +160,7 @@ public class AnField {
         /**
          * 显示的标签 key
          */
-        String valueKey;
+        String labelKey;
 
         /**
          * 显示的值 key
@@ -242,6 +249,12 @@ public class AnField {
      */
     private List<TreeData> treeDatas;
 
+    /**
+     * 选择类型-树形
+     * @see AnnoTreeType#treeAnno();
+     */
+    private TreeAnnoClass treeOptionAnnoClass;
+
     @Data
     @AllArgsConstructor
     public static class TreeData {
@@ -276,4 +289,29 @@ public class AnField {
     }
 
 
+    @Data
+    @AllArgsConstructor
+    public static class TreeAnnoClass {
+
+        /**
+         * 并且会自动解析类信息
+         * 且走代理操作
+         */
+        Class<?> annoClass;
+
+        /**
+         * 显示的值 key
+         */
+        String idKey;
+
+        /**
+         * 显示的标签 key
+         */
+        String labelKey;
+
+        /**
+         * 父主键 key
+         */
+        String pidKey;
+    }
 }

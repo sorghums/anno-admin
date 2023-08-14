@@ -67,6 +67,6 @@ public @interface AnnoOptionType {
         /**
          * 显示的标签 key
          */
-        String valueKey() default "name";
+        String labelKey() default "name";
     }
 }

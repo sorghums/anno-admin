@@ -63,7 +63,7 @@ public class CrudFilterProcessor implements BaseProcessor {
                 formItem.setName(field.getFieldName());
                 formItem.setLabel(field.getTitle());
                 formItem.setPlaceholder(field.getSearchPlaceHolder());
-                formItem.setSize("sm");
+                formItem.setSize(field.getSearchSize());
                 formItem = AnnoDataType.editorExtraInfo(formItem, field);
                 amisColumns.add(formItem);
             }

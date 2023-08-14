@@ -32,7 +32,7 @@ public class BaseOrgMetaModel extends BaseMetaModel implements Serializable {
             dataType = AnnoDataType.OPTIONS,
             search = @AnnoSearch(),
             optionType = @AnnoOptionType(
-                optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = SysOrg.class,valueKey = "orgName")
+                optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = SysOrg.class,labelKey = "orgName")
             ))
     private String orgId;
 }

@@ -28,6 +28,11 @@ public @interface AnnoTreeType {
      */
     TreeData[] value() default {};
 
+    /**
+     * annoMain注释的类，比如 SysPermission.class
+     */
+    TreeAnnoClass treeAnno() default @TreeAnnoClass(annoClass = Object.class);
+
     @interface TreeData {
         /**
          * 主键
@@ -47,5 +52,29 @@ public @interface AnnoTreeType {
          * 父主键
          */
         String pid();
+    }
+
+    @interface TreeAnnoClass {
+
+        /**
+         * 并且会自动解析类信息
+         * 且走代理操作
+         */
+        Class<?> annoClass();
+
+        /**
+         * 显示的值 key
+         */
+        String idKey() default "id";
+
+        /**
+         * 显示的标签 key
+         */
+        String labelKey() default "name";
+
+        /**
+         * 父主键 key
+         */
+        String pidKey() default "pid";
     }
 }
