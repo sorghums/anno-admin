@@ -32,7 +32,7 @@ public class CrudDeleteBtnProcessor implements BaseProcessor {
         delete.setConfirmText("您确认要删除?");
         delete.setApi(new Api() {{
             setMethod("post");
-            setUrl("/system/anno/${clazz}/removeById");
+            setUrl("/amis/system/anno/${clazz}/removeById");
             setMessages(
                     new ApiMessage() {{
                         setSuccess("删除成功");

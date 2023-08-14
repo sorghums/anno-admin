@@ -16,7 +16,7 @@ import { message, Modal } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 // amis 环境配置
-const env: any = {
+export const amisEnv: any = {
 	// 下面三个接口必须实现
 	fetcher: ({
 		url, // 接口地址
@@ -36,6 +36,9 @@ const env: any = {
 		}
 
 		config.headers = headers || {};
+
+		// 手动设置token请求头
+		config.headers["anno-token"] =window.localStorage.getItem("anno-token") || "";
 
 		if (method !== "post" && method !== "put" && method !== "patch") {
 			if (data) {
@@ -67,7 +70,7 @@ const env: any = {
 			message.error(msg);
 			return;
 		} else {
-			message.info(msg);
+			message.error(msg);
 			return;
 		}
 	},
@@ -127,7 +130,7 @@ export class AMISComponent extends React.Component<any, any> {
 			{
 				data: this.state.properties
 			},
-			env
+			amisEnv
 		);
 	}
 }

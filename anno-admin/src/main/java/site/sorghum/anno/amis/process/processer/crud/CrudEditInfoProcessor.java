@@ -87,7 +87,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                             setSize("lg");
                             setApi(new Api() {{
                                 setMethod("post");
-                                setUrl("/system/anno/${clazz}/updateById");
+                                setUrl("/amis/system/anno/${clazz}/updateById");
                             }});
                             setBody(formItems);
                         }}

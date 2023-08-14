@@ -24,6 +24,9 @@ const LoginForm = (props: any) => {
 			setLoading(true);
 			const { data } = await loginApi(loginForm);
 			setToken(data);
+			const token = data || "";
+			// @ts-ignore
+			window.localStorage.setItem("anno-token",token);
 			setTabsList([]);
 			message.success("登录成功！");
 			navigate(HOME_URL);

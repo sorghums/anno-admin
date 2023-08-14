@@ -27,36 +27,37 @@ import java.time.format.DateTimeParseException;
 public class FailureFilter implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        log.info("请求路径：{}", ctx.path());
         try {
             chain.doFilter(ctx);
             // 请求完成后自动清除上下文
             AnnoContextUtil.clearContext();
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
-                ctx.status(401);
+                setHttpStatus(ctx,() -> ctx.status(401));
             } else {
-                ctx.status(500);
+                setHttpStatus(ctx,() -> ctx.status(500));
                 ctx.render(AnnoResult.failure(e.getCode(), e.getMessage()));
             }
         } catch (BizException e) {
-            ctx.status(500);
+            setHttpStatus(ctx,() -> ctx.status(500));
 
             log.error(e.getMessage(), e);
             ctx.render(AnnoResult.failure(e.getMessage()));
         } catch (DateTimeParseException e) {
             log.error(e.getMessage(), e);
 
-            ctx.status(500);
+            setHttpStatus(ctx,() -> ctx.status(500));
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage(), e);
 
-            ctx.status(400);
+            setHttpStatus(ctx,() -> ctx.status(400));
             ctx.render(AnnoResult.failure("非法参数"));
         } catch (SaTokenException e) {
             log.error(e.getMessage(), e);
 
-            ctx.status(401);
+            setHttpStatus(ctx,() -> ctx.status(401));
             if (e instanceof NotPermissionException) {
                 ctx.render(AnnoResult.failure("权限不足"));
                 return;
@@ -65,8 +66,14 @@ public class FailureFilter implements Filter {
         } catch (Exception e) {
             log.error("未知异常 ==>", e);
 
-            ctx.status(500);
+            setHttpStatus(ctx,() -> ctx.status(500));
             ctx.render(AnnoResult.failure("系统异常，请联系管理员"));
         }
+    }
+
+    private void setHttpStatus(Context ctx,Runnable runnable) {
+        if (!ctx.path().contains("/amis/")){
+            runnable.run();
+        };
     }
 }

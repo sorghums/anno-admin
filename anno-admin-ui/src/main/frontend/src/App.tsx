@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { getBrowserLang } from "@/utils/util";
-import { ConfigProvider } from "antd";
+import {ConfigProvider, message} from "antd";
 import { connect } from "react-redux";
 import { setLanguage } from "@/redux/modules/global/action";
-import { BrowserRouter, HashRouter } from "react-router-dom";
-import AuthRouter from "@/routers/utils/authRouter";
+import { HashRouter } from "react-router-dom";
 import Router from "@/routers/index";
 import useTheme from "@/hooks/useTheme";
 import zhCN from "antd/lib/locale/zh_CN";
@@ -13,11 +12,19 @@ import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
 
 import { AnAmis } from "@/components/Amis/AnAmis";
-import {apiGetGlobalConfig} from "@/api/modules/config";
 
 const injectAmisItem = (item: any) => {
 	console.trace(item);
 };
+
+const initAntdMessage  = () => {
+	console.log("initAntdMessage");
+	message.config({
+		top: 100,
+		duration: 2,
+		maxCount: 3,
+	});
+}
 const App = (props: any) => {
 	const { language, assemblySize, themeConfig, setLanguage } = props;
 	const [i18nLocale, setI18nLocale] = useState(zhCN);
@@ -25,7 +32,8 @@ const App = (props: any) => {
 	injectAmisItem(AnAmis);
 	// 全局使用主题
 	useTheme(themeConfig);
-
+	// 初始化 antd message
+	initAntdMessage();
 	// 设置 antd 语言国际化
 	const setAntdLanguage = () => {
 		// 如果 redux 中有默认语言就设置成 redux 的默认语言，没有默认语言就设置成浏览器默认语言

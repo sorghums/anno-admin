@@ -35,6 +35,11 @@ public class AnEntity {
     private String tableName;
 
     /**
+     * 是否需要组织过滤
+     */
+    boolean orgFilter;
+
+    /**
      * 是否虚拟表
      *
      * @see AnnoMain#virtualTable()

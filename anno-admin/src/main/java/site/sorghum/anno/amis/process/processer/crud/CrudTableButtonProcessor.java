@@ -73,7 +73,7 @@ public class CrudTableButtonProcessor implements BaseProcessor {
                 action.setApi(
                         new Api() {{
                             setMethod("post");
-                            setUrl("/system/anno/runJavaCmd");
+                            setUrl("/amis/system/anno/runJavaCmd");
                             setData(new HashMap<>() {{
                                 put("clazz", CryptoUtil.encrypt(anButton.getJavaCmdBeanClass().getName()));
                                 put("method", CryptoUtil.encrypt(anButton.getJavaCmdMethodName()));

@@ -6,6 +6,7 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
@@ -94,4 +95,12 @@ public class BusinessProduct extends BaseMetaModel {
             tableFieldName = "product_freight",
             edit = @AnnoEdit)
     Long productFreight;
+
+
+    @AnnoButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
+    private Object jump2BaiduButton;
+
+
+    @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
+    private Object jsCmd;
 }

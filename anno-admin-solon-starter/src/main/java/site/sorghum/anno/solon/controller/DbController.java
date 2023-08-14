@@ -21,7 +21,7 @@ import java.util.Map;
  * @since 2023/05/20
  */
 @Controller
-@Mapping("/system/anno")
+@Mapping("/amis/system/anno")
 @Slf4j
 @SuppressWarnings("unchecked")
 public class DbController extends BaseDbController {

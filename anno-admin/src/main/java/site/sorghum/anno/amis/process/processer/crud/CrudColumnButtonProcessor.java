@@ -123,7 +123,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
             action.setApi(
                 new Api() {{
                   setMethod("post");
-                  setUrl("/system/anno/runJavaCmd");
+                  setUrl("/amis/system/anno/runJavaCmd");
                   setData(new HashMap<>() {{
                       put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
                       put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));

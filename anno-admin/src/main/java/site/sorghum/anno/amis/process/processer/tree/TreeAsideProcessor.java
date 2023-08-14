@@ -44,7 +44,7 @@ public class TreeAsideProcessor implements BaseProcessor {
         tree.setShowOutline(true);
         tree.setSource(new Api() {{
             setMethod("get");
-            setUrl("/system/anno/${treeClazz}/annoTrees");
+            setUrl("/amis/system/anno/${treeClazz}/annoTrees");
         }});
         Map<String, Object> event = new HashMap<>();
         event.put("change", new HashMap<String, Object>() {{

@@ -82,7 +82,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                         setWrapWithPanel(false);
                         setApi(new Api() {{
                             setMethod("post");
-                            setUrl("/system/anno/${clazz}/save");
+                            setUrl("/amis/system/anno/${clazz}/save");
                         }});
                         setId("simple-add-form");
                         setSize("md");

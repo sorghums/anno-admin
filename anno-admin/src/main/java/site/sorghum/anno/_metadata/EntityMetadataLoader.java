@@ -47,6 +47,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         } else {
             entity.setTableName(table.value());
         }
+        entity.setOrgFilter(annoMain.orgFilter());
         entity.setVirtualTable(annoMain.virtualTable());
         if (entity.isVirtualTable()){
             // 虚拟表不需要维护

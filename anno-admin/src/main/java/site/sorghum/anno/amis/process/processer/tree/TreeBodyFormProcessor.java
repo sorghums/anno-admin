@@ -66,7 +66,7 @@ public class TreeBodyFormProcessor implements BaseProcessor {
                 ((TreeSelect) formItem).setSource(
                     new Api() {{
                         setMethod("get");
-                        setUrl("/system/anno/${treeClazz}/annoTrees");
+                        setUrl("/amis/system/anno/${treeClazz}/annoTrees");
                     }}
                 );
             }

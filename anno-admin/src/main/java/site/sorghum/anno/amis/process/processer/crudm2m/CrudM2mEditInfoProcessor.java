@@ -84,7 +84,7 @@ public class CrudM2mEditInfoProcessor implements BaseProcessor {
                             setWrapWithPanel(false);
                             setApi(new Api() {{
                                 setMethod("post");
-                                setUrl("/system/anno/${clazz}/updateById");
+                                setUrl("/amis/system/anno/${clazz}/updateById");
                             }});
                             setBody(formItems);
                         }}
