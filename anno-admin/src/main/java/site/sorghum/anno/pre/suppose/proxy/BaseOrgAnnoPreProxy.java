@@ -19,6 +19,7 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
 import site.sorghum.anno.pre.plugin.ao.SysUserRole;
+import site.sorghum.anno.pre.plugin.manager.AnnoOrgManager;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 import site.sorghum.anno.pre.suppose.model.BaseOrgMetaModel;
 
@@ -39,31 +40,28 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     BaseAnnoPreProxy baseAnnoPreProxy;
 
     @Inject
-    DbServiceWithProxy dbServiceWithProxy;
-
-    @Inject
-    MetadataManager metadataManager;
+    AnnoOrgManager annoOrgManager;
 
     @Override
     public void beforeAdd(TableParam<BaseOrgMetaModel> tableParam, BaseOrgMetaModel data) {
-        if (!isIgnoreFilter(tableParam.getClazz())) {
-            if (!getLoginOrg().equals(data.getOrgId())) {
+        if (!annoOrgManager.isIgnoreFilter(tableParam.getClazz())) {
+            if (!annoOrgManager.getLoginOrg().equals(data.getOrgId())) {
                 throw new BizException("非法操作, 无法为其他组织添加数据。");
             }
         }
         baseAnnoPreProxy.beforeAdd(null, data);
         // 如果没有设置组织ID则设置当前登录组织ID
         if (data.getOrgId() == null) {
-            data.setOrgId(getLoginOrg());
+            data.setOrgId(annoOrgManager.getLoginOrg());
         }
     }
 
     @Override
     public void beforeFetch(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-        if (isIgnoreFilter(tableParam.getClazz())){
+        if (annoOrgManager.isIgnoreFilter(tableParam.getClazz())){
             return;
         }
-        String orgId = getLoginOrg();
+        String orgId = annoOrgManager.getLoginOrg();
         dbConditions.add(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "org_id", orgId));
     }
 
@@ -95,39 +93,6 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     @Override
     public void afterFetch(AnnoPage<BaseOrgMetaModel> page) {
 
-    }
-
-    private String getLoginOrg() {
-        try {
-            SaSession session = StpUtil.getSession(false);
-            SysUser sysUser = session.get("user", new SysUser() {{
-                setName("system");
-                setOrgId("-1");
-            }});
-            if (sysUser.getOrgId() == null || sysUser.getOrgId().equals("-1")) {
-                throw new BizException("获取用户组织失败,请先绑定组织或者点击右上角清除缓存。");
-            }
-            return sysUser.getOrgId();
-        } catch (Exception e) {
-            throw new BizException(e.getMessage());
-        }
-    }
-
-    private boolean isIgnoreFilter(Class<?> clazz) {
-        try {
-            String loginId = (String) StpUtil.getLoginId();
-            TableParam<SysUserRole> tableParam = metadataManager.getTableParam(SysUserRole.class);
-            List<SysUserRole> list = dbServiceWithProxy.list(tableParam, CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "user_id", loginId)));
-            boolean isAdmin = list.stream().anyMatch(
-                sysUserRole -> sysUserRole.getRoleId().equals("admin")
-            );
-            AnEntity entity = metadataManager.getEntity(clazz);
-            boolean orgFilter = entity.isOrgFilter();
-            // admin 或者 不需要过滤 则不过滤
-            return orgFilter || isAdmin;
-        } catch (Exception e) {
-            throw new BizException(e.getMessage());
-        }
     }
 
 }

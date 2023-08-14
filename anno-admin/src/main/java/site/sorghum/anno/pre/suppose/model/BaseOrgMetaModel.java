@@ -9,6 +9,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.pre.plugin.ao.SysOrg;
 import site.sorghum.anno.pre.suppose.proxy.BaseAnnoPreProxy;
 import site.sorghum.anno.pre.suppose.proxy.BaseOrgAnnoPreProxy;
 
@@ -30,6 +31,8 @@ public class BaseOrgMetaModel extends BaseMetaModel implements Serializable {
             tableFieldName = "org_id", edit = @AnnoEdit(notNull = true),
             dataType = AnnoDataType.OPTIONS,
             search = @AnnoSearch(),
-            optionType = @AnnoOptionType(sql = "select id as  value, org_name as label from sys_org where del_flag = 0 order by id desc"))
+            optionType = @AnnoOptionType(
+                optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = SysOrg.class,valueKey = "orgName")
+            ))
     private String orgId;
 }

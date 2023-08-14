@@ -174,10 +174,6 @@ public class TreeView extends Page {
                                                                     put("api", new Api() {{
                                                                         setUrl("/amis/system/anno/${clazz}/removeById?id=${id}");
                                                                         setMethod("post");
-                                                                        setMessages(new ApiMessage() {{
-                                                                            setSuccess("删除成功");
-                                                                            setFailed("删除失败");
-                                                                        }});
                                                                     }});
                                                                 }});
                                                                 put("outputVar", "responseResult");

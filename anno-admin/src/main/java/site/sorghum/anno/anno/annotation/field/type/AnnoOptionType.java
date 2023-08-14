@@ -28,6 +28,14 @@ public @interface AnnoOptionType {
      */
     OptionData[] value() default {};
 
+    /**
+     * annoMain注释的类，比如 SysOrg.class
+     * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
+     * 并且会自动走SysOrg的代理操作
+     */
+    OptionAnnoClass optionAnno() default @OptionAnnoClass(annoClass = Object.class);
+
+
     @interface OptionData {
         /**
          * 显示的标签
@@ -38,5 +46,27 @@ public @interface AnnoOptionType {
          * 显示的值
          */
         String value();
+    }
+
+
+    @interface OptionAnnoClass {
+
+        /**
+         * annoMain注释的类，比如 SysOrg.class
+         * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
+         * 并且会自动走SysOrg的代理操作
+         */
+        Class<?> annoClass();
+
+        /**
+         * 显示的值 key
+         */
+        String idKey() default "id";
+
+
+        /**
+         * 显示的标签 key
+         */
+        String valueKey() default "name";
     }
 }

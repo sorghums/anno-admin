@@ -135,13 +135,16 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setDataType(anno.dataType());
 
             anField.setOptionTypeSql(anno.optionType().sql());
+            AnnoOptionType.OptionAnnoClass optionAnnoClass = anno.optionType().optionAnno();
+            anField.setOptionAnnoClass(
+                new AnField.OptionAnnoClass(optionAnnoClass.valueKey(),optionAnnoClass.idKey(),optionAnnoClass.annoClass())
+            );
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
-            if (ArrayUtil.isNotEmpty(optionData)) {
-                List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
-                    .map(e -> new AnField.OptionData(e.label(), e.value()))
-                    .collect(Collectors.toList());
-                anField.setOptionDatas(optionDataList);
-            }
+            List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
+                .map(e -> new AnField.OptionData(e.label(), e.value()))
+                .collect(Collectors.toList());
+            anField.setOptionDatas(optionDataList);
+
 
             // 图像
             anField.setImageThumbRatio(anno.imageType().thumbRatio());

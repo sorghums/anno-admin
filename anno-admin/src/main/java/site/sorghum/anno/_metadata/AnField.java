@@ -134,12 +134,39 @@ public class AnField {
     private AnnoDataType dataType;
 
     /**
-     * 数据类型
+     * 查询Sql
      *
      * @see AnnoOptionType#sql()
      */
     private String optionTypeSql;
 
+    /**
+     * annoMain的类自动解析Sql
+     *
+     * @see AnnoOptionType#optionAnno()
+     */
+    private OptionAnnoClass optionAnnoClass;
+
+    @Data
+    @AllArgsConstructor
+    public static class OptionAnnoClass {
+        /**
+         * 显示的标签 key
+         */
+        String valueKey;
+
+        /**
+         * 显示的值 key
+         */
+        String idKey;
+
+        /**
+         * annoMain注释的类，比如 SysOrg.class
+         * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
+         * 并且会自动走SysOrg的代理操作
+         */
+        Class<?> annoClass;
+    }
     /**
      * 选择数据
      *

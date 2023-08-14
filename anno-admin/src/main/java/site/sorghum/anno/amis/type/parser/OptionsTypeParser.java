@@ -2,7 +2,9 @@ package site.sorghum.anno.amis.type.parser;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
 import org.noear.wood.DbContext;
@@ -11,8 +13,11 @@ import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.type.TypeParser;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,16 +36,35 @@ public class OptionsTypeParser implements TypeParser {
     @Db
     DbContext dbContext;
 
+    @Inject
+    DbServiceWithProxy dbServiceWithProxy;
+
+    @Inject
+    MetadataManager metadataManager;
+
     @SneakyThrows
     @Override
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         Mapping mappingItem = new Mapping();
-        HashMap<String, Object> mapping = new HashMap<>();
+        HashMap<Object, Object> mapping = new HashMap<>();
         String optionTypeSql = anField.getOptionTypeSql();
+        AnField.OptionAnnoClass optionAnnoClass = anField.getOptionAnnoClass();
         if (StrUtil.isNotBlank(optionTypeSql)) {
             List<Map<String, Object>> mapList = dbContext.sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 mapping.put(map.get("value").toString(), map.get("label"));
+            }
+        } else if(!optionAnnoClass.getAnnoClass().equals(Object.class)){
+            AnEntity anEntity = metadataManager.getEntity(optionAnnoClass.getAnnoClass());
+            List<?> dataList = dbServiceWithProxy.list(
+                metadataManager.getTableParam(anEntity.getClazz()),
+                new ArrayList<>()
+            );
+            for (Object data : dataList) {
+                mapping.put(
+                    ReflectUtil.getFieldValue(data, optionAnnoClass.getIdKey()),
+                    ReflectUtil.getFieldValue(data, optionAnnoClass.getValueKey())
+                );
             }
         } else {
             for (AnField.OptionData optionData : anField.getOptionDatas()) {
@@ -58,12 +82,25 @@ public class OptionsTypeParser implements TypeParser {
         BeanUtil.copyProperties(formItem, options);
         List<Options.Option> optionItemList = new ArrayList<>();
         String optionTypeSql = anField.getOptionTypeSql();
+        AnField.OptionAnnoClass optionAnnoClass = anField.getOptionAnnoClass();
         if (StrUtil.isNotBlank(optionTypeSql)) {
             List<Map<String, Object>> mapList = dbContext.sql(optionTypeSql).getDataList().getMapList();
             for (Map<String, Object> map : mapList) {
                 Options.Option optionItem = new Options.Option();
                 optionItem.setLabel(MapUtil.getStr(map, "label"));
                 optionItem.setValue(map.get("value"));
+                optionItemList.add(optionItem);
+            }
+        } else if(!optionAnnoClass.getAnnoClass().equals(Object.class)){
+            AnEntity anEntity = metadataManager.getEntity(optionAnnoClass.getAnnoClass());
+            List<?> dataList = dbServiceWithProxy.list(
+                metadataManager.getTableParam(anEntity.getClazz()),
+                new ArrayList<>()
+            );
+            for (Object data : dataList) {
+                Options.Option optionItem = new Options.Option();
+                optionItem.setLabel(StrUtil.toString(ReflectUtil.getFieldValue(data, optionAnnoClass.getValueKey())));
+                optionItem.setValue(StrUtil.toString(ReflectUtil.getFieldValue(data, optionAnnoClass.getIdKey())));
                 optionItemList.add(optionItem);
             }
         } else {
