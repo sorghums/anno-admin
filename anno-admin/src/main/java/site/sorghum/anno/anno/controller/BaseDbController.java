@@ -113,7 +113,7 @@ public class BaseDbController {
      * <p>
      * id id
      *
-     * @return {@link Result}
+     * @return {@link AnnoResult}
      */
     public AnnoResult<String> removeById(String clazz, String id) {
         AnEntity anEntity = metadataManager.getEntity(clazz);

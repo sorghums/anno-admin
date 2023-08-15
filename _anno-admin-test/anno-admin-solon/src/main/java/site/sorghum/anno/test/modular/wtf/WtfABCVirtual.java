@@ -1,6 +1,7 @@
 package site.sorghum.anno.test.modular.wtf;
 
 import lombok.Data;
+import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.anno.annotation.clazz.AnnoJoinTable;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
@@ -22,9 +23,24 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
     annoJoinTable = @AnnoJoinTable(mainTable = "wtf_c", mainAlias = "t1", joinTables = {
         @AnnoJoinTable.JoinTable(table = "wtf_b", alias = "t2", joinCondition = "t1.wtf_b = t2.id and t2.del_flag = 0", joinType = 1),
         @AnnoJoinTable.JoinTable(table = "wtf_a", alias = "t3", joinCondition = "t2.wtf_a = t3.id and t3.del_flag = 0", joinType = 1)
-    }), canRemove = false)
+    }))
+/*
+ * 上面的其实就是：
+ * SELECT `name`, `age`, t2.attr, `location`, t1.del_flag
+ * FROM `wtf_c` as t1
+ *          LEFT JOIN `wtf_b` as t2 ON t1.wtf_b = t2.id and t2.del_flag = 0
+ *          LEFT JOIN `wtf_a` as t3 ON t2.wtf_a = t3.id and t3.del_flag = 0
+ * WHERE t1.del_flag = ?
+ * LIMIT ?,?
+ */
 @AnnoRemove(removeType = 1,removeField = "t1.del_flag")
 public class WtfABCVirtual{
+    @AnnoField(
+        title = "主键",
+        tableFieldName = "t1.id",
+        search = @AnnoSearch)
+    @PrimaryKey
+    String id;
 
     @AnnoField(
         title = "名称",
@@ -49,16 +65,5 @@ public class WtfABCVirtual{
         tableFieldName = "location",
         search = @AnnoSearch)
     String location;
-
-    /**
-     * 状态 1 正常 0 封禁
-     */
-    @AnnoField(title = "删除标识", tableFieldName = "t1.del_flag",
-        dataType = AnnoDataType.OPTIONS,
-        optionType = @AnnoOptionType(value = {
-            @AnnoOptionType.OptionData(label = "已删除", value = "1"),
-            @AnnoOptionType.OptionData(label = "正常", value = "0")
-        }),show = false, fieldSize = 1, defaultValue = "DEFAULT 0")
-    private Integer delFlag;
 
 }

@@ -2,9 +2,9 @@ package site.sorghum.anno.pre.suppose.proxy;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.noear.wood.IPage;
-import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
@@ -14,6 +14,7 @@ import site.sorghum.anno.db.service.impl.DbServiceWood;
 
 import java.util.List;
 
+@Getter
 @Named
 public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
 
@@ -56,7 +57,6 @@ public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
 
     @Override
     public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-        throw new BizException("连表信息不允许删除");
     }
 
     @Override

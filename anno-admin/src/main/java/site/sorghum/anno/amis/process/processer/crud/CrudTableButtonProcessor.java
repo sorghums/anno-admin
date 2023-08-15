@@ -47,7 +47,6 @@ public class CrudTableButtonProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-        // 判断是否可以编辑
         AnEntity anEntity = metadataManager.getEntity(clazz);
         Crud crudBody = crudView.getCrudBody();
         Form filter = crudBody.getFilter();

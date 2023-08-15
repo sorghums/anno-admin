@@ -44,7 +44,7 @@ public @interface AnnoJoinTable {
         /**
          * 1 left join 2 right join 3 inner join
          */
-        int joinType() default 0;
+        int joinType() default 1;
     }
 
     /**
