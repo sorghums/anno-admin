@@ -38,12 +38,12 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 public class WtfABCVirtual {
     @AnnoField(
         title = "C表主键[虚拟表主键]",
-        tableFieldName = "t1.id as t1id",show = false,
+        tableFieldName = "t1.id as id",show = false,
         search = @AnnoSearch,
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = WtfC.class,labelKey = "location")))
     @PrimaryKey
-    String t1id;
+    String id;
 
     @AnnoField(
         title = "B表主键",

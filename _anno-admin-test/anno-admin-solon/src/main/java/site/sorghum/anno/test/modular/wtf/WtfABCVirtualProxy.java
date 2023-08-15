@@ -71,7 +71,7 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
         ArrayList<DbCondition> bConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getT2id()));
         getDbServiceWood().update(wtfBParam,bConditions, new WtfB(data.attr,null,null));
 
-        ArrayList<DbCondition> cConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getT1id()));
+        ArrayList<DbCondition> cConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getId()));
         getDbServiceWood().update(wtfCParam,cConditions, new WtfC(data.location,null));
 
     }
