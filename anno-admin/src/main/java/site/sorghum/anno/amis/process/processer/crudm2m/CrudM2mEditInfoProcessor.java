@@ -10,13 +10,13 @@ import site.sorghum.amis.entity.display.DialogButton;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.anno.amis.model.CrudM2mView;
-import site.sorghum.anno.amis.process.BaseProcessor;
-import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.amis.model.CrudM2mView;
+import site.sorghum.anno.amis.process.BaseProcessor;
+import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 
 import java.util.ArrayList;
@@ -57,22 +57,17 @@ public class CrudM2mEditInfoProcessor implements BaseProcessor {
             dialogButton.setLabel("编辑");
             ArrayList<AmisBase> formItems = new ArrayList<>() {{
                 for (AnField field : fields) {
-                    if (field.isPrimaryKey()) {
-                        add(new FormItem() {{
-                            setName(field.getFieldName());
-                            setType("hidden");
-                        }});
-                        continue;
+                    FormItem formItem = new FormItem();
+                    formItem.setName(field.getFieldName());
+                    formItem.setLabel(field.getTitle());
+                    formItem.setRequired(field.isEditNotNull());
+                    formItem.setPlaceholder(field.getEditPlaceHolder());
+                    formItem = AnnoDataType.editorExtraInfo(formItem, field);
+                    if (!field.isEditEnable()) {
+                        formItem.setHidden(true);
                     }
-                    if (field.isEditEnable()) {
-                        FormItem formItem = new FormItem();
-                        formItem.setName(field.getFieldName());
-                        formItem.setLabel(field.getTitle());
-                        formItem.setRequired(field.isEditNotNull());
-                        formItem.setPlaceholder(field.getEditPlaceHolder());
-                        formItem = AnnoDataType.editorExtraInfo(formItem, field);
-                        add(formItem);
-                    }
+                    add(formItem);
+
                 }
             }};
             dialogButton.setDialog(

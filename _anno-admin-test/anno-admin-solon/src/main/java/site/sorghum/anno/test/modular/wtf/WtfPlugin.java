@@ -3,9 +3,6 @@ package site.sorghum.anno.test.modular.wtf;
 import org.noear.solon.annotation.Component;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.test.modular.ebusiness.BusinessProduct;
-import site.sorghum.anno.test.modular.ebusiness.BusinessProductCat;
-import site.sorghum.anno.test.modular.ebusiness.BusinessVirtualTable;
 
 import java.util.ArrayList;
 import java.util.List;

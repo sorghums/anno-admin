@@ -1,7 +1,7 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
-import site.sorghum.anno.anno.proxy.AnnoPreDefaultProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
+import site.sorghum.anno.anno.proxy.AnnoPreDefaultProxy;
 
 import java.lang.annotation.*;
 

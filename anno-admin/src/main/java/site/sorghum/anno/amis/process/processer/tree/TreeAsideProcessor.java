@@ -6,11 +6,11 @@ import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.InputTree;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.model.TreeView;
 import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.HashMap;
 import java.util.Map;

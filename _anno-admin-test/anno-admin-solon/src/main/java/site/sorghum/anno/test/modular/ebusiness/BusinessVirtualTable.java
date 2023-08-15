@@ -2,7 +2,6 @@ package site.sorghum.anno.test.modular.ebusiness;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
@@ -13,8 +12,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.plugin.ao.SysRole;
-import site.sorghum.anno.pre.plugin.ao.SysUserRole;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 /**

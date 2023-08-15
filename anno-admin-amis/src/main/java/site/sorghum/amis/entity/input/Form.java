@@ -3,10 +3,10 @@ package site.sorghum.amis.entity.input;
 import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
+import site.sorghum.anno.i18n.I18nUtil;
 
 import java.util.List;
 

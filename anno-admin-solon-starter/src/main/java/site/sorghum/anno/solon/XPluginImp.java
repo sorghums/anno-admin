@@ -20,14 +20,13 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno.i18n.I18nService;
-import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
 import java.lang.annotation.Annotation;
@@ -48,6 +47,8 @@ public class XPluginImp implements Plugin {
 
     @Override
     public void start(AopContext context) {
+
+        AnnoBeanUtils.setBean(new SolonBeanImpl(context));
 
         i18nSupport();
 
@@ -71,8 +72,6 @@ public class XPluginImp implements Plugin {
 
         // 加载 anno 元数据
         loadMetadata(context, packages);
-
-        AnnoBeanUtils.setBean(new SolonBeanImpl(context));
 
         // 前端静态文件
         StaticMappings.add("/", new ClassPathStaticRepository("META-INF/anno-admin-ui"));

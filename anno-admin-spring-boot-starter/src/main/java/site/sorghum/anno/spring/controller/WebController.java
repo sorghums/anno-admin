@@ -1,7 +1,6 @@
 package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

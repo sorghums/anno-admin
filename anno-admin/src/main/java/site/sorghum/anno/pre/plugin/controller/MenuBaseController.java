@@ -7,10 +7,10 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
 import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.pre.plugin.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.service.SysAnnoMenuService;
 
 import java.util.ArrayList;

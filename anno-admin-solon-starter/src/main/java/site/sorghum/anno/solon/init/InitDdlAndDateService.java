@@ -11,13 +11,13 @@ import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
+import site.sorghum.anno._ddl.InitDataService;
 import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.pre.plugin.service.impl.AuthServiceImpl;
-import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
-import site.sorghum.anno._ddl.InitDataService;
 
 import java.net.URL;
 import java.util.List;

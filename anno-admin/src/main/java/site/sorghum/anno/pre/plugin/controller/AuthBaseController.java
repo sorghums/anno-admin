@@ -4,10 +4,10 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
-import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
 import site.sorghum.anno.pre.plugin.manager.CaptchaManager;
+import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.util.Map;
 

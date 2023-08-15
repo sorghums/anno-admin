@@ -10,7 +10,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.pre.plugin.ao.SysOrg;
-import site.sorghum.anno.pre.suppose.proxy.BaseAnnoPreProxy;
 import site.sorghum.anno.pre.suppose.proxy.BaseOrgAnnoPreProxy;
 
 import java.io.Serializable;

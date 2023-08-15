@@ -2,7 +2,6 @@ package site.sorghum.anno.db.service.impl;
 
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
-import site.sorghum.anno.i18n.I18nUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
@@ -13,6 +12,7 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.i18n.I18nUtil;
 
 import java.util.List;
 

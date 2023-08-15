@@ -15,9 +15,9 @@ import site.sorghum.amis.entity.display.Mapping;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.type.TypeParser;
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 
 import java.util.ArrayList;

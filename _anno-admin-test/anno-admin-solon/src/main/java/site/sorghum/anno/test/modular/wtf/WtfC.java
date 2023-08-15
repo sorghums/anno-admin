@@ -1,7 +1,9 @@
 package site.sorghum.anno.test.modular.wtf;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -21,6 +23,8 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "沃特发表C")
 @Table("wtf_c")
+@NoArgsConstructor
+@AllArgsConstructor
 public class WtfC extends BaseMetaModel {
 
     @AnnoField(

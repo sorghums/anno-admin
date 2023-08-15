@@ -1,15 +1,10 @@
 package site.sorghum.anno.amis.process.processer;
 
 import site.sorghum.amis.entity.AmisBaseWrapper;
-import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mColumnProcessor;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mEditInfoProcessor;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mFilterProcessor;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mRelationDataProcessor;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mRemoveRelationProcessor;
-import site.sorghum.anno.amis.process.processer.crudm2m.CrudM2mViewInitProcessor;
+import site.sorghum.anno.amis.process.processer.crudm2m.*;
 
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package site.sorghum.anno.amis.process.processer;
 
 import site.sorghum.amis.entity.AmisBaseWrapper;
-import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.amis.process.processer.treem2m.TreeM2mViewInitProcessor;
 

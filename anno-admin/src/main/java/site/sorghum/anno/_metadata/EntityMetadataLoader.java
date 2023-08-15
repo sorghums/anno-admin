@@ -6,7 +6,6 @@ import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.annotation.clazz.AnnoJoinTable;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
