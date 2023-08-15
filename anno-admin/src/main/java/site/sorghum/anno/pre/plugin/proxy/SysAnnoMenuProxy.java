@@ -13,7 +13,6 @@ import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -81,7 +80,7 @@ public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<SysAnnoMenu> page) {
+    public void afterFetch(TableParam<SysAnnoMenu> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysAnnoMenu> page) {
 
     }
 }

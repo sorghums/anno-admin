@@ -1,31 +1,16 @@
 package site.sorghum.anno.test.modular.ebusiness;
 
 import jakarta.inject.Named;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Component;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
-import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
-import site.sorghum.anno.anno.annotation.field.AnnoEdit;
-import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
-import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -77,7 +62,7 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
 
     @SneakyThrows
     @Override
-    public void afterFetch(AnnoPage<BusinessVirtualTable> page) {
+    public void afterFetch(TableParam<BusinessVirtualTable> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BusinessVirtualTable> page) {
         log.info("afterFetch: {}", page);
         // 自定义复杂SQL查询
         List<BusinessVirtualTable> businessProduct = dbContext.table("business_product").selectList("*", BusinessVirtualTable.class);

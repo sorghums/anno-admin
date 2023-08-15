@@ -62,7 +62,7 @@ public class SysOrgProxy  implements AnnoBaseProxy<SysOrg> {
 
 
     @Override
-    public void afterFetch(AnnoPage<SysOrg> page) {
+    public void afterFetch(TableParam<SysOrg> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysOrg> page) {
 
     }
 

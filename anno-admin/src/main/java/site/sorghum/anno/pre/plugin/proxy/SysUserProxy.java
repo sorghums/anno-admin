@@ -12,7 +12,6 @@ import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -60,6 +59,6 @@ public class SysUserProxy implements AnnoBaseProxy<SysUser> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<SysUser> page) {
+    public void afterFetch(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysUser> page) {
     }
 }

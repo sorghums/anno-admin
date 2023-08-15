@@ -98,9 +98,9 @@ public class DbServiceWood implements DbService {
     }
 
 
-    private <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
+    public  <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
         RemoveParam removeParam = tableParam.getRemoveParam();
-        DbTableQuery dbTableQuery = dbContext.table(tableParam.getTableName()).where(COMMON_CONDITION);
+        DbTableQuery dbTableQuery = tableParam.toTbQuery(dbContext).where(COMMON_CONDITION);
         if (removeParam.getLogic()) {
             dbConditions.add(DbCondition.builder().field(removeParam.getRemoveColumn()).value(removeParam.getNotRemoveValue()).build());
         }

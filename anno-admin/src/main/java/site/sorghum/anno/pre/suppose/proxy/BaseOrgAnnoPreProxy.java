@@ -1,29 +1,17 @@
 package site.sorghum.anno.pre.suppose.proxy;
 
-import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno._common.util.AnnoContextUtil;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
-import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
-import site.sorghum.anno.pre.plugin.ao.SysUserRole;
 import site.sorghum.anno.pre.plugin.manager.AnnoOrgManager;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 import site.sorghum.anno.pre.suppose.model.BaseOrgMetaModel;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -91,7 +79,7 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<BaseOrgMetaModel> page) {
+    public void afterFetch(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseOrgMetaModel> page) {
 
     }
 

@@ -1,9 +1,8 @@
 package site.sorghum.anno.db.param;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.noear.wood.DbContext;
+import org.noear.wood.DbTableQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +48,12 @@ public class TableParam<T> {
      */
     boolean virtualTable = false;
 
+
+    /**
+     * 连表信息
+     */
+    List<JoinTable> joinTables = new ArrayList<>();
+
     public void addColumn(String column) {
         if (this.columns == null) {
             this.columns = new ArrayList<>();
@@ -58,7 +63,7 @@ public class TableParam<T> {
 
     public String getColumnStr() {
         String column = String.join(",", this.getColumns());
-        if (column.length() == 0) {
+        if (column.isEmpty()) {
             column = "*";
         }
         return column;
@@ -72,4 +77,53 @@ public class TableParam<T> {
     public void setClazz(Class<?> clazz) {
         this.clazz = (Class<T>) clazz;
     }
+
+    @Data
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    public static class JoinTable {
+
+        /**
+         * 表名
+         */
+        String tableName;
+
+        /**
+         * 别名
+         */
+        String alias;
+
+        /**
+         * 1 left join 2 right join 3 inner join
+         */
+        int joinType = 1;
+
+        /**
+         * 连接条件
+         */
+        String joinCondition;
+    }
+
+
+    public DbTableQuery toTbQuery(DbContext dbContext) {
+        if (joinTables.isEmpty()) {
+            return dbContext.table(tableName);
+        } else {
+            DbTableQuery dbTableQuery = dbContext.table(tableName);
+            for (JoinTable joinTable : joinTables) {
+                String tbName = joinTable.tableName;
+                if (!joinTable.alias.isEmpty()) {
+                    tbName = joinTable.tableName + " as " + joinTable.alias;
+                }
+                switch (joinTable.joinType) {
+                    case 1 -> dbTableQuery.leftJoin(tbName).on(joinTable.joinCondition);
+                    case 2 -> dbTableQuery.rightJoin(tbName).on(joinTable.joinCondition);
+                    case 3 -> dbTableQuery.innerJoin(tbName).on(joinTable.joinCondition);
+                    default -> throw new IllegalArgumentException("不支持的连接类型");
+                }
+            }
+            return dbTableQuery;
+        }
+    }
+
 }

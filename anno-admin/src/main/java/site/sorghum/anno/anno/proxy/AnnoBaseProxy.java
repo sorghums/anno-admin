@@ -5,7 +5,6 @@ import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -74,9 +73,12 @@ public interface AnnoBaseProxy<T> {
     /**
      * 返回结果后
      *
-     * @param page 分页结果数据
+     * @param tableParam   表参数
+     * @param dbConditions db条件
+     * @param pageParam    页面参数
+     * @param page         分页结果数据
      */
-    void afterFetch(AnnoPage<T> page);
+    void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page);
 
 
 }

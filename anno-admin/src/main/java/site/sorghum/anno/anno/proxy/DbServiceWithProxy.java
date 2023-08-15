@@ -56,8 +56,8 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(true, page.getList(), page.getTotal(), page.getSize(), page.getPages());
-        proxyInstance.afterFetch(annoPage);
-        preProxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
         return new IPageImpl<>(annoPage.getList(), annoPage.getTotal(), annoPage.getSize());
     }
 
@@ -77,8 +77,8 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(annoPage);
-        proxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
         return annoPage.getList();
     }
 
@@ -99,8 +99,8 @@ public class DbServiceWithProxy implements DbService {
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(annoPage);
-        proxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, null,annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
         return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
 

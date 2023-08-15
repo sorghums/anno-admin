@@ -3,7 +3,6 @@ package site.sorghum.anno.pre.suppose.proxy;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -16,7 +15,6 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -84,7 +82,7 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<BaseMetaModel> page) {
+    public void afterFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseMetaModel> page) {
         
     }
 }

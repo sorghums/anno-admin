@@ -1,11 +1,14 @@
 package site.sorghum.anno.amis.process.processer.crud;
 
 import cn.hutool.core.map.MapUtil;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
@@ -21,9 +24,18 @@ import java.util.Map;
  */
 @Named
 public class CrudDeleteBtnProcessor implements BaseProcessor {
+
+    @Inject
+    MetadataManager metadataManager;
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain){
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
+        AnEntity entity = metadataManager.getEntity(clazz);
+        if (!entity.isCanRemove()) {
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
+            return;
+        }
         // 删除按钮模板
         Action delete = new Action();
         delete.setActionType("ajax");

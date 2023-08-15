@@ -58,7 +58,7 @@ public class SysRoleProxy implements AnnoBaseProxy<SysRole> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<SysRole> page) {
+    public void afterFetch(TableParam<SysRole> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysRole> page) {
 
     }
 }

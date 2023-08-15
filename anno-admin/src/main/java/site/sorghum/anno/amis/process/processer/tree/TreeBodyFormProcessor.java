@@ -84,6 +84,9 @@ public class TreeBodyFormProcessor implements BaseProcessor {
         JSONUtil.write(onEvent, "$.click.actions[1].args.value", new HashMap<>() {{
             put(parentPk, "${_cat}");
         }});
+        if (!anEntity.isCanRemove()){
+            crudForm.getActions().remove(1);
+        }
         chain.doProcessor(amisBaseWrapper, clazz, properties);
     }
 }

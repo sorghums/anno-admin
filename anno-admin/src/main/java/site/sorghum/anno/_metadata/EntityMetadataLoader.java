@@ -5,6 +5,8 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno.anno.annotation.clazz.AnnoJoinTable;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
@@ -38,19 +40,31 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
     public AnEntity load(Class<?> clazz) {
         AnnoMain annoMain = clazz.getAnnotation(AnnoMain.class);
         Table table = clazz.getAnnotation(Table.class);
-
         AnEntity entity = new AnEntity();
         entity.setTitle(annoMain.name());
+        entity.setCanRemove(annoMain.canRemove());
         if (table == null || StrUtil.isBlank(table.value())) {
             entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
         } else {
             entity.setTableName(table.value());
         }
+
         entity.setOrgFilter(annoMain.orgFilter());
         entity.setVirtualTable(annoMain.virtualTable());
         if (entity.isVirtualTable()){
             // 虚拟表不需要维护
             entity.setAutoMaintainTable(false);
+        }
+
+        if (annoMain.annoJoinTable().enable()) {
+            if (!entity.isVirtualTable()){
+                throw new BizException("连表必须是虚拟表,且请自主实现代理类Proxy。");
+            }
+            List<AnJoinTable.JoinTable> joinTables = Arrays.stream(annoMain.annoJoinTable().joinTables())
+                .map(anJoinTable -> new AnJoinTable.JoinTable(anJoinTable.table(), anJoinTable.alias(), anJoinTable.joinCondition(), anJoinTable.joinType()))
+                .toList();
+            // 维护连表信息
+            entity.setJoinTable(new AnJoinTable(annoMain.annoJoinTable().mainTable(),annoMain.annoJoinTable().mainAlias(),joinTables));
         }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));

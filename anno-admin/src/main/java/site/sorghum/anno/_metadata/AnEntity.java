@@ -40,6 +40,11 @@ public class AnEntity {
     boolean orgFilter;
 
     /**
+     * 是否可以删除
+     */
+    boolean canRemove;
+
+    /**
      * 是否虚拟表
      *
      * @see AnnoMain#virtualTable()
@@ -97,6 +102,11 @@ public class AnEntity {
     private List<AnField> fields;
 
     private Map<String, AnField> fieldMap;
+
+    /**
+     * 连表信息
+     */
+    AnJoinTable joinTable = null;
 
     public void setFields(List<AnField> fields) {
         this.fields = fields;
