@@ -36,11 +36,23 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 @AnnoRemove(removeType = 1,removeField = "t1.del_flag")
 public class WtfABCVirtual{
     @AnnoField(
-        title = "主键",
-        tableFieldName = "t1.id",
+        title = "C表主键[虚拟表主键]",
+        tableFieldName = "t1.id",show = false,
         search = @AnnoSearch)
     @PrimaryKey
     String id;
+
+    @AnnoField(
+        title = "B表主键",
+        tableFieldName = "t2.id as t2id",show = false,
+        search = @AnnoSearch)
+    String t2id;
+
+    @AnnoField(
+        title = "A表主键",
+        tableFieldName = "t3.id as t3id",show = false,
+        search = @AnnoSearch)
+    String t3id;
 
     @AnnoField(
         title = "名称",
