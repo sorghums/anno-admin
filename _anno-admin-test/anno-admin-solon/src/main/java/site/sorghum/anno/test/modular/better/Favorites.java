@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
-import site.sorghum.anno.anno.annotation.field.AnnoButton;
-import site.sorghum.anno.anno.annotation.field.AnnoEdit;
-import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.anno.annotation.field.AnnoSearch;
+import site.sorghum.anno.anno.annotation.field.*;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 import java.util.List;
@@ -37,4 +34,11 @@ public class Favorites extends BaseMetaModel {
         search = @AnnoSearch,
         edit = @AnnoEdit)
     String pid;
+
+    @AnnoMany2ManyField(
+        mediumTable = "better_article_favorite_relation",
+        thisColumn = @AnnoJoinColumn(mediumName = "favorites_id", referencedName = "id"),
+        otherColumn = @AnnoJoinColumn(mediumName = "article_id", referencedName = "id")
+    )
+    List<Article> articles;
 }

@@ -18,6 +18,7 @@ public class TypeParserFactory {
         return switch (dataType) {
             case IMAGE -> AnnoBeanUtils.getBean(ImageTypeParser.class);
             case OPTIONS -> AnnoBeanUtils.getBean(OptionsTypeParser.class);
+            case PICKER -> AnnoBeanUtils.getBean(PickerTypeParser.class);
             case TREE -> AnnoBeanUtils.getBean(TreeTypeParser.class);
             case CODE_EDITOR -> AnnoBeanUtils.getBean(CodeEditorTypeParser.class);
             case FILE -> AnnoBeanUtils.getBean(FileTypeParser.class);

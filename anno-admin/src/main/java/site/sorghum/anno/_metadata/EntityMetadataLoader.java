@@ -11,6 +11,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -96,6 +97,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setNotRemoveValue(annoRemove.notRemoveValue());
 
         setAnFields(entity, clazz);
+
+        setAnMany2ManyFields(entity, clazz);
 
         List<AnColumnButton> anColumnButtons = getAnButton(clazz);
         entity.setColumnButtons(anColumnButtons);
@@ -190,6 +193,25 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setFields(anFields);
     }
 
+    private void setAnMany2ManyFields(AnEntity entity, Class<?> clazz) {
+        List<Field> fields = AnnoUtil.getAnnoMany2ManyFields(clazz);
+        List<AnMany2ManyField> annoMany2ManyFields = new ArrayList<>();
+        for (Field field : fields) {
+            AnnoMany2ManyField anno = AnnotationUtil.getAnnotation(field, AnnoMany2ManyField.class);
+            AnMany2ManyField anMany2ManyField = new AnMany2ManyField();
+            anMany2ManyField.setField(field);
+            anMany2ManyField.setMediumTable(anno.mediumTable());
+
+            anMany2ManyField.setOtherColumnMediumName(anno.otherColumn().mediumName());
+            anMany2ManyField.setOtherColumnReferencedName(anno.otherColumn().referencedName());
+
+            anMany2ManyField.setThisColumnMediumName(anno.thisColumn().mediumName());
+            anMany2ManyField.setThisColumnReferencedName(anno.thisColumn().referencedName());
+
+            annoMany2ManyFields.add(anMany2ManyField);
+        }
+        entity.setMany2ManyFields(annoMany2ManyFields);
+    }
     private List<AnColumnButton> getAnButton(Class<?> clazz) {
         ArrayList<AnColumnButton> anColumnButtons = new ArrayList<>();
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);

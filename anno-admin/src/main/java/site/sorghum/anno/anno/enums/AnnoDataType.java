@@ -26,6 +26,7 @@ public enum AnnoDataType {
     DATE("input-date", "日期","text"),
     DATETIME("input-datetime", "日期时间","text"),
     OPTIONS("select", "下拉框","text"),
+    PICKER("picker", "下拉框[弹出]","text"),
     TREE("tree-select", "树形下拉框","input-tree"),
     RICH_TEXT("input-rich-text", "富文本","text"),
     CODE_EDITOR("editor","代码编辑器","tpl")

@@ -20,6 +20,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
@@ -198,6 +199,27 @@ public class AnnoUtil {
             Field[] declaredFields = ClassUtil.getDeclaredFields(aClass);
             for (Field declaredField : declaredFields) {
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoField.class);
+                if (annotation != null) {
+                    annoFieldFields.add(declaredField);
+                }
+            }
+        }
+        return annoFieldFields;
+    }
+
+    /**
+     * 获取表字段
+     *
+     * @param clazz 类
+     * @return {@link List<String>}
+     */
+    public static List<Field> getAnnoMany2ManyFields(Class<?> clazz) {
+        List<Field> annoFieldFields = CollUtil.newArrayList();
+        List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
+        for (Class<?> aClass : allClass) {
+            Field[] declaredFields = ClassUtil.getDeclaredFields(aClass);
+            for (Field declaredField : declaredFields) {
+                AnnoMany2ManyField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoMany2ManyField.class);
                 if (annotation != null) {
                     annoFieldFields.add(declaredField);
                 }

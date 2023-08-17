@@ -51,6 +51,10 @@ public @interface AnnoButton {
      */
     O2MJoinButton o2mJoinButton() default @O2MJoinButton(enable = false);
 
+    /**
+     * 多对多关联设置【新】
+     */
+    M2MRelation m2mRelation() default @M2MRelation(enable = false);
 
     /**
      * 多对多关联按钮
@@ -67,7 +71,7 @@ public @interface AnnoButton {
     JavaCmd javaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
 
     /**
-     * 下钻按钮
+     * 下钻按钮【未启用】
      *
      * @return {@link String}
      */
@@ -288,6 +292,61 @@ public @interface AnnoButton {
 
         /**
          * 是否启用
+         */
+        boolean enable() default true;
+    }
+
+    @interface M2MRelation {
+
+        /**
+         * 对象目标类
+         *
+         * @return {@link Class}<{@link ?}>
+         */
+        Class<?> joinTargetClass() default Object.class;
+
+        /**
+         * 以哪个字段为条件【目标表】
+         *
+         * @return {@link String}
+         */
+        String joinTargetField() default "id";
+
+        /**
+         * SQL语句：? 为 joinThisClazzField的值
+         * demo1: select user_id from sys_user_role where role_id = ?
+         * demo2: select role_id from sys_user_role where user_id = ?
+         *
+         * @return {@link String}
+         */
+        String joinSql() default "";
+
+        /**
+         * 以哪个字段为条件【本】
+         *
+         * @return {@link String}
+         */
+        String joinThisField() default "id";
+
+        /**
+         * 弹出窗口大小
+         * xs、sm、md、lg、xl、full
+         *
+         * @return {@link String}
+         */
+        String windowSize() default "xl";
+
+        /**
+         * 弹出窗口高度
+         *
+         * @return {@link String}
+         */
+        String windowHeight() default "700px";
+
+        /**
+         * 启用
+         *
+         * @return boolean
          */
         boolean enable() default true;
     }

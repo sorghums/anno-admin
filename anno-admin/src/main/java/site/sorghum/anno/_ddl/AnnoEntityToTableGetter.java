@@ -61,7 +61,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             switch (field.getDataType()) {
                 // TREE 和 OPTIONS，通过 anno 注解获取不到字段类型，需要通过字段类型获取
                 // 默认类型是STRING，也需要通过字段类型获取
-                case STRING, TREE, OPTIONS -> {
+                case STRING, TREE, OPTIONS, PICKER -> {
                     ColumnWrap column = getColumn(anEntity.getEntityName(), field);
                     sqlType = column.getSqlType();
                     size = column.getSize();

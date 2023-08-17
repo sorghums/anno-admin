@@ -29,6 +29,7 @@ public class DbServiceWood implements DbService {
      * 通用条件
      */
     private static final String COMMON_CONDITION = "1=1";
+
     /**
      * Wood数据库上下文
      */

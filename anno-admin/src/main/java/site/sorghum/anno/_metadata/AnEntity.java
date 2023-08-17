@@ -3,6 +3,7 @@ package site.sorghum.anno._metadata;
 import lombok.Data;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.*;
+import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 
@@ -99,7 +100,16 @@ public class AnEntity {
      */
     private AnField pkField;
 
+    /**
+     * 实体类字段
+     */
     private List<AnField> fields;
+
+    /**
+     * 多对多按钮
+     * @see AnnoMany2ManyField
+     */
+    private List<AnMany2ManyField> many2ManyFields;
 
     private Map<String, AnField> fieldMap;
 
