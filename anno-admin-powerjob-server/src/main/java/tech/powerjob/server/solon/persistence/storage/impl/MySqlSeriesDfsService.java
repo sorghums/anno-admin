@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import tech.powerjob.server.solon.common.constants.SwitchableStatus;
 import tech.powerjob.server.solon.extension.dfs.DownloadRequest;
 import tech.powerjob.server.solon.extension.dfs.FileLocation;
@@ -245,7 +245,7 @@ public class MySqlSeriesDfsService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AopContext context) {
+    protected void init(AppContext context) {
 
         MySQLProperty mySQLProperty = new MySQLProperty()
             .setDriver(fetchProperty(context, TYPE_MYSQL, KEY_DRIVER_NAME))

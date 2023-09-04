@@ -1,6 +1,6 @@
 package site.sorghum.anno.solon;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import site.sorghum.anno._common.AnnoBean;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
  */
 public class SolonBeanImpl implements AnnoBean {
 
-    private final AopContext context;
+    private final AppContext context;
 
-    public SolonBeanImpl(AopContext context) {
+    public SolonBeanImpl(AppContext context) {
         this.context = context;
     }
 

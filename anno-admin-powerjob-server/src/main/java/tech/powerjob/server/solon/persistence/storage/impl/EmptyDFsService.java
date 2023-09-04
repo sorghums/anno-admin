@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.persistence.storage.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import tech.powerjob.server.solon.extension.dfs.DownloadRequest;
 import tech.powerjob.server.solon.extension.dfs.FileLocation;
 import tech.powerjob.server.solon.extension.dfs.FileMeta;
@@ -35,7 +35,7 @@ public class EmptyDFsService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AopContext context) {
+    protected void init(AppContext context) {
         log.info("[EmptyDFsService] initialize successfully, THIS_WILL_BE_THE_STORAGE_LAYER.");
     }
 

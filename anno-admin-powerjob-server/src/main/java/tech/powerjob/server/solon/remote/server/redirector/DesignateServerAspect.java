@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
@@ -38,7 +38,7 @@ public class DesignateServerAspect implements Interceptor {
     private TransportService transportService;
     private AppInfoRepository appInfoRepository;
 
-    public DesignateServerAspect(AopContext context) {
+    public DesignateServerAspect(AppContext context) {
         context.getBeanAsync(TransportService.class, bean -> {
             this.transportService = bean;
         });

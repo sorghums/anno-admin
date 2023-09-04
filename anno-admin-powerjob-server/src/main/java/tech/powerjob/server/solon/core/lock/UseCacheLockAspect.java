@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import com.googlecode.aviator.AviatorEvaluator;
 import com.googlecode.aviator.AviatorEvaluatorInstance;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import tech.powerjob.server.solon.moniter.MonitorService;
@@ -31,7 +31,7 @@ public class UseCacheLockAspect implements Interceptor {
 
     private AviatorEvaluatorInstance instance;
 
-    public UseCacheLockAspect(AopContext context) {
+    public UseCacheLockAspect(AppContext context) {
         context.getBeanAsync(MonitorService.class, bean -> {
             this.monitorService = bean;
         });

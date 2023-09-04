@@ -1,6 +1,6 @@
 package tech.powerjob.server.solon;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.Plugin;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.config.ConfigLoader;
@@ -20,7 +20,7 @@ import java.util.Properties;
  */
 public class XPluginImp implements Plugin {
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
         context.beanInterceptorAdd(PjAsync.class, new PjAsyncInterceptor(context));
         context.beanInterceptorAdd(DesignateServer.class, new DesignateServerAspect(context));
         context.beanInterceptorAdd(UseCacheLock.class, new UseCacheLockAspect(context));
@@ -30,15 +30,15 @@ public class XPluginImp implements Plugin {
         context.beanScan(XPluginImp.class.getPackageName());
     }
 
-    private void initMail(AopContext context) {
+    private void initMail(AppContext context) {
         String prefix = "simplejavamail";
         Properties props = context.cfg().getProp(prefix);
         if (props.isEmpty()) {
             return;
         }
         Properties smprops = new Properties();
-        props.forEach((k,v)->{
-            smprops.put(prefix+"."+k, v);
+        props.forEach((k, v) -> {
+            smprops.put(prefix + "." + k, v);
         });
         ConfigLoader.loadProperties(smprops, true);
         Mailer mailer = MailerBuilder.buildMailer();

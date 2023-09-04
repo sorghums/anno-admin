@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.persistence.storage;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import tech.powerjob.server.solon.extension.dfs.DFsService;
 
 /**
@@ -17,11 +17,11 @@ public abstract class AbstractDFsService implements DFsService {
         log.info("[DFsService] invoke [{}]'s constructor", this.getClass().getName());
     }
 
-    abstract protected void init(AopContext context);
+    abstract protected void init(AppContext context);
 
     protected static final String PROPERTY_KEY = "oms.storage.dfs";
 
-    protected static String fetchProperty(AopContext context, String dfsType, String key) {
+    protected static String fetchProperty(AppContext context, String dfsType, String key) {
         String pKey = String.format("%s.%s.%s", PROPERTY_KEY, dfsType, key);
         return context.cfg().getProperty(pKey);
     }

@@ -1,6 +1,6 @@
 package tech.powerjob.server.solon.common.async;
 
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
 import tech.powerjob.server.solon.common.constants.PJThreadPool;
@@ -18,7 +18,7 @@ public class PjAsyncInterceptor implements Interceptor {
 
     ThreadPoolExecutorManager threadPoolExecutorManager;
 
-    public PjAsyncInterceptor(AopContext context) {
+    public PjAsyncInterceptor(AppContext context) {
         context.getBeanAsync(ThreadPoolExecutorManager.class, bean -> {
             threadPoolExecutorManager = bean;
         });

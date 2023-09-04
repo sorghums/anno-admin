@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import tech.powerjob.server.solon.extension.dfs.DownloadRequest;
 import tech.powerjob.server.solon.extension.dfs.FileLocation;
 import tech.powerjob.server.solon.extension.dfs.FileMeta;
@@ -150,7 +150,7 @@ public class AliOssService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AopContext context) {
+    protected void init(AppContext context) {
 
         String endpoint = fetchProperty(context, TYPE_ALI_OSS, KEY_ENDPOINT);
         String bkt = fetchProperty(context, TYPE_ALI_OSS, KEY_BUCKET);

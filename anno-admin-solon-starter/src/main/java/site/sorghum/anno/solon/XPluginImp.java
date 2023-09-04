@@ -9,16 +9,16 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AopContext;
+import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanBuilder;
 import org.noear.solon.core.BeanInjector;
 import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.Plugin;
 import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.event.EventBus;
+import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorImp;
-import org.noear.solon.proxy.ProxyUtil;
-import org.noear.solon.proxy.integration.UnsupportedUtil;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
@@ -50,7 +50,7 @@ public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
 
     @Override
-    public void start(AopContext context) throws Throwable {
+    public void start(AppContext context) throws Throwable {
 
         AnnoBeanUtils.setBean(new SolonBeanImpl(context));
 
@@ -86,7 +86,7 @@ public class XPluginImp implements Plugin {
     /**
      * 缓存和事务支持
      */
-    private static void tranSupport(AopContext context) {
+    private static void tranSupport(AppContext context) {
         // 添加事务控制支持，see: org.noear.solon.data.integration.XPluginImp
         if (Solon.app().enableTransaction()) {
             context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
@@ -97,7 +97,7 @@ public class XPluginImp implements Plugin {
     /**
      * 加载 anno 元数据
      */
-    private void loadMetadata(AopContext context, Set<String> packages) {
+    private void loadMetadata(AppContext context, Set<String> packages) {
         MetadataManager metadataManager = context.getBean(MetadataManager.class);
 
         for (String scanPackage : packages) {
@@ -126,11 +126,11 @@ public class XPluginImp implements Plugin {
 
     static class InjectBeanInjector implements BeanInjector<Inject> {
 
-        public InjectBeanInjector(AopContext context) {
+        public InjectBeanInjector(AppContext context) {
             this.context = context;
         }
 
-        AopContext context;
+        AppContext context;
 
         @Override
         public void doInject(VarHolder varH, Inject anno) {
@@ -145,35 +145,40 @@ public class XPluginImp implements Plugin {
 
     static class NamedBeanBuilder implements BeanBuilder<Named> {
 
-        public NamedBeanBuilder(AopContext context) {
+        public NamedBeanBuilder(AppContext context) {
             this.context = context;
         }
 
-        AopContext context;
+        AppContext context;
 
         @Override
         public void doBuild(Class<?> clz, BeanWrap bw, Named anno) throws Throwable {
             if (StrUtil.isNotBlank(anno.value())) {
                 ReflectUtil.setFieldValue(bw, "name", anno.value());
             }
-            // 添加bean形态处理
-            context.beanShapeRegister(clz, bw, clz);
+
             // 是否是typed
             Primary primary = clz.getAnnotation(Primary.class);
             boolean typed = Optional.ofNullable(primary).map(Primary::value).orElse(true);
-            // 注册到容器
-            context.beanRegister(bw, anno.value(), typed);
-            // 尝试提取函数
-            context.beanExtract(bw);
+            ReflectUtil.setFieldValue(bw, "typed", typed);
+
+            // see: AppContext#beanComponentized
+            //尝试提取函数并确定自动代理
+            context.beanExtractOrProxy(bw);
+            //添加bean形态处理
+            context.beanShapeRegister(bw.clz(), bw, bw.clz());
+            //注册到容器
+            context.beanRegister(bw, bw.name(), bw.typed());
+            //单例，进行事件通知
+            if (bw.singleton()) {
+                EventBus.publish(bw.raw()); //@deprecated
+                context.wrapPublish(bw);
+            }
 
             // 生成代理类
             Proxy annotation = clz.getAnnotation(Proxy.class);
             if (annotation != null) {
-                ProxyUtil.binding(bw, anno.value(), true);
-
-                if (Solon.cfg().isDebugMode()) {
-                    UnsupportedUtil.check(clz, bw.context(), anno);
-                }
+                ProxyBinder.global().binding(bw);
             }
 
         }
