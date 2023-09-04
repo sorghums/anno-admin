@@ -134,6 +134,10 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             size = 25;
             digit = 6;
             defaultValue = "NOT NULL DEFAULT 0";
+        } else if (fieldType == Boolean.class) {
+            sqlType = Types.BIT;
+            size = 1;
+            defaultValue = "NOT NULL DEFAULT 0";
         } else {
             throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(entityName, field.getFieldName(), fieldType.getSimpleName()));
         }

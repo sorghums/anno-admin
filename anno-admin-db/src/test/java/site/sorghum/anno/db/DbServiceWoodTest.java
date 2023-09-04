@@ -51,7 +51,7 @@ public class DbServiceWoodTest {
 
     PageParam pageParam = new PageParam() {{
         setPage(1);
-        setLimit(10);
+        setPageSize(10);
     }};
 
     @Before

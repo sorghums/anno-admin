@@ -62,3 +62,20 @@ anno-admin:
 solon.staticfiles.mappings:
   - path: '/'
     repository: 'classpath:/WEB-INF/anno-admin-ui/'
+
+# powerjob-server
+powerjob-server-solon.version: @project.version@
+###### PowerJob transporter configuration  ######
+oms.transporter.active.protocols: AKKA,HTTP
+oms.transporter.main.protocol: HTTP
+oms.akka.port: 10086
+oms.http.port: 10010
+####### Cache properties #######
+oms.instance.metadata.cache.size: 2048
+####### Resource cleaning properties #######
+oms.instanceinfo.retention: 7
+oms.container.retention.local: 7
+oms.container.retention.remote: -1
+####### Threshold in precise fetching server(0~100). 100 means full detection of server, in which #######
+####### split-brain could be avoided while performance overhead would increase. #######
+oms.accurate.select.server.percentage: 50

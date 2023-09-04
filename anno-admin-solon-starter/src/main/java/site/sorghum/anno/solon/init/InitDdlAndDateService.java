@@ -30,7 +30,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent> {
+public class InitDdlAndDateService {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
@@ -45,8 +45,7 @@ public class InitDdlAndDateService implements EventListener<AppBeanLoadEndEvent>
     @Inject
     AuthServiceImpl authService;
 
-    @Override
-    public void onEvent(AppBeanLoadEndEvent appBeanLoadEndEvent) throws Throwable {
+    public void init() throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
             PlatformFactory platformFactory = Solon.context().getBean(PlatformFactory.class);

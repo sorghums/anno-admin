@@ -9,8 +9,12 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.ProxyComponent;
-import org.noear.solon.core.*;
+import org.noear.solon.core.AopContext;
+import org.noear.solon.core.BeanBuilder;
+import org.noear.solon.core.BeanInjector;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.core.VarHolder;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorImp;
 import org.noear.solon.proxy.ProxyUtil;
@@ -27,6 +31,7 @@ import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
+import site.sorghum.anno.solon.init.InitDdlAndDateService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
 import java.lang.annotation.Annotation;
@@ -41,12 +46,11 @@ import java.util.Set;
  * @author sorghum
  * @since 2023/05/20
  */
-@ProxyComponent
 public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
 
     @Override
-    public void start(AopContext context) {
+    public void start(AopContext context) throws Throwable {
 
         AnnoBeanUtils.setBean(new SolonBeanImpl(context));
 
@@ -76,6 +80,7 @@ public class XPluginImp implements Plugin {
         // 前端静态文件
         StaticMappings.add("/", new ClassPathStaticRepository("META-INF/anno-admin-ui"));
 
+        context.getBean(InitDdlAndDateService.class).init();
     }
 
     /**
@@ -174,7 +179,7 @@ public class XPluginImp implements Plugin {
         }
     }
 
-    public void i18nSupport(){
+    public void i18nSupport() {
         I18nUtil.setI18nService(key -> org.noear.solon.i18n.I18nUtil.getMessage(key));
     }
 

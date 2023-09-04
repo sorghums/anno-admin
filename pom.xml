@@ -36,6 +36,8 @@
         <!-- 快速引入包 -->
         <module>anno-admin-solon-starter</module>
         <module>anno-admin-spring-boot-starter</module>
+        <!-- 任务调度：PowerJob -->
+        <module>anno-admin-powerjob-server</module>
 
         <!-- 测试类 -->
         <module>_anno-admin-test</module>

@@ -3,10 +3,6 @@ package site.sorghum.anno.test.modular.better;
 import org.noear.solon.annotation.Component;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.test.modular.wtf.WtfA;
-import site.sorghum.anno.test.modular.wtf.WtfABCVirtual;
-import site.sorghum.anno.test.modular.wtf.WtfB;
-import site.sorghum.anno.test.modular.wtf.WtfC;
 
 import java.util.ArrayList;
 import java.util.List;
