@@ -59,7 +59,7 @@ anno-admin:
   # 主题：antd,cxd,ang
   theme: 'antd'
   # 自动初始化数据，默认为 true
-  isAutoMaintainInitData: false
+  isAutoMaintainInitData: true
   # 自动初始化表，默认为 true
   isAutoMaintainTable: true
 #添加静态目录映射

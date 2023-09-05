@@ -42,7 +42,7 @@ public class AppInfoDO extends BaseMetaModel {
      * 支持多语言后，尽管引入了 vert.x 的地址，但该字段仍保存 ActorSystem 的地址，vert.x 地址仅在返回给 worker 时特殊处理
      * 原因：框架中很多地方强依赖 currentServer，比如根据该地址来获取需要调度的 app
      */
-    @AnnoField(title = "当前调度的 Server 地址", edit = @AnnoEdit(editEnable = false))
+    @AnnoField(title = "当前调度的 Server 地址")
     private String currentServer;
 
 }
