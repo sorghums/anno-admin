@@ -6,7 +6,6 @@ import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -54,7 +53,7 @@ public class AnnoPreDefaultProxy<T> implements AnnoPreBaseProxy<T> {
     }
 
     @Override
-    public void afterFetch(AnnoPage<T> page) {
+    public void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
 
     }
 }

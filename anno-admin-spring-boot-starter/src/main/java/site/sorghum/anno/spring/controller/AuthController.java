@@ -2,7 +2,6 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.pre.plugin.controller.AuthBaseController;

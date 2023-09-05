@@ -3,6 +3,7 @@ package site.sorghum.anno._metadata;
 import lombok.Data;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.*;
+import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 
@@ -33,6 +34,16 @@ public class AnEntity {
      * @see Table#value()
      */
     private String tableName;
+
+    /**
+     * 是否需要组织过滤
+     */
+    boolean orgFilter;
+
+    /**
+     * 是否可以删除
+     */
+    boolean canRemove;
 
     /**
      * 是否虚拟表
@@ -89,9 +100,23 @@ public class AnEntity {
      */
     private AnField pkField;
 
+    /**
+     * 实体类字段
+     */
     private List<AnField> fields;
 
+    /**
+     * 多对多按钮
+     * @see AnnoMany2ManyField
+     */
+    private List<AnMany2ManyField> many2ManyFields;
+
     private Map<String, AnField> fieldMap;
+
+    /**
+     * 连表信息
+     */
+    AnJoinTable joinTable = null;
 
     public void setFields(List<AnField> fields) {
         this.fields = fields;

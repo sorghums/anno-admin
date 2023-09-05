@@ -6,12 +6,14 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.pre.plugin.proxy.SysRoleProxy;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 import java.io.Serializable;
@@ -20,6 +22,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"),
+        annoProxy = @AnnoProxy(value = SysRoleProxy.class),
         annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
 @Table("sys_role")
 public class SysRole extends BaseMetaModel implements Serializable {
@@ -51,7 +54,7 @@ public class SysRole extends BaseMetaModel implements Serializable {
     Integer enable;
 
     /**
-     * 角色按钮
+     * 用户按钮
      */
     @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysUser.class,
@@ -64,14 +67,15 @@ public class SysRole extends BaseMetaModel implements Serializable {
 
 
     /**
-     * 角色按钮
+     * 权限按钮
      */
     @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinAnnoMainClazz = SysPermission.class,
             mediumTableClass = SysRolePermission.class,
             mediumOtherField = "permission_id",
             mediumThisField = "role_id",
-            joinThisClazzField = "id"
+            joinThisClazzField = "id",
+            windowSize = "sm"
     ))
     private Object roleButton;
 }

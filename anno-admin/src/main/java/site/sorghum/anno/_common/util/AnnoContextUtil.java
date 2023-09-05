@@ -14,7 +14,7 @@ public class AnnoContextUtil {
     /**
      * 当前请求的上下文
      */
-    private static ThreadLocal<AnnoContext> CONTEXT_THREADLOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<AnnoContext> CONTEXT_THREADLOCAL = new ThreadLocal<>();
 
     /**
      * 获取当前请求的上下文

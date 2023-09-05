@@ -22,6 +22,12 @@ public @interface AnnoMain {
     String name() default "" ;
 
     /**
+     * 增加连表相关参数
+     * 仅虚拟表时可用
+     */
+    AnnoJoinTable annoJoinTable() default @AnnoJoinTable(mainTable = "", mainAlias = "", joinTables = {}, enable = false);
+
+    /**
      * 排序
      *
      * @return {@link AnnoOrder}
@@ -64,7 +70,19 @@ public @interface AnnoMain {
     AnnoTableButton[] annoTableButton() default {};
 
     /**
+     * 组织过滤
+     * 如果继承自BaseOrgMetaModel
+     * 是否[自动过滤] org_id = 当前登录用户的org_id
+     */
+    boolean orgFilter() default false;
+
+    /**
      * 是否是虚拟表[将不走数据库]
      */
     boolean virtualTable() default false;
+
+    /**
+     * 是否可以删除
+     */
+    boolean canRemove() default true;
 }

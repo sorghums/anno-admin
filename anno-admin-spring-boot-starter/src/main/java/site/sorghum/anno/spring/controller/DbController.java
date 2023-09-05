@@ -20,7 +20,7 @@ import java.util.Map;
  * @since 2023/05/20
  */
 @RestController
-@RequestMapping("/system/anno")
+@RequestMapping("/amis/system/anno")
 @Slf4j
 @SuppressWarnings("unchecked")
 public class DbController extends BaseDbController {

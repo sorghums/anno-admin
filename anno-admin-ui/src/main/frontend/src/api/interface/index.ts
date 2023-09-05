@@ -52,3 +52,9 @@ export namespace Login {
 		name: string;
 	}
 }
+
+export namespace System {
+	export interface GlobalConfig {
+		title: string;
+	}
+}

@@ -30,6 +30,7 @@ const AvatarIcon = (props: any) => {
 			cancelText: "取消",
 			onOk: () => {
 				setToken("");
+				window.localStorage.removeItem("anno-token");
 				apiLogout().then((res) => {
 					message.success("退出登录成功！");
 					navigate("/login");

@@ -43,6 +43,8 @@ public class ExtraDataFilter implements Filter {
         // 如果是文件上传则不进行处理
         if (servletRequest.getContentType() != null && servletRequest.getContentType().startsWith("multipart/form-data")) {
             filterChain.doFilter(servletRequest, servletResponse);
+            // 清除请求上下文
+            AnnoContextUtil.clearContext();
             return;
         }
         RequestWrapper requestWrapper = new RequestWrapper(servletRequest);
@@ -84,6 +86,8 @@ public class ExtraDataFilter implements Filter {
         }
         AnnoContextUtil.getContext().setRequestParams(bdMap);
         filterChain.doFilter(requestWrapper, servletResponse);
+        // 清除请求上下文
+        AnnoContextUtil.clearContext();
     }
 
     @Override

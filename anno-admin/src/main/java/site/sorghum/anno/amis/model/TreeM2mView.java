@@ -39,7 +39,7 @@ public class TreeM2mView extends Page {
         submit.setType("submit");
         treeForm.setApi(
                 new Api(){{
-                    setUrl("/system/anno/${clazz}/addM2m");
+                    setUrl("/amis/system/anno/${clazz}/addM2m");
                     setMethod("post");
                     setData(new HashMap<>(){{
                         put("&","$$");
@@ -55,7 +55,7 @@ public class TreeM2mView extends Page {
         );
         treeForm.setInitApi(
                 new Api(){{
-                    setUrl("/system/anno/${treeClazz}/annoTreeSelectData");
+                    setUrl("/amis/system/anno/${treeClazz}/annoTreeSelectData");
                     setMethod("post");
                     setData(new HashMap<>(){{
                         put("_extraData","${extraData}");
@@ -74,7 +74,7 @@ public class TreeM2mView extends Page {
                             setCascade(true);
                             setSource(
                                     new Api(){{
-                                        setUrl("/system/anno/${treeClazz}/annoTrees");
+                                        setUrl("/amis/system/anno/${treeClazz}/annoTrees");
                                         setMethod("post");
                                     }}
                             );

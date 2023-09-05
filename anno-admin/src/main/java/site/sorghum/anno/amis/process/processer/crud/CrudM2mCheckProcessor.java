@@ -48,7 +48,7 @@ public class CrudM2mCheckProcessor implements BaseProcessor {
         insertRelations.setLevel("primary");
         insertRelations.setApi(new Api(){{
             setMethod("post");
-            setUrl("/system/anno/${clazz}/addM2m");
+            setUrl("/amis/system/anno/${clazz}/addM2m");
             setData(new HashMap<>() {{
                 put("&", "$$");
                 put("_extraData", "${extraData}");

@@ -42,6 +42,10 @@ public class DbCondition {
      * 填充数据
      */
     public void woodFill(DbTableQuery dbTableQuery) {
+        // 去除别名带来的影响
+        if (field.contains("as")){
+            field = field.split("as")[0];
+        }
         switch (type) {
             case EQ -> {
                 if (andOr == AndOr.AND) {

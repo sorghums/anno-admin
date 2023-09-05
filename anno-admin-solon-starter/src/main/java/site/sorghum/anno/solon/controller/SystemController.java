@@ -41,4 +41,10 @@ public class SystemController extends SystemBaseController {
         UploadedFile filed = ctx.file("file");
         return super.uploadFile(filed.getContent(),filed.getName());
     }
+
+    @Mapping(value = "/api/global/config")
+    @SaIgnore
+    public AnnoResult<Map<String ,Object>> getGlobalConfig(){
+        return super.getGlobalConfig();
+    }
 }

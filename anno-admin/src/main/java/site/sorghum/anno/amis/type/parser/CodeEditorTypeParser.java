@@ -7,8 +7,8 @@ import site.sorghum.amis.entity.display.CodePopOver;
 import site.sorghum.amis.entity.display.CommonPopOver;
 import site.sorghum.amis.entity.input.CodeEditor;
 import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.anno.amis.type.TypeParser;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.amis.type.TypeParser;
 
 import java.util.Map;
 

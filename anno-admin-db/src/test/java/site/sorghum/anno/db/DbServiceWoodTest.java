@@ -10,14 +10,14 @@ import org.noear.solon.test.SolonTest;
 import org.noear.wood.DbContext;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
+import site.sorghum.anno._ddl.entity2db.SampleEntityToTableGetter;
 import site.sorghum.anno.db.app.entity.TestEntity;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno._ddl.entity2db.SampleEntityToTableGetter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

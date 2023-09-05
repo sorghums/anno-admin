@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
@@ -52,4 +53,16 @@ public class BusinessProductCat extends BaseMetaModel {
             edit = @AnnoEdit
     )
     String parentId;
+
+    /**
+     * 角色按钮
+     */
+    @AnnoButton(name = "分类商品多对多", m2mJoinButton = @AnnoButton.M2MJoinButton(
+        joinAnnoMainClazz = BusinessVirtualTable.class,
+        mediumTableClass = BusinessCatProduct.class,
+        mediumOtherField = "product_id",
+        mediumThisField = "cat_id",
+        joinThisClazzField = "id"
+    ))
+    private Object roleButton;
 }

@@ -13,9 +13,9 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.pre.plugin.proxy.SysUserProxy;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.suppose.model.BaseOrgMetaModel;
-import site.sorghum.anno.pre.plugin.proxy.SysUserProxy;
 
 import java.io.Serializable;
 

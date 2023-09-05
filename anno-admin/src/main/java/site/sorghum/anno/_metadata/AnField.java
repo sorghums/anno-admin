@@ -3,8 +3,8 @@ package site.sorghum.anno._metadata;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
+import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
@@ -99,6 +99,13 @@ public class AnField {
     private String searchPlaceHolder;
 
     /**
+     * 搜索框 大小
+     *
+     * @see AnnoSearch#size()
+     */
+    private String searchSize;
+
+    /**
      * 编辑 是否开启
      *
      * @see AnnoEdit#editEnable()
@@ -134,12 +141,39 @@ public class AnField {
     private AnnoDataType dataType;
 
     /**
-     * 数据类型
+     * 查询Sql
      *
      * @see AnnoOptionType#sql()
      */
     private String optionTypeSql;
 
+    /**
+     * annoMain的类自动解析Sql
+     *
+     * @see AnnoOptionType#optionAnno()
+     */
+    private OptionAnnoClass optionAnnoClass;
+
+    @Data
+    @AllArgsConstructor
+    public static class OptionAnnoClass {
+        /**
+         * 显示的标签 key
+         */
+        String labelKey;
+
+        /**
+         * 显示的值 key
+         */
+        String idKey;
+
+        /**
+         * annoMain注释的类，比如 SysOrg.class
+         * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
+         * 并且会自动走SysOrg的代理操作
+         */
+        Class<?> annoClass;
+    }
     /**
      * 选择数据
      *
@@ -215,6 +249,12 @@ public class AnField {
      */
     private List<TreeData> treeDatas;
 
+    /**
+     * 选择类型-树形
+     * @see AnnoTreeType#treeAnno();
+     */
+    private TreeAnnoClass treeOptionAnnoClass;
+
     @Data
     @AllArgsConstructor
     public static class TreeData {
@@ -249,4 +289,29 @@ public class AnField {
     }
 
 
+    @Data
+    @AllArgsConstructor
+    public static class TreeAnnoClass {
+
+        /**
+         * 并且会自动解析类信息
+         * 且走代理操作
+         */
+        Class<?> annoClass;
+
+        /**
+         * 显示的值 key
+         */
+        String idKey;
+
+        /**
+         * 显示的标签 key
+         */
+        String labelKey;
+
+        /**
+         * 父主键 key
+         */
+        String pidKey;
+    }
 }

@@ -42,7 +42,7 @@ public class CrudView extends Page {
         bodyCrud.setApi(
                 new Api(){{
                     setMethod("post");
-                    setUrl("/system/anno/${clazz}/page");
+                    setUrl("/amis/system/anno/${clazz}/page");
                     setData(new HashMap<>(){{
                         put("&", "$$");
                         put("_cat", "${_cat}");

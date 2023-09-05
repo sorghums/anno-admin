@@ -1,0 +1,77 @@
+// 自定义AMIS通用参数
+:root {
+	--Tree-max-height: 800px;
+	--animation-duration: 0.4s;
+	--Panel-heading-bg: #1990ff17;
+	--colors-brand-5: #1990ff;
+	--global-blur: blur(0px);
+}
+
+.antd-Table-table > thead > tr > th{
+	background: var(--Panel-heading-bg);
+	backdrop-filter: blur(10px);
+}
+
+.antd-ButtonGroup > .antd-Button {
+	border-style: var(--Panel-top-border-style) var(--Panel-right-border-style) var(--Panel-bottom-border-style) var(--Panel-left-border-style);
+	border-width: var(--Panel-borderWidth);
+	border-radius: var(--Panel-borderRadius);
+	box-shadow: var(--Panel-boxShadow);
+	border-color: #eaf5ff;
+}
+
+.antd-Table-content {
+	border-style: var(--Panel-top-border-style) var(--Panel-right-border-style) var(--Panel-bottom-border-style) var(--Panel-left-border-style);
+	border-width: var(--Panel-borderWidth);
+	border-radius: var(--Panel-borderRadius);
+	box-shadow: var(--Panel-boxShadow);
+	border-color: #eaf5ff;
+}
+.antd-Modal {
+	z-index: 1000;
+}
+.antd-Dialog-info {
+	display: none;
+}
+.antd-Modal-overlay {
+	backdrop-filter: var(--global-blur);
+	background: rgba(0, 0, 0, 0.22);
+}
+
+.antd-Drawer-overlay.in {
+	backdrop-filter: var(--global-blur);
+	background: rgba(0, 0, 0, 0.22);
+}
+
+.antd-Form-item {
+	margin-bottom: 10px;
+	margin-top: 15px;
+}
+
+.antd-TreeControl-searchbox.is-active {
+	margin-right: 10px;
+	margin-left: 10px;
+	width: 90%;
+}
+
+.antd-TreeControl-searchbox {
+	margin-top: 0;
+}
+
+.container .ant-layout .ant-layout-content {
+	padding: 0;
+}
+
+.antd-Table-table > tbody > tr > td, .antd-Table-table > tbody > tr > th {
+	vertical-align: middle;
+}
+
+.antd-Form-label {
+	width: 80px;
+	text-align: left;
+}
+
+.antd-Picker {
+	min-width: 150px;
+}
+

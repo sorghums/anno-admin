@@ -3,7 +3,6 @@ package site.sorghum.anno.spring.config;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.interceptor.SaInterceptor;
-
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.redisx.RedisClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,5 @@
 package site.sorghum.anno._common.util;
 
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.noear.redisx.RedisClient;
 import org.noear.redisx.plus.RedisBucket;

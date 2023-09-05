@@ -7,8 +7,8 @@ import site.sorghum.amis.entity.display.Link;
 import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputFile;
-import site.sorghum.anno.amis.type.TypeParser;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.amis.type.TypeParser;
 
 import java.util.Map;
 

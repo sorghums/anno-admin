@@ -4,10 +4,11 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
-import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
+import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.manager.CaptchaManager;
+import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class AuthBaseController {
             return AnnoResult.failure("用户名或密码不能为空");
         }
         // 校验用户名密码
-        SysUser sysUser = authService.verifyLogin(mobile, password);
+        SysUser sysUser = AuthFunctions.verifyLogin.apply(user);
         // 登录
         StpUtil.login(sysUser.getId());
         SaSession session = StpUtil.getSession(true);
@@ -56,10 +57,10 @@ public class AuthBaseController {
             return AnnoResult.failure("请先登录");
         }
         // 登录用户
-        SysUser sysUser = authService.getUserById(loginId);
+        SysUser sysUser = AuthFunctions.getUserById.apply(loginId);
         sysUser.setPassword(null);
         StpUtil.getSession().set("user", sysUser);
-        authService.removePermRoleCacheList(loginId);
+        AuthFunctions.removePermRoleCacheList.accept(loginId);
         return AnnoResult.succeed("清除成功");
     }
 

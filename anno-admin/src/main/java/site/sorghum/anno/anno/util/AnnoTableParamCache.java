@@ -44,6 +44,7 @@ public class AnnoTableParamCache {
         returnParam.setColumns(new ArrayList<>(tableParam.getColumns()));
         returnParam.setRemoveParam(tableParam.getRemoveParam());
         returnParam.setVirtualTable(tableParam.isVirtualTable());
+        returnParam.setJoinTables(new ArrayList<>(tableParam.getJoinTables()));
         return returnParam;
     }
 

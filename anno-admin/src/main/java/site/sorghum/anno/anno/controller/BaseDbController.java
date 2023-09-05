@@ -9,29 +9,25 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
-import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.anno.util.AnnoTableParamCache;
-import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._common.util.JSONUtil;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.util.AnnoTableParamCache;
+import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.anno.util.Utils;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.OrderByParam;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataManager;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -113,13 +109,13 @@ public class BaseDbController {
      * <p>
      * id id
      *
-     * @return {@link Result}
+     * @return {@link AnnoResult}
      */
     public AnnoResult<String> removeById(String clazz, String id) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         AnField pkField = anEntity.getPkField();
         dbService.delete(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
-        return AnnoResult.succeed();
+        return AnnoResult.succeed("删除成功");
     }
 
     /**

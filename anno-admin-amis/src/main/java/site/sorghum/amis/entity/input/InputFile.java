@@ -2,8 +2,8 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.amis.entity.function.Api;
+import site.sorghum.anno.i18n.I18nUtil;
 
 /**
  * 输入文件

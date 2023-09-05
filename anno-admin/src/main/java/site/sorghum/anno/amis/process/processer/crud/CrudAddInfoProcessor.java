@@ -11,12 +11,12 @@ import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.anno.amis.model.CrudView;
-import site.sorghum.anno.amis.process.BaseProcessor;
-import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.amis.model.CrudView;
+import site.sorghum.anno.amis.process.BaseProcessor;
+import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 
 import java.util.ArrayList;
@@ -49,13 +49,6 @@ public class CrudAddInfoProcessor implements BaseProcessor {
         }
         List<AmisBase> formItems = new ArrayList<>() {{
             for (AnField field : anFields) {
-                if (field.isPrimaryKey()) {
-                    add(new FormItem() {{
-                        setName(field.getFieldName());
-                        setType("hidden");
-                    }});
-                    continue;
-                }
                 if (field.isAddEnable()) {
                     FormItem formItem = new FormItem();
                     formItem.setName(field.getFieldName());
@@ -82,7 +75,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                         setWrapWithPanel(false);
                         setApi(new Api() {{
                             setMethod("post");
-                            setUrl("/system/anno/${clazz}/save");
+                            setUrl("/amis/system/anno/${clazz}/save");
                         }});
                         setId("simple-add-form");
                         setSize("md");

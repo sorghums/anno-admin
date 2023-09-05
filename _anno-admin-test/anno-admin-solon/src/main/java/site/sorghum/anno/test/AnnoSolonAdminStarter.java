@@ -25,7 +25,7 @@ public class AnnoSolonAdminStarter {
                 log.debug("===[Wood] sql: {}", cmd.text);
                 log.debug("===[Wood] var: {}", cmd.paramMap());
             });
-            app.before(new CrossHandler().allowedOrigins("*"));
+            app.before(new CrossHandler().allowedOrigins("*").allowedHeaders("*").allowedMethods("*"));
         });
     }
 }

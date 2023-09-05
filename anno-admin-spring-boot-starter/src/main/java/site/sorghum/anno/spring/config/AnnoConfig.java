@@ -112,7 +112,7 @@ public class AnnoConfig {
                 AnnoUtil.getAnnoFields(clazz).forEach(
                     field -> {
                         String columnName = AnnoUtil.getColumnName(field);
-                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field);
+                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
                     }
                 );
             }

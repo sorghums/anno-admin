@@ -1,5 +1,6 @@
 package site.sorghum.anno._metadata;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -73,6 +74,18 @@ public class MetadataManager {
         }
         // 设置是否虚拟表
         tableParam.setVirtualTable(entity.isVirtualTable());
+        // 设置连表信息
+        if (entity.getJoinTable() != null){
+            String mainTableName = entity.getJoinTable().getMainTable();
+            if (StrUtil.isNotBlank(entity.getJoinTable().getMainAlias())){
+                mainTableName = entity.getJoinTable().getMainTable() + " as " + entity.getJoinTable().getMainAlias();
+            }
+            tableParam.setTableName(mainTableName);
+            List<TableParam.JoinTable> joinTables = entity.getJoinTable().getJoinTables().stream()
+                .map(joinTable -> new TableParam.JoinTable(joinTable.getTable(), joinTable.getAlias(), joinTable.getJoinType(), joinTable.getJoinCondition()))
+                .toList();
+            tableParam.setJoinTables(joinTables);
+        }
         AnnoTableParamCache.put(entity.getEntityName(), tableParam);
     }
 

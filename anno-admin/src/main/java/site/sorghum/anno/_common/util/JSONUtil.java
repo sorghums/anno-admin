@@ -3,7 +3,6 @@ package site.sorghum.anno._common.util;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson2.*;
-import site.sorghum.amis.entity.input.Options;
 import site.sorghum.anno._common.exception.BizException;
 
 import java.net.URL;

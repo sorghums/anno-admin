@@ -119,7 +119,7 @@ public class TreeView extends Page {
         form.setId("tree-form-reload");
         form.setMode("normal");
         form.setApi(new Api() {{
-            setUrl("/system/anno/${clazz}/saveOrUpdate");
+            setUrl("/amis/system/anno/${clazz}/saveOrUpdate");
             setMethod("post");
             setMessages(new ApiMessage() {{
                 setSuccess("保存成功");
@@ -127,7 +127,7 @@ public class TreeView extends Page {
             }});
         }});
         form.setInitApi(new Api() {{
-            setUrl("/system/anno/${clazz}/queryById?_cat=${_cat}");
+            setUrl("/amis/system/anno/${clazz}/queryById?_cat=${_cat}");
             setMethod("post");
         }});
         form.setReload("aside-input-tree, parent-tree-select");
@@ -172,12 +172,8 @@ public class TreeView extends Page {
                                                                 put("args", new HashMap<String, Object>() {{
                                                                     put("options", new HashMap<String, Object>());
                                                                     put("api", new Api() {{
-                                                                        setUrl("/system/anno/${clazz}/removeById?id=${id}");
+                                                                        setUrl("/amis/system/anno/${clazz}/removeById?id=${id}");
                                                                         setMethod("post");
-                                                                        setMessages(new ApiMessage() {{
-                                                                            setSuccess("删除成功");
-                                                                            setFailed("删除失败");
-                                                                        }});
                                                                     }});
                                                                 }});
                                                                 put("outputVar", "responseResult");

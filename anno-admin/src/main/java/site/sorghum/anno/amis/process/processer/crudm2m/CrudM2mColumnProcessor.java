@@ -5,12 +5,12 @@ import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.display.Table;
-import site.sorghum.anno.amis.model.CrudM2mView;
-import site.sorghum.anno.amis.process.BaseProcessor;
-import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.amis.model.CrudM2mView;
+import site.sorghum.anno.amis.process.BaseProcessor;
+import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 
 import java.util.ArrayList;

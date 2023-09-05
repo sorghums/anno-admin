@@ -37,4 +37,10 @@ public class SystemController extends SystemBaseController {
     public AnnoResult<Map<String,Object>> uploadFile(MultipartFile file, HttpServletRequest request) throws Exception {
         return super.uploadFile(file.getInputStream(),file.getOriginalFilename());
     }
+
+    @GetMapping(value = "/api/global/config")
+    @SaIgnore
+    public AnnoResult<Map<String ,Object>> getGlobalConfig(){
+        return super.getGlobalConfig();
+    }
 }

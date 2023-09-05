@@ -157,6 +157,11 @@ public class FormItem extends AmisBase {
      */
     Boolean clearValueOnEmpty = true;
 
+    /**
+     * 表单项的宽度
+     */
+    String columnRatio;
+
     @Data
     public static class AutoFill {
 

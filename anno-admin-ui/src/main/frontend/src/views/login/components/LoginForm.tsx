@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface";
@@ -24,9 +24,15 @@ const LoginForm = (props: any) => {
 			setLoading(true);
 			const { data } = await loginApi(loginForm);
 			setToken(data);
+			const token = data || "";
+			// @ts-ignore
+			window.localStorage.setItem("anno-token",token);
 			setTabsList([]);
 			message.success("登录成功！");
 			navigate(HOME_URL);
+		}catch (e){
+			// 重置表单
+			form.resetFields();
 		} finally {
 			setLoading(false);
 		}

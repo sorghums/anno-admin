@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @since 2023/05/20
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Documented
 public @interface AnnoSearch {
 
@@ -35,4 +35,12 @@ public @interface AnnoSearch {
      * @return {@link String}
      */
     String placeHolder() default "";
+
+    /**
+     * 搜索框大小
+     * 'xs' | 'sm' | 'md' | 'lg' | 'full'
+     *
+     * @return {@link String}
+     */
+    String size() default "sm";
 }

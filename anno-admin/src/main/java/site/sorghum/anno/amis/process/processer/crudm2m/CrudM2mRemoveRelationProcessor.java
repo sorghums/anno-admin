@@ -35,7 +35,7 @@ public class CrudM2mRemoveRelationProcessor implements BaseProcessor {
         delete.setApi(
             new Api() {{
                 setMethod("post");
-                setUrl("/system/anno/${clazz}/remove-relation");
+                setUrl("/amis/system/anno/${clazz}/remove-relation");
                 setData(new JSONObject() {{
                     put("&", "$$");
                     put("_extraData", "${extraData}");

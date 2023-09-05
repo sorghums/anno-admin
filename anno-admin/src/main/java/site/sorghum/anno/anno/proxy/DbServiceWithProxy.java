@@ -7,14 +7,14 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
 import org.noear.wood.impl.IPageImpl;
-import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +56,8 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(true, page.getList(), page.getTotal(), page.getSize(), page.getPages());
-        proxyInstance.afterFetch(annoPage);
-        preProxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
         return new IPageImpl<>(annoPage.getList(), annoPage.getTotal(), annoPage.getSize());
     }
 
@@ -77,8 +77,8 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(annoPage);
-        proxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
         return annoPage.getList();
     }
 
@@ -99,8 +99,8 @@ public class DbServiceWithProxy implements DbService {
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(annoPage);
-        proxyInstance.afterFetch(annoPage);
+        preProxyInstance.afterFetch(tableParam, dbConditions, null,annoPage);
+        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
         return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
 

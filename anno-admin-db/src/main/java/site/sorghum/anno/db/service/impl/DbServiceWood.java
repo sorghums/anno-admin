@@ -2,7 +2,6 @@ package site.sorghum.anno.db.service.impl;
 
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
-import site.sorghum.anno.i18n.I18nUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
@@ -13,6 +12,7 @@ import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
 import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.i18n.I18nUtil;
 
 import java.util.List;
 
@@ -29,6 +29,7 @@ public class DbServiceWood implements DbService {
      * 通用条件
      */
     private static final String COMMON_CONDITION = "1=1";
+
     /**
      * Wood数据库上下文
      */
@@ -57,7 +58,7 @@ public class DbServiceWood implements DbService {
         if (ts.size() > 1) {
             throw new AnnoDbException(I18nUtil.getMessage("exception.db.out-one"));
         }
-        if (ts.size() == 0) {
+        if (ts.isEmpty()) {
             return null;
         }
         return ts.get(0);
@@ -98,9 +99,9 @@ public class DbServiceWood implements DbService {
     }
 
 
-    private <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
+    public  <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
         RemoveParam removeParam = tableParam.getRemoveParam();
-        DbTableQuery dbTableQuery = dbContext.table(tableParam.getTableName()).where(COMMON_CONDITION);
+        DbTableQuery dbTableQuery = tableParam.toTbQuery(dbContext).where(COMMON_CONDITION);
         if (removeParam.getLogic()) {
             dbConditions.add(DbCondition.builder().field(removeParam.getRemoveColumn()).value(removeParam.getNotRemoveValue()).build());
         }

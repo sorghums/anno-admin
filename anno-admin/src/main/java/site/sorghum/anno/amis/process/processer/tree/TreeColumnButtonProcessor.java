@@ -6,18 +6,17 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.DialogButton;
-import site.sorghum.amis.entity.display.DrawerButton;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
-import site.sorghum.anno.amis.model.TreeView;
-import site.sorghum.anno.amis.process.BaseProcessor;
-import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.amis.model.TreeView;
+import site.sorghum.anno.amis.process.BaseProcessor;
+import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
 
@@ -116,7 +115,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 action.setApi(
                     new Api() {{
                         setMethod("post");
-                        setUrl("/system/anno/runJavaCmd");
+                        setUrl("/amis/system/anno/runJavaCmd");
                         setData(new HashMap<>() {{
                             put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
                             put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));

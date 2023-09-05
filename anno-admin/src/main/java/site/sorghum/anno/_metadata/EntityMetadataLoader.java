@@ -1,18 +1,20 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.util.AnnoUtil;
 
 import java.lang.reflect.Field;
@@ -39,18 +41,31 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
     public AnEntity load(Class<?> clazz) {
         AnnoMain annoMain = clazz.getAnnotation(AnnoMain.class);
         Table table = clazz.getAnnotation(Table.class);
-
         AnEntity entity = new AnEntity();
         entity.setTitle(annoMain.name());
+        entity.setCanRemove(annoMain.canRemove());
         if (table == null || StrUtil.isBlank(table.value())) {
             entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
         } else {
             entity.setTableName(table.value());
         }
+
+        entity.setOrgFilter(annoMain.orgFilter());
         entity.setVirtualTable(annoMain.virtualTable());
         if (entity.isVirtualTable()){
             // 虚拟表不需要维护
             entity.setAutoMaintainTable(false);
+        }
+
+        if (annoMain.annoJoinTable().enable()) {
+            if (!entity.isVirtualTable()){
+                throw new BizException("连表必须是虚拟表,且请自主实现代理类Proxy。");
+            }
+            List<AnJoinTable.JoinTable> joinTables = Arrays.stream(annoMain.annoJoinTable().joinTables())
+                .map(anJoinTable -> new AnJoinTable.JoinTable(anJoinTable.table(), anJoinTable.alias(), anJoinTable.joinCondition(), anJoinTable.joinType()))
+                .toList();
+            // 维护连表信息
+            entity.setJoinTable(new AnJoinTable(annoMain.annoJoinTable().mainTable(),annoMain.annoJoinTable().mainAlias(),joinTables));
         }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
@@ -84,6 +99,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
         setAnFields(entity, clazz);
 
+        setAnMany2ManyFields(entity, clazz);
+
         List<AnColumnButton> anColumnButtons = getAnButton(clazz);
         entity.setColumnButtons(anColumnButtons);
 
@@ -97,11 +114,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
      * 设置字段信息和主键字段
      */
     private void setAnFields(AnEntity entity, Class<?> clazz) {
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        List<FieldAnnoField> fields = AnnoUtil.getAnnoFields(clazz);
         List<AnField> anFields = new ArrayList<>();
         boolean virtualTable = entity.isVirtualTable();
-        for (Field field : fields) {
-            AnnoField anno = AnnotationUtil.getAnnotation(field, AnnoField.class);
+        for (FieldAnnoField fieldAnnoField : fields) {
+            AnnoField anno = fieldAnnoField.getAnnoField();
+            Field field = fieldAnnoField.getField();
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
             anField.setVirtualColumn(anno.virtualColumn());
@@ -125,6 +143,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setSearchEnable(anno.search().enable());
             anField.setSearchNotNull(anno.search().notNull());
             anField.setSearchPlaceHolder(anno.search().placeHolder());
+            anField.setSearchSize(anno.search().size());
 
             anField.setAddEnable(anno.edit().addEnable());
             anField.setEditEnable(anno.edit().editEnable());
@@ -134,13 +153,16 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setDataType(anno.dataType());
 
             anField.setOptionTypeSql(anno.optionType().sql());
+            AnnoOptionType.OptionAnnoClass optionAnnoClass = anno.optionType().optionAnno();
+            anField.setOptionAnnoClass(
+                new AnField.OptionAnnoClass(optionAnnoClass.labelKey(),optionAnnoClass.idKey(),optionAnnoClass.annoClass())
+            );
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
-            if (ArrayUtil.isNotEmpty(optionData)) {
-                List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
-                    .map(e -> new AnField.OptionData(e.label(), e.value()))
-                    .collect(Collectors.toList());
-                anField.setOptionDatas(optionDataList);
-            }
+            List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
+                .map(e -> new AnField.OptionData(e.label(), e.value()))
+                .collect(Collectors.toList());
+            anField.setOptionDatas(optionDataList);
+
 
             // 图像
             anField.setImageThumbRatio(anno.imageType().thumbRatio());
@@ -151,13 +173,15 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // 选择类型-树
             anField.setTreeTypeSql(anno.treeType().sql());
+            AnnoTreeType.TreeAnnoClass treeAnnoClass = anno.treeType().treeAnno();
+            anField.setTreeOptionAnnoClass(
+                new AnField.TreeAnnoClass(treeAnnoClass.annoClass(),treeAnnoClass.idKey(),treeAnnoClass.labelKey(),treeAnnoClass.pidKey())
+            );
             AnnoTreeType.TreeData[] treeData = anno.treeType().value();
-            if (ArrayUtil.isNotEmpty(treeData)) {
-                List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
-                    .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
-                    .collect(Collectors.toList());
-                anField.setTreeDatas(treeDataList);
-            }
+            List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
+                .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
+                .collect(Collectors.toList());
+            anField.setTreeDatas(treeDataList);
 
             // pk
             PrimaryKey primaryKey = AnnotationUtil.getAnnotation(field, PrimaryKey.class);
@@ -171,6 +195,25 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setFields(anFields);
     }
 
+    private void setAnMany2ManyFields(AnEntity entity, Class<?> clazz) {
+        List<Field> fields = AnnoUtil.getAnnoMany2ManyFields(clazz);
+        List<AnMany2ManyField> annoMany2ManyFields = new ArrayList<>();
+        for (Field field : fields) {
+            AnnoMany2ManyField anno = AnnotationUtil.getAnnotation(field, AnnoMany2ManyField.class);
+            AnMany2ManyField anMany2ManyField = new AnMany2ManyField();
+            anMany2ManyField.setField(field);
+            anMany2ManyField.setMediumTable(anno.mediumTable());
+
+            anMany2ManyField.setOtherColumnMediumName(anno.otherColumn().mediumName());
+            anMany2ManyField.setOtherColumnReferencedName(anno.otherColumn().referencedName());
+
+            anMany2ManyField.setThisColumnMediumName(anno.thisColumn().mediumName());
+            anMany2ManyField.setThisColumnReferencedName(anno.thisColumn().referencedName());
+
+            annoMany2ManyFields.add(anMany2ManyField);
+        }
+        entity.setMany2ManyFields(annoMany2ManyFields);
+    }
     private List<AnColumnButton> getAnButton(Class<?> clazz) {
         ArrayList<AnColumnButton> anColumnButtons = new ArrayList<>();
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);
