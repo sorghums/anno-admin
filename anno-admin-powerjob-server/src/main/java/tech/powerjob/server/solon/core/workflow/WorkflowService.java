@@ -81,7 +81,7 @@ public class WorkflowService {
             wf.setUpdateTime(LocalDateTime.now());
         } else {
             Long finalWfId = wfId;
-            wf = workflowInfoRepository.findById(wfId).orElseThrow(() -> new IllegalArgumentException("can't find workflow by id:" + finalWfId));
+            wf = workflowInfoRepository.findById(String.valueOf(wfId)).orElseThrow(() -> new IllegalArgumentException("can't find workflow by id:" + finalWfId));
         }
 
         BeanUtil.copyProperties(req, wf);
