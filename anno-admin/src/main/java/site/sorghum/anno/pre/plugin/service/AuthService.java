@@ -12,11 +12,8 @@ import java.util.Map;
  * @since 2023/06/27
  */
 public interface AuthService {
-    void resetPwd(Map<String, Object> props);
 
     SysUser verifyLogin(String mobile, String pwd);
-
-    SysUser getUserByMobile(String mobile);
 
     SysUser getUserById(String id);
 

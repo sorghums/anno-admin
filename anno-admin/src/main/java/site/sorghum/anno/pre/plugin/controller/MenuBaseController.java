@@ -10,6 +10,7 @@ import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
 import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.pre.plugin.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.service.SysAnnoMenuService;
 
@@ -40,7 +41,7 @@ public class MenuBaseController {
         List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
             sysAnnoMenu -> {
                 if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-                    return authService.permissionList(uid).contains(sysAnnoMenu.getPermissionId());
+                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
                 }
                 return true;
             }
@@ -55,7 +56,7 @@ public class MenuBaseController {
         List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
             sysAnnoMenu -> {
                 if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-                    return authService.permissionList(uid).contains(sysAnnoMenu.getPermissionId());
+                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
                 }
                 return true;
             }

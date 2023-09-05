@@ -25,6 +25,7 @@ import site.sorghum.anno.pre.plugin.dao.SysAnnoMenuDao;
 import site.sorghum.anno.pre.plugin.dao.SysPermissionDao;
 import site.sorghum.anno.pre.plugin.dao.SysRoleDao;
 import site.sorghum.anno.pre.plugin.dao.SysUserDao;
+import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.sql.SQLException;
@@ -146,34 +147,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void resetPwd(Map<String, Object> props) {
-        SysUser sysUser = new SysUser();
-        String mobile = props.get("mobile").toString();
-        String id = props.get("id").toString();
-        sysUser.setId(id);
-        sysUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
-        sysUserDao.updateById(sysUser, true);
-    }
-
-    @Override
     public SysUser verifyLogin(String mobile, String pwd) {
         SysUser sysUser = sysUserDao.queryByMobile(mobile);
         if (sysUser == null) {
             throw new BizException("用户不存在");
         }
         // 清除缓存
-        this.removePermRoleCacheList(sysUser.getId());
+        AuthFunctions.removePermRoleCacheList.accept(sysUser.getId());
         if (!sysUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
-        }
-        return sysUser;
-    }
-
-    @Override
-    public SysUser getUserByMobile(String mobile) {
-        SysUser sysUser = sysUserDao.queryByMobile(mobile);
-        if (sysUser == null) {
-            throw new BizException("用户不存在");
         }
         return sysUser;
     }
@@ -189,7 +171,7 @@ public class AuthServiceImpl implements AuthService {
         if (CacheUtil.containsCache(key)) {
             return CacheUtil.getCacheList(key, String.class);
         }
-        List<String> roleIds = AnnoBeanUtils.getBean(AuthService.class).roleList(userId);
+        List<String> roleIds = AuthFunctions.roleList.apply(userId);
         List<String> permissionCodes;
         if (roleIds.contains("admin")) {
             List<SysPermission> sysPermissions = sysPermissionDao.list();

@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 
 import java.util.List;
@@ -18,14 +19,12 @@ import java.util.List;
 @Slf4j
 public class StpInterfaceImpl implements StpInterface {
 
-    @Inject
-    AuthService authService;
     /**
      * 返回一个账号所拥有的权限码集合
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return authService.permissionList(loginId.toString());
+        return AuthFunctions.permissionList.apply(loginId.toString());
     }
 
     /**
@@ -33,7 +32,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return authService.roleList(loginId.toString());
+        return AuthFunctions.roleList.apply(loginId.toString());
     }
 
 }
