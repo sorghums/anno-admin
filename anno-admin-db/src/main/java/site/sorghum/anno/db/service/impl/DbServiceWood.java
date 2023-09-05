@@ -58,7 +58,7 @@ public class DbServiceWood implements DbService {
         if (ts.size() > 1) {
             throw new AnnoDbException(I18nUtil.getMessage("exception.db.out-one"));
         }
-        if (ts.size() == 0) {
+        if (ts.isEmpty()) {
             return null;
         }
         return ts.get(0);

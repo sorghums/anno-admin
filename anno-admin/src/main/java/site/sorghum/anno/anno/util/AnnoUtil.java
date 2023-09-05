@@ -22,6 +22,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.anno.proxy.AnnoPreDefaultProxy;
@@ -29,6 +30,7 @@ import site.sorghum.anno.db.param.DbCondition;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -160,6 +162,18 @@ public class AnnoUtil {
         return annoField.tableFieldName();
     }
 
+    /**
+     * 得到表名
+     *
+     * @param field clazz
+     * @return {@link String}
+     */
+    public static String getColumnName(FieldAnnoField field) {
+        return field.getAnnoField().tableFieldName();
+    }
+
+
+
 
     /**
      * 获取分类键值
@@ -172,19 +186,6 @@ public class AnnoUtil {
         return annotation.annoLeftTree().catKey();
     }
 
-    /**
-     * 获取表字段
-     *
-     * @param clazz 类
-     * @return {@link List<String>}
-     */
-    public static List<String> getTableFields(Class<?> clazz) {
-        return getAnnoFields(clazz)
-            .stream()
-            .map(field -> AnnotationUtil.getAnnotation(field, AnnoField.class))
-            .map(AnnoField::tableFieldName)
-            .filter(StrUtil::isNotBlank).collect(Collectors.toList());
-    }
 
     /**
      * 获取表字段
@@ -192,15 +193,41 @@ public class AnnoUtil {
      * @param clazz 类
      * @return {@link List<String>}
      */
-    public static List<Field> getAnnoFields(Class<?> clazz) {
-        List<Field> annoFieldFields = CollUtil.newArrayList();
+    public static List<FieldAnnoField> getAnnoFields(Class<?> clazz) {
+        List<FieldAnnoField> annoFieldFields = CollUtil.newArrayList();
         List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : allClass) {
             Field[] declaredFields = ClassUtil.getDeclaredFields(aClass);
             for (Field declaredField : declaredFields) {
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoField.class);
+                PrimaryKey primaryKey = AnnotationUtil.getAnnotation(declaredField, PrimaryKey.class);
                 if (annotation != null) {
-                    annoFieldFields.add(declaredField);
+                    annoFieldFields.add(new FieldAnnoField(declaredField,annotation,primaryKey));
+                }
+            }
+            // 扫描方法
+            Method[] declaredMethods = ClassUtil.getDeclaredMethods(aClass);
+            for (Method declaredMethod : declaredMethods) {
+                AnnoField annotation = AnnotationUtil.getAnnotation(declaredMethod, AnnoField.class);
+                PrimaryKey primaryKey = AnnotationUtil.getAnnotation(declaredMethod, PrimaryKey.class);
+                if (annotation != null) {
+                    // 根据method 查找对应的field
+                    String name = declaredMethod.getName();
+                    if (name.startsWith("get")) {
+                        name = StrUtil.removePrefix(name, "get");
+                        // 首字符小写
+                        name = StrUtil.lowerFirst(name);
+                    }
+                    if (name.startsWith("is")) {
+                        name = StrUtil.removePrefix(name, "is");
+                        // 首字符小写
+                        name = StrUtil.lowerFirst(name);
+                    }
+                    Field field = ReflectUtil.getField(aClass, name);
+                    if (field == null){
+                        throw new BizException("%s,未找到对应的field".formatted(annotation.title()));
+                    }
+                    annoFieldFields.add(new FieldAnnoField(field,annotation,primaryKey));
                 }
             }
         }
@@ -257,23 +284,12 @@ public class AnnoUtil {
      * @return {@link String}
      */
     public static String getPkField(Class<?> clazz) {
-        List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
-        Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null).findFirst();
-        return first.map(Field::getName).orElseThrow(() -> new BizException("未找到主键"));
+        List<FieldAnnoField> declaredFields = AnnoUtil.getAnnoFields(clazz);
+        Optional<FieldAnnoField> first = declaredFields.stream().filter(field -> field.getPrimaryKey() != null).findFirst();
+        return first.map(fieldAnnoField -> fieldAnnoField.getField().getName()).orElseThrow(() -> new BizException("未找到主键"));
     }
 
 
-    /**
-     * 得到主键字段
-     *
-     * @param clazz clazz
-     * @return {@link String}
-     */
-    public static Field getPkFieldItem(Class<?> clazz) {
-        List<Field> declaredFields = AnnoUtil.getAnnoFields(clazz);
-        Optional<Field> first = declaredFields.stream().filter(field -> AnnotationUtil.getAnnotation(field, PrimaryKey.class) != null).findFirst();
-        return first.orElseThrow(() -> new BizException("未找到主键"));
-    }
 
     /**
      * 得到父主键字段

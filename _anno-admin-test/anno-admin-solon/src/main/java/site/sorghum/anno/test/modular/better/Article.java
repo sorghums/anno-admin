@@ -1,10 +1,7 @@
 package site.sorghum.anno.test.modular.better;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.*;
@@ -21,13 +18,15 @@ import java.util.List;
 @NoArgsConstructor
 public class Article extends BaseMetaModel {
 
+    String name;
     @AnnoField(
         title = "文章名称",
         tableFieldName = "name",
         search = @AnnoSearch,
         edit = @AnnoEdit)
-    String name;
-
+    public String getName() {
+        return name;
+    }
 
     @AnnoField(
         title = "文章内容",

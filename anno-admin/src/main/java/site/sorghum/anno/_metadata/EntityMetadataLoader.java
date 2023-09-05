@@ -14,6 +14,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.util.AnnoUtil;
 
 import java.lang.reflect.Field;
@@ -113,11 +114,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
      * 设置字段信息和主键字段
      */
     private void setAnFields(AnEntity entity, Class<?> clazz) {
-        List<Field> fields = AnnoUtil.getAnnoFields(clazz);
+        List<FieldAnnoField> fields = AnnoUtil.getAnnoFields(clazz);
         List<AnField> anFields = new ArrayList<>();
         boolean virtualTable = entity.isVirtualTable();
-        for (Field field : fields) {
-            AnnoField anno = AnnotationUtil.getAnnotation(field, AnnoField.class);
+        for (FieldAnnoField fieldAnnoField : fields) {
+            AnnoField anno = fieldAnnoField.getAnnoField();
+            Field field = fieldAnnoField.getField();
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
             anField.setVirtualColumn(anno.virtualColumn());
