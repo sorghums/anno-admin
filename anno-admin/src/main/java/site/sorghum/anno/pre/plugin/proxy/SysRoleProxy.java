@@ -15,31 +15,6 @@ import java.util.List;
 public class SysRoleProxy implements AnnoBaseProxy<SysRole> {
 
     @Override
-    public void beforeFetch(TableParam<SysRole> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-
-    }
-
-    @Override
-    public void beforeAdd(TableParam<SysRole> tableParam, SysRole data) {
-
-    }
-
-    @Override
-    public void afterAdd(SysRole data) {
-
-    }
-
-    @Override
-    public void beforeUpdate(TableParam<SysRole> tableParam, List<DbCondition> dbConditions, SysRole data) {
-
-    }
-
-    @Override
-    public void afterUpdate(SysRole data) {
-
-    }
-
-    @Override
     public void beforeDelete(TableParam<SysRole> tableParam, List<DbCondition> dbConditions) {
         for (DbCondition dbCondition : dbConditions) {
             String field = dbCondition.getField();
@@ -52,13 +27,4 @@ public class SysRoleProxy implements AnnoBaseProxy<SysRole> {
         }
     }
 
-    @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterFetch(TableParam<SysRole> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysRole> page) {
-
-    }
 }

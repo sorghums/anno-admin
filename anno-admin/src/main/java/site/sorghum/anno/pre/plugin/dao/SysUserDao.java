@@ -1,9 +1,15 @@
 package site.sorghum.anno.pre.plugin.dao;
 
 import org.noear.wood.annotation.Sql;
+import org.noear.wood.utils.StringUtils;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.pre.plugin.ao.SysUser;
 import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 系统用户
@@ -21,4 +27,12 @@ public interface SysUserDao extends AnnoBaseMapper<SysUser> {
      */
     @Sql("SELECT * FROM sys_user WHERE mobile = ? and del_flag = 0 limit 1")
     SysUser queryByMobile(String mobile);
+
+    default List<SysUser> selectUserList(String userIds) {
+        if (StringUtils.isEmpty(userIds)) {
+            return new LinkedList<>();
+        }
+        List<String> collect = Arrays.stream(userIds.split(",")).collect(Collectors.toList());
+        return selectList(m -> m.whereIn("user_id", collect));
+    }
 }

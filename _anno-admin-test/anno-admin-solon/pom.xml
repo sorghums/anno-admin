@@ -28,6 +28,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-powerjob-server</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.ver}</version>
@@ -57,5 +62,22 @@
                 <artifactId>solon-maven-plugin</artifactId>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>*.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 </project>

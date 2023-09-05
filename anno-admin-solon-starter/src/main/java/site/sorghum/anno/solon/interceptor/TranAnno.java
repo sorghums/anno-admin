@@ -42,6 +42,11 @@ public class TranAnno implements Tran {
     }
 
     @Override
+    public String message() {
+        return "";
+    }
+
+    @Override
     public Class<? extends Annotation> annotationType() {
         return Tran.class;
     }

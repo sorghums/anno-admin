@@ -41,7 +41,7 @@ public class DbServiceWood implements DbService {
     public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         return dbTableQuery
-            .limit((pageParam.getPage() - 1) * pageParam.getLimit(), pageParam.getLimit())
+            .limit((pageParam.getPage() - 1) * pageParam.getPageSize(), pageParam.getPageSize())
             .selectPage(tableParam.getColumnStr(), tableParam.getClazz());
     }
 

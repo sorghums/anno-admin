@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,11 +37,12 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
         TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getTitle());
 
-        List<AnField> fields = anEntity.getDbAnFields();
+        List<AnField> fields = new ArrayList<>(anEntity.getDbAnFields());
 
         // 将 id 字段放到第一位
         AnField idField = CollUtil.findOne(fields, e -> e.getFieldName().equals(defaultPkName));
-        ListUtil.swapTo(fields, idField, 0);
+        fields.removeIf(e -> e.getFieldName().equals(defaultPkName));
+        fields.add(0, idField);
 
         for (AnField field : fields) {
             // 不是基本类型，跳过
@@ -133,6 +135,10 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             sqlType = Types.NUMERIC;
             size = 25;
             digit = 6;
+            defaultValue = "NOT NULL DEFAULT 0";
+        } else if (fieldType == Boolean.class) {
+            sqlType = Types.BIT;
+            size = 1;
             defaultValue = "NOT NULL DEFAULT 0";
         } else {
             throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(entityName, field.getFieldName(), fieldType.getSimpleName()));

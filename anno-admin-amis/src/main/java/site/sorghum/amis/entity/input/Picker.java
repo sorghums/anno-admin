@@ -2,7 +2,6 @@ package site.sorghum.amis.entity.input;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.amis.entity.AmisBase;
 
 import java.util.List;
 

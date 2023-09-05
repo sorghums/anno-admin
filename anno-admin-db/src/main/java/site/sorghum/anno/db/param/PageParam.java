@@ -15,11 +15,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PageParam {
     /**
-     * 页码
+     * 页码，从 1 开始
      */
     int page;
     /**
      * 每页条数
      */
-    int limit;
+    int pageSize;
+
+    public int getOffset() {
+        return (page - 1) * pageSize;
+    }
+
+    public static PageParam of(int page, int limit) {
+        return new PageParam(page, limit);
+    }
+
 }

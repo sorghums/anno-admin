@@ -1,7 +1,6 @@
 package site.sorghum.anno.pre.suppose.model;
 
 import lombok.Data;
-import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -9,7 +8,6 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.pre.suppose.proxy.BaseAnnoPreProxy;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -21,10 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @AnnoPreProxy(BaseAnnoPreProxy.class)
 @AnnoRemove(removeType = 1)
-public class BaseMetaModel implements Serializable {
-    @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32)
-    @PrimaryKey
-    protected String id;
+public class BaseMetaModel extends PrimaryKeyModel {
 
     @AnnoField(title = "创建人", tableFieldName = "create_by", show = false, fieldSize = 32)
     private String createBy;

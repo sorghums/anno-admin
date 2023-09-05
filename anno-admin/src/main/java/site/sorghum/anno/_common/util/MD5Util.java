@@ -2,6 +2,8 @@ package site.sorghum.anno._common.util;
 
 import cn.hutool.crypto.digest.MD5;
 
+import java.io.File;
+
 /**
  * MD5工具类
  * @author Sorghum
@@ -15,5 +17,9 @@ public class MD5Util {
 
     public static String digestHex(String str) {
         return MD5_INSTANCE.digestHex(str);
+    }
+
+    public static String digestHex(File file) {
+        return MD5_INSTANCE.digestHex(file);
     }
 }

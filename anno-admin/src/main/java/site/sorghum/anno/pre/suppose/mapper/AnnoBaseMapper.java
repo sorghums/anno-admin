@@ -8,10 +8,11 @@ import org.noear.wood.DbTableQuery;
 import org.noear.wood.MapperWhereQ;
 import org.noear.wood.ext.Act1;
 import org.noear.wood.utils.RunUtils;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
+import site.sorghum.anno.pre.suppose.model.PrimaryKeyModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 基于 wood 的 anno 基类，anno 中必须继承此类
@@ -19,7 +20,14 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/7/25 16:12
  */
-public interface AnnoBaseMapper<T extends BaseMetaModel> extends BaseMapper<T> {
+public interface AnnoBaseMapper<T extends PrimaryKeyModel> extends BaseMapper<T> {
+
+    default Optional<T> findById(Object id) {
+        if (id instanceof Long) {
+            return Optional.ofNullable(selectById(String.valueOf(id)));
+        }
+        return Optional.ofNullable(selectById(id));
+    }
 
     @Override
     default Long insert(T entity, boolean excludeNull) {
@@ -28,6 +36,19 @@ public interface AnnoBaseMapper<T extends BaseMetaModel> extends BaseMapper<T> {
         data.setEntityIf(entity, new EntityFieldFilter(entityClz(), excludeNull));
 
         return RunUtils.call(() -> getQr().insert(data));
+    }
+
+    default Long insert(T entity) {
+        return insert(entity, true);
+    }
+
+    default Long saveOrUpdate(T entity) {
+        String id = entity.getId();
+        if (StrUtil.isBlank(id)) {
+            return insert(entity);
+        } else {
+            return updateById(entity).longValue();
+        }
     }
 
     @Override
@@ -39,6 +60,10 @@ public interface AnnoBaseMapper<T extends BaseMetaModel> extends BaseMapper<T> {
         }
 
         RunUtils.call(() -> getQr().insertList(list2));
+    }
+
+    default Integer updateById(T entity) {
+        return updateById(entity, true);
     }
 
     @Override
@@ -59,6 +84,13 @@ public interface AnnoBaseMapper<T extends BaseMetaModel> extends BaseMapper<T> {
         data.setEntityIf(entity, new EntityFieldFilter(entityClz(), excludeNull));
 
         return RunUtils.call(() -> getQr(c).update(data));
+    }
+
+    /**
+     * 更新时，排除值为空的字段
+     */
+    default Integer update(T entity, Act1<MapperWhereQ> c) {
+        return update(entity, true, c);
     }
 
     private void setId(T entity) {
