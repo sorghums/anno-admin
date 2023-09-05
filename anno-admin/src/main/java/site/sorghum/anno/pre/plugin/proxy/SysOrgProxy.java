@@ -35,36 +35,4 @@ public class SysOrgProxy  implements AnnoBaseProxy<SysOrg> {
         }
     }
 
-    @Override
-    public void afterAdd(SysOrg data) {
-
-    }
-
-    @Override
-    public void beforeUpdate(TableParam<SysOrg> tableParam, List<DbCondition> dbConditions, SysOrg data) {
-
-    }
-
-    @Override
-    public void afterUpdate(SysOrg data) {
-
-    }
-
-    @Override
-    public void beforeDelete(TableParam<SysOrg> tableParam, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
-
-    }
-
-
-    @Override
-    public void afterFetch(TableParam<SysOrg> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysOrg> page) {
-
-    }
-
-
 }

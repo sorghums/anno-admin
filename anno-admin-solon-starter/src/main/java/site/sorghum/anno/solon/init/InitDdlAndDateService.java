@@ -2,9 +2,10 @@ package site.sorghum.anno.solon.init;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
+import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.event.AppBeanLoadEndEvent;
+import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class InitDdlAndDateService {
+public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
@@ -45,7 +46,7 @@ public class InitDdlAndDateService {
     @Inject
     AuthServiceImpl authService;
 
-    public void init() throws Throwable {
+    public void initDdl() throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
             PlatformFactory platformFactory = Solon.context().getBean(PlatformFactory.class);
@@ -75,8 +76,14 @@ public class InitDdlAndDateService {
             }
         }
 
+    }
+
+    /**
+     * 应用启动成功后，再初始化权限和菜单（可以获取到其他插件生成的 bean）
+     */
+    @Override
+    public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
         authService.initPermissions();
         authService.initMenus();
     }
-
 }

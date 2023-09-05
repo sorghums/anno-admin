@@ -80,7 +80,8 @@ public class XPluginImp implements Plugin {
         // 前端静态文件
         StaticMappings.add("/", new ClassPathStaticRepository("META-INF/anno-admin-ui"));
 
-        context.getBean(InitDdlAndDateService.class).init();
+        // 优先 初始化数据库表结构和预置数据，其他模块在创建 bean 时，可能会查库
+        context.getBean(InitDdlAndDateService.class).initDdl();
     }
 
     /**

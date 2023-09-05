@@ -46,41 +46,4 @@ public class SysAnnoMenuProxy implements AnnoBaseProxy<SysAnnoMenu> {
             data.setType(1);
         }
     }
-
-    // ------ 以下方法暂时不用 ------
-
-    @Override
-    public void afterAdd(SysAnnoMenu data) {
-
-    }
-
-    @Override
-    public void beforeUpdate(TableParam<SysAnnoMenu> tableParam, List<DbCondition> dbConditions, SysAnnoMenu data) {
-
-    }
-
-    @Override
-    public void afterUpdate(SysAnnoMenu data) {
-
-    }
-
-    @Override
-    public void beforeDelete(TableParam<SysAnnoMenu> tableParam, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void beforeFetch(TableParam<SysAnnoMenu> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-
-    }
-
-    @Override
-    public void afterFetch(TableParam<SysAnnoMenu> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysAnnoMenu> page) {
-
-    }
 }

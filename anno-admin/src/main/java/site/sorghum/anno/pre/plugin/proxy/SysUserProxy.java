@@ -33,31 +33,4 @@ public class SysUserProxy implements AnnoBaseProxy<SysUser> {
         data.setPassword(MD5Util.digestHex(data.getMobile() + ":" + data.getPassword()));
     }
 
-    @Override
-    public void afterAdd(SysUser data) {
-    }
-
-    @Override
-    public void beforeUpdate(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, SysUser data) {
-    }
-
-    @Override
-    public void afterUpdate(SysUser data) {
-    }
-
-    @Override
-    public void beforeDelete(TableParam<SysUser> tableParam, List<DbCondition> dbConditions) {
-    }
-
-    @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
-    }
-
-    @Override
-    public void beforeFetch(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-    }
-
-    @Override
-    public void afterFetch(TableParam<SysUser> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<SysUser> page) {
-    }
 }

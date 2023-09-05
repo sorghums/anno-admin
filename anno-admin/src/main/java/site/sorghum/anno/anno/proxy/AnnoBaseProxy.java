@@ -20,23 +20,29 @@ public interface AnnoBaseProxy<T> {
      * @param data       数据
      * @param tableParam 表参数
      */
-    void beforeAdd(TableParam<T> tableParam, T data);
+    default void beforeAdd(TableParam<T> tableParam, T data) {
+
+    }
 
     /**
      * 增加后
      *
      * @param data 数据
      */
-    void afterAdd(T data);
+    default void afterAdd(T data) {
+
+    }
 
     /**
      * 在更新之前
      *
      * @param tableParam   表参数
      * @param dbConditions db条件
-     * @param data            data
+     * @param data         data
      */
-    void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data);
+    default void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
+
+    }
 
 
     /**
@@ -44,7 +50,9 @@ public interface AnnoBaseProxy<T> {
      *
      * @param data 数据
      */
-    void afterUpdate(T data);
+    default void afterUpdate(T data) {
+
+    }
 
     /**
      * 在删除之前
@@ -52,14 +60,18 @@ public interface AnnoBaseProxy<T> {
      * @param tableParam   表参数
      * @param dbConditions db条件
      */
-    void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions);
+    default void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+
+    }
 
     /**
      * 删除后
      *
      * @param dbConditions db条件
      */
-    void afterDelete(List<DbCondition> dbConditions);
+    default void afterDelete(List<DbCondition> dbConditions) {
+
+    }
 
     /**
      * 查询前，返回值为：自定义查询条件
@@ -68,7 +80,9 @@ public interface AnnoBaseProxy<T> {
      * @param dbConditions db条件
      * @param pageParam    页面参数
      */
-    void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam);
+    default void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+
+    }
 
     /**
      * 返回结果后
@@ -78,7 +92,9 @@ public interface AnnoBaseProxy<T> {
      * @param pageParam    页面参数
      * @param page         分页结果数据
      */
-    void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page);
+    default void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
+
+    }
 
 
 }

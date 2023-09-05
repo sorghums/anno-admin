@@ -58,6 +58,10 @@ anno-admin:
     maxTotal: '200'
   # 主题：antd,cxd,ang
   theme: 'antd'
+  # 自动初始化数据，默认为 true
+  isAutoMaintainInitData: false
+  # 自动初始化表，默认为 true
+  isAutoMaintainTable: true
 #添加静态目录映射
 solon.staticfiles.mappings:
   - path: '/'

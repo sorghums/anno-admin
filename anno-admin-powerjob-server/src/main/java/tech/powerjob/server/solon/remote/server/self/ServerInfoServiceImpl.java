@@ -65,7 +65,7 @@ public class ServerInfoServiceImpl implements ServerInfoService, LifecycleBean {
 
             // register server then get server_id
             ServerInfoDO server = serverInfoRepository.findByIp(ip);
-            List<ServerInfoDO> infos = serverInfoRepository.selectTop(1, null);
+            List<ServerInfoDO> infos = serverInfoRepository.selectTop(1, m -> m.orderByDesc("id"));
             long maxId = CollUtil.isEmpty(infos) ? 0 : Long.parseLong(infos.get(0).getId());
             if (server == null) {
                 ServerInfoDO newServerInfo = new ServerInfoDO(ip);
