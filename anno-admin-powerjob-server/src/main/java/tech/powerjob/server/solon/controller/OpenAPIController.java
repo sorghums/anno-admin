@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.controller;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.RequiredArgsConstructor;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.MethodType;
 import tech.powerjob.common.OpenAPIConstant;
@@ -36,20 +36,25 @@ import java.util.List;
  */
 @Controller
 @Mapping(OpenAPIConstant.WEB_PATH)
-@RequiredArgsConstructor
 public class OpenAPIController {
 
-    private final AppInfoService appInfoService;
+    @Inject
+    private AppInfoService appInfoService;
 
-    private final JobService jobService;
+    @Inject
+    private JobService jobService;
 
-    private final InstanceService instanceService;
+    @Inject
+    private InstanceService instanceService;
 
-    private final WorkflowService workflowService;
+    @Inject
+    private WorkflowService workflowService;
 
-    private final WorkflowInstanceService workflowInstanceService;
+    @Inject
+    private WorkflowInstanceService workflowInstanceService;
 
-    private final CacheService cacheService;
+    @Inject
+    private CacheService cacheService;
 
 
     @Mapping(value = OpenAPIConstant.ASSERT, method = MethodType.POST)
