@@ -7,6 +7,7 @@ import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.web.cors.CrossHandler;
 import org.noear.wood.WoodConfig;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 
 /**
  * Ano 管理入门
@@ -27,5 +28,14 @@ public class AnnoSolonAdminStarter {
             });
             app.before(new CrossHandler().allowedOrigins("*").allowedHeaders("*").allowedMethods("*"));
         });
+        // 忽略登录检查 (仅测试用)
+        CheckPermissionFunction.loginCheckFunction = () -> {
+            // StpUtil.checkLogin();
+        };
+        // 忽略权限检查 (仅测试用)
+        CheckPermissionFunction.permissionCheckFunction = (code) -> {
+            // log.info("===[Anno] permission check: {}", code);
+            // StpUtil.checkPermission(code);
+        };
     }
 }

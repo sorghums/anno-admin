@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 
 /**
  * 许可代理
@@ -41,6 +42,8 @@ public class PermissionProxy {
         if (isSystemRun()) {
             return;
         }
+        // 校验登录
+        CheckPermissionFunction.loginCheckFunction.run();
         AnEntity anEntity = metadataManager.getEntity(clazz);
         boolean enable = anEntity.isEnablePermission();
         if (!enable) {
@@ -48,7 +51,7 @@ public class PermissionProxy {
         }
         String baseCode = anEntity.getPermissionCode();
         // 校验权限
-        StpUtil.checkPermission(baseCode);
+        CheckPermissionFunction.permissionCheckFunction.accept(baseCode);
     }
 
     public void addPermission(Object obj) {
@@ -79,13 +82,15 @@ public class PermissionProxy {
         if (isSystemRun() || StrUtil.isBlank(code)) {
             return;
         }
+        // 校验登录
+        CheckPermissionFunction.loginCheckFunction.run();
         boolean enable = anEntity.isEnablePermission();
         if (!enable) {
             return;
         }
         String baseCode = anEntity.getPermissionCode();
         // 校验权限
-        StpUtil.checkPermission(baseCode + ":" + code);
+        CheckPermissionFunction.permissionCheckFunction.accept(baseCode + ":" + code);
     }
 
     private boolean isSystemRun() {

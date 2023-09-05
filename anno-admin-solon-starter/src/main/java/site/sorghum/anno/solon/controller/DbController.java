@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.controller;
 
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
@@ -23,6 +24,7 @@ import java.util.Map;
 @Controller
 @Mapping("/amis/system/anno")
 @Slf4j
+@SaIgnore
 @SuppressWarnings("unchecked")
 public class DbController extends BaseDbController {
 

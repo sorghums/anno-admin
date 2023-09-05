@@ -31,7 +31,7 @@ public class Article extends BaseMetaModel {
     @AnnoField(
         title = "文章内容",
         tableFieldName = "content",
-        edit = @AnnoEdit, dataType = AnnoDataType.RICH_TEXT)
+        edit = @AnnoEdit, dataType = AnnoDataType.CODE_EDITOR)
     String content;
 
 
