@@ -3,7 +3,6 @@ package site.sorghum.anno.anno.proxy;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 
 import java.util.List;
 
@@ -17,10 +16,9 @@ public interface AnnoBaseProxy<T> {
     /**
      * 增加前
      *
-     * @param data       数据
-     * @param tableParam 表参数
+     * @param data 数据
      */
-    default void beforeAdd(TableParam<T> tableParam, T data) {
+    default void beforeAdd(T data) {
 
     }
 
@@ -36,11 +34,10 @@ public interface AnnoBaseProxy<T> {
     /**
      * 在更新之前
      *
-     * @param tableParam   表参数
      * @param dbConditions db条件
      * @param data         data
      */
-    default void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
+    default void beforeUpdate(List<DbCondition> dbConditions, T data) {
 
     }
 
@@ -57,42 +54,43 @@ public interface AnnoBaseProxy<T> {
     /**
      * 在删除之前
      *
-     * @param tableParam   表参数
+     * @param tClass       表参数
      * @param dbConditions db条件
      */
-    default void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+    default void beforeDelete(Class<T> tClass, List<DbCondition> dbConditions) {
 
     }
 
     /**
      * 删除后
      *
+     * @param tClass 类
      * @param dbConditions db条件
      */
-    default void afterDelete(List<DbCondition> dbConditions) {
+    default void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {
 
     }
 
     /**
      * 查询前，返回值为：自定义查询条件
      *
-     * @param tableParam   表参数
+     * @param tClass       表参数
      * @param dbConditions db条件
      * @param pageParam    页面参数
      */
-    default void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    default void beforeFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
 
     }
 
     /**
      * 返回结果后
      *
-     * @param tableParam   表参数
+     * @param tClass       表参数
      * @param dbConditions db条件
      * @param pageParam    页面参数
      * @param page         分页结果数据
      */
-    default void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
+    default void afterFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
 
     }
 

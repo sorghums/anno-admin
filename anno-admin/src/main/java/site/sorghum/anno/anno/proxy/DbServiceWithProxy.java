@@ -48,16 +48,16 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
-        proxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
+        preProxyInstance.beforeFetch(tClass, dbConditions, pageParam);
+        proxyInstance.beforeFetch(tClass, dbConditions, pageParam);
         IPage<T> page = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.page(tClass, dbConditions, pageParam),
             () -> new IPageImpl<>(new ArrayList<>(), 0, 0)
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(true, page.getList(), page.getTotal(), page.getSize(), page.getPages());
-        preProxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
-        proxyInstance.afterFetch(tableParam, dbConditions, pageParam, annoPage);
+        preProxyInstance.afterFetch(tClass, dbConditions, pageParam, annoPage);
+        proxyInstance.afterFetch(tClass, dbConditions, pageParam, annoPage);
         return new IPageImpl<>(annoPage.getList(), annoPage.getTotal(), annoPage.getSize());
     }
 
@@ -69,16 +69,16 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions, null);
-        proxyInstance.beforeFetch(tableParam, dbConditions, null);
+        preProxyInstance.beforeFetch(tClass, dbConditions, null);
+        proxyInstance.beforeFetch(tClass, dbConditions, null);
         List<T> list = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.list(tClass, dbConditions),
             ArrayList::new
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
-        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
+        preProxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
+        proxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
         return annoPage.getList();
     }
 
@@ -90,8 +90,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeFetch(tableParam, dbConditions, null);
-        proxyInstance.beforeFetch(tableParam, dbConditions, null);
+        preProxyInstance.beforeFetch(tClass, dbConditions, null);
+        proxyInstance.beforeFetch(tClass, dbConditions, null);
         T item = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.queryOne(tClass, dbConditions),
             () -> null
@@ -99,8 +99,8 @@ public class DbServiceWithProxy implements DbService {
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(tableParam, dbConditions, null,annoPage);
-        proxyInstance.afterFetch(tableParam, dbConditions, null, annoPage);
+        preProxyInstance.afterFetch(tClass, dbConditions, null,annoPage);
+        proxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
         return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
 
@@ -113,8 +113,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeUpdate(tableParam, dbConditions, t);
-        proxyInstance.beforeUpdate(tableParam, dbConditions, t);
+        preProxyInstance.beforeUpdate(dbConditions, t);
+        proxyInstance.beforeUpdate(dbConditions, t);
         int update = virtualProcess(tableParam.isVirtualTable(),
             () ->  dbService.update(dbConditions, t),
             () -> 0
@@ -134,8 +134,8 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeAdd(tableParam, t);
-        proxyInstance.beforeAdd(tableParam, t);
+        preProxyInstance.beforeAdd(t);
+        proxyInstance.beforeAdd(t);
         long insert = virtualProcess(tableParam.isVirtualTable(),
             () ->  dbService.insert(t),
             () -> 0L
@@ -154,15 +154,15 @@ public class DbServiceWithProxy implements DbService {
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeDelete(tableParam, dbConditions);
-        proxyInstance.beforeDelete(tableParam, dbConditions);
+        preProxyInstance.beforeDelete(tClass, dbConditions);
+        proxyInstance.beforeDelete(tClass, dbConditions);
         int delete = virtualProcess(tableParam.isVirtualTable(),
             () ->  dbService.delete(tClass, dbConditions),
             () -> 0
         );
         // 后置处理
-        preProxyInstance.afterDelete(dbConditions);
-        proxyInstance.afterDelete(dbConditions);
+        preProxyInstance.afterDelete(tClass, dbConditions);
+        proxyInstance.afterDelete(tClass, dbConditions);
         return delete;
     }
 

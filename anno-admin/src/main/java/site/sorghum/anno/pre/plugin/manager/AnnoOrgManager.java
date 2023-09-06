@@ -47,7 +47,7 @@ public class AnnoOrgManager {
             String loginId = (String) StpUtil.getLoginId();
             List<AnUserRole> list = dbServiceWithProxy.list(AnUserRole.class, CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "user_id", loginId)));
             boolean isAdmin = list.stream().anyMatch(
-                anUserRole -> anUserRole.getRoleId().equals("admin")
+                anUserRole -> "admin".equals(anUserRole.getRoleId())
             );
             AnEntity entity = metadataManager.getEntity(clazz);
             boolean orgFilter = entity.isOrgFilter();

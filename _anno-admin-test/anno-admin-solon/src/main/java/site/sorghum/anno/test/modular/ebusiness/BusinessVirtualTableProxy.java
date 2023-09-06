@@ -9,7 +9,6 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     DbContext dbContext;
 
     @Override
-    public void beforeAdd(TableParam<BusinessVirtualTable> tableParam, BusinessVirtualTable data) {
+    public void beforeAdd(BusinessVirtualTable data) {
         log.info("beforeAdd: {}", data);
     }
 
@@ -36,7 +35,7 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     }
 
     @Override
-    public void beforeUpdate(TableParam<BusinessVirtualTable> tableParam, List<DbCondition> dbConditions, BusinessVirtualTable data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, BusinessVirtualTable data) {
         log.info("beforeUpdate: {}", data);
     }
 
@@ -46,23 +45,23 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     }
 
     @Override
-    public void beforeDelete(TableParam<BusinessVirtualTable> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions) {
         log.info("beforeDelete: {}", dbConditions);
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions) {
         log.info("afterDelete: {}", dbConditions);
     }
 
     @Override
-    public void beforeFetch(TableParam<BusinessVirtualTable> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public void beforeFetch(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
         log.info("beforeFetch: {}", dbConditions);
     }
 
     @SneakyThrows
     @Override
-    public void afterFetch(TableParam<BusinessVirtualTable> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BusinessVirtualTable> page) {
+    public void afterFetch(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BusinessVirtualTable> page) {
         log.info("afterFetch: {}", page);
         // 自定义复杂SQL查询
         List<BusinessVirtualTable> businessProduct = dbContext.table("business_product").selectList("*", BusinessVirtualTable.class);

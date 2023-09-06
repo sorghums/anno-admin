@@ -8,7 +8,6 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.plugin.manager.AnnoOrgManager;
 import site.sorghum.anno.pre.suppose.model.BaseOrgMetaModel;
 
@@ -31,13 +30,13 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     AnnoOrgManager annoOrgManager;
 
     @Override
-    public void beforeAdd(TableParam<BaseOrgMetaModel> tableParam, BaseOrgMetaModel data) {
-        if (!annoOrgManager.isIgnoreFilter(tableParam.getClazz())) {
+    public void beforeAdd(BaseOrgMetaModel data) {
+        if (!annoOrgManager.isIgnoreFilter(data.getClass())) {
             if (!annoOrgManager.getLoginOrg().equals(data.getOrgId())) {
                 throw new BizException("非法操作, 无法为其他组织添加数据。");
             }
         }
-        baseAnnoPreProxy.beforeAdd(null, data);
+        baseAnnoPreProxy.beforeAdd(data);
         // 如果没有设置组织ID则设置当前登录组织ID
         if (data.getOrgId() == null) {
             data.setOrgId(annoOrgManager.getLoginOrg());
@@ -45,8 +44,8 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     }
 
     @Override
-    public void beforeFetch(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-        if (annoOrgManager.isIgnoreFilter(tableParam.getClazz())){
+    public void beforeFetch(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
+        if (annoOrgManager.isIgnoreFilter(tClass)){
             return;
         }
         String orgId = annoOrgManager.getLoginOrg();
@@ -59,7 +58,7 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions, BaseOrgMetaModel data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, BaseOrgMetaModel data) {
 
     }
 
@@ -69,17 +68,17 @@ public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
     }
 
     @Override
-    public void beforeDelete(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterFetch(TableParam<BaseOrgMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseOrgMetaModel> page) {
+    public void afterFetch(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseOrgMetaModel> page) {
 
     }
 

@@ -4,7 +4,6 @@ import jakarta.inject.Named;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.plugin.ao.AnRole;
 
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.List;
 public class AnRoleProxy implements AnnoBaseProxy<AnRole> {
 
     @Override
-    public void beforeDelete(TableParam<AnRole> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<AnRole> tClass, List<DbCondition> dbConditions) {
         for (DbCondition dbCondition : dbConditions) {
             String field = dbCondition.getField();
             if (field.equals("id")){

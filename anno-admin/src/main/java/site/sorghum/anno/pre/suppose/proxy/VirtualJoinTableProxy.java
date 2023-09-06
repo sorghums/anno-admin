@@ -9,7 +9,6 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.impl.DbServiceWood;
 
 import java.util.List;
@@ -22,21 +21,21 @@ public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
     DbServiceWood dbServiceWood;
 
     @Override
-    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public void beforeFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
 
     }
 
     @SneakyThrows
     @Override
-    public void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
-        IPage<T> virtualIPage = dbServiceWood.page(tableParam.getClazz(), dbConditions, pageParam);
+    public void afterFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
+        IPage<T> virtualIPage = dbServiceWood.page(tClass, dbConditions, pageParam);
         page.setTotal(virtualIPage.getTotal());
         page.setList(virtualIPage.getList());
         page.setList(virtualIPage.getList());
     }
 
     @Override
-    public void beforeAdd(TableParam<T> tableParam, T data) {
+    public void beforeAdd(T data) {
 
     }
 
@@ -46,7 +45,7 @@ public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, T data) {
 
     }
 
@@ -56,11 +55,11 @@ public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
     }
 
     @Override
-    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<T> tClass, List<DbCondition> dbConditions) {
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {
 
     }
 

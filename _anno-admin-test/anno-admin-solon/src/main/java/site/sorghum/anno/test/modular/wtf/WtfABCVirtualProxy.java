@@ -28,23 +28,19 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
     @Inject
     MetadataManager metadataManager;
     @Override
-    public void beforeAdd(TableParam<WtfABCVirtual> tableParam, WtfABCVirtual data) {
-        TableParam<BaseMetaModel> wtfAParam = metadataManager.getTableParam(WtfA.class);
-        TableParam<BaseMetaModel> wtfBParam = metadataManager.getTableParam(WtfB.class);
-        TableParam<BaseMetaModel> wtfCParam = metadataManager.getTableParam(WtfC.class);
-
+    public void beforeAdd(WtfABCVirtual data) {
         WtfA wtfA = new WtfA();
-        baseAnnoPreProxy.beforeAdd(wtfAParam, wtfA);
+        baseAnnoPreProxy.beforeAdd(wtfA);
         wtfA.setAge(data.getAge());
         wtfA.setName(data.getName());
 
         WtfB wtfB = new WtfB();
-        baseAnnoPreProxy.beforeAdd(wtfBParam, wtfB);
+        baseAnnoPreProxy.beforeAdd(wtfB);
         wtfB.setAttr(data.getAttr());
         wtfB.setWtfA(wtfA.getId());
 
         WtfC wtfC = new WtfC();
-        baseAnnoPreProxy.beforeAdd(wtfCParam, wtfC);
+        baseAnnoPreProxy.beforeAdd(wtfC);
         wtfC.setLocation(data.getLocation());
         wtfC.setWtfB(wtfB.getId());
 
@@ -60,7 +56,7 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<WtfABCVirtual> tableParam, List<DbCondition> dbConditions, WtfABCVirtual data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, WtfABCVirtual data) {
         TableParam<BaseMetaModel> wtfAParam = metadataManager.getTableParam(WtfA.class);
         TableParam<BaseMetaModel> wtfBParam = metadataManager.getTableParam(WtfB.class);
         TableParam<BaseMetaModel> wtfCParam = metadataManager.getTableParam(WtfC.class);
@@ -78,14 +74,14 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
 
     @SneakyThrows
     @Override
-    public void afterFetch(TableParam<WtfABCVirtual> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<WtfABCVirtual> page) {
+    public void afterFetch(Class<WtfABCVirtual> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<WtfABCVirtual> page) {
         // 系统仅支持查询，其余如新增、修改、删除等操作请自行实现。
-        super.afterFetch(tableParam, dbConditions, pageParam, page);
+        super.afterFetch(tClass, dbConditions, pageParam, page);
     }
 
     @SneakyThrows
     @Override
-    public void beforeDelete(TableParam<WtfABCVirtual> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<WtfABCVirtual> tClass, List<DbCondition> dbConditions) {
         log.info("before delete:{}", dbConditions);
         for (DbCondition dbCondition : dbConditions) {
             String field = dbCondition.getField();
@@ -93,8 +89,8 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
             Field fieldBySqlColumn = AnnoFieldCache.getFieldBySqlColumn(WtfABCVirtual.class, field);
         }
         // 查询要删除的数据原信息
-        WtfABCVirtual wtfABCVirtual = getDbServiceWood().queryOne(tableParam.getClazz(), dbConditions);
+        WtfABCVirtual wtfABCVirtual = getDbServiceWood().queryOne(tClass, dbConditions);
         log.info("before delete:{}", wtfABCVirtual);
-        super.beforeDelete(tableParam, dbConditions);
+        super.beforeDelete(tClass, dbConditions);
     }
 }

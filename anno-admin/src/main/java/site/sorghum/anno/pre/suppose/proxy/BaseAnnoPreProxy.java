@@ -10,7 +10,6 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
@@ -28,12 +27,12 @@ import java.util.List;
 public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
 
     @Override
-    public void beforeFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public void beforeFetch(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
         log.debug("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
     }
 
     @Override
-    public void beforeAdd(TableParam<BaseMetaModel> tableParam, BaseMetaModel data) {
+    public void beforeAdd(BaseMetaModel data) {
         data.setId(IdUtil.getSnowflakeNextIdStr());
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());
@@ -42,7 +41,7 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, BaseMetaModel data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, BaseMetaModel data) {
         data.setUpdateTime(LocalDateTime.now());
         data.setUpdateBy(getLoginName());
     }
@@ -72,17 +71,17 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     }
 
     @Override
-    public void beforeDelete(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterFetch(TableParam<BaseMetaModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseMetaModel> page) {
+    public void afterFetch(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseMetaModel> page) {
         
     }
 }

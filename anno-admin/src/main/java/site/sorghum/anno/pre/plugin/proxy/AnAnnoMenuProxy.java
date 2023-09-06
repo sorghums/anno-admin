@@ -7,7 +7,6 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.plugin.ao.AnAnnoMenu;
 
 /**
@@ -23,7 +22,7 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
     MetadataManager metadataManager;
 
     @Override
-    public void beforeAdd(TableParam<AnAnnoMenu> tableParam, AnAnnoMenu data) {
+    public void beforeAdd(AnAnnoMenu data) {
         String parseData = null;
         // ------ 解析菜单解析 ------
         if (StrUtil.isNotBlank(data.getParseData())) {

@@ -5,7 +5,6 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.pre.suppose.model.PrimaryKeyModel;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 public class PrimaryKeyPreProxy implements AnnoPreBaseProxy<PrimaryKeyModel> {
     @Override
-    public void beforeAdd(TableParam<PrimaryKeyModel> tableParam, PrimaryKeyModel data) {
+    public void beforeAdd(PrimaryKeyModel data) {
         data.setId(IdUtil.getSnowflakeNextIdStr());
     }
 
@@ -26,7 +25,7 @@ public class PrimaryKeyPreProxy implements AnnoPreBaseProxy<PrimaryKeyModel> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<PrimaryKeyModel> tableParam, List<DbCondition> dbConditions, PrimaryKeyModel data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, PrimaryKeyModel data) {
 
     }
 
@@ -36,22 +35,22 @@ public class PrimaryKeyPreProxy implements AnnoPreBaseProxy<PrimaryKeyModel> {
     }
 
     @Override
-    public void beforeDelete(TableParam<PrimaryKeyModel> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<PrimaryKeyModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<PrimaryKeyModel> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void beforeFetch(TableParam<PrimaryKeyModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public void beforeFetch(Class<PrimaryKeyModel> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
 
     }
 
     @Override
-    public void afterFetch(TableParam<PrimaryKeyModel> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<PrimaryKeyModel> page) {
+    public void afterFetch(Class<PrimaryKeyModel> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<PrimaryKeyModel> page) {
 
     }
 }

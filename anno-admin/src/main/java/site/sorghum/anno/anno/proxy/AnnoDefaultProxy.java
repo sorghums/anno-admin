@@ -4,7 +4,6 @@ import jakarta.inject.Named;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @Named
 public class AnnoDefaultProxy<T> implements AnnoBaseProxy<T> {
     @Override
-    public void beforeAdd(TableParam<T> tableParam, T data) {
+    public void beforeAdd(T data) {
 
     }
 
@@ -27,7 +26,7 @@ public class AnnoDefaultProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public void beforeUpdate(TableParam<T> tableParam, List<DbCondition> dbConditions, T data) {
+    public void beforeUpdate(List<DbCondition> dbConditions, T data) {
 
     }
 
@@ -37,22 +36,22 @@ public class AnnoDefaultProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public void beforeDelete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(Class<T> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void afterDelete(List<DbCondition> dbConditions) {
+    public void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {
 
     }
 
     @Override
-    public void beforeFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public void beforeFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
 
     }
 
     @Override
-    public void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
+    public void afterFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
 
     }
 }
