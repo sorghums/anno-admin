@@ -186,7 +186,7 @@ public class XPluginImp implements Plugin {
     }
 
     public void i18nSupport() {
-        I18nUtil.setI18nService(key -> org.noear.solon.i18n.I18nUtil.getMessage(key));
+        I18nUtil.setI18nService(org.noear.solon.i18n.I18nUtil::getMessage);
     }
 
 }

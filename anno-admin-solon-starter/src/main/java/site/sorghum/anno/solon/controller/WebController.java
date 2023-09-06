@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
 
 /**
@@ -18,11 +19,16 @@ public class WebController {
 
     @Mapping(value = "/")
     public void first(Context ctx) {
-        if (StpUtil.isLogin()){
+        if (StpUtil.isLogin()) {
             ctx.redirect("/index.html#/home/index");
             return;
         }
         ctx.redirect("/index.html#/login");
+    }
+
+    @Mapping(value = "/goAnnoSinglePage/{clazz}")
+    public void goAnnoSinglePage(Context ctx, @Path String clazz) {
+        ctx.redirect("/index.html#/amisSingle/index/" + clazz);
     }
 
 }

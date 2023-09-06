@@ -11,27 +11,27 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 import java.io.Serializable;
 
 /**
- * 系统角色权限关联表
+ * 系统角色用户关联表
  *
  * @author Sorghum
- * @since 2023/06/09
+ * @since 2023/06/08
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "角色权限管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role_permission", baseCodeTranslate = "角色权限管理"))
-@Table("sys_role_permission")
-public class SysRolePermission extends BaseMetaModel implements Serializable {
+@AnnoMain(name = "角色用户关联管理",
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_user_role", baseCodeTranslate = "角色用户关联管理"))
+@Table("an_user_role")
+public class AnUserRole extends BaseMetaModel implements Serializable {
+
+    /**
+     * 用户ID
+     */
+    @AnnoField(title = "用户ID", tableFieldName = "user_id")
+    String userId;
 
     /**
      * 角色ID
      */
     @AnnoField(title = "角色ID", tableFieldName = "role_id")
     String roleId;
-
-    /**
-     * 角色ID
-     */
-    @AnnoField(title = "权限id", tableFieldName = "permission_id")
-    String permissionId;
 }

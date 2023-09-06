@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.pre.plugin.controller.MenuBaseController;
 import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
-import site.sorghum.anno.pre.plugin.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno.pre.plugin.entity.response.AnAnnoMenuResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class MenuController extends MenuBaseController {
 
     @GetMapping(value = "/dataMenu")
-    public List<SysAnnoMenuResponse> dataMenu() {
+    public List<AnAnnoMenuResponse> dataMenu() {
         return super.dataMenu();
     }
 

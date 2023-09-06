@@ -120,7 +120,7 @@ public class FormItem extends AmisBase {
      * 整个表单静态方式展示(仅作展示态)
      */
     @JSONField(name = "static")
-    Boolean bStatic = false;
+    Boolean bStatic;
 
     /**
      * 表单静态展示时使用的类名
@@ -145,7 +145,7 @@ public class FormItem extends AmisBase {
     /**
      * select、checkboxes 等选择类组件多选时展示态展示的数量
      */
-    Integer staticItemCount = 10;
+    Integer staticItemCount;
 
     /**
      * 表单项大小
@@ -155,7 +155,7 @@ public class FormItem extends AmisBase {
     /**
      * 为空时是否清空值
      */
-    Boolean clearValueOnEmpty = true;
+    Boolean clearValueOnEmpty;
 
     /**
      * 表单项的宽度

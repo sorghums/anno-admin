@@ -20,6 +20,7 @@ import site.sorghum.anno.anno.proxy.PermissionProxy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * CRUD视图初始化处理器
@@ -42,6 +43,10 @@ public class CrudTableButtonProcessor implements BaseProcessor {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         Crud crudBody = crudView.getCrudBody();
         Form filter = crudBody.getFilter();
+        if (Objects.isNull(filter)){
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
+            return;
+        }
         List<Action> actions = filter.getActions();
         List<AnTableButton> anButtons = anEntity.getTableButtons();
         for (AnTableButton anButton : anButtons) {

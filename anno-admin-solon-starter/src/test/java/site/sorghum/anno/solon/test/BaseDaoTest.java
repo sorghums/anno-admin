@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.plugin.dao.SysUserDao;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class BaseDaoTest {
     @Test
     public void testInsert() {
         userDao.delete(m -> m.whereLk("name", "testUser_%"));
-        List<SysUser> uerList = getUerList(1);
+        List<AnUser> uerList = getUerList(1);
         userDao.insert(uerList.get(0), true);
         Long count = userDao.selectCount(m -> m.whereLk("name", "testUser_%"));
         Assert.assertEquals(1L, count.longValue());
@@ -40,7 +40,7 @@ public class BaseDaoTest {
     public void testInsertList() {
         userDao.delete(m -> m.whereLk("name", "testUser_%"));
 
-        List<SysUser> uerList = getUerList(1000);
+        List<AnUser> uerList = getUerList(1000);
         StopWatch stopWatch = new StopWatch("add");
         stopWatch.start("batchAdd 1000");
         userDao.insertList(uerList);
@@ -51,10 +51,10 @@ public class BaseDaoTest {
         Assert.assertEquals(1000L, count.longValue());
     }
 
-    private List<SysUser> getUerList(int size) {
-        List<SysUser> list = new ArrayList<>();
+    private List<AnUser> getUerList(int size) {
+        List<AnUser> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            SysUser user = new SysUser();
+            AnUser user = new AnUser();
             user.setName("testUser_" + i);
             list.add(user);
         }

@@ -4,7 +4,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.plugin.entity.response.UserInfo;
 import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.manager.CaptchaManager;
@@ -38,11 +38,11 @@ public class AuthBaseController {
             return AnnoResult.failure("用户名或密码不能为空");
         }
         // 校验用户名密码
-        SysUser sysUser = AuthFunctions.verifyLogin.apply(user);
+        AnUser anUser = AuthFunctions.verifyLogin.apply(user);
         // 登录
-        StpUtil.login(sysUser.getId());
+        StpUtil.login(anUser.getId());
         SaSession session = StpUtil.getSession(true);
-        session.set("user", sysUser);
+        session.set("user", anUser);
         return AnnoResult.succeed(StpUtil.getTokenValue());
     }
 
@@ -57,18 +57,18 @@ public class AuthBaseController {
             return AnnoResult.failure("请先登录");
         }
         // 登录用户
-        SysUser sysUser = AuthFunctions.getUserById.apply(loginId);
-        sysUser.setPassword(null);
-        StpUtil.getSession().set("user", sysUser);
+        AnUser anUser = AuthFunctions.getUserById.apply(loginId);
+        anUser.setPassword(null);
+        StpUtil.getSession().set("user", anUser);
         AuthFunctions.removePermRoleCacheList.accept(loginId);
         return AnnoResult.succeed("清除成功");
     }
 
     public AnnoResult<UserInfo> me() {
         UserInfo userInfo = new UserInfo();
-        SysUser sysUser = (SysUser) StpUtil.getSession().get("user");
-        userInfo.setName(sysUser.getName());
-        userInfo.setAvatar(sysUser.getAvatar());
+        AnUser anUser = (AnUser) StpUtil.getSession().get("user");
+        userInfo.setName(anUser.getName());
+        userInfo.setAvatar(anUser.getAvatar());
         userInfo.setPerms(StpUtil.getPermissionList());
         userInfo.setRoles(StpUtil.getRoleList());
         return AnnoResult.succeed(userInfo);

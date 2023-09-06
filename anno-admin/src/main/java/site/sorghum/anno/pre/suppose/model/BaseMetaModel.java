@@ -1,6 +1,7 @@
 package site.sorghum.anno.pre.suppose.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -8,6 +9,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.pre.suppose.proxy.BaseAnnoPreProxy;
 
+import java.io.Serial;
 import java.time.LocalDateTime;
 
 /**
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
  * @since 2023/03/08
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AnnoPreProxy(BaseAnnoPreProxy.class)
 @AnnoRemove(removeType = 1)
 public class BaseMetaModel extends PrimaryKeyModel {

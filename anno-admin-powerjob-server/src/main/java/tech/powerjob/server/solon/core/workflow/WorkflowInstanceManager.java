@@ -28,7 +28,7 @@ import tech.powerjob.server.solon.persistence.remote.repository.JobInfoRepositor
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInstanceInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowNodeInfoRepository;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.plugin.dao.SysUserDao;
 import tech.powerjob.common.SystemInstanceResult;
 import tech.powerjob.common.WorkflowContextConstant;
@@ -469,7 +469,7 @@ public class WorkflowInstanceManager {
                     BeanUtil.copyProperties(wfInstance, content);
                     content.setResult(result);
 
-                    List<SysUser> userList = userDao.selectUserList(wfInfo.getNotifyUserIds());
+                    List<AnUser> userList = userDao.selectUserList(wfInfo.getNotifyUserIds());
                     alarmCenter.alarmFailed(content, AlarmUtils.convertUserInfoList2AlarmTargetList(userList));
                 }
 

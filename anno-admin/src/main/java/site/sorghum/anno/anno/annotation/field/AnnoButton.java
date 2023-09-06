@@ -139,8 +139,8 @@ public @interface AnnoButton {
 
         /**
          * SQL语句：? 为 joinThisClazzField的值
-         * demo1: select user_id from sys_user_role where role_id = ?
-         * demo2: select role_id from sys_user_role where user_id = ?
+         * demo1: select user_id from an_user_role where role_id = ?
+         * demo2: select role_id from an_user_role where user_id = ?
          *
          * @return {@link String}
          */
@@ -314,8 +314,8 @@ public @interface AnnoButton {
 
         /**
          * SQL语句：? 为 joinThisClazzField的值
-         * demo1: select user_id from sys_user_role where role_id = ?
-         * demo2: select role_id from sys_user_role where user_id = ?
+         * demo1: select user_id from an_user_role where role_id = ?
+         * demo2: select role_id from an_user_role where user_id = ?
          *
          * @return {@link String}
          */

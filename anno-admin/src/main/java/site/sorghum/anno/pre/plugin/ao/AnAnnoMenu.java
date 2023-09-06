@@ -12,7 +12,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.plugin.proxy.SysAnnoMenuProxy;
+import site.sorghum.anno.pre.plugin.proxy.AnAnnoMenuProxy;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 
@@ -26,10 +26,10 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "菜单管理",
         annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_anno_menu", baseCodeTranslate = "菜单管理"),
-annoProxy = @AnnoProxy(value = SysAnnoMenuProxy.class))
-@Table("sys_anno_menu")
-public class SysAnnoMenu extends BaseMetaModel {
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"),
+annoProxy = @AnnoProxy(value = AnAnnoMenuProxy.class))
+@Table("an_anno_menu")
+public class AnAnnoMenu extends BaseMetaModel {
 
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit)
     private String parentId;
@@ -62,7 +62,7 @@ public class SysAnnoMenu extends BaseMetaModel {
 
     @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit,
             dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(sql = "select id as value, name as label from sys_permission where del_flag = 0 and parent_id is null order by id desc"))
+            optionType = @AnnoOptionType(sql = "select id as value, name as label from an_permission where del_flag = 0 and parent_id is null order by id desc"))
     private String permissionId;
 
     @AnnoField(title = "解析类型", tableFieldName = "parse_type", edit = @AnnoEdit,

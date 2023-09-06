@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 
@@ -26,6 +28,11 @@ public class WebController {
             return;
         }
         response.sendRedirect("/index.html#/login");
+    }
+
+    @GetMapping(value = "/goAnnoSinglePage/{clazz}")
+    public void goAnnoSinglePage(HttpServletResponse response,@PathVariable String clazz) throws IOException {
+        response.sendRedirect("/index.html#/amisSingle/index/" + clazz);
     }
 
 }

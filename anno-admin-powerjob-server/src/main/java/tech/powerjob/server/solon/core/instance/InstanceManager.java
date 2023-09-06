@@ -21,7 +21,7 @@ import tech.powerjob.server.solon.remote.aware.TransportServiceAware;
 import tech.powerjob.server.solon.remote.transporter.TransportService;
 import tech.powerjob.server.solon.remote.transporter.impl.ServerURLFactory;
 import tech.powerjob.server.solon.remote.worker.WorkerClusterQueryService;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.plugin.dao.SysUserDao;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.common.enums.TimeExpressionType;
@@ -244,7 +244,7 @@ public class InstanceManager implements TransportServiceAware {
         JobInstanceAlarm content = new JobInstanceAlarm();
         BeanUtil.copyProperties(jobInfo, content);
         BeanUtil.copyProperties(instanceInfo, content);
-        List<SysUser> userList = Solon.context().getBean(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
+        List<AnUser> userList = Solon.context().getBean(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
         if (!StringUtils.isEmpty(alertContent)) {
             content.setResult(alertContent);
         }

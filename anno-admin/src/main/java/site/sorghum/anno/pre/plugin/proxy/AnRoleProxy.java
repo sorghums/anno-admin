@@ -2,20 +2,18 @@ package site.sorghum.anno.pre.plugin.proxy;
 
 import jakarta.inject.Named;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.pre.plugin.ao.SysRole;
+import site.sorghum.anno.pre.plugin.ao.AnRole;
 
 import java.util.List;
 
 @Named
-public class SysRoleProxy implements AnnoBaseProxy<SysRole> {
+public class AnRoleProxy implements AnnoBaseProxy<AnRole> {
 
     @Override
-    public void beforeDelete(TableParam<SysRole> tableParam, List<DbCondition> dbConditions) {
+    public void beforeDelete(TableParam<AnRole> tableParam, List<DbCondition> dbConditions) {
         for (DbCondition dbCondition : dbConditions) {
             String field = dbCondition.getField();
             if (field.equals("id")){

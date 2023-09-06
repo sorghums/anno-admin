@@ -17,13 +17,13 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
-import site.sorghum.anno.pre.plugin.ao.SysPermission;
-import site.sorghum.anno.pre.plugin.ao.SysRole;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
-import site.sorghum.anno.pre.plugin.dao.SysAnnoMenuDao;
-import site.sorghum.anno.pre.plugin.dao.SysPermissionDao;
-import site.sorghum.anno.pre.plugin.dao.SysRoleDao;
+import site.sorghum.anno.pre.plugin.ao.AnAnnoMenu;
+import site.sorghum.anno.pre.plugin.ao.AnPermission;
+import site.sorghum.anno.pre.plugin.ao.AnRole;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
+import site.sorghum.anno.pre.plugin.dao.AnAnnoMenuDao;
+import site.sorghum.anno.pre.plugin.dao.AnPermissionDao;
+import site.sorghum.anno.pre.plugin.dao.AnRoleDao;
 import site.sorghum.anno.pre.plugin.dao.SysUserDao;
 import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.service.AuthService;
@@ -48,13 +48,13 @@ public class AuthServiceImpl implements AuthService {
     SysUserDao sysUserDao;
 
     @Db
-    SysRoleDao sysRoleDao;
+    AnRoleDao anRoleDao;
 
     @Db
-    SysPermissionDao sysPermissionDao;
+    AnPermissionDao anPermissionDao;
 
     @Db
-    SysAnnoMenuDao sysAnnoMenuDao;
+    AnAnnoMenuDao anAnnoMenuDao;
 
     @Db
     DbContext dbContext;
@@ -74,70 +74,70 @@ public class AuthServiceImpl implements AuthService {
                 for (AnColumnButton anColumnButton : anColumnButtons) {
                     if (StrUtil.isNotBlank(anColumnButton.getPermissionCode())) {
                         String buttonCode = baseCode + ":" + anColumnButton.getPermissionCode();
-                        SysPermission sysPermission = sysPermissionDao.selectById(buttonCode);
-                        if (sysPermission != null && sysPermission.getId() != null) {
+                        AnPermission anPermission = anPermissionDao.selectById(buttonCode);
+                        if (anPermission != null && anPermission.getId() != null) {
                             continue;
                         }
-                        SysPermission buttonPermission = new SysPermission();
+                        AnPermission buttonPermission = new AnPermission();
                         buttonPermission.setId(buttonCode);
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anColumnButton.getName());
                         buttonPermission.setDelFlag(0);
-                        sysPermissionDao.insert(buttonPermission, true);
+                        anPermissionDao.insert(buttonPermission, true);
                     }
                 }
-                SysPermission sysPermission = sysPermissionDao.selectById(baseCode);
-                if (sysPermission != null && sysPermission.getId() != null) {
+                AnPermission anPermission = anPermissionDao.selectById(baseCode);
+                if (anPermission != null && anPermission.getId() != null) {
                     continue;
                 }
 
-                SysPermission basePermission = new SysPermission();
+                AnPermission basePermission = new AnPermission();
                 basePermission.setId(baseCode);
                 basePermission.setCode(baseCode);
                 basePermission.setName(baseName);
                 basePermission.setDelFlag(0);
-                sysPermissionDao.insert(basePermission, true);
+                anPermissionDao.insert(basePermission, true);
 
 
                 // 新增
                 String addCode = baseCode + ":" + PermissionProxy.ADD;
                 String addName = baseName + ":" + PermissionProxy.ADD_TRANSLATE;
 
-                SysPermission addPermission = new SysPermission();
+                AnPermission addPermission = new AnPermission();
                 addPermission.setId(addCode);
                 addPermission.setParentId(baseCode);
                 addPermission.setCode(addCode);
                 addPermission.setName(addName);
                 addPermission.setDelFlag(0);
 
-                sysPermissionDao.insert(addPermission, true);
+                anPermissionDao.insert(addPermission, true);
 
                 // 修改
                 String updateCode = baseCode + ":" + PermissionProxy.UPDATE;
                 String updateName = baseName + ":" + PermissionProxy.UPDATE_TRANSLATE;
 
-                SysPermission updatePermission = new SysPermission();
+                AnPermission updatePermission = new AnPermission();
                 updatePermission.setId(updateCode);
                 updatePermission.setParentId(baseCode);
                 updatePermission.setCode(updateCode);
                 updatePermission.setName(updateName);
                 updatePermission.setDelFlag(0);
 
-                sysPermissionDao.insert(updatePermission, true);
+                anPermissionDao.insert(updatePermission, true);
 
                 // 删除
                 String deleteCode = baseCode + ":" + PermissionProxy.DELETE;
                 String deleteName = baseName + ":" + PermissionProxy.DELETE_TRANSLATE;
 
-                SysPermission deletePermission = new SysPermission();
+                AnPermission deletePermission = new AnPermission();
                 deletePermission.setId(deleteCode);
                 deletePermission.setParentId(baseCode);
                 deletePermission.setCode(deleteCode);
                 deletePermission.setName(deleteName);
                 deletePermission.setDelFlag(0);
 
-                sysPermissionDao.insert(deletePermission, true);
+                anPermissionDao.insert(deletePermission, true);
 
                 // 按钮权限
 
@@ -147,21 +147,21 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public SysUser verifyLogin(String mobile, String pwd) {
-        SysUser sysUser = sysUserDao.queryByMobile(mobile);
-        if (sysUser == null) {
+    public AnUser verifyLogin(String mobile, String pwd) {
+        AnUser anUser = sysUserDao.queryByMobile(mobile);
+        if (anUser == null) {
             throw new BizException("用户不存在");
         }
         // 清除缓存
-        AuthFunctions.removePermRoleCacheList.accept(sysUser.getId());
-        if (!sysUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
+        AuthFunctions.removePermRoleCacheList.accept(anUser.getId());
+        if (!anUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
         }
-        return sysUser;
+        return anUser;
     }
 
     @Override
-    public SysUser getUserById(String id) {
+    public AnUser getUserById(String id) {
         return sysUserDao.selectById(id);
     }
 
@@ -174,11 +174,11 @@ public class AuthServiceImpl implements AuthService {
         List<String> roleIds = AuthFunctions.roleList.apply(userId);
         List<String> permissionCodes;
         if (roleIds.contains("admin")) {
-            List<SysPermission> sysPermissions = sysPermissionDao.list();
-            permissionCodes =  sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+            List<AnPermission> anPermissions = anPermissionDao.list();
+            permissionCodes =  anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
         }else {
-            List<SysPermission> sysPermissions = sysPermissionDao.querySysPermissionByUserId(userId);
-            permissionCodes = sysPermissions.stream().map(SysPermission::getCode).collect(Collectors.toList());
+            List<AnPermission> anPermissions = anPermissionDao.querySysPermissionByUserId(userId);
+            permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
         }
         CacheUtil.putCache(key, permissionCodes, 60 * 60 * 2);
         return permissionCodes;
@@ -190,8 +190,8 @@ public class AuthServiceImpl implements AuthService {
         if (CacheUtil.containsCache(key)) {
             return CacheUtil.getCacheList(key, String.class);
         }
-        List<SysRole> sysRoles = sysRoleDao.querySysRoleByUserId(userId);
-        List<String> roleList = sysRoles.stream().map(SysRole::getId).collect(Collectors.toList());
+        List<AnRole> anRoles = anRoleDao.querySysRoleByUserId(userId);
+        List<String> roleList = anRoles.stream().map(AnRole::getId).collect(Collectors.toList());
         CacheUtil.putCache(key, roleList, 60 * 60 * 2);
         return roleList;
     }
@@ -217,42 +217,42 @@ public class AuthServiceImpl implements AuthService {
                 continue;
             }
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
-                SysAnnoMenu sysAnnoMenu = sysAnnoMenuDao.selectById(anPluginMenu.getId());
+                AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
                 Map<String, Object> map = new HashMap<>();
-                if (sysAnnoMenu == null) {
-                    sysAnnoMenu = new SysAnnoMenu();
-                    sysAnnoMenu.setId(anPluginMenu.getId());
-                    sysAnnoMenu.setTitle(anPluginMenu.getTitle());
-                    sysAnnoMenu.setType(anPluginMenu.getType());
-                    sysAnnoMenu.setSort(anPluginMenu.getSort());
-                    sysAnnoMenu.setOpenType("_iframe");
-                    sysAnnoMenu.setIcon(anPluginMenu.getIcon());
+                if (anAnnoMenu == null) {
+                    anAnnoMenu = new AnAnnoMenu();
+                    anAnnoMenu.setId(anPluginMenu.getId());
+                    anAnnoMenu.setTitle(anPluginMenu.getTitle());
+                    anAnnoMenu.setType(anPluginMenu.getType());
+                    anAnnoMenu.setSort(anPluginMenu.getSort());
+                    anAnnoMenu.setOpenType("_iframe");
+                    anAnnoMenu.setIcon(anPluginMenu.getIcon());
                     if (anPluginMenu.getEntity() != null) {
-                        sysAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
-                        sysAnnoMenu.setHref("/system/config/amis/" + anPluginMenu.getEntity().getEntityName());
+                        anAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
+                        anAnnoMenu.setHref("/system/config/amis/" + anPluginMenu.getEntity().getEntityName());
                         if (anPluginMenu.getEntity().isEnablePermission()) {
-                            sysAnnoMenu.setPermissionId(anPluginMenu.getEntity().getTableName());
+                            anAnnoMenu.setPermissionId(anPluginMenu.getEntity().getTableName());
                         }
                     }
-                    sysAnnoMenu.setParseType("annoMain");
-                    sysAnnoMenu.setParentId(anPluginMenu.getParentId());
-                    sysAnnoMenu.setDelFlag(0);
-                    sysAnnoMenuDao.insert(sysAnnoMenu, true);
+                    anAnnoMenu.setParseType("annoMain");
+                    anAnnoMenu.setParentId(anPluginMenu.getParentId());
+                    anAnnoMenu.setDelFlag(0);
+                    anAnnoMenuDao.insert(anAnnoMenu, true);
                 } else {
-                    if (!StrUtil.equals(anPluginMenu.getTitle(), sysAnnoMenu.getTitle())) {
-                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "title").getTableFieldName(), anPluginMenu.getTitle());
+                    if (!StrUtil.equals(anPluginMenu.getTitle(), anAnnoMenu.getTitle())) {
+                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "title").getTableFieldName(), anPluginMenu.getTitle());
                     }
-                    if (!Objects.equals(anPluginMenu.getSort(), sysAnnoMenu.getSort())) {
-                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "sort").getTableFieldName(), anPluginMenu.getSort());
+                    if (!Objects.equals(anPluginMenu.getSort(), anAnnoMenu.getSort())) {
+                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "sort").getTableFieldName(), anPluginMenu.getSort());
                     }
-                    if (!StrUtil.equals(anPluginMenu.getIcon(), sysAnnoMenu.getIcon())) {
-                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "icon").getTableFieldName(), anPluginMenu.getIcon());
+                    if (!StrUtil.equals(anPluginMenu.getIcon(), anAnnoMenu.getIcon())) {
+                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "icon").getTableFieldName(), anPluginMenu.getIcon());
                     }
-                    if (!StrUtil.equals(anPluginMenu.getParentId(), sysAnnoMenu.getParentId())) {
-                        map.put(metadataManager.getEntityField(SysAnnoMenu.class, "parentId").getTableFieldName(), anPluginMenu.getParentId());
+                    if (!StrUtil.equals(anPluginMenu.getParentId(), anAnnoMenu.getParentId())) {
+                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "parentId").getTableFieldName(), anPluginMenu.getParentId());
                     }
                     if (CollUtil.isNotEmpty(map)) {
-                        dbContext.table(metadataManager.getEntity(SysAnnoMenu.class).getTableName())
+                        dbContext.table(metadataManager.getEntity(AnAnnoMenu.class).getTableName())
                                 .setMap(map)
                                 .whereEq("id", anPluginMenu.getId())
                                 .update();

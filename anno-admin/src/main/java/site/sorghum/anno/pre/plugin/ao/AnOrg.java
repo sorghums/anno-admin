@@ -11,7 +11,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.pre.plugin.proxy.SysOrgProxy;
+import site.sorghum.anno.pre.plugin.proxy.AnOrgProxy;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 /**
@@ -24,10 +24,10 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "组织管理",
         orgFilter = true,
-        annoProxy = @AnnoProxy(value = SysOrgProxy.class),
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_org", baseCodeTranslate = "组织管理"))
-@Table("sys_org")
-public class SysOrg extends BaseMetaModel {
+        annoProxy = @AnnoProxy(value = AnOrgProxy.class),
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
+@Table("an_org")
+public class AnOrg extends BaseMetaModel {
 
     /**
      * 组织描述
@@ -47,6 +47,6 @@ public class SysOrg extends BaseMetaModel {
 
 
     @AnnoButton(name = "组织用户",
-            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = SysUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId", enable = true))
+            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = AnUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId", enable = true))
     private Object userButton;
 }

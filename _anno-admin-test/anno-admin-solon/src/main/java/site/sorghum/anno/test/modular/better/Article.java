@@ -31,7 +31,8 @@ public class Article extends BaseMetaModel {
     @AnnoField(
         title = "文章内容",
         tableFieldName = "content",
-        edit = @AnnoEdit, dataType = AnnoDataType.CODE_EDITOR)
+        search = @AnnoSearch,
+        edit = @AnnoEdit(placeHolder = "请输入文章内容"), dataType = AnnoDataType.CODE_EDITOR)
     String content;
 
 

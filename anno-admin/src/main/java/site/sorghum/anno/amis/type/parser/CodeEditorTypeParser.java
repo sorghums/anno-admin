@@ -23,9 +23,7 @@ public class CodeEditorTypeParser implements TypeParser {
     @Override
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         CommonPopOver commonPopOver = new CommonPopOver();
-        CodeEditor codeEditor = new CodeEditor() {{
-            setDisabled(true);
-        }};
+        CodeEditor codeEditor = new CodeEditor();
         CodePopOver codePopOver = new CodePopOver();
         commonPopOver.setBody(codeEditor);
         BeanUtil.copyProperties(amisBase, codeEditor, "type");
@@ -39,6 +37,7 @@ public class CodeEditorTypeParser implements TypeParser {
     public FormItem parseEdit(FormItem formItem, AnField anField) {
         CodeEditor codeEditor = new CodeEditor();
         BeanUtil.copyProperties(formItem, codeEditor);
+        codeEditor.setPlaceholder(formItem.getPlaceholder());
         return codeEditor;
     }
 }

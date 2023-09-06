@@ -1,6 +1,6 @@
 package site.sorghum.anno.pre.plugin.service;
 
-import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
+import site.sorghum.anno.pre.plugin.ao.AnAnnoMenu;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface SysAnnoMenuService {
     /**
      * 列表
      *
-     * @return {@link List}<{@link SysAnnoMenu}>
+     * @return {@link List}<{@link AnAnnoMenu}>
      */
-    List<SysAnnoMenu> list();
+    List<AnAnnoMenu> list();
 }

@@ -7,9 +7,9 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno.pre.plugin.ao.SysAnnoMenu;
+import site.sorghum.anno.pre.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
-import site.sorghum.anno.pre.plugin.entity.response.SysAnnoMenuResponse;
+import site.sorghum.anno.pre.plugin.entity.response.AnAnnoMenuResponse;
 import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.plugin.service.SysAnnoMenuService;
@@ -34,11 +34,11 @@ public class MenuBaseController {
     @Inject
     AuthService authService;
 
-    public List<SysAnnoMenuResponse> dataMenu() {
+    public List<AnAnnoMenuResponse> dataMenu() {
         String uid = StpUtil.getLoginId().toString();
-        List<SysAnnoMenu> sysAnnoMenus = sysAnnoMenuService.list();
+        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
-        List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
+        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
             sysAnnoMenu -> {
                 if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
                     return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
@@ -51,9 +51,9 @@ public class MenuBaseController {
 
     public AnnoResult<List<ReactMenu>> anMenu() {
         String uid = StpUtil.getLoginId().toString();
-        List<SysAnnoMenu> sysAnnoMenus = sysAnnoMenuService.list();
+        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
-        List<SysAnnoMenu> nList = sysAnnoMenus.stream().filter(
+        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
             sysAnnoMenu -> {
                 if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
                     return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
@@ -78,17 +78,17 @@ public class MenuBaseController {
     }
 
 
-    public static List<SysAnnoMenuResponse> listToTree(List<SysAnnoMenuResponse> list) {
-        Map<String, SysAnnoMenuResponse> map = new HashMap<>();
-        List<SysAnnoMenuResponse> roots = new ArrayList<>();
-        for (SysAnnoMenuResponse node : list) {
+    public static List<AnAnnoMenuResponse> listToTree(List<AnAnnoMenuResponse> list) {
+        Map<String, AnAnnoMenuResponse> map = new HashMap<>();
+        List<AnAnnoMenuResponse> roots = new ArrayList<>();
+        for (AnAnnoMenuResponse node : list) {
             map.put(node.getId(), node);
         }
-        for (SysAnnoMenuResponse node : list) {
+        for (AnAnnoMenuResponse node : list) {
             if (isRootNode(node.getParentId())) {
                 roots.add(node);
             } else {
-                SysAnnoMenuResponse parent = map.get(node.getParentId());
+                AnAnnoMenuResponse parent = map.get(node.getParentId());
                 if (parent != null) {
                     parent.getChildren().add(node);
                 }
@@ -97,10 +97,10 @@ public class MenuBaseController {
         return roots;
     }
 
-    private static List<SysAnnoMenuResponse> list2AnnoMenuResponse(List<SysAnnoMenu> sysAnnoMenus) {
-        return sysAnnoMenus.stream().map(
+    private static List<AnAnnoMenuResponse> list2AnnoMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
+        return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
-                SysAnnoMenuResponse annoMenuResponse = new SysAnnoMenuResponse();
+                AnAnnoMenuResponse annoMenuResponse = new AnAnnoMenuResponse();
                 BeanUtil.copyProperties(sysAnnoMenu, annoMenuResponse);
                 annoMenuResponse.setChildren(new ArrayList<>());
                 return annoMenuResponse;
@@ -128,8 +128,8 @@ public class MenuBaseController {
         return roots;
     }
 
-    private static List<ReactMenu> list2VueMenuResponse(List<SysAnnoMenu> sysAnnoMenus) {
-        return sysAnnoMenus.stream().map(
+    private static List<ReactMenu> list2VueMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
+        return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
                 ReactMenu reactMenu = ReactMenu.toVueMenu(sysAnnoMenu);
                 ;

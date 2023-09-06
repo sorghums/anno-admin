@@ -11,7 +11,7 @@ import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 import java.time.LocalDateTime;
@@ -51,10 +51,10 @@ public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
     private String getLoginName() {
         try {
             SaSession session = StpUtil.getSession(false);
-            SysUser sysUser = session.get("user", new SysUser() {{
+            AnUser anUser = session.get("user", new AnUser() {{
                 setName("system");
             }});
-            return sysUser.getName();
+            return anUser.getName();
         } catch (Exception e) {
             return "system";
         }

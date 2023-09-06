@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.core.alarm;
 
 import tech.powerjob.server.solon.extension.alarm.AlarmTarget;
-import site.sorghum.anno.pre.plugin.ao.SysUser;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
 import tech.powerjob.common.utils.CollectionUtils;
 
 import java.util.Collections;
@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
  */
 public class AlarmUtils {
 
-    public static List<AlarmTarget> convertUserInfoList2AlarmTargetList(List<SysUser> userInfoDOS) {
+    public static List<AlarmTarget> convertUserInfoList2AlarmTargetList(List<AnUser> userInfoDOS) {
         if (CollectionUtils.isEmpty(userInfoDOS)) {
             return Collections.emptyList();
         }
         return userInfoDOS.stream().map(AlarmUtils::convertUserInfo2AlarmTarget).collect(Collectors.toList());
     }
 
-    public static AlarmTarget convertUserInfo2AlarmTarget(SysUser user) {
+    public static AlarmTarget convertUserInfo2AlarmTarget(AnUser user) {
         AlarmTarget alarmTarget = new AlarmTarget();
         alarmTarget.setPhone(user.getMobile());
 

@@ -13,7 +13,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.plugin.proxy.SysRoleProxy;
+import site.sorghum.anno.pre.plugin.proxy.AnRoleProxy;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
 import java.io.Serializable;
@@ -21,11 +21,11 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_role", baseCodeTranslate = "角色管理"),
-        annoProxy = @AnnoProxy(value = SysRoleProxy.class),
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_role", baseCodeTranslate = "角色管理"),
+        annoProxy = @AnnoProxy(value = AnRoleProxy.class),
         annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
-@Table("sys_role")
-public class SysRole extends BaseMetaModel implements Serializable {
+@Table("an_role")
+public class AnRole extends BaseMetaModel implements Serializable {
 
     /**
      * 角色名称
@@ -57,8 +57,8 @@ public class SysRole extends BaseMetaModel implements Serializable {
      * 用户按钮
      */
     @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinAnnoMainClazz = SysUser.class,
-            mediumTableClass = SysUserRole.class,
+            joinAnnoMainClazz = AnUser.class,
+            mediumTableClass = AnUserRole.class,
             mediumOtherField = "user_id",
             mediumThisField = "role_id",
             joinThisClazzField = "id"
@@ -70,8 +70,8 @@ public class SysRole extends BaseMetaModel implements Serializable {
      * 权限按钮
      */
     @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinAnnoMainClazz = SysPermission.class,
-            mediumTableClass = SysRolePermission.class,
+            joinAnnoMainClazz = AnPermission.class,
+            mediumTableClass = AnRolePermission.class,
             mediumOtherField = "permission_id",
             mediumThisField = "role_id",
             joinThisClazzField = "id",

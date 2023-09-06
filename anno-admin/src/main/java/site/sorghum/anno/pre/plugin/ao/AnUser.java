@@ -13,7 +13,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.plugin.proxy.SysUserProxy;
+import site.sorghum.anno.pre.plugin.proxy.AnUserProxy;
 import site.sorghum.anno.pre.plugin.service.AuthService;
 import site.sorghum.anno.pre.suppose.model.BaseOrgMetaModel;
 
@@ -22,10 +22,10 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "sys_user", baseCodeTranslate = "用户管理"),
-        annoProxy = @AnnoProxy(value = SysUserProxy.class))
-@Table("sys_user")
-public class SysUser extends BaseOrgMetaModel implements Serializable {
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"),
+        annoProxy = @AnnoProxy(value = AnUserProxy.class))
+@Table("an_user")
+public class AnUser extends BaseOrgMetaModel implements Serializable {
 
     /**
      * 用户头像
@@ -71,8 +71,8 @@ public class SysUser extends BaseOrgMetaModel implements Serializable {
      * 角色按钮
      */
     @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinAnnoMainClazz = SysRole.class,
-            mediumTableClass = SysUserRole.class,
+            joinAnnoMainClazz = AnRole.class,
+            mediumTableClass = AnUserRole.class,
             mediumOtherField = "role_id",
             mediumThisField = "user_id",
             joinThisClazzField = "id"
