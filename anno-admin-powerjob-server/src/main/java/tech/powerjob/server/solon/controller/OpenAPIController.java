@@ -1,9 +1,12 @@
 package tech.powerjob.server.solon.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.util.StrUtil;
+import org.noear.solon.annotation.Body;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.MethodType;
 import tech.powerjob.common.OpenAPIConstant;
 import tech.powerjob.common.PowerQuery;
@@ -57,6 +60,7 @@ public class OpenAPIController {
     private CacheService cacheService;
 
 
+    @SaIgnore
     @Mapping(value = OpenAPIConstant.ASSERT, method = MethodType.POST)
     public ResultDTO<Long> assertAppName(String appName, String password) {
         return ResultDTO.success(Long.parseLong(appInfoService.assertApp(appName, password)));

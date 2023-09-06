@@ -19,7 +19,7 @@ public interface WorkflowInfoRepository extends AnnoBaseMapper<WorkflowInfoDO> {
 
 
     default List<WorkflowInfoDO> findByAppIdInAndStatusAndTimeExpressionTypeAndNextTriggerTimeLessThanEqual(List<String> appIds, int status, int timeExpressionType, long time) {
-        return selectList(m -> m.whereIn("appId", appIds)
+        return selectList(m -> m.whereIn("app_id", appIds)
                 .andEq("status", status)
                 .andEq("time_expression_type", timeExpressionType)
                 .andLte("next_trigger_time", time));

@@ -3,6 +3,7 @@ package tech.powerjob.server.solon.remote.server;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import tech.powerjob.server.solon.remote.aware.TransportServiceAware;
 import tech.powerjob.server.solon.remote.server.election.Ping;
 import tech.powerjob.server.solon.remote.server.redirector.RemoteProcessReq;
@@ -29,6 +30,7 @@ import static tech.powerjob.common.RemoteConstant.S4S_PATH;
 @Actor(path = S4S_PATH)
 public class FriendActor implements TransportServiceAware {
 
+    @Inject
     private TransportService transportService;
 
     /**

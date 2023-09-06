@@ -133,7 +133,7 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
 
     default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(List<String> appIds, int status, long time, PageParam page) {
         try {
-            return db().table("instance_info")
+            return db().table("pj_instance_info")
                 .whereIn("app_id", appIds)
                 .andEq("status", status)
                 .andLt("actual_trigger_time", time)
@@ -146,7 +146,7 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
 
     default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(List<String> appIds, int status, Date time, PageParam page) {
         try {
-            return db().table("instance_info")
+            return db().table("pj_instance_info")
                 .whereIn("app_id", appIds)
                 .andEq("status", status)
                 .andLt("update_time", time)
@@ -168,8 +168,8 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
         return selectCount(m -> m.whereEq("app_id", appId).andEq("status", status));
     }
 
-    default long countByAppIdAndStatusAndGmtCreateAfter(long appId, int status, Date time) {
-        return selectCount(m -> m.whereEq("app_id", appId).andEq("status", status).andGt("gmt_create", time));
+    default long countByAppIdAndStatusAndGmtCreateAfter(String appId, int status, Date time) {
+        return selectCount(m -> m.whereEq("app_id", appId).andEq("status", status).andGt("create_time", time));
     }
 
     default List<String> findByJobIdInAndStatusIn(List<String> jobIds, List<Integer> status) {

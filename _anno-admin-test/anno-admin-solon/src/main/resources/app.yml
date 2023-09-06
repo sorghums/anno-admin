@@ -83,3 +83,28 @@ oms.container.retention.remote: -1
 ####### Threshold in precise fetching server(0~100). 100 means full detection of server, in which #######
 ####### split-brain could be avoided while performance overhead would increase. #######
 oms.accurate.select.server.percentage: 50
+
+# powerjob-worker
+solon.powerjob:
+  # 把原生的关闭掉
+  enabled: false
+# 使用新的powerjob配置，主要是将 powerjob-worker 的启动放到最后
+solon.powerjob2:
+  # Whether to enable PowerJob Worker, default is true
+  enabled: true
+  # Address of PowerJob-server node(s). Ip:port or domain. Multiple addresses should be separated with comma.
+  serverAddress: 127.0.0.1:${server.port}
+  # Application name, used for grouping applications. Recommend to set the same value as project name.
+  appName: ${solon.app.name}
+  # If use PowerjobClient to submit a job, you need to set this property.
+  password: 123
+  # Transport port, default is 27777
+  port: 28888
+  # transport protocol between server and worker
+  protocol: akka
+  # Store strategy of H2 database. disk or memory. Default value is disk.
+  storeStrategy: disk
+  # Max length of result. Results that are longer than the value will be truncated.
+  maxResultLength: 4096
+  # Max length of appended workflow context . Appended workflow context value that is longer than the value will be ignore.
+  maxAppendedWfContextLength: 4096

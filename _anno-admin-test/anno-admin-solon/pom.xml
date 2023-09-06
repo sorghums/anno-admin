@@ -38,6 +38,10 @@
             <version>${mysql.ver}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>powerjob-solon-plugin</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.zaxxer</groupId>

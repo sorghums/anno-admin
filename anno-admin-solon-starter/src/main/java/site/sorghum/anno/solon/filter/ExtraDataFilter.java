@@ -34,6 +34,10 @@ public class ExtraDataFilter implements Filter {
         }
         String extraData = null;
         HashMap<String,Object> bdMap;
+
+        // 先把请求的参数缓存起来，mapping 解析时会用到
+        ctx.paramMap();
+
         if (ctx.body().startsWith("{")) {
             bdMap = JSONUtil.toBean(ctx.body(),HashMap.class);
             if (bdMap.containsKey("_extraData")) {

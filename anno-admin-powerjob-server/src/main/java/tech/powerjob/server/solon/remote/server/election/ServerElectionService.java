@@ -115,7 +115,7 @@ public class ServerElectionService {
                     appInfo.setCurrentServer(transportService.defaultProtocol().getAddress());
                     appInfo.setUpdateTime(LocalDateTime.now());
 
-                    appInfoRepository.insert(appInfo);
+                    appInfoRepository.updateById(appInfo);
                     log.info("[ServerElection] this server({}) become the new server for app(appId={}).", appInfo.getCurrentServer(), appId);
                     return targetProtocolInfo.getExternalAddress();
                 }
