@@ -36,9 +36,9 @@ export const amisEnv: any = {
 		}
 
 		config.headers = headers || {};
-
+		let annoTokenKey = window.localStorage.getItem("anno-token-key") || "anno-token";
 		// 手动设置token请求头
-		config.headers["anno-token"] =window.localStorage.getItem("anno-token") || "";
+		config.headers[annoTokenKey] =window.localStorage.getItem("anno-token") || "";
 
 		if (method !== "post" && method !== "put" && method !== "patch") {
 			if (data) {
@@ -139,6 +139,12 @@ const AMIS = () => {
 	const { id } = useParams();
 	let [searchParams, setSearchParams] = useSearchParams();
 	let params = Object.fromEntries(searchParams);
+	let tokenKey = searchParams.get("tokenKey") || "anno-token";
+	let tokenValue = searchParams.get("tokenValue") || "";
+	if (tokenValue != "") {
+		window.localStorage.setItem("anno-token", tokenValue);
+	}
+  window.localStorage.setItem("anno-token-key",tokenKey);
 	return <AMISComponent key={id} targetClass={id} param={params} defaultProps={params} />;
 };
 
