@@ -39,7 +39,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     @Override
     public AnEntity load(Class<?> clazz) {
-        AnnoMain annoMain = clazz.getAnnotation(AnnoMain.class);
+        AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
         Table table = clazz.getAnnotation(Table.class);
         AnEntity entity = new AnEntity();
         entity.setTitle(annoMain.name());
@@ -256,7 +256,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     private List<AnTableButton> getAnTableButton(Class<?> clazz) {
         ArrayList<AnTableButton> anButtons = new ArrayList<>();
-        AnnoMain main = AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
+        AnnoMain main = AnnoUtil.getAnnoMain(clazz);
         AnnoTableButton[] annoTableButtons = main.annoTableButton();
         for (AnnoTableButton anno : annoTableButtons) {
 

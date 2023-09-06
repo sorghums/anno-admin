@@ -24,6 +24,7 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
@@ -34,11 +35,9 @@ import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.solon.init.InitDdlAndDateService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
+import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Solon Anno-Admin 插件
@@ -78,10 +77,18 @@ public class XPluginImp implements Plugin {
         loadMetadata(context, packages);
 
         // 前端静态文件
-        StaticMappings.add("/", new ClassPathStaticRepository("META-INF/anno-admin-ui"));
+        StaticMappings.add("/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
 
         // 优先 初始化数据库表结构和预置数据，其他模块在创建 bean 时，可能会查库
-        context.getBean(InitDdlAndDateService.class).initDdl();
+        context.getBeanAsync(InitDdlAndDateService.class, initDdlAndDateService -> {
+            context.getBeanAsync(DataSource.class, dataSource -> {
+                try {
+                    initDdlAndDateService.initDdl();
+                } catch (Throwable e) {
+                    throw new BizException(e);
+                }
+            });
+        });
     }
 
     /**
@@ -100,28 +107,28 @@ public class XPluginImp implements Plugin {
      */
     private void loadMetadata(AppContext context, Set<String> packages) {
         MetadataManager metadataManager = context.getBean(MetadataManager.class);
-
+        HashSet<Class<?>> classSet = new HashSet<>();
         for (String scanPackage : packages) {
-            Set<Class<?>> classes = ClassUtil.scanPackage(scanPackage);
-            for (Class<?> clazz : classes) {
-                if (clazz.isInterface()) {
-                    continue;
-                }
-                AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
-                if (annoMain != null) {
-
-                    metadataManager.loadEntity(clazz);
-                    // 缓存处理类
-                    AnnoClazzCache.put(clazz.getSimpleName(), clazz);
-                }
-                // 缓存字段信息
-                AnnoUtil.getAnnoFields(clazz).forEach(
-                    field -> {
-                        String columnName = AnnoUtil.getColumnName(field);
-                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
-                    }
-                );
+            classSet.addAll(ClassUtil.scanPackage(scanPackage)) ;
+        }
+        for (Class<?> clazz : classSet) {
+            if (clazz.isInterface()) {
+                continue;
             }
+            AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+            if (annoMain != null) {
+
+                metadataManager.loadEntity(clazz);
+                // 缓存处理类
+                AnnoClazzCache.put(clazz.getSimpleName(), clazz);
+            }
+            // 缓存字段信息
+            AnnoUtil.getAnnoFields(clazz).forEach(
+                field -> {
+                    String columnName = AnnoUtil.getColumnName(field);
+                    AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
+                }
+            );
         }
     }
 

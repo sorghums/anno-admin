@@ -49,7 +49,7 @@ public class AnnoUtil {
      * @return {@link AnnoMain}
      */
     public static AnnoMain getAnnoMain(Class<?> clazz) {
-        return AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
+        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoMain.class);
     }
 
     /**
@@ -171,21 +171,6 @@ public class AnnoUtil {
     public static String getColumnName(FieldAnnoField field) {
         return field.getAnnoField().tableFieldName();
     }
-
-
-
-
-    /**
-     * 获取分类键值
-     *
-     * @param clazz clazz
-     * @return {@link String}
-     */
-    public static String getCatKey(Class<?> clazz) {
-        AnnoMain annotation = AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
-        return annotation.annoLeftTree().catKey();
-    }
-
 
     /**
      * 获取表字段

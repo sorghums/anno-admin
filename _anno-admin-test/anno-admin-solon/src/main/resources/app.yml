@@ -62,10 +62,7 @@ anno-admin:
   isAutoMaintainInitData: true
   # 自动初始化表，默认为 true
   isAutoMaintainTable: true
-#添加静态目录映射
-solon.staticfiles.mappings:
-  - path: '/'
-    repository: 'classpath:/WEB-INF/anno-admin-ui/'
+
 
 # powerjob-server
 powerjob-server-solon.version: @project.version@

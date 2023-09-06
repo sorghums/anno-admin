@@ -7,8 +7,10 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Filter;
-import org.noear.solon.core.handle.FilterChain;
+import org.noear.solon.core.handle.Handler;
+import org.noear.solon.core.route.PathRule;
+import org.noear.solon.core.route.RouterInterceptor;
+import org.noear.solon.core.route.RouterInterceptorChain;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.ThrowableLogUtil;
@@ -23,13 +25,23 @@ import java.util.HashMap;
  */
 @Component
 @Slf4j
-public class ExtraDataFilter implements Filter {
+public class ExtraDataInterceptor implements RouterInterceptor {
     private static final String EXTRA_DATA = "_extraData";
 
     @Override
-    public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+    public PathRule pathPatterns() {
+        return new PathRule().include("/system/config/**","/amis/system/anno/**");
+    }
+
+    @Override
+    public Object postResult(Context ctx, Object result) throws Throwable {
+        return RouterInterceptor.super.postResult(ctx, result);
+    }
+
+    @Override
+    public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
         if (ctx.isMultipart()){
-            chain.doFilter(ctx);
+            chain.doIntercept(ctx, mainHandler);
             return;
         }
         String extraData = null;
@@ -55,12 +67,12 @@ public class ExtraDataFilter implements Filter {
             try {
                 HashMap<String,Object> param = JSONUtil.toBean(extraData,HashMap.class);
                 param.forEach(
-                        (k, v) -> {
-                            if (ObjUtil.isNotEmpty(v)) {
-                                ctx.paramSet(k, v.toString());
-                                bdMap.put(k, v);
-                            }
+                    (k, v) -> {
+                        if (ObjUtil.isNotEmpty(v)) {
+                            ctx.paramSet(k, v.toString());
+                            bdMap.put(k, v);
                         }
+                    }
                 );
                 ctx.bodyNew(JSONUtil.toJsonString(bdMap));
             } catch (Exception e) {
@@ -68,6 +80,6 @@ public class ExtraDataFilter implements Filter {
             }
         }
         AnnoContextUtil.getContext().setRequestParams(bdMap);
-        chain.doFilter(ctx);
+        chain.doIntercept(ctx, mainHandler);
     }
 }

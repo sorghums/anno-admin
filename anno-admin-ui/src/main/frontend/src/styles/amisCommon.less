@@ -7,7 +7,13 @@
 	--global-blur: blur(0px);
 }
 
-.antd-Table-table > thead > tr > th{
+.antd-Table-table > thead > tr > th {
+	background: var(--Panel-heading-bg);
+	backdrop-filter: blur(10px);
+}
+
+
+.antd-Table-table > thead > tr > th:last-child{
 	background: var(--Panel-heading-bg);
 	backdrop-filter: blur(10px);
 }

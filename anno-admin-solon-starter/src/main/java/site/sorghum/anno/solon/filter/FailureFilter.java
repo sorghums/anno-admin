@@ -5,6 +5,7 @@ import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
@@ -12,7 +13,6 @@ import org.noear.solon.validation.ValidatorException;
 import org.noear.solon.validation.annotation.Logined;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno._common.util.AnnoContextUtil;
 
 import java.time.format.DateTimeParseException;
 
@@ -24,14 +24,13 @@ import java.time.format.DateTimeParseException;
  */
 @Component
 @Slf4j
+@Condition(onProperty = "${anno-admin.class.FailureFilter:true} = true")
 public class FailureFilter implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         log.info("请求路径：{}", ctx.path());
         try {
             chain.doFilter(ctx);
-            // 请求完成后自动清除上下文
-            AnnoContextUtil.clearContext();
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
                 setHttpStatus(ctx,() -> ctx.status(401));

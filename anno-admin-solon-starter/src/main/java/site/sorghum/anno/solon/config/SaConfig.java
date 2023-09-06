@@ -8,6 +8,7 @@ import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
@@ -29,6 +30,7 @@ public class SaConfig {
     }
 
     @Bean(index = -100)  //-100，是顺序位（低值优先）
+    @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true")
     public SaTokenInterceptor saTokenInterceptor() {
         return new SaTokenInterceptor()
             // [拦截路由]
