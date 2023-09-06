@@ -47,6 +47,13 @@ public class DbCondition {
             field = field.split("as")[0];
         }
         switch (type) {
+            case ORDER_BY -> {
+                if ("asc".equals(value)){
+                    dbTableQuery.orderByAsc(field);
+                }else {
+                    dbTableQuery.orderByDesc(field);
+                }
+            }
             case EQ -> {
                 if (andOr == AndOr.AND) {
                     dbTableQuery.andEq(field, value);
@@ -150,7 +157,7 @@ public class DbCondition {
     }
 
     public enum QueryType {
-        EQ(0), LIKE(1), IN(2), NOT_IN(3), NEQ(4), GT(5), LT(6), GTE(7), LTE(8), CUSTOM(9);
+        ORDER_BY(-1), EQ(0), LIKE(1), IN(2), NOT_IN(3), NEQ(4), GT(5), LT(6), GTE(7), LTE(8), CUSTOM(9);
         private final int value;
 
         QueryType(int value) {

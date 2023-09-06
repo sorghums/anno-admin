@@ -29,7 +29,7 @@ public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
     @SneakyThrows
     @Override
     public void afterFetch(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
-        IPage<T> virtualIPage = dbServiceWood.page(tableParam, dbConditions, pageParam);
+        IPage<T> virtualIPage = dbServiceWood.page(tableParam.getClazz(), dbConditions, pageParam);
         page.setTotal(virtualIPage.getTotal());
         page.setList(virtualIPage.getList());
         page.setList(virtualIPage.getList());

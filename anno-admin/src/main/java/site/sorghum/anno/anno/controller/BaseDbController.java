@@ -75,18 +75,17 @@ public class BaseDbController {
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        TableParam tableParam = metadataManager.getTableParam(clazz);
         if (StrUtil.isNotEmpty(orderBy)) {
-            tableParam.getOrderByParam().addOrderByItem(new OrderByParam.OrderByItem(entity.getField(orderBy).getTableFieldName(), "asc".equals(orderDir)));
+            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(orderBy).getTableFieldName(),orderDir));
         }
-        IPage<T> pageRes = dbService.page(tableParam, dbConditions, new PageParam(page, perPage));
+        IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(page, perPage));
         return AnnoResult.succeed(pageRes);
     }
 
     public <T> AnnoResult<T> save(String clazz, Map<String, Object> param) {
         TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
         T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
-        dbService.insert(tableParam, t);
+        dbService.insert(t);
         return AnnoResult.succeed();
     }
 
@@ -100,7 +99,7 @@ public class BaseDbController {
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
         }
-        T queryOne = (T) dbService.queryOne(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
+        T queryOne = (T) dbService.queryOne(anEntity.getClazz(), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
         return AnnoResult.succeed(queryOne);
     }
 
@@ -114,7 +113,7 @@ public class BaseDbController {
     public AnnoResult<String> removeById(String clazz, String id) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         AnField pkField = anEntity.getPkField();
-        dbService.delete(metadataManager.getTableParam(clazz), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
+        dbService.delete(anEntity.getClazz(), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
         return AnnoResult.succeed("删除成功");
     }
 
@@ -126,9 +125,7 @@ public class BaseDbController {
         AnField pkField = anEntity.getPkField();
         TableParam<T> tableParam = metadataManager.getTableParam(clazz);
         T bean = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
-        dbService.update(tableParam,
-            CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()),
-            bean);
+        dbService.update(CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()), bean);
         return AnnoResult.succeed();
     }
 
@@ -141,11 +138,9 @@ public class BaseDbController {
             return AnnoResult.failure("未找到主键");
         }
         if (ReflectUtil.getFieldValue(data, pkField.getFieldName()) == null) {
-            dbService.insert(tableParam, data);
+            dbService.insert(data);
         } else {
-            dbService.update(tableParam,
-                CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()),
-                data);
+            dbService.update(CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()), data);
         }
         return AnnoResult.succeed(data);
     }
@@ -155,12 +150,11 @@ public class BaseDbController {
         String otherValue = param.get("joinValue");
         String thisValue = param.get(param.get("joinThisClazzField"));
         String mediumThisField = param.get("mediumThisField");
-        TableParam<?> tableParam = metadataManager.getTableParam(param.get("mediumTableClass"));
         ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
             DbCondition.builder().field(mediumOtherField).value(otherValue).build(),
             DbCondition.builder().field(mediumThisField).value(thisValue).build()
         );
-        dbService.delete(tableParam, dbConditions);
+        dbService.delete(metadataManager.getEntity(param.get("mediumTableClass")).getClazz(), dbConditions);
         return AnnoResult.succeed();
     }
 
@@ -183,7 +177,7 @@ public class BaseDbController {
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        List<T> list = dbService.list(tableParam, dbConditions);
+        List<T> list = dbService.list(tableParam.getClazz(), dbConditions);
         List<AnnoTreeDTO<String>> annoTreeDTOs = Utils.toTrees(list);
         annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("0").label("无选择").value("").build());
         return AnnoResult.succeed(annoTreeDTOs);
@@ -208,7 +202,7 @@ public class BaseDbController {
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        List<T> list = dbService.list(tableParam, dbConditions);
+        List<T> list = dbService.list(tableParam.getClazz(), dbConditions);
         if (list == null || list.isEmpty()) {
             return AnnoResult.succeed(Collections.emptyMap());
         }
@@ -219,7 +213,7 @@ public class BaseDbController {
     public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {
         // 中间表
         String mediumTableClass = param.get("mediumTableClass").toString();
-        TableParam<Object> tableParam = (TableParam<Object>) metadataManager.getTableParam(mediumTableClass);
+        Class<?> aClass = metadataManager.getEntity(mediumTableClass).getClazz();
         String[] split;
         Object ids = param.get("ids");
         // 字段一
@@ -237,18 +231,16 @@ public class BaseDbController {
         }
         if (clearAll) {
             // 物理删除
-            tableParam.getRemoveParam().setLogic(false);
-            dbService.delete(tableParam, CollUtil.newArrayList(
+            dbService.delete(aClass, CollUtil.newArrayList(
                 DbCondition.builder().field(mediumOtherField).value(mediumOtherValue).build()
             ));
-            tableParam.getRemoveParam().setLogic(true);
         }
         for (String mediumThisValue : split) {
             Map<String, Object> addValue = new HashMap<>() {{
                 put(mediumThisField, mediumThisValue);
                 put(mediumOtherField, mediumOtherValue);
             }};
-            dbService.insert(tableParam, JSONUtil.toBean(addValue, tableParam.getClazz()));
+            dbService.insert(JSONUtil.toBean(addValue, aClass));
         }
         return AnnoResult.succeed();
     }

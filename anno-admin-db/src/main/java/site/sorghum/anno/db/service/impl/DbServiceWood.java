@@ -7,6 +7,7 @@ import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.db.exception.AnnoDbException;
+import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.RemoveParam;
@@ -38,7 +39,8 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
+    public <T> IPage<T> page(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
+        TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(tClass);
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         return dbTableQuery
             .limit((pageParam.getPage() - 1) * pageParam.getPageSize(), pageParam.getPageSize())
@@ -47,14 +49,15 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> List<T> list(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+    public <T> List<T> list(Class<T> tClass, List<DbCondition> dbConditions) {
+        TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(tClass);
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         return dbTableQuery.selectList(tableParam.getColumnStr(), tableParam.getClazz());
     }
 
     @Override
-    public <T> T queryOne(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-        List<T> ts = list(tableParam, dbConditions);
+    public <T> T queryOne(Class<T> tClass, List<DbCondition> dbConditions) {
+        List<T> ts = list(tClass, dbConditions);
         if (ts.size() > 1) {
             throw new AnnoDbException(I18nUtil.getMessage("exception.db.out-one"));
         }
@@ -66,7 +69,8 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> int update(TableParam<T> tableParam, List<DbCondition> dbConditions, T t) {
+    public <T> int update(List<DbCondition> dbConditions, T t) {
+        TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(t.getClass());
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         // 执行值
         dbTableQuery.setEntityIf(t, (k, v) -> v != null);
@@ -75,7 +79,8 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> long insert(TableParam<T> tableParam, T t) {
+    public <T> long insert(T t) {
+        TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(t.getClass());
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = dbContext.
             table(tableParam.getTableName()).
@@ -88,7 +93,8 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> int delete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
+    public <T> int delete(Class<T> tClass,List<DbCondition> dbConditions) {
+        TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(tClass);
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         if (removeParam.getLogic()) {

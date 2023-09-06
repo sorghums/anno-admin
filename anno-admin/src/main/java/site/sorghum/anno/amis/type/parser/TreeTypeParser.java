@@ -60,7 +60,7 @@ public class TreeTypeParser implements TypeParser {
         } else if (!treeOptionAnnoClass.getAnnoClass().equals(Object.class)){
             AnEntity anEntity = metadataManager.getEntity(treeOptionAnnoClass.getAnnoClass());
             List<?> dataList = dbServiceWithProxy.list(
-                metadataManager.getTableParam(anEntity.getClazz()),
+                anEntity.getClazz(),
                 new ArrayList<>()
             );
             for (Object data : dataList) {
@@ -96,7 +96,7 @@ public class TreeTypeParser implements TypeParser {
         } else if(!treeOptionAnnoClass.getAnnoClass().equals(Object.class)){
             AnEntity anEntity = metadataManager.getEntity(treeOptionAnnoClass.getAnnoClass());
             List<?> dataList = dbServiceWithProxy.list(
-                metadataManager.getTableParam(anEntity.getClazz()),
+                anEntity.getClazz(),
                 new ArrayList<>()
             );
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(

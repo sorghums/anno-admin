@@ -59,7 +59,7 @@ public class PickerTypeParser implements TypeParser {
         } else if(!optionAnnoClass.getAnnoClass().equals(Object.class)){
             AnEntity anEntity = metadataManager.getEntity(optionAnnoClass.getAnnoClass());
             List<?> dataList = dbServiceWithProxy.list(
-                metadataManager.getTableParam(anEntity.getClazz()),
+                anEntity.getClazz(),
                 new ArrayList<>()
             );
             for (Object data : dataList) {
@@ -96,7 +96,7 @@ public class PickerTypeParser implements TypeParser {
         } else if(!optionAnnoClass.getAnnoClass().equals(Object.class)){
             AnEntity anEntity = metadataManager.getEntity(optionAnnoClass.getAnnoClass());
             List<?> dataList = dbServiceWithProxy.list(
-                metadataManager.getTableParam(anEntity.getClazz()),
+                anEntity.getClazz(),
                 new ArrayList<>()
             );
             for (Object data : dataList) {

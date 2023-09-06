@@ -48,9 +48,9 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
         wtfC.setLocation(data.getLocation());
         wtfC.setWtfB(wtfB.getId());
 
-        getDbServiceWood().insert(wtfAParam, wtfA);
-        getDbServiceWood().insert(wtfBParam, wtfB);
-        getDbServiceWood().insert(wtfCParam, wtfC);
+        getDbServiceWood().insert(wtfA);
+        getDbServiceWood().insert(wtfB);
+        getDbServiceWood().insert(wtfC);
 
     }
 
@@ -66,13 +66,13 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
         TableParam<BaseMetaModel> wtfCParam = metadataManager.getTableParam(WtfC.class);
 
         ArrayList<DbCondition> aConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getT3id()));
-        getDbServiceWood().update(wtfAParam,aConditions, new WtfA(data.name, data.age,null));
+        getDbServiceWood().update(aConditions, new WtfA(data.name, data.age,null));
 
         ArrayList<DbCondition> bConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getT2id()));
-        getDbServiceWood().update(wtfBParam,bConditions, new WtfB(data.attr,null,null));
+        getDbServiceWood().update(bConditions, new WtfB(data.attr,null,null));
 
         ArrayList<DbCondition> cConditions = CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", data.getId()));
-        getDbServiceWood().update(wtfCParam,cConditions, new WtfC(data.location,null));
+        getDbServiceWood().update(cConditions, new WtfC(data.location,null));
 
     }
 
@@ -93,7 +93,7 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
             Field fieldBySqlColumn = AnnoFieldCache.getFieldBySqlColumn(WtfABCVirtual.class, field);
         }
         // 查询要删除的数据原信息
-        WtfABCVirtual wtfABCVirtual = getDbServiceWood().queryOne(tableParam, dbConditions);
+        WtfABCVirtual wtfABCVirtual = getDbServiceWood().queryOne(tableParam.getClazz(), dbConditions);
         log.info("before delete:{}", wtfABCVirtual);
         super.beforeDelete(tableParam, dbConditions);
     }

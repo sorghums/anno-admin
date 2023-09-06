@@ -41,17 +41,17 @@ public class DbServiceWithProxy implements DbService {
     MetadataManager metadataManager;
 
     @Override
-    public <T> IPage<T> page(TableParam<T> tableParam, List<DbCondition> dbConditions, PageParam pageParam) {
-        Class<T> clazz = tableParam.getClazz();
-        permissionProxy.fetchPermission(clazz);
-        AnEntity managerEntity = metadataManager.getEntity(clazz);
+    public <T> IPage<T> page(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
+        TableParam<T> tableParam = metadataManager.getTableParam(tClass);
+        permissionProxy.fetchPermission(tClass);
+        AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
         proxyInstance.beforeFetch(tableParam, dbConditions, pageParam);
         IPage<T> page = virtualProcess(tableParam.isVirtualTable(),
-            () -> dbService.page(tableParam, dbConditions, pageParam),
+            () -> dbService.page(tClass, dbConditions, pageParam),
             () -> new IPageImpl<>(new ArrayList<>(), 0, 0)
         );
         // 后置处理
@@ -62,17 +62,17 @@ public class DbServiceWithProxy implements DbService {
     }
 
     @Override
-    public <T> List<T> list(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-        Class<T> clazz = tableParam.getClazz();
-        permissionProxy.fetchPermission(clazz);
-        AnEntity managerEntity = metadataManager.getEntity(clazz);
+    public <T> List<T> list(Class<T> tClass, List<DbCondition> dbConditions) {
+        TableParam<T> tableParam = metadataManager.getTableParam(tClass);
+        permissionProxy.fetchPermission(tClass);
+        AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
         List<T> list = virtualProcess(tableParam.isVirtualTable(),
-            () -> dbService.list(tableParam, dbConditions),
+            () -> dbService.list(tClass, dbConditions),
             ArrayList::new
         );
         // 后置处理
@@ -83,17 +83,17 @@ public class DbServiceWithProxy implements DbService {
     }
 
     @Override
-    public <T> T queryOne(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-        Class<T> clazz = tableParam.getClazz();
-        permissionProxy.fetchPermission(clazz);
-        AnEntity managerEntity = metadataManager.getEntity(clazz);
+    public <T> T queryOne(Class<T> tClass, List<DbCondition> dbConditions) {
+        permissionProxy.fetchPermission(tClass);
+        TableParam<T> tableParam = metadataManager.getTableParam(tClass);
+        AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeFetch(tableParam, dbConditions, null);
         proxyInstance.beforeFetch(tableParam, dbConditions, null);
         T item = virtualProcess(tableParam.isVirtualTable(),
-            () -> dbService.queryOne(tableParam, dbConditions),
+            () -> dbService.queryOne(tClass, dbConditions),
             () -> null
         );
         // 后置处理
@@ -105,9 +105,10 @@ public class DbServiceWithProxy implements DbService {
     }
 
     @Override
-    public <T> int update(TableParam<T> tableParam, List<DbCondition> dbConditions, T t) {
+    public <T> int update(List<DbCondition> dbConditions, T t) {
+        permissionProxy.updatePermission(t.getClass());
+        TableParam<T> tableParam = metadataManager.getTableParam(t.getClass());
         Class<T> clazz = tableParam.getClazz();
-        permissionProxy.updatePermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
@@ -115,7 +116,7 @@ public class DbServiceWithProxy implements DbService {
         preProxyInstance.beforeUpdate(tableParam, dbConditions, t);
         proxyInstance.beforeUpdate(tableParam, dbConditions, t);
         int update = virtualProcess(tableParam.isVirtualTable(),
-            () ->  dbService.update(tableParam, dbConditions, t),
+            () ->  dbService.update(dbConditions, t),
             () -> 0
         );
         // 后置处理
@@ -125,7 +126,8 @@ public class DbServiceWithProxy implements DbService {
     }
 
     @Override
-    public <T> long insert(TableParam<T> tableParam, T t) {
+    public <T> long insert(T t) {
+        TableParam<T> tableParam = metadataManager.getTableParam(t.getClass());
         Class<T> clazz = tableParam.getClazz();
         permissionProxy.addPermission(clazz);
         AnEntity managerEntity = metadataManager.getEntity(clazz);
@@ -135,7 +137,7 @@ public class DbServiceWithProxy implements DbService {
         preProxyInstance.beforeAdd(tableParam, t);
         proxyInstance.beforeAdd(tableParam, t);
         long insert = virtualProcess(tableParam.isVirtualTable(),
-            () ->  dbService.insert(tableParam, t),
+            () ->  dbService.insert(t),
             () -> 0L
         );
         // 后置处理
@@ -145,17 +147,17 @@ public class DbServiceWithProxy implements DbService {
     }
 
     @Override
-    public <T> int delete(TableParam<T> tableParam, List<DbCondition> dbConditions) {
-        Class<T> clazz = tableParam.getClazz();
-        permissionProxy.deletePermission(clazz);
-        AnEntity managerEntity = metadataManager.getEntity(clazz);
+    public <T> int delete(Class<T> tClass, List<DbCondition> dbConditions) {
+        permissionProxy.deletePermission(tClass);
+        TableParam<T> tableParam = metadataManager.getTableParam(tClass);
+        AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
         preProxyInstance.beforeDelete(tableParam, dbConditions);
         proxyInstance.beforeDelete(tableParam, dbConditions);
         int delete = virtualProcess(tableParam.isVirtualTable(),
-            () ->  dbService.delete(tableParam, dbConditions),
+            () ->  dbService.delete(tClass, dbConditions),
             () -> 0
         );
         // 后置处理
