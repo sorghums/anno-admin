@@ -85,4 +85,9 @@ public @interface AnnoMain {
      * 是否可以删除
      */
     boolean canRemove() default true;
+
+    /**
+     * 自动维护表结构
+     */
+    boolean autoMaintainTable() default true;
 }

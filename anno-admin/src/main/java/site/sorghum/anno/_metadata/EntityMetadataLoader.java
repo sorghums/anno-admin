@@ -49,7 +49,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         } else {
             entity.setTableName(table.value());
         }
-
+        entity.setAutoMaintainTable(annoMain.autoMaintainTable());
         entity.setOrgFilter(annoMain.orgFilter());
         entity.setVirtualTable(annoMain.virtualTable());
         if (entity.isVirtualTable()){
