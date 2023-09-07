@@ -73,7 +73,7 @@ public class DbServiceWood implements DbService {
         TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(t.getClass());
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         // 执行值
-        dbTableQuery.setEntityIf(t, (k, v) -> v != null);
+        dbTableQuery.setEntityIf(t, (k, v) -> filterField(tableParam, k, v));
         return dbTableQuery.update();
     }
 
@@ -84,7 +84,7 @@ public class DbServiceWood implements DbService {
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = dbContext.
             table(tableParam.getTableName()).
-            setEntityIf(t, (k, v) -> v != null);
+            setEntityIf(t, (k, v) -> filterField(tableParam, k, v));
         if (removeParam.getLogic()) {
             dbTableQuery.set(removeParam.getRemoveColumn(), removeParam.getNotRemoveValue());
         }
@@ -102,6 +102,16 @@ public class DbServiceWood implements DbService {
         } else {
             return dbTableQuery.delete();
         }
+    }
+
+    /**
+     * entity 转数据库字段时，过滤掉不需要的字段
+     */
+    private boolean filterField(TableParam<?> tableParam, String tableFieldName, Object fieldValue) {
+        if (fieldValue == null) {
+            return false;
+        }
+        return tableParam.getColumns().contains(tableFieldName);
     }
 
 
