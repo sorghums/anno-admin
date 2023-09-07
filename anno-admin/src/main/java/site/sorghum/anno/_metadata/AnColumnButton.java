@@ -174,6 +174,25 @@ public class AnColumnButton {
 
 
     /**
+     * 模板资源名称
+     *
+     * @see site.sorghum.anno.anno.annotation.global.AnnoTpl#tplName()
+     */
+    private String tplName;
+
+    /**
+     * 模板资源类
+     *
+     * @see site.sorghum.anno.anno.annotation.global.AnnoTpl#tplClazz()
+     */
+    private Class<?> tplClazz;
+
+    /**
+     * 模板资源是否启用
+     */
+    private boolean tplEnable;
+
+    /**
      * 按钮权限码
      *
      * @see AnnoButton#permissionCode()

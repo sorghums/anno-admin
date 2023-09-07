@@ -28,6 +28,8 @@ public class CrudProcessorChain implements BaseProcessorChain {
             CrudColumnProcessor.class,
             // 过滤的表单信息
             CrudFilterProcessor.class,
+            // 行的详情信息
+            CrudDetailInfoProcessor.class,
             // 行的删除信息
             CrudDeleteBtnProcessor.class,
             // 行的编辑信息

@@ -5,6 +5,7 @@ import lombok.*;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.*;
+import site.sorghum.anno.anno.annotation.global.AnnoTpl;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 
@@ -52,4 +53,8 @@ public class Article extends BaseMetaModel {
         joinThisClazzField = "id"
     ))
     Object favoritesM2mButton;
+
+
+    @AnnoButton(name = "测试TPL",annoTpl = @AnnoTpl(tplName = "helloWord.html?id=${id}"))
+    Object helloWord;
 }

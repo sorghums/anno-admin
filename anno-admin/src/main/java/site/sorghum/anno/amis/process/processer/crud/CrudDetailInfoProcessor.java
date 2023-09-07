@@ -10,7 +10,6 @@ import site.sorghum.amis.entity.AmisBaseWrapper;
 import site.sorghum.amis.entity.display.Crud;
 import site.sorghum.amis.entity.display.DialogButton;
 import site.sorghum.amis.entity.display.IFrame;
-import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.layout.Tabs;
@@ -31,13 +30,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * CRUD视图行编辑按钮处理器
+ * CRUD视图行详情按钮处理器
  *
  * @author Sorghum
- * @since 2023/07/07
+ * @since 2023/09/07
  */
 @Named
-public class CrudEditInfoProcessor implements BaseProcessor {
+public class CrudDetailInfoProcessor implements BaseProcessor {
 
     @Inject
     MetadataManager metadataManager;
@@ -50,23 +49,18 @@ public class CrudEditInfoProcessor implements BaseProcessor {
         AnEntity entity = metadataManager.getEntity(clazz);
 
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-        // 判断是否可以编辑
         List<AnField> fields = entity.getFields();
-        boolean canEdit = fields.stream().anyMatch(AnField::isEditEnable);
-        if (!canEdit) {
-            chain.doProcessor(amisBaseWrapper, clazz, properties);
-            return;
-        }
         Crud crudBody = crudView.getCrudBody();
         List<Map> columns = crudBody.getColumns();
         Map columnJson = columns.stream().filter(column -> "操作".equals(MapUtil.getStr(column, "label"))).findFirst().orElseThrow(
-            () -> new BizException("操作列不存在")
+                () -> new BizException("操作列不存在")
         );
         Object buttons = columnJson.get("buttons");
         if (buttons instanceof List<?> buttonList) {
             List<Object> buttonListMap = (List<Object>) buttonList;
             DialogButton dialogButton = new DialogButton();
-            dialogButton.setLabel("编辑");
+            dialogButton.setLabel("详情");
+            dialogButton.setLevel("info");
             ArrayList<AmisBase> formItems = new ArrayList<>() {{
                 for (AnField field : fields) {
                     FormItem formItem = new FormItem();
@@ -75,9 +69,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                     formItem.setRequired(field.isEditNotNull());
                     formItem.setPlaceholder(field.getEditPlaceHolder());
                     formItem = AnnoDataType.editorExtraInfo(formItem, field);
-                    if (!field.isEditEnable()) {
-                        formItem.setHidden(true);
-                    }
+                    formItem.setDisabled(true);
                     add(formItem);
                 }
             }};
@@ -87,21 +79,18 @@ public class CrudEditInfoProcessor implements BaseProcessor {
             processEditTabs(entity,tabs);
             formItems.add(tabs);
             dialogButton.setDialog(
-                new DialogButton.Dialog() {{
-                    setTitle("编辑");
-                    setBody(
-                        new Form() {{
-                            setId("simple-edit-form");
-                            setWrapWithPanel(false);
-                            setSize("lg");
-                            setApi(new Api() {{
-                                setMethod("post");
-                                setUrl("/amis/system/anno/${clazz}/updateById");
-                            }});
-                            setBody(formItems);
-                        }}
-                    );
-                }}
+                    new DialogButton.Dialog() {{
+                        setTitle("详情");
+                        setBody(
+                                new Form() {{
+                                    setId("simple-detail-form");
+                                    setWrapWithPanel(false);
+                                    setSize("lg");
+                                    setBody(formItems);
+                                    setActions(new ArrayList<>());
+                                }}
+                        );
+                    }}
             );
             buttonListMap.add(dialogButton);
         }

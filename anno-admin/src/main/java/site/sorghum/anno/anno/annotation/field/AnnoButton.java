@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.annotation.field;
 
 
+import site.sorghum.anno.anno.annotation.global.AnnoTpl;
+
 import java.lang.annotation.*;
 
 /**
@@ -79,6 +81,11 @@ public @interface AnnoButton {
         thisField = "tid", targetField = "rid",
         mediumTableClass = Object.class, mediumThisField = "tid", mediumOtherField = "rid");
 
+
+    /**
+     * 模板视图按钮
+     */
+    AnnoTpl annoTpl() default @AnnoTpl(enable = false);
 
     @interface O2MJoinButton {
 
@@ -350,6 +357,7 @@ public @interface AnnoButton {
          */
         boolean enable() default true;
     }
+
 
     /**
      * 权限码

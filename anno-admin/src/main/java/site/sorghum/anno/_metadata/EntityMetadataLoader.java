@@ -249,6 +249,14 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());
             anColumnButton.setJavaCmdBeanClass(anno.javaCmd().beanClass());
             anColumnButton.setJavaCmdMethodName(anno.javaCmd().methodName());
+
+
+            // tpl
+            anColumnButton.setTplEnable(anno.annoTpl().enable());
+            anColumnButton.setTplName(anno.annoTpl().tplName());
+            anColumnButton.setTplClazz(anno.annoTpl().tplClazz());
+
+
             anColumnButtons.add(anColumnButton);
         }
         return anColumnButtons;
