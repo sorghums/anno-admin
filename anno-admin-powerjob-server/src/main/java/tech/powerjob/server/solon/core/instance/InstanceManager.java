@@ -1,13 +1,23 @@
 package tech.powerjob.server.solon.core.instance;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.pre.plugin.ao.AnUser;
+import site.sorghum.anno.pre.plugin.dao.SysUserDao;
+import tech.powerjob.common.enums.InstanceStatus;
+import tech.powerjob.common.enums.TimeExpressionType;
+import tech.powerjob.common.model.LifeCycle;
+import tech.powerjob.common.request.ServerStopInstanceReq;
+import tech.powerjob.common.request.TaskTrackerReportInstanceStatusReq;
+import tech.powerjob.common.utils.CommonUtils;
+import tech.powerjob.remote.framework.base.URL;
+import tech.powerjob.server.solon.anno.utils.DbContextUtil;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.common.timewheel.holder.HashedWheelTimerHolder;
 import tech.powerjob.server.solon.core.alarm.AlarmCenter;
@@ -21,15 +31,6 @@ import tech.powerjob.server.solon.remote.aware.TransportServiceAware;
 import tech.powerjob.server.solon.remote.transporter.TransportService;
 import tech.powerjob.server.solon.remote.transporter.impl.ServerURLFactory;
 import tech.powerjob.server.solon.remote.worker.WorkerClusterQueryService;
-import site.sorghum.anno.pre.plugin.ao.AnUser;
-import site.sorghum.anno.pre.plugin.dao.SysUserDao;
-import tech.powerjob.common.enums.InstanceStatus;
-import tech.powerjob.common.enums.TimeExpressionType;
-import tech.powerjob.common.model.LifeCycle;
-import tech.powerjob.common.request.ServerStopInstanceReq;
-import tech.powerjob.common.request.TaskTrackerReportInstanceStatusReq;
-import tech.powerjob.common.utils.CommonUtils;
-import tech.powerjob.remote.framework.base.URL;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -138,7 +139,7 @@ public class InstanceManager implements TransportServiceAware {
             }
             instanceInfo.setResult(req.getResult());
             instanceInfo.setRunningTimes(req.getTotalTaskNum());
-            instanceInfoRepository.insert(instanceInfo);
+            instanceInfoRepository.saveOrUpdate(instanceInfo);
             // 任务需要告警
             if (req.isNeedAlert()) {
                 log.info("[InstanceManager-{}] receive frequent task alert req,time:{},content:{}", instanceId, req.getReportTime(), req.getAlertContent());
@@ -157,7 +158,7 @@ public class InstanceManager implements TransportServiceAware {
         boolean finished = false;
         if (receivedInstanceStatus == InstanceStatus.SUCCEED) {
             instanceInfo.setResult(req.getResult());
-            instanceInfo.setFinishedTime(req.getEndTime() == null ? System.currentTimeMillis() : req.getEndTime());
+            instanceInfo.setFinishedTime(LocalDateTimeUtil.of(req.getEndTime() == null ? System.currentTimeMillis() : req.getEndTime()));
             finished = true;
         } else if (receivedInstanceStatus == InstanceStatus.FAILED) {
 
@@ -174,14 +175,14 @@ public class InstanceManager implements TransportServiceAware {
                 instanceInfo.setStatus(InstanceStatus.WAITING_DISPATCH.getV());
             } else {
                 instanceInfo.setResult(req.getResult());
-                instanceInfo.setFinishedTime(req.getEndTime() == null ? System.currentTimeMillis() : req.getEndTime());
+                instanceInfo.setFinishedTime(LocalDateTimeUtil.of(req.getEndTime() == null ? System.currentTimeMillis() : req.getEndTime()));
                 finished = true;
                 log.info("[InstanceManager-{}] instance execute failed and have no chance to retry.", instanceId);
             }
         }
         if (finished) {
             // 最终状态允许直接覆盖更新
-            instanceInfoRepository.insert(instanceInfo);
+            instanceInfoRepository.saveOrUpdate(instanceInfo);
             // 这里的 InstanceStatus 只有 成功/失败 两种，手动停止不会由 TaskTracker 上报
             processFinishedInstance(instanceId, String.valueOf(req.getWfInstanceId()), receivedInstanceStatus, req.getResult());
             return;
@@ -244,7 +245,7 @@ public class InstanceManager implements TransportServiceAware {
         JobInstanceAlarm content = new JobInstanceAlarm();
         BeanUtil.copyProperties(jobInfo, content);
         BeanUtil.copyProperties(instanceInfo, content);
-        List<AnUser> userList = Solon.context().getBean(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
+        List<AnUser> userList = DbContextUtil.getMapper(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
         if (!StringUtils.isEmpty(alertContent)) {
             content.setResult(alertContent);
         }

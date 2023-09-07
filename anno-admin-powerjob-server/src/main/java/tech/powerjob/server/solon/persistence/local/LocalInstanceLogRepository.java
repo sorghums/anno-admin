@@ -17,8 +17,8 @@ public interface LocalInstanceLogRepository extends AnnoBaseMapper<LocalInstance
     /**
      * 流式查询
      */
-    default LocalInstanceLogDO findByInstanceIdOrderByLogTime(String instanceId) {
-        return selectItem(m -> m.whereEq("instance_id", instanceId).orderByAsc("log_time"));
+    default List<LocalInstanceLogDO> findByInstanceIdOrderByLogTime(String instanceId) {
+        return selectList(m -> m.whereEq("instance_id", instanceId).orderByAsc("log_time"));
     }
 
     /**

@@ -125,7 +125,7 @@ public class InstanceService {
             // 更新数据库，将状态置为停止
             instanceInfo.setStatus(STOPPED.getV());
             instanceInfo.setUpdateTime(LocalDateTime.now());
-            instanceInfo.setFinishedTime(System.currentTimeMillis());
+            instanceInfo.setFinishedTime(LocalDateTime.now());
             instanceInfo.setResult(SystemInstanceResult.STOPPED_BY_USER);
             instanceInfoRepository.insert(instanceInfo);
 

@@ -115,7 +115,7 @@ public class JobServiceImpl implements JobService {
         if (request.getLogConfig() != null) {
             jobInfoDO.setLogConfig(JSONObject.toJSONString(request.getLogConfig()));
         }
-        jobInfoRepository.insert(jobInfoDO);
+        jobInfoRepository.saveOrUpdate(jobInfoDO);
         return jobInfoDO.getId();
     }
 
@@ -294,7 +294,7 @@ public class JobServiceImpl implements JobService {
         return jobInfoDO;
     }
 
-    private void calculateNextTriggerTime(JobInfoDO jobInfo) {
+    public void calculateNextTriggerTime(JobInfoDO jobInfo) {
         // 计算下次调度时间
         if (TimeExpressionType.FREQUENT_TYPES.contains(jobInfo.getTimeExpressionType())) {
             // 固定频率类型的任务不计算
@@ -308,7 +308,7 @@ public class JobServiceImpl implements JobService {
         jobInfo.setUpdateTime(LocalDateTime.now());
     }
 
-    private void fillDefaultValue(JobInfoDO jobInfoDO) {
+    public void fillDefaultValue(JobInfoDO jobInfoDO) {
         if (jobInfoDO.getMaxWorkerCount() == null) {
             jobInfoDO.setMaxWorkerCount(0);
         }

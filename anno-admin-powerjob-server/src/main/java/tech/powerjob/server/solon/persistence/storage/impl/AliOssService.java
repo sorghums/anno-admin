@@ -150,7 +150,7 @@ public class AliOssService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AppContext context) {
+    public void init(AppContext context) {
 
         String endpoint = fetchProperty(context, TYPE_ALI_OSS, KEY_ENDPOINT);
         String bkt = fetchProperty(context, TYPE_ALI_OSS, KEY_BUCKET);

@@ -105,3 +105,11 @@ solon.powerjob2:
   maxResultLength: 4096
   # Max length of appended workflow context . Appended workflow context value that is longer than the value will be ignore.
   maxAppendedWfContextLength: 4096
+# powerjob-server log storage
+oms.storage.dfs.mysql_series.enable: true
+oms.storage.dfs.mysql_series.driver: ${db.main.driverClassName}
+oms.storage.dfs.mysql_series.url: ${db.main.jdbcUrl}
+oms.storage.dfs.mysql_series.username: ${db.main.username}
+oms.storage.dfs.mysql_series.password: ${db.main.password}
+oms.storage.dfs.mysql_series.auto_create_table: true
+oms.storage.dfs.mysql_series.table_name: pj_files

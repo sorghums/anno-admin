@@ -1,8 +1,11 @@
 package tech.powerjob.server.solon.persistence.storage;
 
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.core.AppContext;
 import tech.powerjob.server.solon.extension.dfs.DFsService;
 import tech.powerjob.server.solon.persistence.storage.impl.AliOssService;
 import tech.powerjob.server.solon.persistence.storage.impl.EmptyDFsService;
@@ -16,18 +19,24 @@ import tech.powerjob.server.solon.persistence.storage.impl.MySqlSeriesDfsService
  */
 @Configuration
 public class StorageConfiguration {
+    @Inject
+    AppContext appContext;
 
 
     @Bean
-    @Condition(onProperty = "oms.storage.dfs.mysql_series")
+    @Condition(onProperty = "${oms.storage.dfs.mysql_series.enable} = true")
     public DFsService initDbFs() {
-        return new MySqlSeriesDfsService();
+        MySqlSeriesDfsService mySqlSeriesDfsService = new MySqlSeriesDfsService();
+        mySqlSeriesDfsService.init(appContext);
+        return mySqlSeriesDfsService;
     }
 
     @Bean
-    @Condition(onProperty = "oms.storage.dfs.alioss")
+    @Condition(onProperty = "{oms.storage.dfs.alioss.enable} = true")
     public DFsService initAliOssFs() {
-        return new AliOssService();
+        AliOssService aliOssService = new AliOssService();
+        aliOssService.init(appContext);
+        return aliOssService;
     }
 
     @Bean
