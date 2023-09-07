@@ -24,6 +24,7 @@ public class CodeEditorTypeParser implements TypeParser {
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         CommonPopOver commonPopOver = new CommonPopOver();
         CodeEditor codeEditor = new CodeEditor();
+        codeEditor.setDisabled(true);
         CodePopOver codePopOver = new CodePopOver();
         commonPopOver.setBody(codeEditor);
         BeanUtil.copyProperties(amisBase, codeEditor, "type");
