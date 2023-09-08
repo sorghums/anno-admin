@@ -7,7 +7,7 @@ import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import site.sorghum.anno.pre.plugin.controller.AnBaseFileController;
+import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;
 

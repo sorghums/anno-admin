@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.persistence.local;
 
 import org.noear.wood.xml.Namespace;
-import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
+import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 

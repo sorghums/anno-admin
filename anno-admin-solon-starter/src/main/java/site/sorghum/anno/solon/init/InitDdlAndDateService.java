@@ -2,11 +2,11 @@ package site.sorghum.anno.solon.init;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
-import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.AppLoadEndEvent;
 import org.noear.solon.core.event.EventListener;
+import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
@@ -18,7 +18,8 @@ import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno.pre.plugin.service.impl.AuthServiceImpl;
+import site.sorghum.anno.plugin.PluginRunner;
+import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.net.URL;
 import java.util.List;
@@ -43,8 +44,6 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
     AnnoProperty annoProperty;
     @Inject
     MetadataManager metadataManager;
-    @Inject
-    AuthServiceImpl authService;
 
     public void initDdl() throws Throwable {
         // 维护 entity 对应的表结构
@@ -83,7 +82,12 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
      */
     @Override
     public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
-        authService.initPermissions();
-        authService.initMenus();
+        // 初始化插件信息
+        Solon.context().getBean(PluginRunner.class).init();
+        if (ClassUtil.loadClass("site.sorghum.anno.plugin.service.impl.AuthServiceImpl") != null) {
+            Solon.context().getBean(AuthServiceImpl.class).initPermissions();
+            Solon.context().getBean(AuthServiceImpl.class).initMenus();
+        }
+
     }
 }

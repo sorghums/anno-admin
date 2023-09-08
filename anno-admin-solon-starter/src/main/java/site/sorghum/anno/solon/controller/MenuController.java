@@ -1,11 +1,14 @@
 package site.sorghum.anno.solon.controller;
 
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import site.sorghum.anno.AnnoPlatform;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.controller.MenuBaseController;
-import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
-import site.sorghum.anno.pre.plugin.entity.response.AnAnnoMenuResponse;
+import site.sorghum.anno.plugin.controller.MenuBaseController;
+import site.sorghum.anno.plugin.entity.response.ReactMenu;
+import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -18,21 +21,24 @@ import java.util.Map;
  */
 @Mapping(value = "/system/config")
 @Controller
-public class MenuController extends MenuBaseController {
+@Condition(onClass = AnnoPlatform.class)
+public class MenuController {
+    @Inject
+    MenuBaseController menuBaseController;
 
     @Mapping(value = "/dataMenu")
     public List<AnAnnoMenuResponse> dataMenu() {
-        return super.dataMenu();
+        return menuBaseController.dataMenu();
     }
 
     @Mapping(value = "/anMenu")
     public AnnoResult<List<ReactMenu>> anMenu() {
-        return super.anMenu();
+        return menuBaseController.anMenu();
     }
 
     @Mapping(value = "/anButton")
     public AnnoResult<Map> anButton() {
-        return super.anButton();
+        return menuBaseController.anButton();
     }
 
 }

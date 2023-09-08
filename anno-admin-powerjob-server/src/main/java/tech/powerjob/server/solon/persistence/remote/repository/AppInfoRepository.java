@@ -5,7 +5,7 @@ import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.db.param.PageParam;
 import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
-import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
+import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 import java.util.Optional;

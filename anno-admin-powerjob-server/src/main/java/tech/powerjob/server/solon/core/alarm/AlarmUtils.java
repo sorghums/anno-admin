@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.core.alarm;
 
 import tech.powerjob.server.solon.extension.alarm.AlarmTarget;
-import site.sorghum.anno.pre.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.ao.AnUser;
 import tech.powerjob.common.utils.CollectionUtils;
 
 import java.util.Collections;

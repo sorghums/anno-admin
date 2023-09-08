@@ -3,9 +3,7 @@ package site.sorghum.anno.solon.config;
 import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
-import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
-import site.sorghum.anno.pre.plugin.service.AuthService;
+import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 
 import java.util.List;
 

@@ -8,8 +8,8 @@ import org.junit.runner.RunWith;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.pre.plugin.ao.AnUser;
-import site.sorghum.anno.pre.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.dao.SysUserDao;
 
 import java.util.ArrayList;
 import java.util.List;

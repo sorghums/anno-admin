@@ -2,11 +2,9 @@ package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Path;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
+import site.sorghum.anno.AnnoPlatform;
 
 /**
  * Pear控制器
@@ -15,6 +13,7 @@ import org.noear.solon.core.handle.Context;
  * @since 2023/05/19
  */
 @Controller
+@Condition(onClass = AnnoPlatform.class)
 @SaIgnore
 public class WebController {
 
@@ -25,13 +24,6 @@ public class WebController {
             return;
         }
         ctx.redirect("/index.html#/login");
-    }
-
-    @Mapping(value = "/goAnnoSinglePage/{clazz}")
-    public void goAnnoSinglePage(Context ctx, @Path String clazz,
-                                 @Param(value = "tokenKey", required = true) String tokenKey,
-                                 @Param(value = "tokenValue", required = true) String tokenValue) {
-        ctx.redirect("/index.html#/amisSingle/index/" + clazz + "?tokenKey=" + tokenKey + "&tokenValue=" + tokenValue);
     }
 
 }

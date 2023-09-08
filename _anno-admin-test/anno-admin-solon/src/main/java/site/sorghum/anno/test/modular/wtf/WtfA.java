@@ -10,7 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
+import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 /**
  * 电商商品

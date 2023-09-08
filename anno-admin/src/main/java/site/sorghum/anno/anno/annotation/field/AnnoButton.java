@@ -1,7 +1,7 @@
 package site.sorghum.anno.anno.annotation.field;
 
 
-import site.sorghum.anno.anno.annotation.global.AnnoTpl;
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 
 import java.lang.annotation.*;
 

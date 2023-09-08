@@ -10,7 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
+import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 /**
  * 商品分类

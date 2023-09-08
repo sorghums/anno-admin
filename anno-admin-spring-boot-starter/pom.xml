@@ -22,6 +22,10 @@
     <dependencies>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-platform</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
 

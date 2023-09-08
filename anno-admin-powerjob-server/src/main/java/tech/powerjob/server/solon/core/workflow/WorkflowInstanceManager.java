@@ -28,8 +28,8 @@ import tech.powerjob.server.solon.persistence.remote.repository.JobInfoRepositor
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInstanceInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowNodeInfoRepository;
-import site.sorghum.anno.pre.plugin.ao.AnUser;
-import site.sorghum.anno.pre.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.dao.SysUserDao;
 import tech.powerjob.common.SystemInstanceResult;
 import tech.powerjob.common.WorkflowContextConstant;
 import tech.powerjob.common.enums.InstanceStatus;

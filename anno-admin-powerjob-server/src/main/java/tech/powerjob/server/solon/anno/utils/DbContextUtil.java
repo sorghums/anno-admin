@@ -2,7 +2,7 @@ package tech.powerjob.server.solon.anno.utils;
 
 import org.noear.wood.DbContext;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
+import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 /**
  * @author songyinyin

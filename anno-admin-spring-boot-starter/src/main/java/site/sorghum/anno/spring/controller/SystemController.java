@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.controller.SystemBaseController;
-import site.sorghum.anno.pre.plugin.entity.response.CaptchaResponse;
+import site.sorghum.anno.plugin.controller.SystemBaseController;
+import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 
 import java.util.Map;
 

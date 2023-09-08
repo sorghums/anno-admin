@@ -1,6 +1,7 @@
 package site.sorghum.anno._metadata;
 
 import lombok.Data;
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 
 /**
@@ -176,14 +177,14 @@ public class AnColumnButton {
     /**
      * 模板资源名称
      *
-     * @see site.sorghum.anno.anno.annotation.global.AnnoTpl#tplName()
+     * @see AnnoTpl#tplName()
      */
     private String tplName;
 
     /**
      * 模板资源类
      *
-     * @see site.sorghum.anno.anno.annotation.global.AnnoTpl#tplClazz()
+     * @see AnnoTpl#tplClazz()
      */
     private Class<?> tplClazz;
 

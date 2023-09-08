@@ -3,7 +3,7 @@ package tech.powerjob.server.solon.persistence.remote.repository;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
 import tech.powerjob.server.solon.persistence.remote.model.ContainerInfoDO;
-import site.sorghum.anno.pre.suppose.mapper.AnnoBaseMapper;
+import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 

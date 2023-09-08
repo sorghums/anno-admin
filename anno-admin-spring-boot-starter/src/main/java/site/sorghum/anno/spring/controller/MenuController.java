@@ -4,9 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno.pre.plugin.controller.MenuBaseController;
-import site.sorghum.anno.pre.plugin.entity.response.ReactMenu;
-import site.sorghum.anno.pre.plugin.entity.response.AnAnnoMenuResponse;
+import site.sorghum.anno.plugin.controller.MenuBaseController;
+import site.sorghum.anno.plugin.entity.response.ReactMenu;
+import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 
 import java.util.List;
 import java.util.Map;

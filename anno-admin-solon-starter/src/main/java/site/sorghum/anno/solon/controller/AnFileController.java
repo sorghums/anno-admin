@@ -1,10 +1,9 @@
 package site.sorghum.anno.solon.controller;
 
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
-import site.sorghum.anno.pre.plugin.controller.AnBaseFileController;
+import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;
 
@@ -16,7 +15,10 @@ import java.io.InputStream;
  */
 @Mapping(value = "anLocal")
 @Controller
-public class AnFileController extends AnBaseFileController {
+@Condition(onClass = AnnoPlatform.class)
+public class AnFileController{
+    @Inject
+    AnBaseFileController anBaseFileController;
 
     @Get
     @Mapping(value = "/**")
@@ -25,7 +27,7 @@ public class AnFileController extends AnBaseFileController {
         // 获取anLocal后面的路径
         path = path.substring(path.indexOf("anLocal") + 7);
         InputStream inputStream
-                = super.getFile(path);
+                = anBaseFileController.getFile(path);
         context.output(inputStream);
     }
 

@@ -5,9 +5,9 @@ import lombok.*;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.*;
-import site.sorghum.anno.anno.annotation.global.AnnoTpl;
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
+import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 import java.util.List;
 

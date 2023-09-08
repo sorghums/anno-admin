@@ -18,7 +18,7 @@ import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno.pre.plugin.service.impl.AuthServiceImpl;
+import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.util.List;
 import java.util.Optional;

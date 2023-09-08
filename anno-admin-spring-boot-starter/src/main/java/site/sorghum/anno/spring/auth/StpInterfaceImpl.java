@@ -3,8 +3,8 @@ package site.sorghum.anno.spring.auth;
 import cn.dev33.satoken.stp.StpInterface;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import site.sorghum.anno.pre.plugin.interfaces.AuthFunctions;
-import site.sorghum.anno.pre.plugin.service.AuthService;
+import site.sorghum.anno.plugin.interfaces.AuthFunctions;
+import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.List;
 

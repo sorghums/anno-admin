@@ -11,9 +11,9 @@ import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
-import site.sorghum.anno.pre.suppose.proxy.BaseAnnoPreProxy;
-import site.sorghum.anno.pre.suppose.proxy.VirtualJoinTableProxy;
+import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.suppose.proxy.BaseAnnoPreProxy;
+import site.sorghum.anno.suppose.proxy.VirtualJoinTableProxy;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
