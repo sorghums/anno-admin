@@ -273,16 +273,26 @@ public class Form extends AmisBase {
 
 
     @Data
-    static class FormHorizontal {
+    public static class FormHorizontal {
         /**
          * 左侧宽度
          */
         Integer left;
 
         /**
+         * 左侧固定宽度
+         */
+        String leftFixed;
+
+        /**
          * 右侧宽度
          */
         Integer right;
+
+        /**
+         * 右侧固定宽度
+         */
+        String rightFixed;
 
         /**
          * 是否自动调整

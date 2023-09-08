@@ -39,6 +39,7 @@ public class CodeEditorTypeParser implements TypeParser {
         CodeEditor codeEditor = new CodeEditor();
         BeanUtil.copyProperties(formItem, codeEditor);
         codeEditor.setPlaceholder(formItem.getPlaceholder());
+        codeEditor.setMode("normal");
         return codeEditor;
     }
 }

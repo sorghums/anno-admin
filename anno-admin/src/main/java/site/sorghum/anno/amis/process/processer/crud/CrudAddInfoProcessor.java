@@ -1,6 +1,7 @@
 package site.sorghum.anno.amis.process.processer.crud;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
@@ -17,6 +18,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
+import site.sorghum.anno.amis.util.AmisCommonUtil;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                     FormItem formItem = new FormItem();
                     formItem.setName(field.getFieldName());
                     formItem.setLabel(field.getTitle());
+                    // 单独设置label宽度
+                    formItem.setLabelWidth(formItem.getLabel().length() * 14);
                     formItem.setRequired(field.isEditNotNull());
                     formItem.setPlaceholder(field.getEditPlaceHolder());
                     formItem = AnnoDataType.editorExtraInfo(formItem, field);
@@ -79,7 +83,12 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                         }});
                         setId("simple-add-form");
                         setSize("md");
-                        setBody(formItems);
+                        setMode("horizontal");
+                        setHorizontal(new FormHorizontal() {{
+                            setRightFixed("sm");
+                            setJustify(true);
+                        }});
+                        setBody(AmisCommonUtil.formItemToGroup(formItems, 2));
                         // 刷新某个组件
                         setOnEvent(new HashMap<>() {{
                             put("submitSucc", new HashMap<>() {{

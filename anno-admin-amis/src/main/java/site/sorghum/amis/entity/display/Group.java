@@ -2,6 +2,7 @@ package site.sorghum.amis.entity.display;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.input.FormItem;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class Group extends FormItem {
     /**
      * 表单项集合
      */
-    List<FormItem> body;
+    List<AmisBase> body;
 
     /**
      * 展示默认，同 Form 中的模式

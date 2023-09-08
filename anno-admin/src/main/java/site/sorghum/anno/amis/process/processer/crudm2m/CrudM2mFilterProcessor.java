@@ -53,7 +53,7 @@ public class CrudM2mFilterProcessor implements BaseProcessor {
     List<AmisBase> body = new ArrayList<>();
     AnEntity anEntity = metadataManager.getEntity(clazz);
     List<AnField> fields = anEntity.getFields();
-    List<FormItem> amisColumns = new ArrayList<>();
+    List<AmisBase> amisColumns = new ArrayList<>();
     for (AnField field : fields) {
       if (field.isSearchEnable()) {
         FormItem formItem = new FormItem();

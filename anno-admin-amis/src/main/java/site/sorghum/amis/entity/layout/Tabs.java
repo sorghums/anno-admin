@@ -15,7 +15,6 @@ import java.util.List;
 public class Tabs extends AmisBase {
     {
         setType("tabs");
-        setClassName("p-l m-l");
     }
 
     /**

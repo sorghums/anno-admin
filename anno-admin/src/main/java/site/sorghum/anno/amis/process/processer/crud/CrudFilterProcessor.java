@@ -56,7 +56,7 @@ public class CrudFilterProcessor implements BaseProcessor {
         ));
         List<AmisBase> body = new ArrayList<>();
         List<AnField> fields = anEntity.getFields();
-        List<FormItem> amisColumns = new ArrayList<>();
+        List<AmisBase> amisColumns = new ArrayList<>();
         for (AnField field : fields) {
             if (field.isSearchEnable()) {
                 FormItem formItem = new FormItem();

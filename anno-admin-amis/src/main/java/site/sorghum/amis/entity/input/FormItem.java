@@ -43,6 +43,16 @@ public class FormItem extends AmisBase {
     String label;
 
     /**
+     * 表单项标签宽度
+     */
+    Integer labelWidth;
+
+    /**
+     * 表单展示方式，可以是：normal、horizontal 或者 inline
+     */
+    String mode;
+
+    /**
      * 表单项标签对齐方式，默认右对齐，仅在 mode为horizontal 时生效
      */
     private String labelAlign;

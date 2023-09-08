@@ -22,6 +22,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
+import site.sorghum.anno.amis.util.AmisCommonUtil;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
@@ -72,6 +73,8 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                     FormItem formItem = new FormItem();
                     formItem.setName(field.getFieldName());
                     formItem.setLabel(field.getTitle());
+                    // 单独设置label宽度
+                    formItem.setLabelWidth(formItem.getLabel().length() * 14);
                     formItem.setRequired(field.isEditNotNull());
                     formItem.setPlaceholder(field.getEditPlaceHolder());
                     formItem = AnnoDataType.editorExtraInfo(formItem, field);
@@ -98,7 +101,12 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                                 setMethod("post");
                                 setUrl("/amis/system/anno/${clazz}/updateById");
                             }});
-                            setBody(formItems);
+                            setMode("horizontal");
+                            setHorizontal(new FormHorizontal() {{
+                                setRightFixed("sm");
+                                setJustify(true);
+                            }});
+                            setBody(AmisCommonUtil.formItemToGroup(formItems, 2));
                         }}
                     );
                 }}
