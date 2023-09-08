@@ -142,34 +142,18 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
           } else if (anColumnButton.isTplEnable()){
               action = new DialogButton();
               action.setLabel(anColumnButton.getName());
-              DialogButton.Dialog iframe = null;
-              if (StrUtil.isNotBlank(anColumnButton.getTplName())) {
-                  iframe = new DialogButton.Dialog() {{
-                      setCloseOnEsc(true);
-                      setTitle(anColumnButton.getName());
-                      setShowCloseButton(true);
-                      setBody(
-                          new IFrame() {{
-                              setType("iframe");
-                              setSrc("/page/" + anColumnButton.getTplName());
-                          }}
-                      );
-                      setActions(new ArrayList<>());
-                  }};
-              }else if (!anColumnButton.getTplClazz().equals(Object.class)){
-                  iframe = new DialogButton.Dialog() {{
-                      setCloseOnEsc(true);
-                      setTitle(anColumnButton.getName());
-                      setShowCloseButton(true);
-                      setBody(
-                          new IFrame() {{
-                              setType("iframe");
-                              setSrc("/index.html#/amisSingle/index/" + anColumnButton.getTplClazz().getSimpleName());
-                          }}
-                      );
-                      setActions(new ArrayList<>());
-                  }};
-              }
+              DialogButton.Dialog iframe = new DialogButton.Dialog() {{
+                  setCloseOnEsc(true);
+                  setTitle(anColumnButton.getName());
+                  setShowCloseButton(true);
+                  setBody(
+                      new IFrame() {{
+                          setType("iframe");
+                          setSrc("/annoTpl/" + anColumnButton.getTplClazz().getName() + "/" + anColumnButton.getTplName());
+                      }}
+                  );
+                  setActions(new ArrayList<>());
+              }};
               ((DialogButton) action).setDialog(iframe);
           } else {
             continue;

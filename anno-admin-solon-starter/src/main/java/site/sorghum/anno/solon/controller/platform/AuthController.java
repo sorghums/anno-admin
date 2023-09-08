@@ -1,4 +1,4 @@
-package site.sorghum.anno.solon.controller;
+package site.sorghum.anno.solon.controller.platform;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;

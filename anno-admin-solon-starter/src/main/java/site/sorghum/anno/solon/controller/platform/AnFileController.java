@@ -1,4 +1,4 @@
-package site.sorghum.anno.solon.controller;
+package site.sorghum.anno.solon.controller.platform;
 
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;

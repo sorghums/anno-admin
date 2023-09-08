@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.annotation.common;
 
 
+import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
+
 import java.lang.annotation.*;
 
 /**
@@ -21,9 +23,9 @@ public @interface AnnoTpl {
     String tplName() default "";
 
     /**
-     * 解析的AnnoMain类
+     * 解析的Action类
      */
-    Class<?> tplClazz() default Object.class;
+    Class<? extends DefaultAnTplAction> tplClazz() default DefaultAnTplAction.class;
 
     /**
      * 是否启用

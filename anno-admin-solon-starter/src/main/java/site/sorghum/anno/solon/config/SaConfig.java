@@ -20,6 +20,7 @@ import site.sorghum.anno._common.response.AnnoResult;
 public class SaConfig {
 
     @Bean
+    @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true")
     public SaTokenDao saTokenDaoInit(@Inject("${anno-admin.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
     }

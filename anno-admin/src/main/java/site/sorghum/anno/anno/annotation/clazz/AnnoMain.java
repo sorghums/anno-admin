@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
+
 import java.lang.annotation.*;
 
 /**

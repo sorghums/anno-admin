@@ -18,7 +18,7 @@ import site.sorghum.anno.plugin.AnnoPlugin;
 public class AnnoCorePlugin extends AnnoPlugin {
 
     public AnnoCorePlugin() {
-        super("核心插件", "包含基础的页面生成功能 & 数据库查询功能");
+        super("核心插件", "核心功能模块");
     }
 
     @Override

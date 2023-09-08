@@ -3,6 +3,7 @@ package site.sorghum.anno.solon.config;
 import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Condition;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Component
 @Slf4j
+@Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true")
 public class StpInterfaceImpl implements StpInterface {
 
     /**

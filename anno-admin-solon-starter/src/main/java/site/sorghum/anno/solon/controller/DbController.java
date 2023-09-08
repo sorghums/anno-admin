@@ -25,7 +25,6 @@ import java.util.Map;
 @Mapping("/amis/system/anno")
 @Slf4j
 @SaIgnore
-@SuppressWarnings("unchecked")
 public class DbController extends BaseDbController {
 
     /**

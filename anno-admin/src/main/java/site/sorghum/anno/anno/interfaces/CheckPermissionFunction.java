@@ -8,7 +8,7 @@ import java.util.function.Consumer;
  * 检查函数
  *
  * @author sorghum
- * @date 2023/09/05
+ * @since 2023/09/05
  */
 public class CheckPermissionFunction {
     /**
