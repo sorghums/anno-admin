@@ -1,5 +1,6 @@
 package tech.powerjob.server.solon.persistence.remote.repository;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import org.noear.wood.IPage;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno._common.exception.BizException;
@@ -67,8 +68,8 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
     default int update4TriggerFailed(String instanceId, long actualTriggerTime, long finishedTime, String taskTrackerAddress, String result) {
         InstanceInfoDO instanceInfo = new InstanceInfoDO();
         instanceInfo.setStatus(InstanceStatus.FAILED.getV());
-        instanceInfo.setActualTriggerTime(actualTriggerTime);
-        instanceInfo.setFinishedTime(finishedTime);
+        instanceInfo.setActualTriggerTime(LocalDateTimeUtil.of(actualTriggerTime));
+        instanceInfo.setFinishedTime(LocalDateTimeUtil.of(finishedTime));
         instanceInfo.setTaskTrackerAddress(taskTrackerAddress);
         instanceInfo.setResult(result);
         instanceInfo.setUpdateTime(LocalDateTime.now());
@@ -88,7 +89,7 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
     default int update4TriggerSucceed(String instanceId, long actualTriggerTime, String taskTrackerAddress, int oldStatus) {
         InstanceInfoDO instanceInfo = new InstanceInfoDO();
         instanceInfo.setStatus(InstanceStatus.WAITING_WORKER_RECEIVE.getV());
-        instanceInfo.setActualTriggerTime(actualTriggerTime);
+        instanceInfo.setActualTriggerTime(LocalDateTimeUtil.of(actualTriggerTime));
         instanceInfo.setTaskTrackerAddress(taskTrackerAddress);
         instanceInfo.setUpdateTime(LocalDateTime.now());
         return update(instanceInfo, m -> m.whereEq("instance_id", instanceId).andEq("status", oldStatus));

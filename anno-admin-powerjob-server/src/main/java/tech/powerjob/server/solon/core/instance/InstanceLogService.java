@@ -1,6 +1,7 @@
 package tech.powerjob.server.solon.core.instance;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,6 +13,13 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.OmsConstant;
+import tech.powerjob.common.enums.LogLevel;
+import tech.powerjob.common.enums.TimeExpressionType;
+import tech.powerjob.common.model.InstanceLogContent;
+import tech.powerjob.common.utils.CommonUtils;
+import tech.powerjob.common.utils.NetUtils;
+import tech.powerjob.common.utils.SegmentLock;
 import tech.powerjob.server.solon.common.async.PjAsync;
 import tech.powerjob.server.solon.common.constants.PJThreadPool;
 import tech.powerjob.server.solon.common.utils.OmsFileUtils;
@@ -27,14 +35,6 @@ import tech.powerjob.server.solon.persistence.local.LocalInstanceLogRepository;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 import tech.powerjob.server.solon.persistence.storage.Constants;
 import tech.powerjob.server.solon.remote.server.redirector.DesignateServer;
-import tech.powerjob.common.OmsConstant;
-import tech.powerjob.common.enums.LogLevel;
-import tech.powerjob.common.enums.TimeExpressionType;
-import tech.powerjob.common.model.InstanceLogContent;
-import tech.powerjob.common.utils.CollectionUtils;
-import tech.powerjob.common.utils.CommonUtils;
-import tech.powerjob.common.utils.NetUtils;
-import tech.powerjob.common.utils.SegmentLock;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -231,9 +231,9 @@ public class InstanceLogService {
 
             try {
                 dFsService.store(new StoreRequest().setLocalFile(stableLogFile).setFileLocation(dfsFL));
-                log.info("[InstanceLog-{}] push local instanceLogs to mongoDB succeed, using: {}.", instanceId, sw.stop());
+                log.info("[InstanceLog-{}] push local instanceLogs to dsf succeed, using: {}.", instanceId, sw.stop());
             } catch (Exception e) {
-                log.warn("[InstanceLog-{}] push local instanceLogs to mongoDB failed.", instanceId, e);
+                log.warn("[InstanceLog-{}] push local instanceLogs to dsf failed.", instanceId, e);
             }
 
         } catch (Exception e) {
@@ -266,7 +266,7 @@ public class InstanceLogService {
                 FileUtils.forceMkdirParent(f);
 
                 // 重新构建文件
-                LocalInstanceLogDO allLog = localInstanceLogRepository.findByInstanceIdOrderByLogTime(instanceId);
+                List<LocalInstanceLogDO> allLog = localInstanceLogRepository.findByInstanceIdOrderByLogTime(instanceId);
                 log2File(allLog, f);
 
                 return f;
@@ -297,7 +297,7 @@ public class InstanceLogService {
 
                 // 本地存在数据，从本地持久化（对应 SYNC 的情况）
                 if (instanceId2LastReportTime.containsKey(instanceId)) {
-                    LocalInstanceLogDO allLog = localInstanceLogRepository.findByInstanceIdOrderByLogTime(instanceId);
+                    List<LocalInstanceLogDO> allLog = localInstanceLogRepository.findByInstanceIdOrderByLogTime(instanceId);
                     log2File(allLog, f);
                 } else {
 
@@ -325,10 +325,12 @@ public class InstanceLogService {
      *
      * @param logFile 目标日志文件
      */
-    private void log2File(LocalInstanceLogDO instanceLog, File logFile) {
+    private void log2File(List<LocalInstanceLogDO> instanceLogs, File logFile) {
         try (FileWriter fw = new FileWriter(logFile); BufferedWriter bfw = new BufferedWriter(fw)) {
             try {
-                bfw.write(convertLog(instanceLog) + System.lineSeparator());
+                for (LocalInstanceLogDO instanceLog : instanceLogs) {
+                    bfw.write(convertLog(instanceLog) + System.lineSeparator());
+                }
             } catch (Exception ignore) {
             }
         } catch (IOException ie) {
@@ -368,7 +370,7 @@ public class InstanceLogService {
             }
         });
 
-        if (!CollectionUtils.isEmpty(frequentInstanceIds)) {
+        if (CollectionUtil.isNotEmpty(frequentInstanceIds)) {
             // 只保留最近10分钟的日志
             long time = System.currentTimeMillis() - 10 * 60 * 1000;
             Lists.partition(frequentInstanceIds, 100).forEach(p -> {

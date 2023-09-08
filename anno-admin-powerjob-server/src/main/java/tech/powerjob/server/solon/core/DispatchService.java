@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.server.solon.anno.utils.IdConvertUtil;
 import tech.powerjob.server.solon.common.Holder;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.core.instance.InstanceManager;
@@ -103,7 +104,7 @@ public class DispatchService {
      * @param instanceInfoOptional 任务实例信息，可选
      * @param overloadOptional     超载信息，可选
      */
-    @UseCacheLock(type = "processJobInstance", key = "#jobInfo.getMaxInstanceNum() > 0 || T(tech.powerjob.common.enums.TimeExpressionType).FREQUENT_TYPES.contains(#jobInfo.getTimeExpressionType()) ? #jobInfo.getId() : #instanceId", concurrencyLevel = 1024)
+    @UseCacheLock(type = "processJobInstance", key = "use tech.powerjob.common.enums.TimeExpressionType; jobInfo.maxInstanceNum > 0 || include(TimeExpressionType.FREQUENT_TYPES, jobInfo.timeExpressionType) ? jobInfo.id : instanceId", concurrencyLevel = 1024)
     public void dispatch(JobInfoDO jobInfo, String instanceId, Optional<InstanceInfoDO> instanceInfoOptional, Optional<Holder<Boolean>> overloadOptional) {
         // 允许从外部传入实例信息，减少 io 次数
         // 检查当前任务是否被取消
@@ -225,7 +226,7 @@ public class DispatchService {
         req.setMaxWorkerCount(jobInfo.getMaxWorkerCount());
 
         // 设置工作流ID
-        req.setWfInstanceId(Long.valueOf(instanceInfo.getWfInstanceId()));
+        req.setWfInstanceId(IdConvertUtil.toLong(instanceInfo.getWfInstanceId()));
 
         req.setExecuteType(ExecuteType.of(jobInfo.getExecuteType()).name());
         req.setProcessorType(ProcessorType.of(jobInfo.getProcessorType()).name());

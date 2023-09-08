@@ -9,12 +9,18 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
+import tech.powerjob.server.solon.anno.button.JobButtonService;
+import tech.powerjob.server.solon.proxy.JobInfoProxy;
+
+import java.time.LocalDateTime;
 
 /**
  * 任务信息表
@@ -25,7 +31,7 @@ import site.sorghum.anno.pre.suppose.model.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "任务管理", annoPermission = @AnnoPermission(enable = true, baseCode = "pj_job_info", baseCodeTranslate = "任务管理"),
-    annoOrder = @AnnoOrder(orderType = "desc", orderValue = "updateTime"))
+    annoOrder = @AnnoOrder(orderType = "desc", orderValue = "updateTime"), annoProxy = @AnnoProxy(JobInfoProxy.class))
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("pj_job_info")
@@ -45,7 +51,7 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 任务所属的应用ID
      */
-    @AnnoField(title = "任务所属的应用ID", show = false)
+    @AnnoField(title = "应用ID", edit = @AnnoEdit(), search = @AnnoSearch())
     private String appId;
     /**
      * 任务自带的参数
@@ -77,8 +83,14 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 任务生命周期（开始和结束时间）
      */
-    @AnnoField(title = "任务生命周期", edit = @AnnoEdit(placeHolder = "暂不支持，格式：{start: 123, end: 123}"), show = false)
+    @AnnoField(title = "任务生命周期", show = false)
     private String lifecycle;
+
+    @AnnoField(title = "任务生命周期-开始时间", virtualColumn = true, dataType = AnnoDataType.DATETIME, edit = @AnnoEdit(), show = false)
+    private LocalDateTime lifecycleStart;
+
+    @AnnoField(title = "任务生命周期-结束时间", virtualColumn = true, dataType = AnnoDataType.DATETIME, edit = @AnnoEdit(), show = false)
+    private LocalDateTime lifecycleEnd;
 
     /* ************************** 执行方式 ************************** */
     /**
@@ -221,7 +233,7 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 日志配置，包括日志级别、日志方式等配置信息
      */
-    @AnnoField(title = "日志配置", edit = @AnnoEdit(), show = false)
+    @AnnoField(title = "日志配置", show = false)
     private String logConfig;
 
     @AnnoField(title = "日志类型", virtualColumn = true, dataType = AnnoDataType.OPTIONS,
@@ -246,4 +258,7 @@ public class JobInfoDO extends BaseMetaModel {
 
     @AnnoField(title = "loggerName", edit = @AnnoEdit(), show = false, virtualColumn = true)
     private String loggerName;
+
+    @AnnoButton(name = "运行", javaCmd = @AnnoButton.JavaCmd(beanClass = JobButtonService.class, methodName = "runJob"))
+    private Object runButton;
 }

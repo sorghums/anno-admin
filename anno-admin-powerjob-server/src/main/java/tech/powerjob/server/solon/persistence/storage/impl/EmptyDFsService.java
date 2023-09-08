@@ -35,7 +35,7 @@ public class EmptyDFsService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AppContext context) {
+    public void init(AppContext context) {
         log.info("[EmptyDFsService] initialize successfully, THIS_WILL_BE_THE_STORAGE_LAYER.");
     }
 

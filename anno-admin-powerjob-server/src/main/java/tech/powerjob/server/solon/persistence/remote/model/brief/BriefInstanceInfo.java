@@ -27,6 +27,8 @@ public class BriefInstanceInfo {
      */
     private Long runningTimes;
 
+    public BriefInstanceInfo() {
+    }
 
     public BriefInstanceInfo(String appId, String id, String jobId, String instanceId) {
         this.appId = appId;

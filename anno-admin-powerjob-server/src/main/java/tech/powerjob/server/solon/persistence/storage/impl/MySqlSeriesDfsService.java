@@ -245,7 +245,7 @@ public class MySqlSeriesDfsService extends AbstractDFsService {
     }
 
     @Override
-    protected void init(AppContext context) {
+    public void init(AppContext context) {
 
         MySQLProperty mySQLProperty = new MySQLProperty()
             .setDriver(fetchProperty(context, TYPE_MYSQL, KEY_DRIVER_NAME))

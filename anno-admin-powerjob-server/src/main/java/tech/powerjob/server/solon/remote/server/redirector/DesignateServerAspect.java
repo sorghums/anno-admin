@@ -8,15 +8,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
-import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
-import tech.powerjob.server.solon.persistence.remote.repository.AppInfoRepository;
-import tech.powerjob.server.solon.remote.transporter.TransportService;
-import tech.powerjob.server.solon.remote.transporter.impl.ServerURLFactory;
 import tech.powerjob.common.RemoteConstant;
 import tech.powerjob.common.enums.Protocol;
 import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.common.response.AskResponse;
 import tech.powerjob.remote.framework.base.URL;
+import tech.powerjob.server.solon.anno.utils.DbContextUtil;
+import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
+import tech.powerjob.server.solon.persistence.remote.repository.AppInfoRepository;
+import tech.powerjob.server.solon.remote.transporter.TransportService;
+import tech.powerjob.server.solon.remote.transporter.impl.ServerURLFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -42,9 +43,7 @@ public class DesignateServerAspect implements Interceptor {
         context.getBeanAsync(TransportService.class, bean -> {
             this.transportService = bean;
         });
-        context.getBeanAsync(AppInfoRepository.class, bean -> {
-            this.appInfoRepository = bean;
-        });
+        this.appInfoRepository = DbContextUtil.getMapper(AppInfoRepository.class);
     }
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

@@ -310,7 +310,7 @@ public class InstanceStatusCheckService {
         log.warn("[InstanceStatusChecker] instance[{}] failed due to {}, instanceInfo: {}", instance.getInstanceId(), result, instance);
 
         instance.setStatus(InstanceStatus.FAILED.getV());
-        instance.setFinishedTime(System.currentTimeMillis());
+        instance.setFinishedTime(LocalDateTime.now());
         instance.setUpdateTime(LocalDateTime.now());
         instance.setResult(result);
         instanceInfoRepository.insert(instance);
