@@ -16,6 +16,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 import tech.powerjob.server.solon.anno.button.JobButtonService;
 import tech.powerjob.server.solon.proxy.JobInfoProxy;
@@ -51,7 +52,9 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 任务所属的应用ID
      */
-    @AnnoField(title = "应用ID", edit = @AnnoEdit(), search = @AnnoSearch())
+    @AnnoField(title = "应用ID", edit = @AnnoEdit(), search = @AnnoSearch(),
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AppInfoDO.class, labelKey = "appName")))
     private String appId;
     /**
      * 任务自带的参数
@@ -199,7 +202,8 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 报警用户ID列表，多值逗号分隔
      */
-    @AnnoField(title = "报警通知用户", edit = @AnnoEdit(placeHolder = "填写 userId，可选，不指定代表不通知；多值英文逗号分割"), show = false)
+    @AnnoField(title = "报警通知用户", edit = @AnnoEdit(placeHolder = "可以多选"), show = false,
+        dataType = AnnoDataType.OPTIONS, optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnUser.class), isMultiple = true))
     private String notifyUserIds;
 
     /**
