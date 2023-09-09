@@ -154,6 +154,11 @@ public class AnField {
      */
     private OptionAnnoClass optionAnnoClass;
 
+    /**
+     * 是否多选，多选的值格式为逗号拼接 value 值
+     */
+    private boolean optionIsMultiple;
+
     @Data
     @AllArgsConstructor
     public static class OptionAnnoClass {

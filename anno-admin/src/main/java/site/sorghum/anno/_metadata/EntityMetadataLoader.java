@@ -152,6 +152,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             anField.setDataType(anno.dataType());
 
+            anField.setOptionIsMultiple(anno.optionType().isMultiple());
             anField.setOptionTypeSql(anno.optionType().sql());
             AnnoOptionType.OptionAnnoClass optionAnnoClass = anno.optionType().optionAnno();
             anField.setOptionAnnoClass(

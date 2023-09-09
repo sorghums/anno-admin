@@ -35,6 +35,11 @@ public @interface AnnoOptionType {
      */
     OptionAnnoClass optionAnno() default @OptionAnnoClass(annoClass = Object.class);
 
+    /**
+     * 是否多选，多选的值格式为逗号拼接 value 值
+     */
+    boolean isMultiple() default false;
+
 
     @interface OptionData {
         /**

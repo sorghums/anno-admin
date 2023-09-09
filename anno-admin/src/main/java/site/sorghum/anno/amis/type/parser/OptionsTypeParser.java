@@ -37,6 +37,7 @@ public class OptionsTypeParser implements TypeParser {
         BeanUtil.copyProperties(formItem, picker);
         List<Options.Option> optionItemList = AmisCommonUtil.getOptions(anField);
         picker.setOptions(optionItemList);
+        picker.setMultiple(anField.isOptionIsMultiple());
         return picker;
     }
 }
