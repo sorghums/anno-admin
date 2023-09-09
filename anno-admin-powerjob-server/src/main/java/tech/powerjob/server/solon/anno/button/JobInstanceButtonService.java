@@ -3,7 +3,7 @@ package tech.powerjob.server.solon.anno.button;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import tech.powerjob.server.solon.core.instance.InstanceLogService;
-import tech.powerjob.server.solon.core.service.JobService;
+import tech.powerjob.server.solon.core.instance.InstanceService;
 import tech.powerjob.server.solon.persistence.StringPage;
 
 import java.util.Map;
@@ -17,6 +17,8 @@ public class JobInstanceButtonService {
 
     @Inject
     InstanceLogService instanceLogService;
+    @Inject
+    InstanceService instanceService;
 
     /**
      * 查看日志
@@ -30,5 +32,14 @@ public class JobInstanceButtonService {
         }
         StringPage stringPage = instanceLogService.fetchInstanceLog(appId, instanceId, logIndex);
         System.out.println(stringPage);
+    }
+
+    /**
+     * 重试
+     */
+    public void retryInstance(Map<String, Object> props) {
+        String appId = (String) props.get("appId");
+        String instanceId = (String) props.get("instanceId");
+        instanceService.retryInstance(appId, instanceId);
     }
 }

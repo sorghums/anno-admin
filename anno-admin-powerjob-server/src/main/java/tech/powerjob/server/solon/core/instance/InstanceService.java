@@ -178,7 +178,7 @@ public class InstanceService {
         instanceInfo.setActualTriggerTime(null);
         instanceInfo.setTaskTrackerAddress(null);
         instanceInfo.setResult(null);
-        instanceInfoRepository.insert(instanceInfo);
+        instanceInfoRepository.updateById(instanceInfo);
 
         // 派发任务
         String jobId = instanceInfo.getJobId();

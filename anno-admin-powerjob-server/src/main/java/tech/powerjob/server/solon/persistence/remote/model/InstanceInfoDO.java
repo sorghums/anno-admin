@@ -37,12 +37,14 @@ public class InstanceInfoDO extends BaseMetaModel {
     /**
      * 任务ID
      */
-    @AnnoField(title = "任务ID", search = @AnnoSearch())
+    @AnnoField(title = "任务", search = @AnnoSearch(), dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = JobInfoDO.class, labelKey = "jobName")))
     private String jobId;
     /**
      * 任务所属应用的ID，冗余提高查询效率
      */
-    @AnnoField(title = "应用id", search = @AnnoSearch())
+    @AnnoField(title = "所属应用", search = @AnnoSearch(), dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AppInfoDO.class, labelKey = "appName")))
     private String appId;
     /**
      * TODO 任务实例ID，是否可以删掉？
@@ -127,5 +129,8 @@ public class InstanceInfoDO extends BaseMetaModel {
 
     @AnnoButton(name = "日志", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "fetchInstanceLog"))
     private Object fetchInstanceLogButton;
+
+    @AnnoButton(name = "重试", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "retryInstance"))
+    private Object instanceRetryButton;
 
 }

@@ -33,6 +33,6 @@ public interface SysUserDao extends AnnoBaseMapper<AnUser> {
             return new LinkedList<>();
         }
         List<String> collect = Arrays.stream(userIds.split(",")).collect(Collectors.toList());
-        return selectList(m -> m.whereIn("user_id", collect));
+        return selectList(m -> m.whereIn("id", collect));
     }
 }

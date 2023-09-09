@@ -14,4 +14,11 @@ public class IdConvertUtil {
         }
         return Long.valueOf(id);
     }
+
+    public static String toString(Long id) {
+        if (id == null) {
+            return null;
+        }
+        return id.toString();
+    }
 }

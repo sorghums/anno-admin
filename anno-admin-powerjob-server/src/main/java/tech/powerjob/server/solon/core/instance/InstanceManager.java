@@ -18,6 +18,7 @@ import tech.powerjob.common.request.TaskTrackerReportInstanceStatusReq;
 import tech.powerjob.common.utils.CommonUtils;
 import tech.powerjob.remote.framework.base.URL;
 import tech.powerjob.server.solon.anno.utils.DbContextUtil;
+import tech.powerjob.server.solon.anno.utils.IdConvertUtil;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.common.timewheel.holder.HashedWheelTimerHolder;
 import tech.powerjob.server.solon.core.alarm.AlarmCenter;
@@ -84,7 +85,7 @@ public class InstanceManager implements TransportServiceAware {
      */
     public void updateStatus(TaskTrackerReportInstanceStatusReq req) throws ExecutionException {
 
-        String instanceId = String.valueOf(req.getInstanceId());
+        String instanceId = IdConvertUtil.toString(req.getInstanceId());
         // 获取相关数据
         JobInfoDO jobInfo = instanceMetadataService.fetchJobInfoByInstanceId(req.getInstanceId().toString());
         InstanceInfoDO instanceInfo = instanceInfoRepository.findByInstanceId(instanceId);
@@ -184,7 +185,7 @@ public class InstanceManager implements TransportServiceAware {
             // 最终状态允许直接覆盖更新
             instanceInfoRepository.saveOrUpdate(instanceInfo);
             // 这里的 InstanceStatus 只有 成功/失败 两种，手动停止不会由 TaskTracker 上报
-            processFinishedInstance(instanceId, String.valueOf(req.getWfInstanceId()), receivedInstanceStatus, req.getResult());
+            processFinishedInstance(instanceId, IdConvertUtil.toString(req.getWfInstanceId()), receivedInstanceStatus, req.getResult());
             return;
         }
         // 带条件更新
