@@ -106,7 +106,7 @@ public class CrudEditInfoProcessor implements BaseProcessor {
                                 setRightFixed("sm");
                                 setJustify(true);
                             }});
-                            setBody(AmisCommonUtil.formItemToGroup(formItems, 2));
+                            setBody(AmisCommonUtil.formItemToGroup(entity, formItems, 2));
                         }}
                     );
                 }}

@@ -88,7 +88,7 @@ public class CrudAddInfoProcessor implements BaseProcessor {
                             setRightFixed("sm");
                             setJustify(true);
                         }});
-                        setBody(AmisCommonUtil.formItemToGroup(formItems, 2));
+                        setBody(AmisCommonUtil.formItemToGroup(anEntity, formItems, 2));
                         // 刷新某个组件
                         setOnEvent(new HashMap<>() {{
                             put("submitSucc", new HashMap<>() {{

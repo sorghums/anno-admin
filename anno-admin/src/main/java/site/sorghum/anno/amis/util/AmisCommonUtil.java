@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class AmisCommonUtil {
 
-    public static List<AmisBase> formItemToGroup(List<AmisBase> formItems, Integer columnCnt) {
+    public static List<AmisBase> formItemToGroup(AnEntity entity, List<AmisBase> formItems, Integer columnCnt) {
         String[] ignoreTypes = {
             "editor", "input-rich-text", "input-image"
         };
@@ -39,6 +39,14 @@ public class AmisCommonUtil {
         int idx = 0;
         for (AmisBase formItem : formItems) {
             if (Boolean.TRUE.equals(formItem.getHidden())) {
+                if (formItem instanceof FormItem) {
+                    // 主键需要隐藏在页面上，后续会用到
+                    String name = ((FormItem) formItem).getName();
+                    AnField field = entity.getField(name);
+                    if (field != null && field.isPrimaryKey()) {
+                        rst.add(formItem);
+                    }
+                }
                 continue;
             }
             List<AmisBase> nowIdxFormItems = indexMap.computeIfAbsent(idx, k -> new ArrayList<>());
