@@ -23,9 +23,9 @@
 
 ---
 <p align="center">
-微信群:
+作者微信（添加请备注 anno-admin）:
 </p>
-<p align="center"><img src="./img/微信群.jpg" height="150" alt="logo"/></p>
+<p align="center"><img src="./img/微信.png" height="300" alt="logo"/></p>
 
 ---
 
