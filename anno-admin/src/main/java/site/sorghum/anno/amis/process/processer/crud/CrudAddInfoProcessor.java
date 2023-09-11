@@ -49,62 +49,77 @@ public class CrudAddInfoProcessor implements BaseProcessor {
             chain.doProcessor(amisBaseWrapper, clazz, properties);
             return;
         }
-        List<AmisBase> formItems = new ArrayList<>() {{
-            for (AnField field : anFields) {
-                if (field.isAddEnable()) {
-                    FormItem formItem = new FormItem();
-                    formItem.setName(field.getFieldName());
-                    formItem.setLabel(field.getTitle());
-                    // 单独设置label宽度
-                    formItem.setLabelWidth(formItem.getLabel().length() * 14);
-                    formItem.setRequired(field.isEditNotNull());
-                    formItem.setPlaceholder(field.getEditPlaceHolder());
-                    formItem = AnnoDataType.editorExtraInfo(formItem, field);
-                    add(formItem);
-                }
-            }
-        }};
+
+        List<AmisBase> formItems = generateFormItems(anFields);
         Crud crudBody = crudView.getCrudBody();
         Form filter = crudBody.getFilter();
         List<Action> actions = filter.getActions();
+        DialogButton dialogButton = createDialogButton(anEntity, formItems);
+        actions.add(0, dialogButton);
+        chain.doProcessor(amisBaseWrapper, clazz, properties);
+    }
+
+    private List<AmisBase> generateFormItems(List<AnField> anFields) {
+        List<AmisBase> formItems = new ArrayList<>();
+        for (AnField field : anFields) {
+            if (field.isAddEnable()) {
+                FormItem formItem = new FormItem();
+                formItem.setName(field.getFieldName());
+                formItem.setLabel(field.getTitle());
+                // 单独设置label宽度
+                formItem.setLabelWidth(StrUtil.length(formItem.getLabel()) * 14);
+                formItem.setRequired(field.isEditNotNull());
+                formItem.setPlaceholder(field.getEditPlaceHolder());
+                formItem = AnnoDataType.editorExtraInfo(formItem, field);
+                formItems.add(formItem);
+            }
+        }
+        return formItems;
+    }
+
+    private DialogButton createDialogButton(AnEntity anEntity, List<AmisBase> formItems) {
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel("新增");
         dialogButton.setIcon("fa fa-plus pull-left");
         dialogButton.setLevel("primary");
-        dialogButton.setDialog(
-            new DialogButton.Dialog() {{
-                setTitle("新增");
-                setBody(
-                    new Form() {{
-                        setWrapWithPanel(false);
-                        setApi(new Api() {{
-                            setMethod("post");
-                            setUrl("/amis/system/anno/${clazz}/save");
-                        }});
-                        setId("simple-add-form");
-                        setSize("md");
-                        setMode("horizontal");
-                        setHorizontal(new FormHorizontal() {{
-                            setRightFixed("sm");
-                            setJustify(true);
-                        }});
-                        setBody(AmisCommonUtil.formItemToGroup(anEntity, formItems, 2));
-                        // 刷新某个组件
-                        setOnEvent(new HashMap<>() {{
-                            put("submitSucc", new HashMap<>() {{
-                                put("actions",
-                                    CollUtil.newArrayList(new HashMap<>() {{
-                                                              put("actionType", "reload");
-                                                              put("componentId", "crud_template_main");
-                                                          }}
-                                    ));
-                            }});
-                        }});
-                    }}
-                );
-            }}
-        );
-        actions.add(0, dialogButton);
-        chain.doProcessor(amisBaseWrapper, clazz, properties);
+        dialogButton.setDialog(createAddDialog(anEntity, formItems));
+        return dialogButton;
+    }
+
+    private DialogButton.Dialog createAddDialog(AnEntity anEntity, List<AmisBase> formItems) {
+        return new DialogButton.Dialog() {{
+            setTitle("新增");
+            setBody(
+                new Form() {{
+                    setWrapWithPanel(false);
+                    setApi(new Api() {{
+                        setMethod("post");
+                        setUrl("/amis/system/anno/${clazz}/save");
+                    }});
+                    setId("simple-add-form");
+                    setSize("md");
+                    setMode("horizontal");
+                    setHorizontal(new FormHorizontal() {{
+                        setRightFixed("sm");
+                        setJustify(true);
+                    }});
+                    setBody(AmisCommonUtil.formItemToGroup(anEntity, formItems, 2));
+                    setOnEvent(createSubmitEvent());
+                }}
+            );
+        }};
+    }
+
+    private Map<String, Object> createSubmitEvent() {
+        return new HashMap<>() {{
+            put("submitSucc", new HashMap<>() {{
+                put("actions",
+                    CollUtil.newArrayList(new HashMap<>() {{
+                                              put("actionType", "reload");
+                                              put("componentId", "crud_template_main");
+                                          }}
+                    ));
+            }});
+        }};
     }
 }

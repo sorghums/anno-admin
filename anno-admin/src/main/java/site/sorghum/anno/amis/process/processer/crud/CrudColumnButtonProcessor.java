@@ -21,10 +21,7 @@ import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CRUD视图初始化处理器
@@ -35,142 +32,175 @@ import java.util.Map;
 @Named
 public class CrudColumnButtonProcessor implements BaseProcessor {
 
-  @Inject
-  MetadataManager metadataManager;
+    @Inject
+    MetadataManager metadataManager;
 
-  @Inject
-  PermissionProxy permissionProxy;
+    @Inject
+    PermissionProxy permissionProxy;
 
-  @Override
-  public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
-    if (properties.getOrDefault("isM2m", false).equals(true)) {
-      chain.doProcessor(amisBaseWrapper, clazz, properties);
-      return;
-    }
-    CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-    AnEntity anEntity = metadataManager.getEntity(clazz);
-    // 读取现有的列
-    Crud crudBody = crudView.getCrudBody();
-    List<Map> columns = crudBody.getColumns();
-    for (Map columnJson : columns) {
-      if ("操作".equals(MapUtil.getStr(columnJson, "label"))) {
-        List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
-        for (AnColumnButton anColumnButton : anColumnButtons) {
-          try {
-            permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
-          } catch (Exception e) {
-            continue;
-          }
-          Action action = new Action();
-          if (anColumnButton.isO2mEnable()) {
-            action = new DialogButton();
-            action.setLabel(anColumnButton.getName());
-            ((DialogButton) action).setDialog(
-                new DialogButton.Dialog() {{
-                  setTitle(anColumnButton.getName());
-                  setShowCloseButton(true);
-                  setSize(anColumnButton.getO2mWindowSize());
-                  setActions(new ArrayList<>());
-                  setBody(
-                      new IFrame() {{
-                        setType("iframe");
-                        setHeight(anColumnButton.getO2mWindowHeight());
-                        setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
-                      }}
-                  );
-                }}
-            );
-          } else if (anColumnButton.isM2mEnable()) {
-            action = new DialogButton();
-            HashMap<String, Object> queryMap = new HashMap<>() {{
-                put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
-                put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-                // 处理上调换this和other的逻辑
-                put("mediumThisField", anColumnButton.getM2mMediumOtherField());
-                put("mediumOtherField", anColumnButton.getM2mMediumThisField());
-                put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
-                put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
-                put("isM2m", true);
-            }};
-            action.setLabel(anColumnButton.getName());
-            ((DialogButton) action).setDialog(
-                new DialogButton.Dialog() {{
-                  setCloseOnEsc(true);
-                  setTitle(anColumnButton.getName());
-                  setSize(anColumnButton.getM2mWindowSize());
-                  setShowCloseButton(true);
-                  setBody(
-                      new IFrame() {{
-                        setType("iframe");
-                        setHeight(anColumnButton.getM2mWindowHeight());
-                        setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
-                      }}
-                  );
-                  setActions(new ArrayList<>());
-                }}
-            );
-          } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
-            action.setLabel(anColumnButton.getName());
-            action.setActionType("url");
-            action.setUrl(anColumnButton.getJumpUrl());
-          } else if (StrUtil.isNotBlank(anColumnButton.getJsCmd())) {
-            action.setLabel(anColumnButton.getName());
-            action.setOnClick(anColumnButton.getJsCmd());
-          } else if (anColumnButton.isJavaCmdEnable()) {
-            action.setLabel(anColumnButton.getName());
-            action.setActionType("ajax");
-            action.setApi(
-                new Api() {{
-                  setMethod("post");
-                  setUrl("/amis/system/anno/runJavaCmd");
-                  setData(new HashMap<>() {{
-                      put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
-                      put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
-                      // 30分钟过期
-                      put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
-                      put("&", "$$");
-                  }});
-                  setMessages(
-                      new ApiMessage() {{
-                        setSuccess("操作成功");
-                        setFailed("操作失败");
-                      }}
-                  );
+    private static final String OPERATION_LABEL = "操作";
 
-                }}
-            );
-          } else if (anColumnButton.isTplEnable()){
-              action = new DialogButton();
-              action.setLabel(anColumnButton.getName());
-              DialogButton.Dialog iframe = new DialogButton.Dialog() {{
-                  setCloseOnEsc(true);
-                  setTitle(anColumnButton.getName());
-                  setShowCloseButton(true);
-                  setSize(anColumnButton.getTplWindowSize());
-                  setBody(
-                      new IFrame() {{
-                          setType("iframe");
-                          setSrc("/annoTpl/" + anColumnButton.getTplClazz().getSimpleName() + "/" + anColumnButton.getTplName());
-                          setHeight(anColumnButton.getTplWindowHeight());
-                      }}
-                  );
-                  setActions(new ArrayList<>());
-              }};
-              ((DialogButton) action).setDialog(iframe);
-          } else {
-            continue;
-          }
-          // 添加对应按钮
-          Object buttons = columnJson.get("buttons");
-          if (buttons instanceof List<?> buttonList) {
-            List<Object> buttonListMap = (List<Object>) buttonList;
-            buttonListMap.add(action);
-            // 设置列宽
-            columnJson.put("width", buttonListMap.size() * 80);
-          }
+    @Override
+    public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
+        if (properties.getOrDefault("isM2m", false).equals(true)) {
+            chain.doProcessor(amisBaseWrapper, clazz, properties);
+            return;
         }
-      }
+        CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        Crud crudBody = crudView.getCrudBody();
+        List<Map> columns = crudBody.getColumns();
+        for (Map columnJson : columns) {
+            if (OPERATION_LABEL.equals(MapUtil.getStr(columnJson, "label"))) {
+                List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
+                for (AnColumnButton anColumnButton : anColumnButtons) {
+                    try {
+                        permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
+                    } catch (Exception e) {
+                        continue;
+                    }
+                    Action action = createActionForButton(anColumnButton);
+                    if (action != null) {
+                        Object buttons = columnJson.get("buttons");
+                        if (buttons instanceof List<?>) {
+                            List<Object> buttonListMap = (List<Object>) buttons;
+                            buttonListMap.add(action);
+                            // 设置列宽
+                            columnJson.put("width", buttonListMap.size() * 80);
+                        }
+                    }
+                }
+            }
+        }
+        chain.doProcessor(amisBaseWrapper, clazz, properties);
     }
-    chain.doProcessor(amisBaseWrapper, clazz, properties);
-  }
+
+    private Action createActionForButton(AnColumnButton anColumnButton) {
+        Action action = null;
+        if (anColumnButton.isO2mEnable()) {
+            action = createO2MDialogButton(anColumnButton.getName(), anColumnButton.getO2mWindowSize(),
+                "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
+                + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+        } else if (anColumnButton.isM2mEnable()) {
+            action = createM2mDialogButton(anColumnButton);
+        } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
+            action = createActionUrl(anColumnButton.getName(), anColumnButton.getJumpUrl());
+        } else if (StrUtil.isNotBlank(anColumnButton.getJsCmd())) {
+            action = createActionJsCmd(anColumnButton.getName(), anColumnButton.getJsCmd());
+        } else if (anColumnButton.isJavaCmdEnable()) {
+            action = createJavaCmdAction(anColumnButton);
+        } else if (anColumnButton.isTplEnable()) {
+            action = createTplDialogButton(anColumnButton);
+        }
+        return action;
+    }
+
+    private DialogButton createO2MDialogButton(String label, String size, String src) {
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel(label);
+        DialogButton.Dialog dialog = new DialogButton.Dialog();
+        dialog.setTitle(label);
+        dialog.setShowCloseButton(true);
+        dialog.setSize(size);
+        dialog.setActions(new ArrayList<>());
+        IFrame iFrame = new IFrame();
+        iFrame.setType("iframe");
+        iFrame.setHeight(size);
+        iFrame.setSrc(src);
+        dialog.setBody(iFrame);
+        dialogButton.setDialog(dialog);
+        return dialogButton;
+    }
+
+    private Action createM2mDialogButton(AnColumnButton anColumnButton) {
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel(anColumnButton.getName());
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+        queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
+        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+        queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
+        queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
+        queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
+        queryMap.put("isM2m", true);
+
+        DialogButton.Dialog dialog = new DialogButton.Dialog();
+        dialog.setCloseOnEsc(true);
+        dialog.setTitle(anColumnButton.getName());
+        dialog.setSize(anColumnButton.getM2mWindowSize());
+        dialog.setShowCloseButton(true);
+        IFrame iFrame = new IFrame();
+        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+        iFrame.setHeight(anColumnButton.getM2mWindowHeight());
+        dialog.setBody(iFrame);
+        dialogButton.setDialog(dialog);
+        dialog.setActions(new ArrayList<>());
+
+        dialogButton.setDialog(dialog);
+        return dialogButton;
+    }
+
+    private Action createActionUrl(String label, String url) {
+        Action action = new Action();
+        action.setLabel(label);
+        action.setActionType("url");
+        action.setUrl(url);
+        return action;
+    }
+
+    private Action createActionJsCmd(String label, String jsCmd) {
+        Action action = new Action();
+        action.setLabel(label);
+        action.setOnClick(jsCmd);
+        return action;
+    }
+
+    private Action createJavaCmdAction(AnColumnButton anColumnButton) {
+        Action action = new Action();
+        action.setLabel(anColumnButton.getName());
+        action.setActionType("ajax");
+        Api api = new Api();
+        api.setMethod("post");
+        api.setUrl("/amis/system/anno/runJavaCmd");
+        Map<String, Object> data = new HashMap<>();
+        data.put("clazz", CryptoUtil.encrypt(anColumnButton.getJavaCmdBeanClass().getName()));
+        data.put("method", CryptoUtil.encrypt(anColumnButton.getJavaCmdMethodName()));
+        // 30分钟过期
+        data.put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
+        data.put("&", "$$");
+        api.setData(data);
+        Api.ApiMessage messages = new Api.ApiMessage();
+        messages.setSuccess("操作成功");
+        messages.setFailed("操作失败");
+        api.setMessages(messages);
+        action.setApi(api);
+        return action;
+    }
+
+    private Action createTplDialogButton(AnColumnButton anColumnButton) {
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel(anColumnButton.getName());
+        DialogButton.Dialog dialog = new DialogButton.Dialog();
+        dialog.setCloseOnEsc(true);
+        dialog.setTitle(anColumnButton.getName());
+        dialog.setShowCloseButton(true);
+        dialog.setSize(anColumnButton.getTplWindowSize());
+        dialog.setActions(new ArrayList<>());
+        IFrame iFrame = new IFrame();
+        iFrame.setType("iframe");
+        iFrame.setSrc("/annoTpl/" + anColumnButton.getTplClazz().getSimpleName() + "/" + anColumnButton.getTplName());
+        iFrame.setHeight(anColumnButton.getTplWindowHeight());
+        dialog.setBody(iFrame);
+        dialogButton.setDialog(dialog);
+        return dialogButton;
+    }
+
+    private IFrame createIFrame(String src, String height) {
+        IFrame iFrame = new IFrame();
+        iFrame.setType("iframe");
+        iFrame.setSrc(src);
+        iFrame.setHeight(height);
+        return iFrame;
+    }
+
 }
