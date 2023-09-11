@@ -146,10 +146,12 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
                   setCloseOnEsc(true);
                   setTitle(anColumnButton.getName());
                   setShowCloseButton(true);
+                  setSize(anColumnButton.getTplWindowSize());
                   setBody(
                       new IFrame() {{
                           setType("iframe");
-                          setSrc("/annoTpl/" + anColumnButton.getTplClazz().getName() + "/" + anColumnButton.getTplName());
+                          setSrc("/annoTpl/" + anColumnButton.getTplClazz().getSimpleName() + "/" + anColumnButton.getTplName());
+                          setHeight(anColumnButton.getTplWindowHeight());
                       }}
                   );
                   setActions(new ArrayList<>());

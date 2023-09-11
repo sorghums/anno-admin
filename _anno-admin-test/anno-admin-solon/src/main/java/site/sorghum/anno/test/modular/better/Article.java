@@ -50,7 +50,8 @@ public class Article extends BaseMetaModel {
         mediumTableClass = ArticleFavoritesRelation.class,
         mediumOtherField = "favorites_id",
         mediumThisField = "article_id",
-        joinThisClazzField = "id"
+        joinThisClazzField = "id",
+        windowSize = "sm"
     ))
     Object favoritesM2mButton;
 

@@ -29,8 +29,9 @@ public class PageController {
         Class<?> tplClass = ClassUtil.loadClass(tplActionClass);
         if (tplClass == null) {
             action = Solon.context().getBean(DefaultAnTplAction.class);
+        }else {
+            action = (DefaultAnTplAction) Solon.context().getBean(tplClass);
         }
-        action = (DefaultAnTplAction) Solon.context().getBean(tplClass);
         return new ModelAndView(tplName, action.data(new HashMap<>(ctx.paramMap())));
     }
 }

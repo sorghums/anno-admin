@@ -18,7 +18,7 @@ public @interface AnnoTpl {
     /**
      *  页面名称
      *  如：helloWord.html
-     *  会在resources/WEB-INF/anno-admin-ui/page/下寻找
+     *  会在resources/WEB-INF/templates下寻找
      */
     String tplName() default "";
 
@@ -26,6 +26,21 @@ public @interface AnnoTpl {
      * 解析的Action类
      */
     Class<? extends DefaultAnTplAction> tplClazz() default DefaultAnTplAction.class;
+
+    /**
+     * 弹出窗口大小
+     * xs、sm、md、lg、xl、full
+     *
+     * @return {@link String}
+     */
+    String windowSize() default "xl";
+
+    /**
+     * 弹出窗口高度
+     *
+     * @return {@link String}
+     */
+    String windowHeight() default "700px";
 
     /**
      * 是否启用

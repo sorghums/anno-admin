@@ -1,8 +1,7 @@
 package site.sorghum.anno.test.modular.better;
 
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
 
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
-@Configuration
+@Component
 public class ArticleTplAction extends DefaultAnTplAction {
     @Override
     public Map<String, Object> data(Map<String, Object> props) {

@@ -254,6 +254,8 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // tpl
             anColumnButton.setTplEnable(anno.annoTpl().enable());
+            anColumnButton.setTplWindowSize(anno.annoTpl().windowSize());
+            anColumnButton.setTplWindowHeight(anno.annoTpl().windowHeight());
             anColumnButton.setTplName(anno.annoTpl().tplName());
             anColumnButton.setTplClazz(anno.annoTpl().tplClazz());
 

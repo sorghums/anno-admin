@@ -189,6 +189,17 @@ public class AnColumnButton {
     private Class<?> tplClazz;
 
     /**
+     * 模板资源窗口大小
+     * xs、sm、md、lg、xl、full
+     */
+    private String tplWindowSize;
+
+    /**
+     * 模板资源窗口高度
+     */
+    private String tplWindowHeight;
+
+    /**
      * 模板资源是否启用
      */
     private boolean tplEnable;

@@ -6,12 +6,12 @@
 		"dev": "vite",
 		"build:dev": "tsc && vite build --mode development",
 		"build:pro": "tsc && vite build --mode production"
-
 	},
 	"dependencies": {
+		"@ant-design/icons": "4.7.0",
+		"@fortawesome/fontawesome-free": "^5.15.4",
 		"amis": "^3.4.0",
 		"antd": "^4.22.2",
-		"@ant-design/icons": "4.7.0",
 		"axios": "^0.27.2",
 		"copy-to-clipboard": "^3.3.2",
 		"driver.js": "^0.9.8",
@@ -27,6 +27,7 @@
 		"react": "^18.2.0",
 		"react-activation": "^0.11.2",
 		"react-dom": "^18.2.0",
+		"react-frame-component": "^5.2.6",
 		"react-i18next": "^11.17.3",
 		"react-redux": "^8.0.2",
 		"react-router-dom": "^6.3.0",
@@ -35,9 +36,7 @@
 		"redux-persist": "^6.0.0",
 		"redux-promise": "^0.6.0",
 		"redux-thunk": "^2.4.1",
-		"screenfull": "^6.0.2",
-		"react-frame-component": "^5.2.6",
-		"@fortawesome/fontawesome-free": "^5.15.4"
+		"screenfull": "^6.0.2"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.0.2",
