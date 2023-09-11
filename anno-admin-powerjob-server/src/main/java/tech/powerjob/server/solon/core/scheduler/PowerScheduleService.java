@@ -311,7 +311,7 @@ public class PowerScheduleService {
         }
         updatedJobInfo.setUpdateTime(LocalDateTime.now());
 
-        jobInfoRepository.insert(updatedJobInfo);
+        jobInfoRepository.updateById(updatedJobInfo);
     }
 
     private void refreshWorkflow(WorkflowInfoDO wfInfo) {

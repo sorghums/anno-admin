@@ -8,6 +8,7 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
@@ -127,7 +128,7 @@ public class InstanceInfoDO extends BaseMetaModel {
     @AnnoField(title = "总共执行次数", show = false)
     private Long runningTimes;
 
-    @AnnoButton(name = "日志", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "fetchInstanceLog"))
+    @AnnoButton(name = "日志", annoTpl = @AnnoTpl(tplName = "jobInstanceLog.ftl?appId=${appId}&instanceId=${instanceId}", windowSize = "lg"))
     private Object fetchInstanceLogButton;
 
     @AnnoButton(name = "重试", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "retryInstance"))
