@@ -78,9 +78,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
     private Action createActionForButton(AnColumnButton anColumnButton) {
         Action action = null;
         if (anColumnButton.isO2mEnable()) {
-            action = createO2MDialogButton(anColumnButton.getName(), anColumnButton.getO2mWindowSize(),
-                "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
-                + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+            action = createO2MDialogButton(anColumnButton);
         } else if (anColumnButton.isM2mEnable()) {
             action = createM2mDialogButton(anColumnButton);
         } else if (StrUtil.isNotBlank(anColumnButton.getJumpUrl())) {
@@ -95,17 +93,20 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         return action;
     }
 
-    private DialogButton createO2MDialogButton(String label, String size, String src) {
+    private DialogButton createO2MDialogButton(AnColumnButton anColumnButton) {
+        String label = anColumnButton.getName();
+        String windowSize = anColumnButton.getO2mWindowSize();
+        String src = "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
+                        + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}";
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel(label);
         DialogButton.Dialog dialog = new DialogButton.Dialog();
         dialog.setTitle(label);
         dialog.setShowCloseButton(true);
-        dialog.setSize(size);
+        dialog.setSize(windowSize);
         dialog.setActions(new ArrayList<>());
         IFrame iFrame = new IFrame();
-        iFrame.setType("iframe");
-        iFrame.setHeight(size);
+        iFrame.setHeight(anColumnButton.getO2mWindowHeight());
         iFrame.setSrc(src);
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);
@@ -193,14 +194,6 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);
         return dialogButton;
-    }
-
-    private IFrame createIFrame(String src, String height) {
-        IFrame iFrame = new IFrame();
-        iFrame.setType("iframe");
-        iFrame.setSrc(src);
-        iFrame.setHeight(height);
-        return iFrame;
     }
 
 }

@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * CRUD视图行详情按钮处理器
@@ -45,106 +46,136 @@ public class CrudDetailInfoProcessor implements BaseProcessor {
     @Inject
     PermissionProxy permissionProxy;
 
+    private static final String DETAIL_BUTTON_LABEL = "详情";
+    private static final String DETAIL_DIALOG_TITLE = "详情";
+    private static final String OPERATION_COLUMN_LABEL = "操作";
+
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         AnEntity entity = metadataManager.getEntity(clazz);
-
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
-        List<AnField> fields = entity.getFields();
         Crud crudBody = crudView.getCrudBody();
         List<Map> columns = crudBody.getColumns();
-        Map columnJson = columns.stream().filter(column -> "操作".equals(MapUtil.getStr(column, "label"))).findFirst().orElseThrow(
-                () -> new BizException("操作列不存在")
-        );
-        Object buttons = columnJson.get("buttons");
-        if (buttons instanceof List<?> buttonList) {
-            List<Object> buttonListMap = (List<Object>) buttonList;
-            DialogButton dialogButton = new DialogButton();
-            dialogButton.setLabel("详情");
-            dialogButton.setLevel("info");
-            ArrayList<AmisBase> formItems = new ArrayList<>() {{
-                for (AnField field : fields) {
-                    FormItem formItem = new FormItem();
-                    formItem.setName(field.getFieldName());
-                    formItem.setLabel(field.getTitle());
-                    // 单独设置label宽度
-                    formItem.setLabelWidth(formItem.getLabel().length() * 14);
-                    formItem.setRequired(field.isEditNotNull());
-                    formItem.setPlaceholder(field.getEditPlaceHolder());
-                    formItem = AnnoDataType.editorExtraInfo(formItem, field);
-                    formItem.setDisabled(true);
-                    add(formItem);
-                }
-            }};
-
-            // 一对多 多对多相关按钮
-            Tabs tabs = new Tabs();
-            processEditTabs(entity,tabs);
-            formItems.add(tabs);
-            dialogButton.setDialog(
-                    new DialogButton.Dialog() {{
-                        setTitle("详情");
-                        setBody(
-                                new Form() {{
-                                    setId("simple-detail-form");
-                                    setWrapWithPanel(false);
-                                    setSize("lg");
-                                    setMode("horizontal");
-                                    setHorizontal(new FormHorizontal() {{
-                                        setRightFixed("sm");
-                                        setJustify(true);
-                                    }});
-                                    setBody(AmisCommonUtil.formItemToGroup(entity, formItems, 2));
-                                    setActions(new ArrayList<>());
-                                }}
-                        );
-                    }}
-            );
-            buttonListMap.add(dialogButton);
+        Optional<Map> operationColumn = columns.stream()
+            .filter(column -> OPERATION_COLUMN_LABEL.equals(column.get("label")))
+            .findFirst();
+        if (operationColumn.isPresent()) {
+            Object buttons = operationColumn.get().get("buttons");
+            if (buttons instanceof List<?>) {
+                List<Object> buttonListMap = (List<Object>) buttons;
+                DialogButton dialogButton = createDetailDialogButton(entity);
+                buttonListMap.add(dialogButton);
+            }
+        } else {
+            throw new BizException("操作列不存在");
         }
         chain.doProcessor(amisBaseWrapper, clazz, properties);
     }
 
-    private void processEditTabs(AnEntity anEntity,Tabs tabs) {
+    private DialogButton createDetailDialogButton(AnEntity anEntity) {
+        List<AnField> fields = anEntity.getFields();
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel(DETAIL_BUTTON_LABEL);
+        dialogButton.setLevel("info");
+
+        ArrayList<AmisBase> formItems = new ArrayList<>();
+        fields.forEach(field -> {
+            FormItem formItem = createFormItem(field);
+            formItems.add(formItem);
+        });
+
+        Tabs tabs = new Tabs();
+        processEditTabs(tabs, anEntity);
+        formItems.add(tabs);
+
+        dialogButton.setDialog(createDetailDialog(anEntity, formItems));
+
+        return dialogButton;
+    }
+
+    private DialogButton.Dialog createDetailDialog(AnEntity anEntity, ArrayList<AmisBase> formItems) {
+        return new DialogButton.Dialog() {{
+            setSize("lg");
+            setTitle(DETAIL_DIALOG_TITLE);
+            setBody(createDetailForm(anEntity, formItems));
+        }};
+    }
+
+    private Form createDetailForm(AnEntity anEntity, ArrayList<AmisBase> formItems) {
+        Form form = new Form();
+        form.setId("simple-detail-form");
+        form.setWrapWithPanel(false);
+        form.setMode("horizontal");
+        form.setHorizontal(new Form.FormHorizontal() {{
+            setRightFixed("sm");
+            setJustify(true);
+        }});
+        form.setBody(AmisCommonUtil.formItemToGroup(anEntity, formItems, 2));
+        form.setActions(new ArrayList<>());
+        return form;
+    }
+
+    private FormItem createFormItem(AnField field) {
+        FormItem formItem = new FormItem();
+        formItem.setName(field.getFieldName());
+        formItem.setLabel(field.getTitle());
+        formItem.setLabelWidth(formItem.getLabel().length() * 14);
+        formItem.setRequired(field.isEditNotNull());
+        formItem.setPlaceholder(field.getEditPlaceHolder());
+        formItem = AnnoDataType.editorExtraInfo(formItem, field);
+        formItem.setDisabled(true);
+        return formItem;
+    }
+
+    private void processEditTabs(Tabs tabs, AnEntity anEntity) {
         List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
         for (AnColumnButton anColumnButton : anColumnButtons) {
-            try {
-                permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
-            } catch (Exception e) {
-                continue;
-            }
-            if (anColumnButton.isO2mEnable()) {
-                Tabs.Tab tab = new Tabs.Tab();
-                tab.setTitle(anColumnButton.getName());
-                tab.setBody(List.of(new IFrame() {{
-                    setType("iframe");
-                    setHeight(anColumnButton.getO2mWindowHeight());
-                    setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
-                }}));
-                tabs.getTabs().add(tab);
-            } else if (anColumnButton.isM2mEnable()) {
-                Tabs.Tab tab = new Tabs.Tab();
-                HashMap<String, Object> queryMap = new HashMap<>() {{
-                    put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
-                    put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-                    // 处理上调换this和other的逻辑
-                    put("mediumThisField", anColumnButton.getM2mMediumOtherField());
-                    put("mediumOtherField", anColumnButton.getM2mMediumThisField());
-                    put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
-                    put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
-                    put("isM2m", true);
-                }};
-                tab.setTitle(anColumnButton.getName());
-                tab.setBody(List.of(new IFrame() {{
-                    setType("iframe");
-                    setHeight(anColumnButton.getM2mWindowHeight());
-                    setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
-                }}));
-                tabs.getTabs().add(tab);
-            } else {
+            if (!isPermissionGranted(anColumnButton, anEntity)) {
                 continue;
             }
 
+            Tabs.Tab tab = createTabForColumnButton(anColumnButton);
+            tabs.getTabs().add(tab);
         }
     }
+
+    private boolean isPermissionGranted(AnColumnButton anColumnButton, AnEntity anEntity) {
+        try {
+            permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private Tabs.Tab createTabForColumnButton(AnColumnButton anColumnButton) {
+        Tabs.Tab tab = new Tabs.Tab();
+        tab.setTitle(anColumnButton.getName());
+        if (anColumnButton.isO2mEnable()) {
+            IFrame iFrame = new IFrame();
+            iFrame.setHeight(anColumnButton.getO2mWindowHeight());
+            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+            tab.setBody(List.of(iFrame));
+        } else if (anColumnButton.isM2mEnable()) {
+            Map<String, Object> queryMap = createM2mJoinQueryMap(anColumnButton);
+            IFrame iFrame = new IFrame();
+            iFrame.setHeight(anColumnButton.getM2mWindowHeight());
+            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+            tab.setBody(List.of(iFrame));
+        }
+        return tab;
+    }
+
+    private Map<String, Object> createM2mJoinQueryMap(AnColumnButton anColumnButton) {
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+        queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
+        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+        queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
+        queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
+        queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
+        queryMap.put("isM2m", true);
+        return queryMap;
+    }
+
 }
