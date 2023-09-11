@@ -130,52 +130,12 @@ public class CrudDetailInfoProcessor implements BaseProcessor {
     private void processEditTabs(Tabs tabs, AnEntity anEntity) {
         List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
         for (AnColumnButton anColumnButton : anColumnButtons) {
-            if (!isPermissionGranted(anColumnButton, anEntity)) {
+            if (!AmisCommonUtil.isPermissionGranted(permissionProxy,anColumnButton, anEntity)) {
                 continue;
             }
 
-            Tabs.Tab tab = createTabForColumnButton(anColumnButton);
+            Tabs.Tab tab = AmisCommonUtil.createTabForColumnButton(anColumnButton);
             tabs.getTabs().add(tab);
         }
     }
-
-    private boolean isPermissionGranted(AnColumnButton anColumnButton, AnEntity anEntity) {
-        try {
-            permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private Tabs.Tab createTabForColumnButton(AnColumnButton anColumnButton) {
-        Tabs.Tab tab = new Tabs.Tab();
-        tab.setTitle(anColumnButton.getName());
-        if (anColumnButton.isO2mEnable()) {
-            IFrame iFrame = new IFrame();
-            iFrame.setHeight(anColumnButton.getO2mWindowHeight());
-            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
-            tab.setBody(List.of(iFrame));
-        } else if (anColumnButton.isM2mEnable()) {
-            Map<String, Object> queryMap = createM2mJoinQueryMap(anColumnButton);
-            IFrame iFrame = new IFrame();
-            iFrame.setHeight(anColumnButton.getM2mWindowHeight());
-            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
-            tab.setBody(List.of(iFrame));
-        }
-        return tab;
-    }
-
-    private Map<String, Object> createM2mJoinQueryMap(AnColumnButton anColumnButton) {
-        Map<String, Object> queryMap = new HashMap<>();
-        queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
-        queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
-        queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
-        queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
-        queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
-        queryMap.put("isM2m", true);
-        return queryMap;
-    }
-
 }

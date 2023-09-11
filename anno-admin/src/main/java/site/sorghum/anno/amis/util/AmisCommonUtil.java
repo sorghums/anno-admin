@@ -1,19 +1,25 @@
 package site.sorghum.anno.amis.util;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
 import org.noear.wood.DbContext;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Group;
+import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
+import site.sorghum.amis.entity.layout.Tabs;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -143,4 +149,42 @@ public class AmisCommonUtil {
     }
 
 
+    public static Map<String, Object> createM2mJoinQueryMap(AnColumnButton anColumnButton, boolean m2m) {
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+        queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
+        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+        queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
+        queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
+        queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
+        queryMap.put("isM2m", m2m);
+        return queryMap;
+    }
+
+    public static Tabs.Tab createTabForColumnButton(AnColumnButton anColumnButton) {
+        Tabs.Tab tab = new Tabs.Tab();
+        tab.setTitle(anColumnButton.getName());
+        if (anColumnButton.isO2mEnable()) {
+            IFrame iFrame = new IFrame();
+            iFrame.setHeight(anColumnButton.getO2mWindowHeight());
+            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+            tab.setBody(List.of(iFrame));
+        } else if (anColumnButton.isM2mEnable()) {
+            Map<String, Object> queryMap = AmisCommonUtil.createM2mJoinQueryMap(anColumnButton,true);
+            IFrame iFrame = new IFrame();
+            iFrame.setHeight(anColumnButton.getM2mWindowHeight());
+            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+            tab.setBody(List.of(iFrame));
+        }
+        return tab;
+    }
+
+    public static boolean isPermissionGranted(PermissionProxy permissionProxy,AnColumnButton anColumnButton, AnEntity anEntity) {
+        try {
+            permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
