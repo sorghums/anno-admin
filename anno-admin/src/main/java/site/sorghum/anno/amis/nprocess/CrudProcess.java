@@ -326,31 +326,6 @@ public class CrudProcess extends BaseProcess {
         return formItems;
     }
 
-
-    private DialogButton.Dialog createAddDialog(AnEntity anEntity, List<AmisBase> formItems) {
-        return new DialogButton.Dialog() {{
-            setTitle("新增");
-            setBody(
-                new Form() {{
-                    setWrapWithPanel(false);
-                    setApi(new Api() {{
-                        setMethod("post");
-                        setUrl("/amis/system/anno/${clazz}/save");
-                    }});
-                    setId("simple-add-form");
-                    setSize("md");
-                    setMode("horizontal");
-                    setHorizontal(new FormHorizontal() {{
-                        setRightFixed("sm");
-                        setJustify(true);
-                    }});
-                    setBody(AmisCommonUtil.formItemToGroup(anEntity, formItems, 2));
-                    setOnEvent(createSubmitEvent());
-                }}
-            );
-        }};
-    }
-
     private Map<String, Object> createSubmitEvent() {
         return new HashMap<>() {{
             put("submitSucc", new HashMap<>() {{
@@ -363,24 +338,6 @@ public class CrudProcess extends BaseProcess {
             }});
         }};
     }
-
-    private Action createDeleteAction(Class<?> clazz) {
-        Action delete = new Action();
-        delete.setActionType("ajax");
-        delete.setLabel("删除");
-        delete.setLevel("danger");
-        delete.setConfirmText("您确认要删除?");
-        delete.setApi(createDeleteApi(clazz));
-        return delete;
-    }
-
-    private Api createDeleteApi(Class<?> clazz) {
-        Api api = new Api();
-        api.setMethod("post");
-        api.setUrl("/amis/system/anno/" + clazz.getSimpleName() + "/removeById");
-        return api;
-    }
-
 
     private DialogButton createEditDialogButton(List<AnField> fields, AnEntity entity) {
         DialogButton dialogButton = new DialogButton();
@@ -421,92 +378,5 @@ public class CrudProcess extends BaseProcess {
         dialogButton.setDialog(dialog);
 
         return dialogButton;
-    }
-
-    private DialogButton createDetailDialogButton(List<AnField> fields, AnEntity entity) {
-        DialogButton dialogButton = new DialogButton();
-        dialogButton.setLabel("详情");
-
-        ArrayList<AmisBase> formItems = new ArrayList<>();
-        fields.forEach(field -> {
-            FormItem formItem = createFormItem(field);
-            formItem.setDisabled(true);
-            formItems.add(formItem);
-        });
-
-        Tabs tabs = new Tabs();
-        processEditTabs(entity, tabs);
-        formItems.add(tabs);
-
-
-        Form form = new Form();
-        form.setId("simple-edit-form");
-        form.setWrapWithPanel(false);
-        form.setMode("horizontal");
-        form.setHorizontal(new Form.FormHorizontal() {{
-            setRightFixed("sm");
-            setJustify(true);
-        }});
-        form.setBody(AmisCommonUtil.formItemToGroup(entity, formItems, 2));
-
-        DialogButton.Dialog dialog = new DialogButton.Dialog();
-        dialog.setTitle("详情");
-        dialog.setBody(form);
-
-        dialogButton.setDialog(dialog);
-
-        return dialogButton;
-    }
-
-
-    private void processEditTabs(AnEntity anEntity, Tabs tabs) {
-        List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
-        for (AnColumnButton anColumnButton : anColumnButtons) {
-            if (!AmisCommonUtil.isPermissionGranted(permissionProxy, anColumnButton, anEntity)) {
-                continue;
-            }
-            // 跳过TPL类型
-            if (anColumnButton.isTplEnable()) {
-                continue;
-            }
-            Tabs.Tab tab = AmisCommonUtil.createTabForColumnButton(anColumnButton);
-            tabs.getTabs().add(tab);
-        }
-    }
-
-    public Action createTableAction(AnTableButton anButton) {
-        Action action = new Action();
-        if (StrUtil.isNotBlank(anButton.getJumpUrl())) {
-            action.setLabel(anButton.getName());
-            action.setActionType("url");
-            action.setUrl(anButton.getJumpUrl());
-        } else if (StrUtil.isNotBlank(anButton.getJsCmd())) {
-            action.setLabel(anButton.getName());
-            action.setOnClick(anButton.getJsCmd());
-        } else if (anButton.isJavaCmdEnable()) {
-            action.setLabel(anButton.getName());
-            action.setActionType("ajax");
-            action.setApi(
-                new Api() {{
-                    setMethod("post");
-                    setUrl("/amis/system/anno/runJavaCmd");
-                    setData(new HashMap<>() {{
-                        put("clazz", CryptoUtil.encrypt(anButton.getJavaCmdBeanClass().getName()));
-                        put("method", CryptoUtil.encrypt(anButton.getJavaCmdMethodName()));
-                        // 30分钟过期
-                        put("expireTime", CryptoUtil.encrypt(String.valueOf(System.currentTimeMillis() + 30 * 60 * 1000)));
-                        put("&", "$$");
-                    }});
-                    setMessages(
-                        new ApiMessage() {{
-                            setSuccess("操作成功");
-                            setFailed("操作失败");
-                        }}
-                    );
-
-                }}
-            );
-        }
-        return action;
     }
 }
