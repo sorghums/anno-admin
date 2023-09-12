@@ -170,10 +170,7 @@
         ],
         "canAccessSuperData": true,
         "clearPersistDataAfterSubmit": true,
-        "data": {
-          "orderBy": "",
-          "orderDir": "asc"
-        },
+        "data": "{{{filterData}}}",
         "debug": false,
         "finishedField": "finished",
         "id": "crud_filter",

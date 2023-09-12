@@ -67,6 +67,10 @@ public class CrudProcess {
 
         //----------------- 查询信息 --------------
         List<AmisBase> filterFormItems = createFilterFormItems(anEntity);
+        // 设置默认排序数据
+        Map<String, Object> data = new HashMap<>();
+        data.put("orderBy", anEntity.getOrderValue());
+        data.put("orderDir", anEntity.getOrderType());
 
         // ---------------- 表按钮 ----------------
         List<Object> tableButtonListMap = new ArrayList<>();
@@ -121,6 +125,7 @@ public class CrudProcess {
         templateModels.add(new AmisTemplateModel("regions", regions));
         templateModels.add(new AmisTemplateModel("tableFilterButtons", tableButtonListMapStr));
         templateModels.add(new AmisTemplateModel("globalFilterFormSearchBody", filterFormItems));
+        templateModels.add(new AmisTemplateModel("filterData", data));
         templateModels.add(new AmisTemplateModel("globalAddFormBody", addFormItems));
         templateModels.add(new AmisTemplateModel("columns", amisColumnsStr));
         templateModels.add(new AmisTemplateModel("columnOperatorButtons", buttonListMap));
