@@ -30,8 +30,8 @@ public class CrudM2mRemoveRelationProcessor implements BaseProcessor {
         delete.setType("button");
         delete.setActionType("ajax");
         delete.setLevel("danger");
-        delete.setLabel("删除关联关系");
-        delete.setConfirmText("您确认要删除关联关系吗?");
+        delete.setLabel("删除关联");
+        delete.setConfirmText("确认要删除关联吗?");
         delete.setApi(
             new Api() {{
                 setMethod("post");

@@ -67,6 +67,7 @@
         {
           "buttons": "{{{columnOperatorButtons}}}",
           "width": "{{{columnOperatorButtonsWidth}}}",
+          "hidden": "{{{hiddenColumnOperatorButtons}}}",
           "fixed": "right",
           "label": "操作",
           "type": "operation"
@@ -138,7 +139,8 @@
             "label": "新增",
             "level": "primary",
             "placement": "top",
-            "type": "action"
+            "type": "action",
+            "hidden": "{{{hiddenGlobalAddFormBody}}}"
           },
           {
             "activeClassName": "is-active",

@@ -24,8 +24,7 @@ import java.util.Map;
 public class CrudM2mRelationDataProcessor implements BaseProcessor {
     @Override
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
-        Map<String, Object> process = AnnoBeanUtils.getBean(CrudProcess.class).process(clazz, properties);
-
+        Object process = AnnoBeanUtils.getBean(CrudProcess.class).process(clazz, properties);
 
         CrudM2mView crudM2mView = (CrudM2mView) amisBaseWrapper.getAmisBase();
         Crud crudBody = crudM2mView.getCrudBody();

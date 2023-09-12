@@ -41,7 +41,7 @@ public class CrudProcess extends BaseProcess {
     PermissionProxy permissionProxy;
 
 
-    public Map<String, Object> process(Class<?> clazz, Map<String, Object> properties) {
+    public Object process(Class<?> clazz, Map<String, Object> properties) {
         boolean isM2m = properties.containsKey("isM2m") && Boolean.TRUE.equals(properties.get("isM2m"));
         String content = getTemplateContent("crud_template");
 
@@ -56,13 +56,13 @@ public class CrudProcess extends BaseProcess {
 
         // -------------- 左侧树 --------------
         boolean asideEnable = anEntity.isEnableLeftTree();
-        if (asideEnable && !isM2m) {
+        if (!isM2m && asideEnable) {
             regions.add("aside");
         }
         // -------------- 新增按钮 --------------
         List<AmisBase> addFormItems = new ArrayList<>();
         boolean canAdd = fields.stream().anyMatch(AnField::isAddEnable);
-        if (canAdd && !isM2m) {
+        if (!isM2m &&canAdd) {
             addFormItems = AmisCommonUtil.formItemToGroup(anEntity, generateAddFormItems(fields), 2);
         }
 
@@ -140,14 +140,14 @@ public class CrudProcess extends BaseProcess {
         // -------------- 详情 删除按钮 --------------
 
         // 判断是否可以删除
-        if (anEntity.isCanRemove() && !isM2m) {
+        if (!isM2m && anEntity.isCanRemove()) {
             Action delete = createDeleteAction(clazz);
             buttonListMap.add(0, delete);
         }
 
         // 判断是否可以编辑
         boolean canEdit = fields.stream().anyMatch(AnField::isEditEnable);
-        if (canEdit && !isM2m) {
+        if (!isM2m &&canEdit) {
             DialogButton dialogButton = createEditDialogButton(fields, anEntity);
             buttonListMap.add(0, dialogButton);
         }
@@ -157,17 +157,20 @@ public class CrudProcess extends BaseProcess {
             buttonListMap.add(0, createDetailDialogButton(fields, anEntity));
         }
 
-        if (isM2m) {
-            templateModels.add(new AmisTemplateModel("reverseM2m", true));
-        }
+        templateModels.add(new AmisTemplateModel("reverseM2m", isM2m));
         templateModels.add(new AmisTemplateModel("bulkActions",bulkActions));
         templateModels.add(new AmisTemplateModel("regions", regions));
         templateModels.add(new AmisTemplateModel("tableFilterButtons", tableButtonListMapStr));
         templateModels.add(new AmisTemplateModel("globalFilterFormSearchBody", filterFormItems));
         templateModels.add(new AmisTemplateModel("initData", data));
+
         templateModels.add(new AmisTemplateModel("globalAddFormBody", addFormItems));
+        templateModels.add(new AmisTemplateModel("hiddenGlobalAddFormBody",addFormItems.isEmpty()));
+
         templateModels.add(new AmisTemplateModel("columns", amisColumnsStr));
+
         templateModels.add(new AmisTemplateModel("columnOperatorButtons", buttonListMap));
+        templateModels.add(new AmisTemplateModel("hiddenColumnOperatorButtons",buttonListMap.isEmpty()));
         templateModels.add(new AmisTemplateModel("columnOperatorButtonsWidth", buttonListMap.size() * 120));
 
 
