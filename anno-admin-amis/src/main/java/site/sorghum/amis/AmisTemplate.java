@@ -48,7 +48,11 @@ public class AmisTemplate {
         if (value instanceof CharSequence sequence) {
             charSequence = sequence;
         } else {
-            charSequence = JSON.toJSONString(value);
+            if (value == null) {
+                charSequence = "";
+            } else {
+                charSequence = JSON.toJSONString(value);
+            }
         }
         this.originalContent = this.originalContent.replace(getAmisTemplateKey(amisTemplateKey), charSequence);
     }

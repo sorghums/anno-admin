@@ -1,8 +1,6 @@
 package site.sorghum.anno.amis.nprocess;
 
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import jakarta.inject.Inject;
@@ -26,7 +24,6 @@ import site.sorghum.anno.amis.util.AmisCommonUtil;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +33,18 @@ import java.util.stream.Collectors;
 import static cn.hutool.core.collection.CollUtil.split;
 
 @Named
-public class CrudProcess {
+public class CrudProcess extends BaseProcess {
     @Inject
     MetadataManager metadataManager;
 
     @Inject
     PermissionProxy permissionProxy;
 
+
     public Map<String, Object> process(Class<?> clazz, Map<String, Object> properties) {
+        boolean isM2m = properties.containsKey("isM2m") && Boolean.TRUE.equals(properties.get("isM2m"));
+        String content = getTemplateContent("crud_template");
+
         AnEntity anEntity = metadataManager.getEntity(clazz);
         List<AnField> fields = anEntity.getFields();
         List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
@@ -55,36 +56,62 @@ public class CrudProcess {
 
         // -------------- 左侧树 --------------
         boolean asideEnable = anEntity.isEnableLeftTree();
-        if (asideEnable) {
+        if (asideEnable && !isM2m) {
             regions.add("aside");
         }
         // -------------- 新增按钮 --------------
         List<AmisBase> addFormItems = new ArrayList<>();
         boolean canAdd = fields.stream().anyMatch(AnField::isAddEnable);
-        if (canAdd) {
-            addFormItems = AmisCommonUtil.formItemToGroup(anEntity, generateFormItems(fields), 2);
+        if (canAdd && !isM2m) {
+            addFormItems = AmisCommonUtil.formItemToGroup(anEntity, generateAddFormItems(fields), 2);
         }
 
         //----------------- 查询信息 --------------
         List<AmisBase> filterFormItems = createFilterFormItems(anEntity);
-        // 设置默认排序数据
+
+        //----------------- 设置初始化数据 --------------
         Map<String, Object> data = new HashMap<>();
         data.put("orderBy", anEntity.getOrderValue());
         data.put("orderDir", anEntity.getOrderType());
 
-        // ---------------- 表按钮 ----------------
-        List<Object> tableButtonListMap = new ArrayList<>();
-        for (AnTableButton anButton : tableButtons) {
-            boolean permissionGranted = AmisCommonUtil.isPermissionGranted(permissionProxy, anButton, anEntity);
-            if (!permissionGranted) {
-                continue;
-            }
-            Action action = createTableAction(anButton);
-            tableButtonListMap.add(action);
+        // 多对多新增按钮
+        List<Action> bulkActions = new ArrayList<>();
+        if (isM2m) {
+            Action insertRelations = new Action();
+            insertRelations.setLabel("批量新增关系");
+            insertRelations.setActionType("ajax");
+            insertRelations.setLevel("primary");
+            insertRelations.setApi(new Api() {{
+                setMethod("post");
+                setUrl("/amis/system/anno/${clazz}/addM2m");
+                setData(new HashMap<>() {{
+                    put("&", "$$");
+                    put("_extraData", "${extraData}");
+                }});
+                setMessages(new ApiMessage() {{
+                    setSuccess("操作成功");
+                    setFailed("操作失败");
+                }});
+            }});
+            insertRelations.setReload("m2m-crud,crud_template_main");
+            bulkActions.add(insertRelations);
         }
-        String tableButtonListMapStr = JSONUtil.toJsonString(tableButtonListMap);
-        // 去除前后的[]
-        tableButtonListMapStr = tableButtonListMapStr.substring(1, tableButtonListMapStr.length() - 1);
+        // ---------------- 表按钮 ----------------
+        String tableButtonListMapStr = "";
+        if (!isM2m) {
+            List<Object> tableButtonListMap = new ArrayList<>();
+            for (AnTableButton anButton : tableButtons) {
+                boolean permissionGranted = AmisCommonUtil.isPermissionGranted(permissionProxy, anButton, anEntity);
+                if (!permissionGranted) {
+                    continue;
+                }
+                Action action = createTableAction(anButton);
+                tableButtonListMap.add(action);
+            }
+            tableButtonListMapStr = JSONUtil.toJsonString(tableButtonListMap);
+            // 去除前后的[]
+            tableButtonListMapStr = tableButtonListMapStr.substring(1, tableButtonListMapStr.length() - 1);
+        }
         // -------------- 列信息 --------------
         List<Map> amisColumns = fields.stream()
             .map(field -> createAmisColumn(field))
@@ -96,43 +123,54 @@ public class CrudProcess {
 
         // -------------- 列按钮 --------------
         List<Object> buttonListMap = new ArrayList<>();
-        for (AnColumnButton anColumnButton : anColumnButtons) {
-            boolean permissionGranted = AmisCommonUtil.isPermissionGranted(permissionProxy, anColumnButton, anEntity);
-            if (!permissionGranted) {
-                continue;
-            }
-            Action action = createActionForButton(anColumnButton);
-            if (action != null) {
-                buttonListMap.add(action);
+
+        if (!isM2m) {
+            for (AnColumnButton anColumnButton : anColumnButtons) {
+                boolean permissionGranted = AmisCommonUtil.isPermissionGranted(permissionProxy, anColumnButton, anEntity);
+                if (!permissionGranted) {
+                    continue;
+                }
+                Action action = createActionForButton(anColumnButton);
+                if (action != null) {
+                    buttonListMap.add(action);
+                }
             }
         }
 
         // -------------- 详情 删除按钮 --------------
 
         // 判断是否可以删除
-        if (anEntity.isCanRemove()) {
+        if (anEntity.isCanRemove() && !isM2m) {
             Action delete = createDeleteAction(clazz);
             buttonListMap.add(0, delete);
         }
 
         // 判断是否可以编辑
         boolean canEdit = fields.stream().anyMatch(AnField::isEditEnable);
-        if (canEdit) {
+        if (canEdit && !isM2m) {
             DialogButton dialogButton = createEditDialogButton(fields, anEntity);
             buttonListMap.add(0, dialogButton);
         }
 
+        // 新增详情按钮
+        if (!isM2m) {
+            buttonListMap.add(0, createDetailDialogButton(fields, anEntity));
+        }
+
+        if (isM2m) {
+            templateModels.add(new AmisTemplateModel("reverseM2m", true));
+        }
+        templateModels.add(new AmisTemplateModel("bulkActions",bulkActions));
         templateModels.add(new AmisTemplateModel("regions", regions));
         templateModels.add(new AmisTemplateModel("tableFilterButtons", tableButtonListMapStr));
         templateModels.add(new AmisTemplateModel("globalFilterFormSearchBody", filterFormItems));
-        templateModels.add(new AmisTemplateModel("filterData", data));
+        templateModels.add(new AmisTemplateModel("initData", data));
         templateModels.add(new AmisTemplateModel("globalAddFormBody", addFormItems));
         templateModels.add(new AmisTemplateModel("columns", amisColumnsStr));
         templateModels.add(new AmisTemplateModel("columnOperatorButtons", buttonListMap));
         templateModels.add(new AmisTemplateModel("columnOperatorButtonsWidth", buttonListMap.size() * 120));
 
 
-        String content = ResourceUtil.readStr("classpath:crudTemplate.json", Charset.defaultCharset());
         AmisTemplate amisTemplate = new AmisTemplate(content, templateModels);
         return JSONUtil.toBean(amisTemplate.getFilledContent(), HashMap.class);
     }
@@ -175,7 +213,7 @@ public class CrudProcess {
         String label = anColumnButton.getName();
         String windowSize = anColumnButton.getO2mWindowSize();
         String src = "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
-                     + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}";
+            + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}";
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel(label);
         DialogButton.Dialog dialog = new DialogButton.Dialog();
@@ -194,15 +232,7 @@ public class CrudProcess {
     private Action createM2mDialogButton(AnColumnButton anColumnButton) {
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel(anColumnButton.getName());
-        Map<String, Object> queryMap = new HashMap<>();
-        queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
-        queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
-        queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
-        queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
-        queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
-        queryMap.put("isM2m", true);
-
+        Map<String, Object> queryMap = AmisCommonUtil.createM2mJoinQueryMap(anColumnButton, true);
         DialogButton.Dialog dialog = new DialogButton.Dialog();
         dialog.setCloseOnEsc(true);
         dialog.setTitle(anColumnButton.getName());
@@ -275,7 +305,7 @@ public class CrudProcess {
     }
 
 
-    private List<AmisBase> generateFormItems(List<AnField> anFields) {
+    private List<AmisBase> generateAddFormItems(List<AnField> anFields) {
         List<AmisBase> formItems = new ArrayList<>();
         for (AnField field : anFields) {
             if (field.isAddEnable()) {
@@ -293,14 +323,6 @@ public class CrudProcess {
         return formItems;
     }
 
-    private DialogButton createDialogButton(AnEntity anEntity, List<AmisBase> formItems) {
-        DialogButton dialogButton = new DialogButton();
-        dialogButton.setLabel("新增");
-        dialogButton.setIcon("fa fa-plus pull-left");
-        dialogButton.setLevel("primary");
-        dialogButton.setDialog(createAddDialog(anEntity, formItems));
-        return dialogButton;
-    }
 
     private DialogButton.Dialog createAddDialog(AnEntity anEntity, List<AmisBase> formItems) {
         return new DialogButton.Dialog() {{
@@ -398,16 +420,41 @@ public class CrudProcess {
         return dialogButton;
     }
 
-    private FormItem createFormItem(AnField field) {
-        FormItem formItem = new FormItem();
-        formItem.setName(field.getFieldName());
-        formItem.setLabel(field.getTitle());
-        formItem.setLabelWidth(formItem.getLabel().length() * 14);
-        formItem.setRequired(field.isEditNotNull());
-        formItem.setPlaceholder(field.getEditPlaceHolder());
-        formItem = AnnoDataType.editorExtraInfo(formItem, field);
-        return formItem;
+    private DialogButton createDetailDialogButton(List<AnField> fields, AnEntity entity) {
+        DialogButton dialogButton = new DialogButton();
+        dialogButton.setLabel("详情");
+
+        ArrayList<AmisBase> formItems = new ArrayList<>();
+        fields.forEach(field -> {
+            FormItem formItem = createFormItem(field);
+            formItem.setDisabled(true);
+            formItems.add(formItem);
+        });
+
+        Tabs tabs = new Tabs();
+        processEditTabs(entity, tabs);
+        formItems.add(tabs);
+
+
+        Form form = new Form();
+        form.setId("simple-edit-form");
+        form.setWrapWithPanel(false);
+        form.setMode("horizontal");
+        form.setHorizontal(new Form.FormHorizontal() {{
+            setRightFixed("sm");
+            setJustify(true);
+        }});
+        form.setBody(AmisCommonUtil.formItemToGroup(entity, formItems, 2));
+
+        DialogButton.Dialog dialog = new DialogButton.Dialog();
+        dialog.setTitle("详情");
+        dialog.setBody(form);
+
+        dialogButton.setDialog(dialog);
+
+        return dialogButton;
     }
+
 
     private void processEditTabs(AnEntity anEntity, Tabs tabs) {
         List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
@@ -415,48 +462,13 @@ public class CrudProcess {
             if (!AmisCommonUtil.isPermissionGranted(permissionProxy, anColumnButton, anEntity)) {
                 continue;
             }
+            // 跳过TPL类型
+            if (anColumnButton.isTplEnable()) {
+                continue;
+            }
             Tabs.Tab tab = AmisCommonUtil.createTabForColumnButton(anColumnButton);
             tabs.getTabs().add(tab);
         }
-    }
-
-    private Map<String, Object> createFilterEvent() {
-        return new HashMap<>() {{
-            put("broadcast_aside_change", new HashMap<>() {{
-                put("actions", CollUtil.newArrayList(new HashMap<>() {{
-                    put("actionType", "reload");
-                    put("componentId", "crud_template_main");
-                }}));
-            }});
-        }};
-    }
-
-    private List<AmisBase> createFilterFormItems(AnEntity anEntity) {
-        List<AnField> fields = anEntity.getFields();
-        List<AmisBase> formItems = fields.stream()
-            .filter(AnField::isSearchEnable)
-            .map(field -> createFilterFormItem(field))
-            .collect(Collectors.toList());
-
-        List<AmisBase> body = new ArrayList<>();
-        split(formItems, 4).forEach(columns -> {
-            Group group = new Group() {{
-                setBody(columns);
-            }};
-            body.add(group);
-        });
-
-        return body;
-    }
-
-    private FormItem createFilterFormItem(AnField field) {
-        FormItem formItem = new FormItem();
-        formItem.setName(field.getFieldName());
-        formItem.setLabel(field.getTitle());
-        formItem.setPlaceholder(field.getSearchPlaceHolder());
-        formItem.setSize(field.getSearchSize());
-        formItem.setColumnRatio("3");
-        return AnnoDataType.editorExtraInfo(formItem, field);
     }
 
     public Action createTableAction(AnTableButton anButton) {

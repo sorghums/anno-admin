@@ -37,11 +37,6 @@ public class TemplateUtil {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         Object template =  AnnoBeanUtils.getBean(CrudProcess.class).process(clazz, properties);
-//        CrudProcessorChain crudProcessorChain = new CrudProcessorChain();
-//        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
-//        crudProcessorChain.doProcessor(wrapper,clazz,properties);
-//        CrudView crudView = ((CrudView) wrapper.getAmisBase());
-//        stopWatch.stop();
         log.debug("crud模板：{}", JSONUtil.toJsonString(template));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
         return template;
@@ -54,7 +49,7 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link Map}
      */
-    public static CrudM2mView getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static Object getCrudM2mTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         properties.put("isM2m", true);

@@ -51,7 +51,7 @@
         "data": {
           "ignoreM2m": false,
           "&": "$$",
-          "reverseM2m": false,
+          "reverseM2m": "{{{reverseM2m}}}",
           "_cat": "${_cat}",
           "_extraData": "${extraData}"
         },
@@ -170,7 +170,7 @@
         ],
         "canAccessSuperData": true,
         "clearPersistDataAfterSubmit": true,
-        "data": "{{{filterData}}}",
+        "data": "{{{initData}}}",
         "debug": false,
         "finishedField": "finished",
         "id": "crud_filter",
@@ -212,6 +212,7 @@
         "export-excel",
         "bulkActions"
       ],
+      "bulkActions": "{{{bulkActions}}}",
       "hideQuickSaveBtn": false,
       "id": "crud_template_main",
       "initFetch": true,

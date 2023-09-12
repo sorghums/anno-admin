@@ -58,7 +58,7 @@ public class DrawerButton extends Action {
         /**
          * 往 Drawer 内容区加内容
          */
-        AmisBase body;
+        Object body;
 
         /**
          * 指定 Drawer 大小，支持: xs、sm、md、lg、xl
