@@ -3,11 +3,13 @@ package site.sorghum.anno.anno.util;
 import cn.hutool.core.date.StopWatch;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.amis.entity.AmisBaseWrapper;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.amis.model.CrudM2mView;
 import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.model.TreeM2mView;
 import site.sorghum.anno.amis.model.TreeView;
+import site.sorghum.anno.amis.nprocess.CrudProcess;
 import site.sorghum.anno.amis.process.processer.CrudM2mProcessorChain;
 import site.sorghum.anno.amis.process.processer.CrudProcessorChain;
 import site.sorghum.anno.amis.process.processer.TreeM2mProcessorChain;
@@ -31,17 +33,18 @@ public class TemplateUtil {
      * @param properties 页面参数
      * @return {@link Map}
      */
-    public static CrudView getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
+    public static Object getCrudTemplate(Class<?> clazz, Map<String, Object> properties) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        CrudProcessorChain crudProcessorChain = new CrudProcessorChain();
-        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
-        crudProcessorChain.doProcessor(wrapper,clazz,properties);
-        CrudView crudView = ((CrudView) wrapper.getAmisBase());
-        stopWatch.stop();
-        log.debug("crud模板：{}", JSONUtil.toJsonString(crudView));
+        Object template =  AnnoBeanUtils.getBean(CrudProcess.class).process(clazz, properties);
+//        CrudProcessorChain crudProcessorChain = new CrudProcessorChain();
+//        AmisBaseWrapper wrapper = AmisBaseWrapper.of();
+//        crudProcessorChain.doProcessor(wrapper,clazz,properties);
+//        CrudView crudView = ((CrudView) wrapper.getAmisBase());
+//        stopWatch.stop();
+        log.debug("crud模板：{}", JSONUtil.toJsonString(template));
         log.debug("crud模板生成耗时：{}ms", stopWatch.getTotalTimeMillis());
-        return crudView;
+        return template;
     }
 
     /**

@@ -172,6 +172,11 @@ public class FormItem extends AmisBase {
      */
     String columnRatio;
 
+    /**
+     * 是否可复制
+     */
+    Boolean copyable;
+
     @Data
     public static class AutoFill {
 

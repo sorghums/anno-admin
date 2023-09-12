@@ -52,7 +52,7 @@ public class CrudView extends Page {
                     }});
                 }}
         );
-        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions", ""));
+        bodyCrud.setHeaderToolbar(CollUtil.newArrayList("export-excel", "bulkActions"));
         bodyCrud.setFooterToolbar(CollUtil.newArrayList("statistics", "switch-per-page", "pagination"));
         bodyCrud.setColumns(
                 new ArrayList<>(){{

@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static cn.hutool.core.collection.CollUtil.split;
 
 /**
  * CRUD视图初始化处理器
@@ -39,61 +42,28 @@ public class CrudFilterProcessor implements BaseProcessor {
     public void doProcessor(AmisBaseWrapper amisBaseWrapper, Class<?> clazz, Map<String, Object> properties, BaseProcessorChain chain) {
         CrudView crudView = (CrudView) amisBaseWrapper.getAmisBase();
         AnEntity anEntity = metadataManager.getEntity(clazz);
+
         // 获取过滤的模板
+        Form form = createFilterForm(anEntity);
+
+        // 写入到当前对象
+        Crud crudBody = crudView.getCrudBody();
+        crudBody.setFilter(form);
+        chain.doProcessor(amisBaseWrapper, clazz, properties);
+    }
+
+    private Form createFilterForm(AnEntity anEntity) {
         Form form = new Form();
         form.setId("crud_filter");
         form.setTitle("条件搜索");
-        form.setActions(CollUtil.newArrayList(
-            new Action() {{
-                setType("submit");
-                setLevel("primary");
-                setLabel("搜索");
-            }},
-            new Action() {{
-                setType("reset");
-                setLabel("重置");
-            }}
-        ));
-        List<AmisBase> body = new ArrayList<>();
-        List<AnField> fields = anEntity.getFields();
-        List<AmisBase> amisColumns = new ArrayList<>();
-        for (AnField field : fields) {
-            if (field.isSearchEnable()) {
-                FormItem formItem = new FormItem();
-                formItem.setName(field.getFieldName());
-                formItem.setLabel(field.getTitle());
-                formItem.setPlaceholder(field.getSearchPlaceHolder());
-                formItem.setSize(field.getSearchSize());
-                formItem.setColumnRatio("3");
-                formItem = AnnoDataType.editorExtraInfo(formItem, field);
-                amisColumns.add(formItem);
-            }
+        form.setActions(createFilterActions());
+        List<AmisBase> body = createFilterFormItems(anEntity);
+        if (body.isEmpty()) {
+            return form; // No filter fields, return an empty form
         }
-        if (amisColumns.size() == 0) {
-            chain.doProcessor(amisBaseWrapper, clazz, properties);
-            return;
-        }
-        // amisColumns 以4个为一组进行分组
-        CollUtil.split(amisColumns, 4).forEach(columns -> {
-            Group group = new Group() {{
-                setBody(columns);
-            }};
-            body.add(group);
-        });
         form.setBody(body);
-        form.setOnEvent(
-            new HashMap<>() {{
-                put("broadcast_aside_change",
-                    new HashMap<>() {{
-                        put("actions", CollUtil.newArrayList(new HashMap<>() {{
-                                                                 put("actionType", "reload");
-                                                                 put("componentId", "crud_template_main");
-                                                             }}
-                        ));
-                    }}
-                );
-            }}
-        );
+        form.setOnEvent(createFilterEvent());
+
         // 设置默认排序数据
         Map<String, Object> data = form.getData();
         if (data == null) {
@@ -102,9 +72,61 @@ public class CrudFilterProcessor implements BaseProcessor {
         }
         data.put("orderBy", anEntity.getOrderValue());
         data.put("orderDir", anEntity.getOrderType());
-        // 写入到当前对象
-        Crud crudBody = crudView.getCrudBody();
-        crudBody.setFilter(form);
-        chain.doProcessor(amisBaseWrapper, clazz, properties);
+
+        return form;
+    }
+
+    private List<Action> createFilterActions() {
+        return CollUtil.newArrayList(
+            createAction("submit", "primary", "搜索"),
+            createAction("reset", null, "重置")
+        );
+    }
+
+    private Action createAction(String type, String level, String label) {
+        return new Action() {{
+            setType(type);
+            setLevel(level);
+            setLabel(label);
+        }};
+    }
+
+    private List<AmisBase> createFilterFormItems(AnEntity anEntity) {
+        List<AnField> fields = anEntity.getFields();
+        List<AmisBase> formItems = fields.stream()
+            .filter(AnField::isSearchEnable)
+            .map(field -> createFilterFormItem(field))
+            .collect(Collectors.toList());
+
+        List<AmisBase> body = new ArrayList<>();
+        split(formItems, 4).forEach(columns -> {
+            Group group = new Group() {{
+                setBody(columns);
+            }};
+            body.add(group);
+        });
+
+        return body;
+    }
+
+    private FormItem createFilterFormItem(AnField field) {
+        FormItem formItem = new FormItem();
+        formItem.setName(field.getFieldName());
+        formItem.setLabel(field.getTitle());
+        formItem.setPlaceholder(field.getSearchPlaceHolder());
+        formItem.setSize(field.getSearchSize());
+        formItem.setColumnRatio("3");
+        return AnnoDataType.editorExtraInfo(formItem, field);
+    }
+
+    private Map<String, Object> createFilterEvent() {
+        return new HashMap<>() {{
+            put("broadcast_aside_change", new HashMap<>() {{
+                put("actions", CollUtil.newArrayList(new HashMap<>() {{
+                    put("actionType", "reload");
+                    put("componentId", "crud_template_main");
+                }}));
+            }});
+        }};
     }
 }

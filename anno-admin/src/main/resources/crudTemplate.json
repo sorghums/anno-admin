@@ -1,0 +1,252 @@
+{
+  "aside": {
+    "autoCheckChildren": true,
+    "cascade": false,
+    "debug": false,
+    "enableDefaultIcon": true,
+    "heightAuto": false,
+    "id": "aside-input-tree",
+    "initiallyOpen": true,
+    "inputClassName": "no-border no-padder mt-1",
+    "itemHeight": 32,
+    "joinValues": true,
+    "multiple": false,
+    "name": "_cat",
+    "onEvent": {
+      "change": {
+        "actions": [
+          {
+            "args": {
+              "eventName": "broadcast_aside_change"
+            },
+            "actionType": "broadcast",
+            "data": {
+              "productCatId": "${_cat}"
+            }
+          }
+        ]
+      }
+    },
+    "pathSeparator": "/",
+    "rootCreateTip": "添加一级节点",
+    "searchable": true,
+    "showIcon": true,
+    "showOutline": true,
+    "source": {
+      "method": "get",
+      "replaceData": false,
+      "url": "${ANNO_BACKEND_BASE_URL}/amis/system/anno/${treeClazz}/annoTrees"
+    },
+    "type": "input-tree",
+    "unfoldedLevel": 2,
+    "virtualThreshold": 9999
+  },
+  "asideClassName": "w page-aside-region bg-auto",
+  "asideMaxWidth": 350,
+  "asideResizor": true,
+  "body": [
+    {
+      "alwaysShowPagination": false,
+      "api": {
+        "data": {
+          "ignoreM2m": false,
+          "&": "$$",
+          "reverseM2m": false,
+          "_cat": "${_cat}",
+          "_extraData": "${extraData}"
+        },
+        "method": "post",
+        "replaceData": false,
+        "url": "${ANNO_BACKEND_BASE_URL}/amis/system/anno/${clazz}/page"
+      },
+      "autoFillHeight": true,
+      "autoJumpToTopOnPagerChange": false,
+      "bordered": true,
+      "columns": [
+        "{{{columns}}}",
+        {
+          "buttons": "{{{columnOperatorButtons}}}",
+          "width": "{{{columnOperatorButtonsWidth}}}",
+          "fixed": "right",
+          "label": "操作",
+          "type": "operation"
+        }
+      ],
+      "debug": false,
+      "draggable": false,
+      "filter": {
+        "actions": [
+          {
+            "actionType": "dialog",
+            "activeClassName": "is-active",
+            "debug": false,
+            "dialog": {
+              "body": {
+                "preventEnterSubmit": false,
+                "promptPageLeave": false,
+                "resetAfterSubmit": false,
+                "silentPolling": false,
+                "static": false,
+                "submitOnChange": false,
+                "submitOnInit": false,
+                "submitText": "提交",
+                "trimValues": false,
+                "type": "form",
+                "wrapWithPanel": false,
+                "api": {
+                  "method": "post",
+                  "replaceData": false,
+                  "url": "${ANNO_BACKEND_BASE_URL}/amis/system/anno/${clazz}/save"
+                },
+                "autoFocus": false,
+                "body": "{{{globalAddFormBody}}}",
+                "canAccessSuperData": true,
+                "clearPersistDataAfterSubmit": true,
+                "debug": false,
+                "finishedField": "finished",
+                "horizontal": {
+                  "justify": true,
+                  "rightFixed": "sm"
+                },
+                "id": "simple-add-form",
+                "inheritData": true,
+                "initFetch": true,
+                "initFinishedField": "finished",
+                "mode": "horizontal",
+                "onEvent": {
+                  "submitSucc": {
+                    "actions": [
+                      {
+                        "actionType": "reload",
+                        "componentId": "crud_template_main"
+                      }
+                    ]
+                  }
+                }
+              },
+              "closeOnEsc": false,
+              "debug": false,
+              "disabled": false,
+              "showCloseButton": true,
+              "showErrorMsg": true,
+              "showLoading": true,
+              "size": "md",
+              "title": "新增",
+              "type": "dialog"
+            },
+            "icon": "fa fa-plus pull-left",
+            "label": "新增",
+            "level": "primary",
+            "placement": "top",
+            "type": "action"
+          },
+          {
+            "activeClassName": "is-active",
+            "debug": false,
+            "label": "搜索",
+            "level": "primary",
+            "placement": "top",
+            "type": "submit"
+          },
+          {
+            "activeClassName": "is-active",
+            "debug": false,
+            "label": "重置",
+            "level": "default",
+            "placement": "top",
+            "type": "reset"
+          },
+          "{{{tableFilterButtons}}}"
+        ],
+        "autoFocus": false,
+        "body": [
+          {
+            "body": "{{{globalFilterFormSearchBody}}}",
+            "debug": false,
+            "direction": "horizontal",
+            "gap": "normal",
+            "type": "group"
+          }
+        ],
+        "canAccessSuperData": true,
+        "clearPersistDataAfterSubmit": true,
+        "data": {
+          "orderBy": "",
+          "orderDir": "asc"
+        },
+        "debug": false,
+        "finishedField": "finished",
+        "id": "crud_filter",
+        "inheritData": true,
+        "initFetch": true,
+        "initFinishedField": "finished",
+        "onEvent": {
+          "broadcast_aside_change": {
+            "actions": [
+              {
+                "actionType": "reload",
+                "componentId": "crud_template_main"
+              }
+            ]
+          }
+        },
+        "preventEnterSubmit": false,
+        "promptPageLeave": false,
+        "resetAfterSubmit": false,
+        "silentPolling": false,
+        "static": false,
+        "submitOnChange": false,
+        "submitOnInit": false,
+        "submitText": "搜索",
+        "title": "条件搜索",
+        "trimValues": false,
+        "type": "form",
+        "wrapWithPanel": true
+      },
+      "filterDefaultVisible": true,
+      "filterTogglable": false,
+      "fixedHeader": false,
+      "footerToolbar": [
+        "statistics",
+        "switch-per-page",
+        "pagination"
+      ],
+      "headerToolbar": [
+        "export-excel",
+        "bulkActions"
+      ],
+      "hideQuickSaveBtn": false,
+      "id": "crud_template_main",
+      "initFetch": true,
+      "keepItemSelectionOnPageChange": false,
+      "mode": "table",
+      "perPage": 10,
+      "perPageAvailable": [
+        5,
+        10,
+        20,
+        50,
+        100
+      ],
+      "primaryField": "id",
+      "resetPageAfterAjaxItemAction": false,
+      "resizable": true,
+      "silentPolling": false,
+      "source": "${list}",
+      "stopAutoRefreshWhenModalIsOpen": false,
+      "syncLocation": false,
+      "syncResponse2Query": true,
+      "title": "",
+      "type": "crud"
+    }
+  ],
+  "bodyClassName": "wrapper",
+  "debug": false,
+  "headerClassName": "bg-light b-b wrapper",
+  "id": "crud_base_page",
+  "initFetch": true,
+  "silentPolling": true,
+  "toolbarClassName": "v-middle wrapper text-right bg-light b-b",
+  "type": "page",
+  "regions": "{{{regions}}}"
+}

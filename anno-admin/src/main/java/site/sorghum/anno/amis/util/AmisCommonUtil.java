@@ -18,6 +18,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.AnTableButton;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
@@ -182,6 +183,15 @@ public class AmisCommonUtil {
     public static boolean isPermissionGranted(PermissionProxy permissionProxy,AnColumnButton anColumnButton, AnEntity anEntity) {
         try {
             permissionProxy.checkPermission(anEntity, anColumnButton.getPermissionCode());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isPermissionGranted(PermissionProxy permissionProxy, AnTableButton anTableButton, AnEntity anEntity) {
+        try {
+            permissionProxy.checkPermission(anEntity, anTableButton.getPermissionCode());
             return true;
         } catch (Exception e) {
             return false;

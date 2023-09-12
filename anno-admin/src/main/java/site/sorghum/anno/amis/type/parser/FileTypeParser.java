@@ -5,6 +5,7 @@ import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Link;
 import site.sorghum.amis.entity.display.Table;
+import site.sorghum.amis.entity.input.Form;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.InputFile;
 import site.sorghum.anno._metadata.AnField;
@@ -24,7 +25,6 @@ public class FileTypeParser implements TypeParser {
     public Map<String, Object> parseDisplay(AmisBase amisBase, AnField anField) {
         Table.Column column = (Table.Column) amisBase;
         Link link = new Link();
-        link.setType("static-link");
         link.setBody("文件地址");
         link.setHref("${" + column.getName() + "}");
         link.setBlank(true);
