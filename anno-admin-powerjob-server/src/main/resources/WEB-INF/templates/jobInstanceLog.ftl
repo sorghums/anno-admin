@@ -32,6 +32,7 @@
             right: 0;
             margin-top: 20px;
             text-align: center;
+            background-color: #ffffff;
         }
 
         .pagination a {
