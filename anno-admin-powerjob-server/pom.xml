@@ -12,9 +12,7 @@
 
     <properties>
 
-        <powerjob-common.version>4.3.5</powerjob-common.version>
-        <powerjob-remote-impl-http.version>4.3.5</powerjob-remote-impl-http.version>
-        <powerjob-remote-impl-akka.version>4.3.5</powerjob-remote-impl-akka.version>
+        <powerjob.version>4.3.6</powerjob.version>
 
         <aliyun-sdk-oss.version>3.17.1</aliyun-sdk-oss.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -47,17 +45,17 @@
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-common</artifactId>
-            <version>${powerjob-common.version}</version>
+            <version>${powerjob.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-remote-impl-http</artifactId>
-            <version>${powerjob-remote-impl-http.version}</version>
+            <version>${powerjob.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-remote-impl-akka</artifactId>
-            <version>${powerjob-remote-impl-akka.version}</version>
+            <version>${powerjob.version}</version>
         </dependency>
 
         <dependency>
