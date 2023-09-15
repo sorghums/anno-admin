@@ -263,6 +263,6 @@ public class JobInfoDO extends BaseMetaModel {
     @AnnoField(title = "loggerName", edit = @AnnoEdit(), show = false, virtualColumn = true)
     private String loggerName;
 
-    @AnnoButton(name = "运行", javaCmd = @AnnoButton.JavaCmd(beanClass = JobButtonService.class, methodName = "runJob"))
+    @AnnoButton(name = "运行", permissionCode = "run", javaCmd = @AnnoButton.JavaCmd(beanClass = JobButtonService.class, methodName = "runJob"))
     private Object runButton;
 }

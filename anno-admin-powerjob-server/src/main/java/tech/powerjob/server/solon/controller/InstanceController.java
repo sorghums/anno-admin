@@ -1,6 +1,6 @@
 package tech.powerjob.server.solon.controller;
 
-import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -29,7 +29,6 @@ import java.net.URL;
  * @author tjq
  * @since 2020/4/9
  */
-@SaIgnore
 @Slf4j
 @Controller
 @Mapping("/powerjob/instance")
@@ -52,6 +51,7 @@ public class InstanceController {
         return ResultDTO.success(null);
     }
 
+    @SaCheckPermission("pj_instance_info:instanceRetry")
     @Mapping(value = "/retry", method = MethodType.GET)
     public ResultDTO<Void> retryInstance(String appId, String instanceId) {
         instanceService.retryInstance(appId, instanceId);
@@ -63,6 +63,7 @@ public class InstanceController {
         return ResultDTO.success(InstanceDetailVO.from(instanceService.getInstanceDetail(instanceId)));
     }
 
+    @SaCheckPermission("pj_instance_info:fetchInstanceLog")
     @Mapping(value = "/log", method = MethodType.GET)
     public ResultDTO<StringPage> getInstanceLog(String appId, String instanceId, Long index) {
         return ResultDTO.success(instanceLogService.fetchInstanceLog(appId, instanceId, index - 1));

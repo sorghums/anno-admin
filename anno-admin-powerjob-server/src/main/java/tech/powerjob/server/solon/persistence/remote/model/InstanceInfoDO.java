@@ -128,10 +128,10 @@ public class InstanceInfoDO extends BaseMetaModel {
     @AnnoField(title = "总共执行次数", show = false)
     private Long runningTimes;
 
-    @AnnoButton(name = "日志", annoTpl = @AnnoTpl(tplName = "jobInstanceLog.ftl?appId=${appId}&instanceId=${instanceId}", windowSize = "lg"))
+    @AnnoButton(name = "日志", permissionCode = "fetchInstanceLog", annoTpl = @AnnoTpl(tplName = "jobInstanceLog.ftl?appId=${appId}&instanceId=${instanceId}", windowSize = "lg"))
     private Object fetchInstanceLogButton;
 
-    @AnnoButton(name = "重试", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "retryInstance"))
+    @AnnoButton(name = "重试", permissionCode = "instanceRetry", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "retryInstance"))
     private Object instanceRetryButton;
 
 }
