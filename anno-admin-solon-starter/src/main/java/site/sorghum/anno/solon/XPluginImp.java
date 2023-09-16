@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
+import org.noear.dami.Dami;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanBuilder;
@@ -25,6 +26,7 @@ import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
@@ -71,6 +73,11 @@ public class XPluginImp implements Plugin {
             if (value.length > 0) {
                 packages.addAll(CollUtil.newArrayList(value));
             }
+        }
+
+        List<MetadataContext> metadataContextList = context.getBeansOfType(MetadataContext.class);
+        for (MetadataContext metadataContext : metadataContextList) {
+            Dami.api().registerListener(MetadataManager.METADATA_TOPIC_REFRESH, metadataContext);
         }
 
         // 加载 anno 元数据

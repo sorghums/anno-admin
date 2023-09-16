@@ -16,7 +16,7 @@ import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.AnTableButton;
+import site.sorghum.anno._metadata.AnButton;
 import site.sorghum.anno.amis.util.AmisCommonUtil;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static cn.hutool.core.collection.CollUtil.split;
 
 public class BaseProcess {
     public String getTemplateContent(String templateName) {
@@ -122,7 +120,7 @@ public class BaseProcess {
     }
 
 
-    public Action createTableAction(AnTableButton anButton) {
+    public Action createTableAction(AnButton anButton) {
         Action action = new Action();
         if (StrUtil.isNotBlank(anButton.getJumpUrl())) {
             action.setLabel(anButton.getName());

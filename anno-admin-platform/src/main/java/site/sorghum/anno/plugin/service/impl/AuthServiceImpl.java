@@ -1,5 +1,6 @@
 package site.sorghum.anno.plugin.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
@@ -13,6 +14,7 @@ import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.plugin.AnPluginMenu;
@@ -61,6 +63,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Inject
     MetadataManager metadataManager;
+    @Inject
+    PermissionContext permissionContext;
 
     public void initPermissions() {
         // 初始化的时候，进行Db的注入
@@ -74,12 +78,11 @@ public class AuthServiceImpl implements AuthService {
                 for (AnColumnButton anColumnButton : anColumnButtons) {
                     if (StrUtil.isNotBlank(anColumnButton.getPermissionCode())) {
                         String buttonCode = baseCode + ":" + anColumnButton.getPermissionCode();
-                        AnPermission anPermission = anPermissionDao.selectById(buttonCode);
+                        AnPermission anPermission = anPermissionDao.selectByCode(buttonCode);
                         if (anPermission != null && anPermission.getId() != null) {
                             continue;
                         }
                         AnPermission buttonPermission = new AnPermission();
-                        buttonPermission.setId(buttonCode);
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anColumnButton.getName());
@@ -87,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
                         anPermissionDao.insert(buttonPermission, true);
                     }
                 }
-                AnPermission anPermission = anPermissionDao.selectById(baseCode);
+                AnPermission anPermission = anPermissionDao.selectByCode(baseCode);
                 if (anPermission != null && anPermission.getId() != null) {
                     continue;
                 }
@@ -202,6 +205,24 @@ public class AuthServiceImpl implements AuthService {
         String keyTwo = "permissionList:" + userId;
         CacheUtil.delKey(keyOne);
         CacheUtil.delKey(keyTwo);
+    }
+
+    @Override
+    public void verifyPermission(String permissionCode) {
+        String userId = (String) StpUtil.getLoginId();
+        List<String> permissionList = permissionList(userId);
+        if (!permissionList.contains(permissionCode)) {
+            throw new BizException("401", "没有权限:" + permissionContext.getPermissionName(permissionCode));
+        }
+    }
+
+    @Override
+    public void verifyButtonPermission(String className, String methodName) {
+        String permissionCode = permissionContext.getPermissionCode(className, methodName);
+        if (StrUtil.isBlank(permissionCode)) {
+            throw new BizException("该方法不是按钮权限");
+        }
+        verifyPermission(permissionCode);
     }
 
     /**

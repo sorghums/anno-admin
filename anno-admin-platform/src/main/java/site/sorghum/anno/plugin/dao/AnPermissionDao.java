@@ -31,4 +31,7 @@ public interface AnPermissionDao extends AnnoBaseMapper<AnPermission> {
      */
     @Sql("select * from an_permission where del_flag = 0")
     List<AnPermission> list();
+
+    @Sql("select * from an_permission where code = ? and del_flag = 0")
+    AnPermission selectByCode(String code);
 }

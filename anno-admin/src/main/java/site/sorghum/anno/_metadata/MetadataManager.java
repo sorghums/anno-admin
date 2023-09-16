@@ -3,6 +3,8 @@ package site.sorghum.anno._metadata;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.extern.slf4j.Slf4j;
+import org.noear.dami.Dami;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.util.AnnoTableParamCache;
@@ -21,10 +23,14 @@ import java.util.stream.Collectors;
  * @author songyinyin
  * @since 2023/7/12 21:32
  */
+@Slf4j
 @Named
 public class MetadataManager {
 
     private final Map<String, AnEntity> entityMap = new ConcurrentHashMap<>();
+
+    public static final String METADATA_TOPIC = "anno.metadata";
+    public static final String METADATA_TOPIC_REFRESH = "anno.metadata.refresh";
 
 
     @Inject
@@ -50,6 +56,10 @@ public class MetadataManager {
      */
     public void loadCustomized(Object object) {
         CustomizedMetadataLoader customizedMetadataLoader = AnnoBeanUtils.getBean(CustomizedMetadataLoader.class);
+        if (customizedMetadataLoader == null) {
+            log.warn("CustomizedMetadataLoader bean is not found");
+            return;
+        }
         if (entityMap.containsKey(customizedMetadataLoader.getEntityName(object))) {
             return;
         }
@@ -59,7 +69,15 @@ public class MetadataManager {
         postProcess(entity);
     }
 
-    private void postProcess(AnEntity entity) {
+    /**
+     * 当所有anno实体加载完成后，刷新元数据
+     */
+    public void refresh() {
+        MetadataContext sender = Dami.api().createSender(METADATA_TOPIC_REFRESH, MetadataContext.class);
+        sender.refresh(getAllEntity());
+    }
+
+    protected void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
         TableParam<?> tableParam = new TableParam<>();
 

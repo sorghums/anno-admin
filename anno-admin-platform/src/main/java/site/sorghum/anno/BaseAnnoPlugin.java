@@ -1,12 +1,12 @@
 package site.sorghum.anno;
 
 
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
+import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.plugin.AnnoPlugin;
+import site.sorghum.anno.plugin.service.AuthService;
 
 /**
  * 基础模块
@@ -23,7 +23,15 @@ public class BaseAnnoPlugin extends AnnoPlugin {
     }
 
     @Override
+    public int runOrder() {
+        return 100;
+    }
+
+    @Override
     public void run() {
-        super.run();
+        CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
+            AuthService authService = AnnoBeanUtils.getBean(AuthService.class);
+            authService.verifyPermission(permissionCode);
+        };
     }
 }

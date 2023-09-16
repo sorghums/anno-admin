@@ -43,7 +43,7 @@ public class DbServiceWithProxy implements DbService {
     @Override
     public <T> IPage<T> page(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
-        permissionProxy.fetchPermission(tClass);
+
         AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
@@ -64,7 +64,6 @@ public class DbServiceWithProxy implements DbService {
     @Override
     public <T> List<T> list(Class<T> tClass, List<DbCondition> dbConditions) {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
-        permissionProxy.fetchPermission(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
@@ -84,7 +83,6 @@ public class DbServiceWithProxy implements DbService {
 
     @Override
     public <T> T queryOne(Class<T> tClass, List<DbCondition> dbConditions) {
-        permissionProxy.fetchPermission(tClass);
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
@@ -106,7 +104,6 @@ public class DbServiceWithProxy implements DbService {
 
     @Override
     public <T> int update(List<DbCondition> dbConditions, T t) {
-        permissionProxy.updatePermission(t.getClass());
         TableParam<T> tableParam = metadataManager.getTableParam(t.getClass());
         Class<T> clazz = tableParam.getClazz();
         AnEntity managerEntity = metadataManager.getEntity(clazz);
@@ -129,7 +126,7 @@ public class DbServiceWithProxy implements DbService {
     public <T> long insert(T t) {
         TableParam<T> tableParam = metadataManager.getTableParam(t.getClass());
         Class<T> clazz = tableParam.getClazz();
-        permissionProxy.addPermission(clazz);
+
         AnEntity managerEntity = metadataManager.getEntity(clazz);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
         AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
@@ -148,7 +145,6 @@ public class DbServiceWithProxy implements DbService {
 
     @Override
     public <T> int delete(Class<T> tClass, List<DbCondition> dbConditions) {
-        permissionProxy.deletePermission(tClass);
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
         AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());

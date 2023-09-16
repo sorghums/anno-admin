@@ -23,11 +23,11 @@ public class CryptoUtil {
         aes = SecureUtil.aes(aesKey.getEncoded());
     }
 
-    public synchronized static String encrypt(String str) {
+    public static String encrypt(String str) {
         return Base64.encodeStr(aes.encrypt(str.getBytes(Charset.defaultCharset())),false,false);
     }
 
-    public synchronized static String decrypt(String str) {
+    public static String decrypt(String str) {
         return new String(aes.decrypt(Base64.decode(str)));
     }
 }

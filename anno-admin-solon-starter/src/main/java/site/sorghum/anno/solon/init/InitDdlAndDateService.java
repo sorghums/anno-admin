@@ -88,6 +88,7 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
             Solon.context().getBean(AuthServiceImpl.class).initPermissions();
             Solon.context().getBean(AuthServiceImpl.class).initMenus();
         }
+        appLoadEndEvent.context().getBean(MetadataManager.class).refresh();
 
     }
 }

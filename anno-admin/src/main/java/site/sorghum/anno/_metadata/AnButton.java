@@ -10,7 +10,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
  * @since 2023/08/08
  */
 @Data
-public class AnTableButton {
+public class AnButton {
 
     /**
      * 标题

@@ -2,12 +2,9 @@ package site.sorghum.anno.anno.proxy;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 
 /**
@@ -19,8 +16,9 @@ import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 @Named
 public class PermissionProxy {
 
-    @Inject
-    MetadataManager metadataManager;
+    public static final String VIEW = "view";
+
+    public static final String VIEW_TRANSLATE = "查看";
 
     public static final String ADD = "add";
 
@@ -33,50 +31,6 @@ public class PermissionProxy {
     public static final String DELETE = "delete";
 
     public static final String DELETE_TRANSLATE = "删除";
-
-    public void fetchPermission(Object obj) {
-        fetchPermission(obj.getClass());
-    }
-
-    public void fetchPermission(Class<?> clazz) {
-        if (isSystemRun()) {
-            return;
-        }
-        // 校验登录
-        CheckPermissionFunction.loginCheckFunction.run();
-        AnEntity anEntity = metadataManager.getEntity(clazz);
-        boolean enable = anEntity.isEnablePermission();
-        if (!enable) {
-            return;
-        }
-        String baseCode = anEntity.getPermissionCode();
-        // 校验权限
-        CheckPermissionFunction.permissionCheckFunction.accept(baseCode);
-    }
-
-    public void addPermission(Object obj) {
-        addPermission(obj.getClass());
-    }
-
-    public void addPermission(Class<?> clazz) {
-        checkPermission(metadataManager.getEntity(clazz), ADD);
-    }
-
-    public void updatePermission(Object obj) {
-        updatePermission(obj.getClass());
-    }
-
-    public void updatePermission(Class<?> clazz) {
-        checkPermission(metadataManager.getEntity(clazz), UPDATE);
-    }
-
-    public void deletePermission(Object obj) {
-        deletePermission(obj.getClass());
-    }
-
-    public void deletePermission(Class<?> clazz) {
-        checkPermission(metadataManager.getEntity(clazz), DELETE);
-    }
 
     public void checkPermission(AnEntity anEntity, String code) {
         if (isSystemRun() || StrUtil.isBlank(code)) {

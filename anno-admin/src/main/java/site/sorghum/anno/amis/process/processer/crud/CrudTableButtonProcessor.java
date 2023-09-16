@@ -10,7 +10,7 @@ import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnTableButton;
+import site.sorghum.anno._metadata.AnButton;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.model.CrudView;
 import site.sorghum.anno.amis.process.BaseProcessor;
@@ -48,8 +48,8 @@ public class CrudTableButtonProcessor implements BaseProcessor {
             return;
         }
         List<Action> actions = filter.getActions();
-        List<AnTableButton> anButtons = anEntity.getTableButtons();
-        for (AnTableButton anButton : anButtons) {
+        List<AnButton> anButtons = anEntity.getTableButtons();
+        for (AnButton anButton : anButtons) {
             try {
                 permissionProxy.checkPermission(anEntity, anButton.getPermissionCode());
             } catch (Exception e) {

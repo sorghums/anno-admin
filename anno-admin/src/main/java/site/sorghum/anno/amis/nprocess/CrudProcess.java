@@ -9,7 +9,6 @@ import site.sorghum.amis.AmisTemplate;
 import site.sorghum.amis.AmisTemplateModel;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.DialogButton;
-import site.sorghum.amis.entity.display.Group;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.display.Table;
 import site.sorghum.amis.entity.function.Action;
@@ -30,8 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static cn.hutool.core.collection.CollUtil.split;
-
 @Named
 public class CrudProcess extends BaseProcess {
     @Inject
@@ -48,7 +45,7 @@ public class CrudProcess extends BaseProcess {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         List<AnField> fields = anEntity.getFields();
         List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
-        List<AnTableButton> tableButtons = anEntity.getTableButtons();
+        List<AnButton> tableButtons = anEntity.getTableButtons();
         ArrayList<AmisTemplateModel> templateModels = new ArrayList<>();
         ArrayList<String> regions = CollUtil.newArrayList(
             "body"
@@ -100,7 +97,7 @@ public class CrudProcess extends BaseProcess {
         String tableButtonListMapStr = "";
         if (!isM2m) {
             List<Object> tableButtonListMap = new ArrayList<>();
-            for (AnTableButton anButton : tableButtons) {
+            for (AnButton anButton : tableButtons) {
                 boolean permissionGranted = AmisCommonUtil.isPermissionGranted(permissionProxy, anButton, anEntity);
                 if (!permissionGranted) {
                     continue;

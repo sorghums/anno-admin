@@ -159,7 +159,7 @@ public class AnEntity {
     /**
      * 表级按钮
      */
-    private List<AnTableButton> tableButtons;
+    private List<AnButton> tableButtons;
 
     /**
      * 逻辑删除类型： 0 物理删除 1 逻辑删除

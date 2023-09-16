@@ -21,4 +21,18 @@ public interface AuthService {
     List<String> roleList(String userId);
 
     void removePermRoleCacheList(String userId);
+
+    /**
+     * 校验是否有权限
+     *
+     * @param permissionCode 权限码
+     * @throws site.sorghum.anno._common.exception.BizException 没有权限时，会抛出此异常
+     */
+    void verifyPermission(String permissionCode);
+
+
+    /**
+     * 校验是否有按钮权限
+     */
+    void verifyButtonPermission(String className, String methodName);
 }

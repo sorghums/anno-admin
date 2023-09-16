@@ -83,6 +83,13 @@
 
         <dependency>
             <groupId>org.noear</groupId>
+            <artifactId>dami</artifactId>
+            <version>${dami.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
         </dependency>

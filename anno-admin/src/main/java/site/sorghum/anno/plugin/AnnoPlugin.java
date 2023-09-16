@@ -30,6 +30,13 @@ public class AnnoPlugin implements Runnable {
      */
     public String pluginDesc;
 
+    /**
+     * 执行顺序，越大越先执行
+     */
+    public int runOrder() {
+        return 10;
+    }
+
     @Inject
     MetadataManager metadataManager;
 

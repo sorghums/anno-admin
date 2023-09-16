@@ -104,7 +104,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         List<AnColumnButton> anColumnButtons = getAnButton(clazz);
         entity.setColumnButtons(anColumnButtons);
 
-        List<AnTableButton> anTableButtons = getAnTableButton(clazz);
+        List<AnButton> anTableButtons = getAnTableButton(clazz);
         entity.setTableButtons(anTableButtons);
 
         return entity;
@@ -265,13 +265,13 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         return anColumnButtons;
     }
 
-    private List<AnTableButton> getAnTableButton(Class<?> clazz) {
-        ArrayList<AnTableButton> anButtons = new ArrayList<>();
+    private List<AnButton> getAnTableButton(Class<?> clazz) {
+        ArrayList<AnButton> anButtons = new ArrayList<>();
         AnnoMain main = AnnoUtil.getAnnoMain(clazz);
         AnnoTableButton[] annoTableButtons = main.annoTableButton();
         for (AnnoTableButton anno : annoTableButtons) {
 
-            AnTableButton anButton = new AnTableButton();
+            AnButton anButton = new AnButton();
             anButton.setName(anno.name());
             anButton.setPermissionCode(anno.permissionCode());
             anButton.setSize(anno.size());

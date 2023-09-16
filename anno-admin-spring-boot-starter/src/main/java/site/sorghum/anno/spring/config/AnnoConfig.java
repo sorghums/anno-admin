@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import jakarta.annotation.PostConstruct;
+import org.noear.dami.Dami;
 import org.noear.wood.DbContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,6 +18,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
@@ -65,6 +67,8 @@ public class AnnoConfig {
         String[] basePackage = this.getBasePackage(AnnoScanConfig.importingClassMetadata);
         Set<String> packages = CollUtil.newHashSet(basePackage);
         packages.add(AnnoConfig.ANNO_BASE_PACKAGE);
+
+        Dami.api().registerListener(MetadataManager.METADATA_TOPIC, SpringUtil.getBean(PermissionContext.class));
 
         // 加载 anno 元数据
         loadMetadata(packages);
