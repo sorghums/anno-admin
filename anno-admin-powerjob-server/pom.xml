@@ -128,13 +128,6 @@
             <version>${zip4j.version}</version>
         </dependency>
 
-        <!-- jGit(Git support) -->
-        <dependency>
-            <groupId>org.eclipse.jgit</groupId>
-            <artifactId>org.eclipse.jgit</artifactId>
-            <version>${jgit.version}</version>
-        </dependency>
-
         <!-- Time tools(NTP support) -->
         <dependency>
             <groupId>commons-net</groupId>
