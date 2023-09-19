@@ -523,5 +523,14 @@ anno-admin:
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 
+开发环境准备：
+```
+# 1. 打前端包到本地仓库（idea 启动项目前，需要先打包前端）
+mvn clean install -pl anno-admin-ui -am
+
+# 2. 打包后端代码
+mvn clean package -pl \!anno-admin-ui -Dmaven.test.skip=true
+```
+
 ## 许可证
 Anno-Admin使用Apache 2.0许可证。详情请参阅LICENSE文件。

@@ -14,6 +14,7 @@
 
     <properties>
         <powerjob.version>4.3.6</powerjob.version>
+        <powerjob-remote-smart-http.version>0.0.3</powerjob-remote-smart-http.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,10 @@
                 <exclusion>
                     <groupId>tech.powerjob</groupId>
                     <artifactId>powerjob-remote-impl-akka</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>powerjob-remote-impl-http</artifactId>
+                    <groupId>tech.powerjob</groupId>
                 </exclusion>
             </exclusions>
             <version>${project.parent.version}</version>
@@ -72,7 +77,16 @@
                     <artifactId>powerjob-remote-impl-akka</artifactId>
                     <groupId>tech.powerjob</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>powerjob-remote-impl-http</artifactId>
+                    <groupId>tech.powerjob</groupId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.dudiao</groupId>
+            <artifactId>powerjob-remote-smart-http</artifactId>
+            <version>${powerjob-remote-smart-http.version}</version>
         </dependency>
         <dependency>
             <groupId>tech.powerjob</groupId>
