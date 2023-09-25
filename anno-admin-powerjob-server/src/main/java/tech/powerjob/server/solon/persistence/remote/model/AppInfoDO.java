@@ -21,7 +21,7 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "应用信息",
     annoPermission = @AnnoPermission(enable = true, baseCode = "pj_app_info", baseCodeTranslate = "应用信息"),
-    annoOrder = @AnnoOrder(orderValue = "appName"))
+    annoOrder = @AnnoOrder(orderValue = "appName"), canRemove = false)
 @Table("pj_app_info")
 public class AppInfoDO extends BaseMetaModel {
 

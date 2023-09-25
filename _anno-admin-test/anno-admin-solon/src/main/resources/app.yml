@@ -62,12 +62,17 @@ anno-admin:
   isAutoMaintainInitData: true
   # 自动初始化表，默认为 true
   isAutoMaintainTable: true
+  # 是否打印执行的 sql
+  showSql: true
+  # 忽略打印日志的表
+  skipTable: [an_anno_menu,an_permission,pj_app_info,pj_container_info,pj_instance_info,pj_job_info,pj_oms_lock,pj_server_info,pj_workflow_info,pj_workflow_instance_info,pj_workflow_node_info]
 
 
 # powerjob-server
 powerjob-server-solon.version: @project.version@
 ###### PowerJob transporter configuration  ######
-oms.transporter.active.protocols: AKKA,HTTP
+# AKKA,HTTP
+oms.transporter.active.protocols: HTTP
 oms.transporter.main.protocol: HTTP
 oms.akka.port: 10086
 oms.http.port: 10010
@@ -98,7 +103,7 @@ solon.powerjob2:
   # Transport port, default is 27777
   port: 28888
   # transport protocol between server and worker
-  protocol: akka
+  protocol: http
   # Store strategy of H2 database. disk or memory. Default value is disk.
   storeStrategy: disk
   # Max length of result. Results that are longer than the value will be truncated.

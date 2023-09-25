@@ -2,6 +2,9 @@ package site.sorghum.anno._common.config;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * anno 配置项
  *
@@ -34,4 +37,14 @@ public class AnnoProperty {
      * 本地文件存储路径
      */
     private String localFilePath = "./anLocal/";
+
+    /**
+     * 是否打印执行的 sql
+     */
+    private boolean showSql = true;
+
+    /**
+     * 忽略打印日志的表
+     */
+    private List<String> skipTable = new ArrayList<>();
 }

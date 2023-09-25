@@ -14,7 +14,7 @@
 
     <properties>
         <powerjob.version>4.3.6</powerjob.version>
-        <powerjob-remote-smart-http.version>0.0.3</powerjob-remote-smart-http.version>
+        <powerjob-remote-smart-http.version>0.0.4</powerjob-remote-smart-http.version>
     </properties>
 
     <dependencies>
