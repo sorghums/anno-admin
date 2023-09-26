@@ -102,6 +102,17 @@ public class AuthServiceImpl implements AuthService {
                 basePermission.setDelFlag(0);
                 anPermissionDao.insert(basePermission, true);
 
+                // 查看
+                String viewCode = baseCode + ":" + PermissionProxy.VIEW;
+                String viewName = baseName + ":" + PermissionProxy.VIEW_TRANSLATE;
+                AnPermission viewPermission = new AnPermission();
+                viewPermission.setId(viewCode);
+                viewPermission.setParentId(baseCode);
+                viewPermission.setCode(viewCode);
+                viewPermission.setName(viewName);
+                viewPermission.setDelFlag(0);
+
+                anPermissionDao.insert(viewPermission, true);
 
                 // 新增
                 String addCode = baseCode + ":" + PermissionProxy.ADD;
