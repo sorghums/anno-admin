@@ -50,8 +50,7 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
                 Statement parse = CCJSqlParserUtil.parse(sql);
 
                 List<String> tableList = tablesNamesFinder.getTableList(parse);
-                if (tableList.stream().anyMatch(tableName -> StrUtil.containsAnyIgnoreCase(tableName,
-                    ArrayUtil.toArray(skipTableList, String.class)))) {
+                if (tableList.stream().anyMatch(skipTableList::contains)) {
                     return;
                 }
 
