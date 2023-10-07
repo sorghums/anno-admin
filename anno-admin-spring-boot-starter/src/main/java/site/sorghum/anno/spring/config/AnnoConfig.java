@@ -5,6 +5,9 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import jakarta.annotation.PostConstruct;
 import org.noear.dami.Dami;
+import org.noear.dami.DamiConfig;
+import org.noear.dami.bus.impl.RoutingPath;
+import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.wood.DbContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,10 +22,11 @@ import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.PlatformFactory;
-import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.dami.DamiApiCached;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -57,13 +61,13 @@ public class AnnoConfig {
     }
 
     @Bean
-    public DbContext dbContext(DataSource dataSource){
+    public DbContext dbContext(DataSource dataSource) {
         return new DbContext(dataSource);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public StpInterfaceImpl stpInterfaceImpl(){
+    public StpInterfaceImpl stpInterfaceImpl() {
         return new StpInterfaceImpl();
     }
 
@@ -73,6 +77,10 @@ public class AnnoConfig {
         String[] basePackage = this.getBasePackage(AnnoScanConfig.importingClassMetadata);
         Set<String> packages = CollUtil.newHashSet(basePackage);
         packages.add(AnnoConfig.ANNO_BASE_PACKAGE);
+
+        // dami 配置项
+        DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiConfig.configure(new DamiApiCached(Dami::bus));
 
         Dami.api().registerListener(MetadataManager.METADATA_TOPIC, SpringUtil.getBean(PermissionContext.class));
 

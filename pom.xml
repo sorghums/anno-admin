@@ -51,7 +51,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mysql.ver>8.0.32</mysql.ver>
         <jsqlparser.version>4.6</jsqlparser.version>
-        <dami.version>0.28</dami.version>
+        <dami.version>0.29</dami.version>
 
         <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>

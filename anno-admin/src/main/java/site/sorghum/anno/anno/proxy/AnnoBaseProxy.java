@@ -13,6 +13,23 @@ import java.util.List;
  * @since 2023/05/20
  */
 public interface AnnoBaseProxy<T> {
+
+    /**
+     * 在哪些 entity 上生效，"*" 代表所有，为空则不生效
+     *
+     * @return entityName
+     */
+    default String[] supportEntities() {
+        return null;
+    }
+
+    /**
+     * 顺序位，越小越先执行
+     */
+    default int index() {
+        return 1000;
+    }
+
     /**
      * 增加前
      *
@@ -64,7 +81,7 @@ public interface AnnoBaseProxy<T> {
     /**
      * 删除后
      *
-     * @param tClass 类
+     * @param tClass       类
      * @param dbConditions db条件
      */
     default void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {

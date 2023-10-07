@@ -9,6 +9,9 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import org.noear.dami.Dami;
+import org.noear.dami.DamiConfig;
+import org.noear.dami.bus.impl.RoutingPath;
+import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanBuilder;
@@ -30,6 +33,7 @@ import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.dami.DamiApiCached;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -39,7 +43,12 @@ import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Solon Anno-Admin 插件
@@ -75,9 +84,13 @@ public class XPluginImp implements Plugin {
             }
         }
 
+        // dami 配置项
+        DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiConfig.configure(new DamiApiCached(Dami::bus));
+
         List<MetadataContext> metadataContextList = context.getBeansOfType(MetadataContext.class);
         for (MetadataContext metadataContext : metadataContextList) {
-            Dami.api().registerListener(MetadataManager.METADATA_TOPIC_REFRESH, metadataContext);
+            Dami.api().registerListener(MetadataManager.METADATA_TOPIC, metadataContext);
         }
 
         // 加载 anno 元数据
@@ -116,7 +129,7 @@ public class XPluginImp implements Plugin {
         MetadataManager metadataManager = context.getBean(MetadataManager.class);
         HashSet<Class<?>> classSet = new HashSet<>();
         for (String scanPackage : packages) {
-            classSet.addAll(ClassUtil.scanPackage(scanPackage)) ;
+            classSet.addAll(ClassUtil.scanPackage(scanPackage));
         }
         for (Class<?> clazz : classSet) {
             if (clazz.isInterface()) {

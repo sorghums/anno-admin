@@ -73,7 +73,7 @@ public class MetadataManager {
      * 当所有anno实体加载完成后，刷新元数据
      */
     public void refresh() {
-        MetadataContext sender = Dami.api().createSender(METADATA_TOPIC_REFRESH, MetadataContext.class);
+        MetadataContext sender = Dami.api().createSender(METADATA_TOPIC, MetadataContext.class);
         sender.refresh(getAllEntity());
     }
 
