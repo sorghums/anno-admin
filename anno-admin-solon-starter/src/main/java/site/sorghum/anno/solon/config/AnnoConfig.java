@@ -4,6 +4,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._ddl.PlatformFactory;
 
 /**
  * @author songyinyin
@@ -15,6 +16,11 @@ public class AnnoConfig {
     @Bean(typed = true)
     public AnnoProperty annoProperty(@Inject(value = "${anno-admin}", required = false) AnnoProperty annoProperty) {
         return annoProperty == null ? new AnnoProperty() : annoProperty;
+    }
+
+    @Bean(typed = true)
+    public PlatformFactory platformFactory() {
+        return new PlatformFactory();
     }
 
 }

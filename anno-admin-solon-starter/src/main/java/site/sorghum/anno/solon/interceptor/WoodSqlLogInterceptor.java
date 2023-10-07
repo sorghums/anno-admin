@@ -13,6 +13,7 @@ import org.noear.solon.Solon;
 import org.noear.wood.Command;
 import org.noear.wood.ext.Act1;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._ddl.PlatformFactory;
 
 import java.util.List;
 
@@ -25,16 +26,14 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
 
     private AnnoProperty annoProperty;
 
-    private final TablesNamesFinder tablesNamesFinder = new TablesNamesFinder() {
-        @Override
-        protected String extractTableName(Table table) {
-            return table.getName();
-        }
-    };
+    private AnnoTablesNamesFinder tablesNamesFinder;
 
     public WoodSqlLogInterceptor() {
         Solon.context().getBeanAsync(AnnoProperty.class, bean -> {
             this.annoProperty = bean;
+        });
+        Solon.context().getBeanAsync(AnnoTablesNamesFinder.class, bean -> {
+            this.tablesNamesFinder = bean;
         });
     }
 

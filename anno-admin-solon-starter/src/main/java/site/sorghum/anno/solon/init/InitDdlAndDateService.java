@@ -44,14 +44,12 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
     AnnoProperty annoProperty;
     @Inject
     MetadataManager metadataManager;
+    @Inject
+    PlatformFactory platformFactory;
 
     public void initDdl() throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            PlatformFactory platformFactory = Solon.context().getBean(PlatformFactory.class);
-            if (platformFactory == null) {
-                platformFactory = new PlatformFactory();
-            }
             EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, platformFactory, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {

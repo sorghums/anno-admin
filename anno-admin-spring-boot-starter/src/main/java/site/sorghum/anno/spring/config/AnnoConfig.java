@@ -18,6 +18,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
@@ -48,6 +49,11 @@ public class AnnoConfig {
     @ConfigurationProperties(prefix = "anno-admin")
     public AnnoProperty annoProperty() {
         return new AnnoProperty();
+    }
+
+    @Bean
+    public PlatformFactory platformFactory() {
+        return new PlatformFactory();
     }
 
     @Bean

@@ -28,6 +28,10 @@ solon.logging.logger:
     level: info
   "site.sorghum":
     level: debug
+  "tech.powerjob":
+    level: warn
+  "MONITOR_LOGGER_WORKER_HEART_BEAT":
+    level: warn
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
   # token名称 (同时也是cookie名称)
@@ -56,6 +60,7 @@ anno-admin:
     server: "127.0.0.1:6379"
     db: 8
     maxTotal: '200'
+    password: ''
   # 主题：antd,cxd,ang
   theme: 'antd'
   # 自动初始化数据，默认为 true

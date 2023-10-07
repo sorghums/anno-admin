@@ -42,7 +42,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
             }
             // 基本类型
             if (columnIsSupport(field)) {
-                ColumnWrap column = getColumn(clazz, field);
+                ColumnWrap column = getColumn(clazz, tableName, field);
                 if (column != null) {
                     tableWrap.addColumn(column);
                 }
@@ -51,7 +51,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
         return tableWrap;
     }
 
-    protected ColumnWrap getColumn(Class<?> clazz, Field field) {
+    protected ColumnWrap getColumn(Class<?> clazz, String tableName, Field field) {
         String fieldName = NamingUtils.toUnderlineString(field.getName());
         Class<?> fieldType = field.getType();
         Integer sqlType;
@@ -85,7 +85,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
             throw new DdlException("%s#%s 不支持的字段类型：%s".formatted(clazz.getName(), field.getName(), fieldType.getSimpleName()));
         }
 
-        return new ColumnWrap(fieldName, sqlType, size, digit, defaultValue, null);
+        return new ColumnWrap(tableName, fieldName, sqlType, size, digit, defaultValue, null);
     }
 
     protected boolean columnIsSupport(Field field) {

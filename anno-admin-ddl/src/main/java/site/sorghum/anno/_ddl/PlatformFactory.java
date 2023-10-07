@@ -8,6 +8,8 @@ import site.sorghum.anno._ddl.dialect.MysqlPlatform;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author songyinyin
@@ -21,6 +23,8 @@ public class PlatformFactory {
    */
   private List<Class<? extends Platform>> platforms = new ArrayList<>();
 
+  private Map<DbContextMetaData, Platform> platformMap = new ConcurrentHashMap<>();
+
   public PlatformFactory() {
     this.registerDefaultDatabasePlatform();
   }
@@ -29,12 +33,21 @@ public class PlatformFactory {
     this.platforms = platforms;
   }
 
+    /**
+     * 获取对应数据库的 ddl 生成器
+     *
+     * @param dbContextMetaData 数据库元信息
+     */
+    public Platform getPlatformInstance(DbContextMetaData dbContextMetaData) {
+        return platformMap.getOrDefault(dbContextMetaData, getPlatformInstance0(dbContextMetaData));
+    }
+
   /**
    * 获取对应数据库的 ddl 生成器
    *
    * @param dbContextMetaData 数据库元信息
    */
-  public Platform getPlatformInstance(DbContextMetaData dbContextMetaData) {
+  private Platform getPlatformInstance0(DbContextMetaData dbContextMetaData) {
     for (Class<? extends Platform> platformClass : platforms) {
       try {
         Platform platform = platformClass.getDeclaredConstructor(DbContextMetaData.class).newInstance(dbContextMetaData);

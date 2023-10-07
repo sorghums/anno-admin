@@ -64,7 +64,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
                 // TREE 和 OPTIONS，通过 anno 注解获取不到字段类型，需要通过字段类型获取
                 // 默认类型是STRING，也需要通过字段类型获取
                 case STRING, TREE, OPTIONS, PICKER -> {
-                    ColumnWrap column = getColumn(anEntity.getEntityName(), field);
+                    ColumnWrap column = getColumn(anEntity, field);
                     sqlType = column.getSqlType();
                     size = column.getSize();
                     digit = column.getDigit();
@@ -99,14 +99,14 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
                 defaultValue = field.getDefaultValue();
             }
 
-            ColumnWrap columnWrap = new ColumnWrap(columnName, sqlType, size, digit, defaultValue, field.getTitle());
+            ColumnWrap columnWrap = new ColumnWrap(anEntity.getTableName(), columnName, sqlType, size, digit, defaultValue, field.getTitle());
             tableWrap.addColumn(columnWrap);
         }
 
         return tableWrap;
     }
 
-    public ColumnWrap getColumn(String entityName, AnField field) {
+    public ColumnWrap getColumn(AnEntity anEntity, AnField field) {
         String fieldName = field.getTableFieldName();
         Class<?> fieldType = field.getFieldType();
         int sqlType;
@@ -141,10 +141,10 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             size = 1;
             defaultValue = "NOT NULL DEFAULT 0";
         } else {
-            throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(entityName, field.getFieldName(), fieldType.getSimpleName()));
+            throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(anEntity.getEntityName(), field.getFieldName(), fieldType.getSimpleName()));
         }
 
-        return new ColumnWrap(fieldName, sqlType, size, digit, defaultValue, null);
+        return new ColumnWrap(anEntity.getTableName(), fieldName, sqlType, size, digit, defaultValue, null);
     }
 
     private boolean columnIsSupport(Class<?> fieldType) {
