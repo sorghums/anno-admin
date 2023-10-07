@@ -6,14 +6,12 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.plugin.proxy.AnRoleProxy;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 import java.io.Serializable;
@@ -22,7 +20,6 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色管理",
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_role", baseCodeTranslate = "角色管理"),
-        annoProxy = @AnnoProxy(value = AnRoleProxy.class),
         annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
 @Table("an_role")
 public class AnRole extends BaseMetaModel implements Serializable {

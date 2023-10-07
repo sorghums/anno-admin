@@ -18,6 +18,13 @@ import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 @Named
 public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
 
+    @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(AnAnnoMenu.class)
+        };
+    }
+
     @Inject
     MetadataManager metadataManager;
 

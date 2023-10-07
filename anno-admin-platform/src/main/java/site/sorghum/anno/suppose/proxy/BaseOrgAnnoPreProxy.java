@@ -5,7 +5,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.manager.AnnoOrgManager;
@@ -21,13 +21,20 @@ import java.util.List;
  */
 @Named
 @Slf4j
-public class BaseOrgAnnoPreProxy implements AnnoPreBaseProxy<BaseOrgMetaModel> {
+public class BaseOrgAnnoPreProxy implements AnnoBaseProxy<BaseOrgMetaModel> {
 
     @Inject
     BaseAnnoPreProxy baseAnnoPreProxy;
 
     @Inject
     AnnoOrgManager annoOrgManager;
+
+    @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(BaseOrgMetaModel.class)
+        };
+    }
 
     @Override
     public void beforeAdd(BaseOrgMetaModel data) {

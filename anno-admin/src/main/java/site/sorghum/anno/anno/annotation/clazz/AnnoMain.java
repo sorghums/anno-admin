@@ -1,7 +1,5 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
-import site.sorghum.anno.anno.annotation.common.AnnoTpl;
-
 import java.lang.annotation.*;
 
 /**
@@ -35,13 +33,6 @@ public @interface AnnoMain {
      * @return {@link AnnoOrder}
      */
     AnnoOrder annoOrder() default @AnnoOrder();
-
-    /**
-     * 代理类
-     *
-     * @return {@link AnnoProxy}
-     */
-    AnnoProxy annoProxy() default @AnnoProxy();
 
     /**
      * 权限配置

@@ -4,7 +4,6 @@ import lombok.Data;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.anno.annotation.clazz.AnnoJoinTable;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -19,7 +18,6 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
  * @since 2023/07/04
  */
 @Data
-@AnnoPreProxy(value = WtfABCVirtualProxy.class)
 @AnnoMain(name = "沃特发表ABC", virtualTable = true,
     annoJoinTable = @AnnoJoinTable(mainTable = "wtf_c", mainAlias = "t1", joinTables = {
         @AnnoJoinTable.JoinTable(table = "wtf_b", alias = "t2", joinCondition = "t1.wtf_b = t2.id and t2.del_flag = 0", joinType = 1),

@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -14,7 +13,6 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.service.AuthService;
-import site.sorghum.anno.plugin.proxy.AnUserProxy;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
 import java.io.Serializable;
@@ -22,8 +20,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"),
-        annoProxy = @AnnoProxy(value = AnUserProxy.class))
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"))
 @Table("an_user")
 public class AnUser extends BaseOrgMetaModel implements Serializable {
 

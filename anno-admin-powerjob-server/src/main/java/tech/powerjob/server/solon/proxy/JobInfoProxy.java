@@ -34,6 +34,13 @@ public class JobInfoProxy implements AnnoBaseProxy<JobInfoDO> {
     TimingStrategyService timingStrategyService;
 
     @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(JobInfoDO.class)
+        };
+    }
+
+    @Override
     public void beforeAdd(JobInfoDO data) {
         fillDefaultValue(data);
         processVirtualColumn(data);

@@ -12,6 +12,12 @@ import java.util.List;
 public class AnRoleProxy implements AnnoBaseProxy<AnRole> {
 
     @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(AnRole.class)
+        };
+    }
+    @Override
     public void beforeDelete(Class<AnRole> tClass, List<DbCondition> dbConditions) {
         for (DbCondition dbCondition : dbConditions) {
             String field = dbCondition.getField();

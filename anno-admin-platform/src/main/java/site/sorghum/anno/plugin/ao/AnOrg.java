@@ -6,12 +6,10 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.plugin.proxy.AnOrgProxy;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 /**
@@ -24,7 +22,6 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "组织管理",
         orgFilter = true,
-        annoProxy = @AnnoProxy(value = AnOrgProxy.class),
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
 @Table("an_org")
 public class AnOrg extends BaseMetaModel {

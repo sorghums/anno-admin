@@ -16,6 +16,12 @@ import site.sorghum.anno.plugin.ao.AnUser;
 @Named
 public class AnUserProxy implements AnnoBaseProxy<AnUser> {
     @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(AnUser.class)
+        };
+    }
+    @Override
     public void beforeAdd(AnUser data) {
         if (StrUtil.isBlank(data.getMobile())) {
             throw new BizException("新增用户手机号不能为空");

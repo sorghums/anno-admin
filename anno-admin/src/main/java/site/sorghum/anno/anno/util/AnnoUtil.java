@@ -16,16 +16,12 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
-import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
-import site.sorghum.anno.anno.proxy.AnnoPreDefaultProxy;
 import site.sorghum.anno.db.param.DbCondition;
 
 import java.lang.annotation.Annotation;
@@ -50,52 +46,6 @@ public class AnnoUtil {
      */
     public static AnnoMain getAnnoMain(Class<?> clazz) {
         return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoMain.class);
-    }
-
-    /**
-     * 获得代理实例
-     *
-     * @param clazz clazz
-     * @return {@link AnnoBaseProxy}<{@link T}>
-     */
-    public static <T> AnnoBaseProxy<T> getProxyInstance(Class<T> clazz) {
-        AnnoMain annoMain = getAnnoMain(clazz);
-        Class<? extends AnnoBaseProxy<T>> proxyClazz = (Class<? extends AnnoBaseProxy<T>>) annoMain.annoProxy().value();
-        return AnnoBeanUtils.getBean(proxyClazz);
-    }
-
-    public static AnnoPreProxy getAnnoPreProxy(Class<?> clazz) {
-        List<Class<?>> classes = AnnoUtil.findAllClass(clazz);
-        for (Class<?> aClass : classes) {
-            AnnoPreProxy annoPreProxy = AnnotationUtil.getAnnotation(aClass, AnnoPreProxy.class);
-            if (annoPreProxy == null) {
-                continue;
-            }
-            return annoPreProxy;
-        }
-        return new AnnoPreProxy() {
-            @Override
-            public Class<? extends Annotation> annotationType() {
-                return AnnoPreProxy.class;
-            }
-
-            @Override
-            public Class<? extends AnnoPreBaseProxy> value() {
-                return AnnoPreDefaultProxy.class;
-            }
-        };
-    }
-
-    /**
-     * 获得代理实例
-     *
-     * @param clazz clazz
-     * @return {@link AnnoBaseProxy}<{@link T}>
-     */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public static <T> AnnoPreBaseProxy<T> getPreProxyInstance(Class<T> clazz) {
-        AnnoPreProxy annoPreProxy = AnnoUtil.getAnnoPreProxy(clazz);
-        return AnnoBeanUtils.getBean(annoPreProxy.value());
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {

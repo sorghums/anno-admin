@@ -5,14 +5,12 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.plugin.proxy.AnAnnoMenuProxy;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 
@@ -26,8 +24,7 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "菜单管理",
         annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"),
-annoProxy = @AnnoProxy(value = AnAnnoMenuProxy.class))
+        annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"))
 @Table("an_anno_menu")
 public class AnAnnoMenu extends BaseMetaModel {
 

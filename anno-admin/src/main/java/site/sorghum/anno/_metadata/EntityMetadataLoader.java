@@ -73,9 +73,6 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setOrderType(annoMain.annoOrder().orderType());
         entity.setOrderValue(annoMain.annoOrder().orderValue());
 
-        entity.setPreProxy(AnnoUtil.getAnnoPreProxy(clazz).value());
-        entity.setProxy(annoMain.annoProxy().value());
-
         entity.setEnablePermission(annoMain.annoPermission().enable());
         entity.setPermissionCode(annoMain.annoPermission().baseCode());
         entity.setPermissionCodeTranslate(annoMain.annoPermission().baseCodeTranslate());

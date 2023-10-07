@@ -7,7 +7,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.ao.AnUser;
@@ -24,7 +24,15 @@ import java.util.List;
  */
 @Named
 @Slf4j
-public class BaseAnnoPreProxy implements AnnoPreBaseProxy<BaseMetaModel> {
+public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
+
+    @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(BaseMetaModel.class)
+        };
+    }
+
 
     @Override
     public void beforeFetch(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam) {

@@ -2,7 +2,6 @@ package site.sorghum.anno.suppose.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.anno.annotation.clazz.AnnoPreProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -10,7 +9,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.ao.AnOrg;
-import site.sorghum.anno.suppose.proxy.BaseOrgAnnoPreProxy;
 
 import java.io.Serializable;
 
@@ -22,7 +20,6 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoPreProxy(BaseOrgAnnoPreProxy.class)
 @AnnoRemove(removeType = 1)
 public class BaseOrgMetaModel extends BaseMetaModel implements Serializable {
 

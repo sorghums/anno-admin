@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.noear.wood.IPage;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.service.impl.DbServiceWood;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @Named
-public class VirtualJoinTableProxy<T> implements AnnoPreBaseProxy<T> {
+public class VirtualJoinTableProxy<T> implements AnnoBaseProxy<T> {
 
     @Inject
     DbServiceWood dbServiceWood;

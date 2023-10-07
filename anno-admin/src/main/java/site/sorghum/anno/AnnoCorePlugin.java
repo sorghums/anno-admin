@@ -38,7 +38,7 @@ public class AnnoCorePlugin extends AnnoPlugin {
                 continue;
             }
             for (String entityName : proxy.supportEntities()) {
-                Dami.api().registerListener(DbServiceWithProxy.BASE_ENTITY_TOPIC + entityName, proxy.index(), proxy);
+                Dami.api().registerListener(DbServiceWithProxy.BASE_ENTITY_TOPIC + entityName + "**", proxy.index(), proxy);
             }
         }
     }

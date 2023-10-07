@@ -4,6 +4,7 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,17 @@ public interface AnnoBaseProxy<T> {
      */
     default String[] supportEntities() {
         return null;
+    }
+
+    public static String clazzToDamiEntityName(Class tClass) {
+        // 比如 AnAnnoMenuProxy 则返回 PrimaryKeyModel.BaseMetaModel.AnAnnoMenu 由最顶层的类名开始
+        Class clazz = tClass;
+        List<String> list = new ArrayList<>();
+        do {
+            list.add(0, clazz.getSimpleName());
+            clazz = clazz.getSuperclass();
+        } while (clazz != null);
+        return String.join(".", list);
     }
 
     /**

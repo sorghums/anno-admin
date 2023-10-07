@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
 import org.noear.wood.IPage;
 import org.noear.wood.impl.IPageImpl;
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -32,9 +31,6 @@ import java.util.function.Supplier;
 public class DbServiceWithProxy implements DbService {
 
     public static final String BASE_ENTITY_TOPIC = "anno.entity.";
-    public static final String ALL_ENTITY_TOPIC = "anno.entity.*.";
-
-    public static final String SUPPORT_ALL_ENTITY = "*";
 
     @Inject
     @Named("dbServiceWood")
@@ -48,11 +44,6 @@ public class DbServiceWithProxy implements DbService {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
 
         AnEntity managerEntity = metadataManager.getEntity(tClass);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
-        // 前置处理
-        preProxyInstance.beforeFetch(tClass, dbConditions, pageParam);
-        proxyInstance.beforeFetch(tClass, dbConditions, pageParam);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeFetch(tClass, dbConditions, pageParam);
@@ -63,8 +54,6 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(true, page.getList(), page.getTotal(), page.getSize(), page.getPages());
-        preProxyInstance.afterFetch(tClass, dbConditions, pageParam, annoPage);
-        proxyInstance.afterFetch(tClass, dbConditions, pageParam, annoPage);
         damiProxy.afterFetch(tClass, dbConditions, pageParam, annoPage);
         return new IPageImpl<>(annoPage.getList(), annoPage.getTotal(), annoPage.getSize());
     }
@@ -73,11 +62,6 @@ public class DbServiceWithProxy implements DbService {
     public <T> List<T> list(Class<T> tClass, List<DbCondition> dbConditions) {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
-        // 前置处理
-        preProxyInstance.beforeFetch(tClass, dbConditions, null);
-        proxyInstance.beforeFetch(tClass, dbConditions, null);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeFetch(tClass, dbConditions, null);
@@ -87,8 +71,6 @@ public class DbServiceWithProxy implements DbService {
         );
         // 后置处理
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
-        proxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
         damiProxy.afterFetch(tClass, dbConditions, null, annoPage);
         return annoPage.getList();
     }
@@ -97,11 +79,6 @@ public class DbServiceWithProxy implements DbService {
     public <T> T queryOne(Class<T> tClass, List<DbCondition> dbConditions) {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
-        // 前置处理
-        preProxyInstance.beforeFetch(tClass, dbConditions, null);
-        proxyInstance.beforeFetch(tClass, dbConditions, null);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeFetch(tClass, dbConditions, null);
@@ -113,8 +90,6 @@ public class DbServiceWithProxy implements DbService {
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), list.size(), 0);
-        preProxyInstance.afterFetch(tClass, dbConditions, null,annoPage);
-        proxyInstance.afterFetch(tClass, dbConditions, null, annoPage);
         damiProxy.afterFetch(tClass, dbConditions, null, annoPage);
         return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
@@ -124,11 +99,7 @@ public class DbServiceWithProxy implements DbService {
         TableParam<T> tableParam = metadataManager.getTableParam(t.getClass());
         Class<T> clazz = tableParam.getClazz();
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeUpdate(dbConditions, t);
-        proxyInstance.beforeUpdate(dbConditions, t);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeUpdate(dbConditions, t);
@@ -138,8 +109,6 @@ public class DbServiceWithProxy implements DbService {
             () -> 0
         );
         // 后置处理
-        preProxyInstance.afterUpdate(t);
-        proxyInstance.afterUpdate(t);
         damiProxy.afterUpdate(t);
         return update;
     }
@@ -150,11 +119,7 @@ public class DbServiceWithProxy implements DbService {
         Class<T> clazz = tableParam.getClazz();
 
         AnEntity managerEntity = metadataManager.getEntity(clazz);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeAdd(t);
-        proxyInstance.beforeAdd(t);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeAdd(t);
@@ -164,8 +129,6 @@ public class DbServiceWithProxy implements DbService {
             () -> 0L
         );
         // 后置处理
-        preProxyInstance.afterAdd(t);
-        proxyInstance.afterAdd(t);
         damiProxy.afterAdd(t);
         return insert;
     }
@@ -174,11 +137,7 @@ public class DbServiceWithProxy implements DbService {
     public <T> int delete(Class<T> tClass, List<DbCondition> dbConditions) {
         TableParam<T> tableParam = metadataManager.getTableParam(tClass);
         AnEntity managerEntity = metadataManager.getEntity(tClass);
-        AnnoPreBaseProxy<T> preProxyInstance = AnnoBeanUtils.getBean(managerEntity.getPreProxy());
-        AnnoBaseProxy<T> proxyInstance = AnnoBeanUtils.getBean(managerEntity.getProxy());
         // 前置处理
-        preProxyInstance.beforeDelete(tClass, dbConditions);
-        proxyInstance.beforeDelete(tClass, dbConditions);
 
         AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
         damiProxy.beforeDelete(tClass, dbConditions);
@@ -188,8 +147,6 @@ public class DbServiceWithProxy implements DbService {
             () -> 0
         );
         // 后置处理
-        preProxyInstance.afterDelete(tClass, dbConditions);
-        proxyInstance.afterDelete(tClass, dbConditions);
         damiProxy.afterDelete(tClass, dbConditions);
         return delete;
     }
@@ -202,6 +159,7 @@ public class DbServiceWithProxy implements DbService {
     }
 
     private <T> AnnoBaseProxy<T> getDamiProxy(String entityName) {
-        return Dami.api().createSender(BASE_ENTITY_TOPIC + entityName, AnnoBaseProxy.class);
+        String damiEntityName = AnnoBaseProxy.clazzToDamiEntityName(metadataManager.getEntity(entityName).getClazz());
+        return Dami.api().createSender(BASE_ENTITY_TOPIC + damiEntityName, AnnoBaseProxy.class);
     }
 }

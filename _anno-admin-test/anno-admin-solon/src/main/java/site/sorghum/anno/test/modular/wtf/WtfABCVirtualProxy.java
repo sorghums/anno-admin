@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -27,6 +28,14 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
 
     @Inject
     MetadataManager metadataManager;
+
+    @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(WtfABCVirtual.class)
+        };
+    }
+
     @Override
     public void beforeAdd(WtfABCVirtual data) {
         WtfA wtfA = new WtfA();

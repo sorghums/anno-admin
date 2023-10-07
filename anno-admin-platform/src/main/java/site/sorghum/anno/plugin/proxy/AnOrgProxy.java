@@ -18,6 +18,13 @@ public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
     AnnoOrgManager annoOrgManager;
 
     @Override
+    public String[] supportEntities() {
+        return new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(AnOrg.class)
+        };
+    }
+    
+    @Override
     public void beforeFetch(Class<AnOrg> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
         if (annoOrgManager.isIgnoreFilter(tClass)){
             return;

@@ -4,8 +4,6 @@ import lombok.Data;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.*;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
-import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.anno.proxy.AnnoPreBaseProxy;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,20 +78,6 @@ public class AnEntity {
      * @see AnnoOrder#orderValue()
      */
     private String orderValue;
-
-    /**
-     * 前置代理类
-     *
-     * @see AnnoProxy#value()
-     */
-    private Class<? extends AnnoPreBaseProxy> preProxy;
-
-    /**
-     * 代理类
-     *
-     * @see AnnoProxy#value()
-     */
-    private Class<? extends AnnoBaseProxy> proxy;
 
     /**
      * 主键字段

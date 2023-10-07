@@ -9,7 +9,6 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -19,7 +18,6 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 import tech.powerjob.server.solon.anno.button.JobButtonService;
-import tech.powerjob.server.solon.proxy.JobInfoProxy;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +30,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "任务管理", annoPermission = @AnnoPermission(enable = true, baseCode = "pj_job_info", baseCodeTranslate = "任务管理"),
-    annoOrder = @AnnoOrder(orderType = "desc", orderValue = "updateTime"), annoProxy = @AnnoProxy(JobInfoProxy.class))
+    annoOrder = @AnnoOrder(orderType = "desc", orderValue = "updateTime"))
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("pj_job_info")

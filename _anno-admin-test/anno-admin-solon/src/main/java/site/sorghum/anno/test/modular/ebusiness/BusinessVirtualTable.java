@@ -3,7 +3,6 @@ package site.sorghum.anno.test.modular.ebusiness;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoProxy;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -24,7 +23,6 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品虚拟表",
     virtualTable = true,
-    annoProxy = @AnnoProxy(value = BusinessVirtualTableProxy.class),
     annoTableButton = {
         @AnnoTableButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}"),
         @AnnoTableButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮');"),

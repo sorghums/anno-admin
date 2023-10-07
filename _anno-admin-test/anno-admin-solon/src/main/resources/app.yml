@@ -51,13 +51,13 @@ sa-token:
   is-print: false
 db.main:
   schema: anno_admin
-  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno-admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  jdbcUrl: jdbc:mysql://sorghum-ubuntu:3306/anno_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   driverClassName: com.mysql.cj.jdbc.Driver
   username: root
-  password: 123456
+  password: sorghum2021
 anno-admin:
   redis:
-    server: "127.0.0.1:6379"
+    server: "sorghum-ubuntu:6379"
     db: 8
     maxTotal: '200'
     password: ''
