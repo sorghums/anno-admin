@@ -79,8 +79,9 @@ public class AnnoConfig {
         packages.add(AnnoConfig.ANNO_BASE_PACKAGE);
 
         // dami 配置项
-        DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiConfig.setTopicRouter(new TopicRouterPatterned<>(RoutingPath::new));
         DamiConfig.configure(new DamiApiCached(Dami::bus));
+        DamiConfig.enableDefaultSend(true);
 
         Dami.api().registerListener(MetadataManager.METADATA_TOPIC, SpringUtil.getBean(PermissionContext.class));
 
