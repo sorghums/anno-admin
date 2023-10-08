@@ -24,14 +24,17 @@ public interface AnnoBaseProxy<T> {
         return null;
     }
 
-    public static String clazzToDamiEntityName(Class tClass) {
+    public static String clazzToDamiEntityName(Class<?> clazz) {
         // 比如 AnAnnoMenuProxy 则返回 PrimaryKeyModel.BaseMetaModel.AnAnnoMenu 由最顶层的类名开始
-        Class clazz = tClass;
+        Class<?> clazzTemp = clazz;
         List<String> list = new ArrayList<>();
         do {
-            list.add(0, clazz.getSimpleName());
-            clazz = clazz.getSuperclass();
-        } while (clazz != null);
+            if (clazzTemp.equals(Object.class)) {
+                break;
+            }
+            list.add(0, clazzTemp.getSimpleName());
+            clazzTemp = clazzTemp.getSuperclass();
+        } while (clazzTemp != null);
         return String.join(".", list);
     }
 

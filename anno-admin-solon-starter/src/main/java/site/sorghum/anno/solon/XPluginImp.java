@@ -85,9 +85,8 @@ public class XPluginImp implements Plugin {
         }
 
         // dami 配置项
-        DamiConfig.setTopicRouter(new TopicRouterPatterned<>(RoutingPath::new));
+        DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
         DamiConfig.configure(new DamiApiCached(Dami::bus));
-        DamiConfig.enableDefaultSend(true);
 
         List<MetadataContext> metadataContextList = context.getBeansOfType(MetadataContext.class);
         for (MetadataContext metadataContext : metadataContextList) {
