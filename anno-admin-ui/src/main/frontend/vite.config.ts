@@ -13,7 +13,7 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 	const viteEnv = wrapperEnv(env);
 
 	return {
-		// base: "/",
+		base: viteEnv.VITE_BASE_PATH,
 		// alias config
 		resolve: {
 			alias: {
