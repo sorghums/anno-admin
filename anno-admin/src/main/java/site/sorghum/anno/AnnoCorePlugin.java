@@ -5,9 +5,12 @@ import cn.hutool.core.util.ArrayUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
+import org.noear.wood.WoodConfig;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.anno.util.ReentrantStopWatch;
 import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
@@ -30,6 +33,20 @@ public class AnnoCorePlugin extends AnnoPlugin {
     @Override
     public void run() {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
+
+        WoodConfig.onExecuteBef((cmd) -> {
+            if (AnnoContextUtil.hasContext()) {
+                ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
+                stopWatch.start(cmd.text);
+            }
+            return true;
+        });
+        WoodConfig.onExecuteAft((cmd) -> {
+            if (AnnoContextUtil.hasContext()) {
+                ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
+                stopWatch.stop();
+            }
+        });
 
         // 将所有代理，注册到 dami 的监听器中
         List<AnnoBaseProxy> proxies = AnnoBeanUtils.getBeansOfType(AnnoBaseProxy.class);

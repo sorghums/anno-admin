@@ -54,4 +54,9 @@ public class AnnoProperty {
      * @see cn.hutool.core.text.AntPathMatcher
      */
     private List<String> skipPathPattern = new ArrayList<>();
+
+    /**
+     * 打印详细日志的阈值（毫秒），默认为超过 500 毫秒，就会打印出详细日志
+     */
+    private long detailLogThreshold = 500;
 }

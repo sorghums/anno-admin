@@ -1,6 +1,8 @@
 package site.sorghum.anno._common.util;
 
+import cn.hutool.core.date.StopWatch;
 import lombok.Data;
+import site.sorghum.anno.anno.util.ReentrantStopWatch;
 
 import java.util.Map;
 
@@ -29,6 +31,13 @@ public class AnnoContextUtil {
     }
 
     /**
+     * 判断是否有上下文
+     */
+    public static boolean hasContext() {
+        return CONTEXT_THREADLOCAL.get() != null;
+    }
+
+    /**
      * 清除当前请求的上下文
      */
     public static void clearContext() {
@@ -41,5 +50,19 @@ public class AnnoContextUtil {
          * 当前请求的请求参数
          */
         Map<String, Object> requestParams;
+
+        /**
+         * 记录当前请求的执行时间
+         */
+        ReentrantStopWatch stopWatch;
+
+        private boolean printDetailLog;
+
+        public ReentrantStopWatch getStopWatch(String name) {
+            if (this.stopWatch == null) {
+                this.stopWatch = new ReentrantStopWatch(name == null ? "" : name);
+            }
+            return this.stopWatch;
+        }
     }
 }
