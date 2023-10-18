@@ -47,4 +47,11 @@ public class AnnoProperty {
      * 忽略打印日志的表
      */
     private List<String> skipTable = new ArrayList<>();
+
+    /**
+     * 忽略打印日志的请求路径
+     *
+     * @see cn.hutool.core.text.AntPathMatcher
+     */
+    private List<String> skipPathPattern = new ArrayList<>();
 }

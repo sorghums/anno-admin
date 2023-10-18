@@ -22,7 +22,7 @@ import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
-import org.noear.solon.data.tran.TranExecutorImp;
+import org.noear.solon.data.tran.TranExecutorDefault;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
@@ -34,6 +34,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.dami.DamiApiCached;
+import site.sorghum.anno.anno.dami.TopicDispatcherMonitor;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -87,6 +88,7 @@ public class XPluginImp implements Plugin {
         // dami 配置项
         DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
         DamiConfig.configure(new DamiApiCached(Dami::bus));
+        DamiConfig.configure(new TopicDispatcherMonitor<>());
 
         List<MetadataContext> metadataContextList = context.getBeansOfType(MetadataContext.class);
         for (MetadataContext metadataContext : metadataContextList) {
@@ -117,7 +119,7 @@ public class XPluginImp implements Plugin {
     private static void tranSupport(AppContext context) {
         // 添加事务控制支持，see: org.noear.solon.data.integration.XPluginImp
         if (Solon.app().enableTransaction()) {
-            context.wrapAndPut(TranExecutor.class, TranExecutorImp.global);
+            context.wrapAndPut(TranExecutor.class, TranExecutorDefault.global);
             context.beanInterceptorAdd(Transactional.class, new TransactionalInterceptor(), 121);
         }
     }

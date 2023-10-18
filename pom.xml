@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.5.8</version>
+        <version>2.5.10</version>
         <relativePath/>
     </parent>
 
@@ -51,7 +51,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mysql.ver>8.0.32</mysql.ver>
         <jsqlparser.version>4.6</jsqlparser.version>
-        <dami.version>0.30</dami.version>
+        <dami.version>0.52</dami.version>
 
         <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>

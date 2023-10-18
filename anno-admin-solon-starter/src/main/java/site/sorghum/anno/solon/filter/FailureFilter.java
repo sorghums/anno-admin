@@ -3,14 +3,18 @@ package site.sorghum.anno.solon.filter;
 
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
+import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Condition;
+import org.noear.solon.annotation.Init;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.validation.ValidatorException;
 import org.noear.solon.validation.annotation.Logined;
+import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 
@@ -26,9 +30,22 @@ import java.time.format.DateTimeParseException;
 @Slf4j
 @Condition(onProperty = "${anno-admin.class.FailureFilter:true} = true")
 public class FailureFilter implements Filter {
+
+    @Inject
+    AnnoProperty annoProperty;
+
+    AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+    @Init
+    public void init () {
+        antPathMatcher.setCachePatterns(true);
+    }
+
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        log.info("请求路径：{}", ctx.path());
+        if (annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, ctx.path()))) {
+            log.info("请求路径：{}", ctx.path());
+        }
         try {
             chain.doFilter(ctx);
         } catch (ValidatorException e) {
