@@ -31,6 +31,15 @@ public class Utils {
         return AnnoUtil.buildAnnoTree(dataList, anEntity.getTreeLabel(), anEntity.getTreeKey(), anEntity.getTreeParentKey());
     }
 
+    public static <T> List<AnnoTreeDTO<String>> toTrees(List<T> dataList,String idKey,String labelKey) {
+        init();
+        if (CollUtil.isEmpty(dataList)) {
+            return new ArrayList<>(1);
+        }
+        AnEntity anEntity = metadataManager.getEntity(dataList.get(0).getClass());
+        return AnnoUtil.buildAnnoTree(dataList, labelKey, idKey, anEntity.getTreeParentKey());
+    }
+
     public static <T> String m2mSql(Map<?, ?> param) {
         init();
         if (StrUtil.isBlank(MapUtil.getStr(param, "mediumTableClass"))) {

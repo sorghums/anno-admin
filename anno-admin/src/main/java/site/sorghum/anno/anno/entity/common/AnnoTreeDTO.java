@@ -34,9 +34,19 @@ public class AnnoTreeDTO<T> {
     String label;
 
     /**
+     * 标签 alias
+     */
+    String title;
+
+    /**
      * 值
      */
     T value;
+
+    /**
+     * 值 alias
+     */
+    T key;
 
     /**
      * 子节点

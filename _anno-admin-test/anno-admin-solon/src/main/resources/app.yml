@@ -3,14 +3,14 @@ solon.serialization.json:
   dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
   dateAsTimeZone: 'GMT+8'
   dateAsTicks: false #将date转为毫秒数（和 dateAsFormat 二选一）
-  longAsString: true #将long型转为字符串输出 （默认为false）
+  longAsString: false #将long型转为字符串输出 （默认为false）
   boolAsInt: false   #将bool型转为字符串输出 （默认为false）
   nullStringAsEmpty: false
   nullBoolAsFalse: false
   nullNumberAsZero: false
   nullArrayAsEmpty: false
   nullAsWriteable: false #输出所有null值
-  enumAsName: false #枚举使用名字（v2.2.1 后支持）
+  enumAsName: true #枚举使用名字（v2.2.1 后支持）
 solon.app:
   name: 'anno-admin'
   group: 'DEFAULT'
@@ -70,7 +70,7 @@ anno-admin:
   # 是否打印执行的 sql
   showSql: true
   # 忽略打印日志的表
-  skipTable: [an_anno_menu,an_permission,pj_app_info,pj_container_info,pj_instance_info,pj_job_info,pj_oms_lock,pj_server_info,pj_workflow_info,pj_workflow_instance_info,pj_workflow_node_info]
+  skipTable: [an_anno_menu,pj_app_info,pj_container_info,pj_instance_info,pj_job_info,pj_oms_lock,pj_server_info,pj_workflow_info,pj_workflow_instance_info,pj_workflow_node_info]
   # 忽略打印请求日志的路径
   skipPathPattern : [/asserts/**, /server/acquire]
 

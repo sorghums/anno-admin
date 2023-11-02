@@ -35,15 +35,17 @@ public class DbController extends BaseDbController {
     @Mapping("/{clazz}/page")
     @Post
     public <T> AnnoResult<IPage<T>> page(@Path String clazz,
+                                         @Param int current,
                                          @Param int page,
                                          @Param int perPage,
+                                         @Param int pageSize,
                                          @Param String orderBy,
                                          @Param String orderDir,
                                          @Param(defaultValue = "false") boolean ignoreM2m,
                                          @Param(defaultValue = "false") boolean reverseM2m,
                                          @Body Map<String, Object> param) {
 
-        return super.page(clazz, page, perPage, orderBy, orderDir, ignoreM2m, reverseM2m, param);
+        return super.page(clazz, Math.max(page,current), Math.max(perPage,pageSize),  orderBy, orderDir, ignoreM2m, reverseM2m, param);
     }
 
     @Mapping("/{clazz}/save")
