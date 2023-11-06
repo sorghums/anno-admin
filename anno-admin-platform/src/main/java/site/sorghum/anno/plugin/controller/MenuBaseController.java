@@ -52,18 +52,18 @@ public class MenuBaseController {
     }
 
     public AnnoResult<List<ReactMenu>> anMenu() {
-        String uid = StpUtil.getLoginId().toString();
+//        String uid = StpUtil.getLoginId().toString();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
-        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
-            sysAnnoMenu -> {
-                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
-                }
-                return true;
-            }
-        ).collect(Collectors.toList());
-        return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(nList)));
+//        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
+//            sysAnnoMenu -> {
+//                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
+//                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
+//                }
+//                return true;
+//            }
+//        ).collect(Collectors.toList());
+        return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(anAnnoMenus)));
     }
 
 
@@ -127,14 +127,23 @@ public class MenuBaseController {
                 }
             }
         }
+        // 加入默认工作台节点
+        roots.add(new ReactMenu(){{
+            setPath("/dashboard/workplace");
+            setName("Workplace");
+            setMeta(
+                Map.of(
+                    "locale","工作台"
+                )
+            );
+        }});
         return roots;
     }
 
     private static List<ReactMenu> list2VueMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
         return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
-                ReactMenu reactMenu = ReactMenu.toVueMenu(sysAnnoMenu);
-                ;
+                ReactMenu reactMenu = ReactMenu.toVueMenu(sysAnnoMenu);;
                 reactMenu.setChildren(new ArrayList<>());
                 return reactMenu;
             }

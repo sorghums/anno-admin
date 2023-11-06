@@ -1,5 +1,6 @@
 package site.sorghum.anno.solon.controller.platform;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
@@ -32,6 +33,7 @@ public class MenuController {
     }
 
     @Mapping(value = "/anMenu")
+    @SaIgnore
     public AnnoResult<List<ReactMenu>> anMenu() {
         return menuBaseController.anMenu();
     }

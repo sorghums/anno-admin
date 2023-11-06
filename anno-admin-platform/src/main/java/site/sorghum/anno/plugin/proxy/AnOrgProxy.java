@@ -29,8 +29,8 @@ public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
         if (annoOrgManager.isIgnoreFilter(tClass)){
             return;
         }
-        String orgId = annoOrgManager.getLoginOrg();
-        dbConditions.add(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", orgId));
+//        String orgId = annoOrgManager.getLoginOrg();
+//        dbConditions.add(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", orgId));
     }
 
     @Override

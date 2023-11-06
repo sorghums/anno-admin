@@ -1,8 +1,12 @@
 package site.sorghum.anno.plugin.entity.response;
 
+import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SmUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 
 import java.util.HashMap;
@@ -27,7 +31,11 @@ public class ReactMenu {
 
     private String title;
 
+    private String name;
+
     private String path;
+
+    Map<String,Object> meta;
 
     List<ReactMenu> children;
 
@@ -36,13 +44,19 @@ public class ReactMenu {
         ReactMenu reactMenu = new ReactMenu();
         reactMenu.setId(anAnnoMenu.getId());
         reactMenu.setParentId(anAnnoMenu.getParentId());
-        if (anAnnoMenu.getParseData() == null){
-            anAnnoMenu.setParseData(RandomUtil.randomString(5));
+        if (StrUtil.isNotBlank(anAnnoMenu.getParseData())){
+            reactMenu.setName("AnViewList");
+            reactMenu.setPath("/anView/anViewList/" + anAnnoMenu.getParseData());
         }
-        reactMenu.setPath("/amisDemo/index/" + anAnnoMenu.getParseData());
+
+        if (StrUtil.isBlank(reactMenu.getPath())){
+            reactMenu.setName("AnViewLayout");
+            reactMenu.setPath("/anViewLayout/" + MD5Util.digestHex(anAnnoMenu.getTitle()));
+        }
         reactMenu.setProps(new HashMap<>());
         reactMenu.setIcon("HomeOutlined");
         reactMenu.setTitle(anAnnoMenu.getTitle());
+        reactMenu.setMeta(Map.of("locale",anAnnoMenu.getTitle(),"rootPath",true,"hideInMenu",false));
         return reactMenu;
     }
 }
