@@ -16,6 +16,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.anno.util.QuerySqlCache;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -52,20 +53,20 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setAutoMaintainTable(annoMain.autoMaintainTable());
         entity.setOrgFilter(annoMain.orgFilter());
         entity.setVirtualTable(annoMain.virtualTable());
-        if (entity.isVirtualTable()){
+        if (entity.isVirtualTable()) {
             // 虚拟表不需要维护
             entity.setAutoMaintainTable(false);
         }
 
         if (annoMain.annoJoinTable().enable()) {
-            if (!entity.isVirtualTable()){
+            if (!entity.isVirtualTable()) {
                 throw new BizException("连表必须是虚拟表,且请自主实现代理类Proxy。");
             }
             List<AnJoinTable.JoinTable> joinTables = Arrays.stream(annoMain.annoJoinTable().joinTables())
                 .map(anJoinTable -> new AnJoinTable.JoinTable(anJoinTable.table(), anJoinTable.alias(), anJoinTable.joinCondition(), anJoinTable.joinType()))
                 .toList();
             // 维护连表信息
-            entity.setJoinTable(new AnJoinTable(annoMain.annoJoinTable().mainTable(),annoMain.annoJoinTable().mainAlias(),joinTables));
+            entity.setJoinTable(new AnJoinTable(annoMain.annoJoinTable().mainTable(), annoMain.annoJoinTable().mainAlias(), joinTables));
         }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
@@ -123,9 +124,9 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setTitle(anno.title());
             // 列名没有设置时，默认使用下划线
             if (StrUtil.isBlank(anno.tableFieldName())) {
-                if (virtualTable || anno.virtualColumn()){
+                if (virtualTable || anno.virtualColumn()) {
                     anField.setTableFieldName(field.getName());
-                }else {
+                } else {
                     anField.setTableFieldName(StrUtil.toUnderlineCase(field.getName()));
                 }
             } else {
@@ -150,10 +151,14 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setDataType(anno.dataType());
 
             anField.setOptionIsMultiple(anno.optionType().isMultiple());
-            anField.setOptionTypeSql(anno.optionType().sql());
+            if (StrUtil.isNotBlank(anno.optionType().sql())){
+                String optionQuerySqlCacheKey = QuerySqlCache.generateKey(anField.getFieldName(), anno.optionType().sql());
+                QuerySqlCache.put(optionQuerySqlCacheKey, anno.optionType().sql());
+                anField.setOptionTypeSql(optionQuerySqlCacheKey);
+            }
             AnnoOptionType.OptionAnnoClass optionAnnoClass = anno.optionType().optionAnno();
             anField.setOptionAnnoClass(
-                new AnField.OptionAnnoClass(optionAnnoClass.labelKey(),optionAnnoClass.idKey(),optionAnnoClass.annoClass())
+                new AnField.OptionAnnoClass(optionAnnoClass.labelKey(), optionAnnoClass.idKey(), optionAnnoClass.annoClass())
             );
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
             List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
@@ -170,7 +175,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setImageHeight(anno.imageType().height());
 
             // 选择类型-树
-            anField.setTreeTypeSql(anno.treeType().sql());
+            if (StrUtil.isNotBlank(anno.treeType().sql())){
+                String treeQuerySqlCacheKey = QuerySqlCache.generateKey(anField.getFieldName(), anno.treeType().sql());
+                QuerySqlCache.put(treeQuerySqlCacheKey, anno.treeType().sql());
+                anField.setTreeTypeSql(treeQuerySqlCacheKey);
+            }
             AnnoTreeType.TreeAnnoClass treeAnnoClass = anno.treeType().treeAnno();
             anField.setTreeOptionAnnoClass(
                 new AnField.TreeAnnoClass(treeAnnoClass.annoClass(),treeAnnoClass.idKey(),treeAnnoClass.labelKey(),treeAnnoClass.pidKey())
@@ -212,6 +221,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         }
         entity.setMany2ManyFields(annoMany2ManyFields);
     }
+
     private List<AnColumnButton> getAnButton(Class<?> clazz) {
         ArrayList<AnColumnButton> anColumnButtons = new ArrayList<>();
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);

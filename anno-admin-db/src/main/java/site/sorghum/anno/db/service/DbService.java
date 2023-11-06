@@ -4,9 +4,9 @@ package site.sorghum.anno.db.service;
 import org.noear.wood.IPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sql构造器
@@ -69,4 +69,12 @@ public interface DbService {
      * @return int
      */
     <T> int delete(Class<T> tClass, List<DbCondition> dbConditions);
+
+    /**
+     * sql直接查询
+     *
+     * @param actualSql sql
+     * @return {@link List}<{@link Map}<{@link String}, {@link Object}>>
+     */
+    List<Map<String, Object>> sql2MapList(String actualSql);
 }

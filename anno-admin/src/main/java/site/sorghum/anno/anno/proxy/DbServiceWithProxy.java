@@ -18,6 +18,7 @@ import site.sorghum.anno.db.service.DbService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -149,6 +150,11 @@ public class DbServiceWithProxy implements DbService {
         // 后置处理
         damiProxy.afterDelete(tClass, dbConditions);
         return delete;
+    }
+
+    @Override
+    public List<Map<String, Object>> sql2MapList(String actualSql) {
+        return dbService.sql2MapList(actualSql);
     }
 
     private <T> T virtualProcess(boolean isVirtual,Supplier<T> supplier,Supplier<T>  defaultSupplier){

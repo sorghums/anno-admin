@@ -15,13 +15,14 @@ import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoTableParamCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -52,6 +53,17 @@ public class BaseDbController {
     @Inject
     PermissionProxy permissionProxy;
 
+    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql){
+        String actualSql = QuerySqlCache.get(sql);
+        if (StrUtil.isEmpty(actualSql)) {
+            return AnnoResult.failure("sql 不存在,请检查相关配置项");
+        }
+        List<Map<String, Object>> mapList = dbService.sql2MapList(actualSql);
+        List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+            mapList, "label", "id", "pid"
+        );
+        return AnnoResult.succeed(trees);
+    }
     /**
      * 分页查询
      *

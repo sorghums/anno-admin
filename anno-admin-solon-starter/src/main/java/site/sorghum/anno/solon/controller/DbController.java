@@ -27,6 +27,12 @@ import java.util.Map;
 @SaIgnore
 public class DbController extends BaseDbController {
 
+    @Mapping("/sql2tree")
+    @Post
+    public AnnoResult<List<AnnoTreeDTO<String>>> sql2tree(@Body Map<String, String> param) {
+        return super.querySqlTree(param.get("sqlKey"));
+    }
+
     /**
      * 分页查询
      *

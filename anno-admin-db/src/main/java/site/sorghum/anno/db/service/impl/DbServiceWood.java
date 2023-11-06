@@ -15,7 +15,9 @@ import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.i18n.I18nUtil;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库服务
@@ -101,6 +103,15 @@ public class DbServiceWood implements DbService {
             return dbTableQuery.set(removeParam.getRemoveColumn(), removeParam.getRemoveValue()).update();
         } else {
             return dbTableQuery.delete();
+        }
+    }
+
+    @Override
+    public List<Map<String, Object>> sql2MapList(String actualSql) {
+        try {
+            return dbContext.sql(actualSql).getDataList().getMapList();
+        } catch (SQLException e) {
+            throw new AnnoDbException(e.getMessage());
         }
     }
 

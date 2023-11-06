@@ -16,7 +16,7 @@ import java.util.List;
 public interface AnnoBaseProxy<T> {
 
     /**
-     * 在哪些 entity 上生效，"*" 代表所有，为空则不生效
+     * 在哪些 entity 上生效，Object 代表所有，为空则不生效
      *
      * @return entityName
      */
