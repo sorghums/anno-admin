@@ -52,17 +52,17 @@ public class MenuBaseController {
     }
 
     public AnnoResult<List<ReactMenu>> anMenu() {
-//        String uid = StpUtil.getLoginId().toString();
+        String uid = StpUtil.getLoginId().toString();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
-//        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
-//            sysAnnoMenu -> {
-//                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-//                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
-//                }
-//                return true;
-//            }
-//        ).collect(Collectors.toList());
+        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
+            sysAnnoMenu -> {
+                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
+                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
+                }
+                return true;
+            }
+        ).collect(Collectors.toList());
         return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(anAnnoMenus)));
     }
 

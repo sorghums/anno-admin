@@ -13,9 +13,9 @@ import java.util.function.Function;
 public class AuthFunctions {
 
     public static Function<Map<String, String>, AnUser> verifyLogin = (map) -> {
-        String mobile = map.get("mobile");
+        String username = map.get("username");
         String password = map.get("password");
-        return AnnoBeanUtils.getBean(AuthService.class).verifyLogin(mobile, password);
+        return AnnoBeanUtils.getBean(AuthService.class).verifyLogin(username, password);
     };
 
     public static Function<String, AnUser> getUserById = (id) -> {

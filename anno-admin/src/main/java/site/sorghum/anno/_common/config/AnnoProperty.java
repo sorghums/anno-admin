@@ -32,7 +32,7 @@ public class AnnoProperty {
     /**
      * 是否开启验证码，默认为 true 开启
      */
-    private boolean captchaEnable = true;
+    private boolean captchaEnable = false;
     /**
      * 本地文件存储路径
      */

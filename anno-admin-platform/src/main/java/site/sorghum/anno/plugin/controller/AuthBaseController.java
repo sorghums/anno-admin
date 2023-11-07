@@ -31,13 +31,13 @@ public class AuthBaseController {
 
     public AnnoResult<String> login(Map<String, String> user) {
         // 获得系列参数
-        String mobile = user.get("mobile");
+        String username = user.get("username");
         String password = user.get("password");
         String codeKey = user.get("codeKey");
         String code = user.get("code");
         // 校验验证码
         captchaManager.verifyCaptcha(codeKey, code);
-        if (mobile == null || password == null) {
+        if (username == null || password == null) {
             return AnnoResult.failure("用户名或密码不能为空");
         }
         // 校验用户名密码
