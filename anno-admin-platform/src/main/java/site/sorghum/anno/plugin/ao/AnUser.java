@@ -70,11 +70,10 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      * 角色按钮
      */
     @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinAnnoMainClazz = AnRole.class,
+            joinTargetClazz = AnRole.class,
             mediumTableClass = AnUserRole.class,
-            mediumOtherField = "role_id",
-            mediumThisField = "user_id",
-            joinThisClazzField = "id"
+            mediumTargetField = "role_id",
+            mediumThisField = "user_id"
     ))
     private Object roleButton;
 

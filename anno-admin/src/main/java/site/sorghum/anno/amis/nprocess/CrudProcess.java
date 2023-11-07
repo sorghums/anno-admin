@@ -239,7 +239,7 @@ public class CrudProcess extends BaseProcess {
         dialog.setSize(anColumnButton.getM2mWindowSize());
         dialog.setShowCloseButton(true);
         IFrame iFrame = new IFrame();
-        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
         iFrame.setHeight(anColumnButton.getM2mWindowHeight());
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);

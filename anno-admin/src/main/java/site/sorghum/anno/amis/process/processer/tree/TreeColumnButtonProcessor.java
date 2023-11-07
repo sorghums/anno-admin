@@ -79,7 +79,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                 HashMap<String, Object> queryMap = new HashMap<>() {{
                     put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                     put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-                    put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+                    put("mediumThisField", anColumnButton.getM2mMediumTargetField());
                     put("mediumOtherField", anColumnButton.getM2mMediumThisField());
                     put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
                     put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
@@ -96,7 +96,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getM2mWindowHeight());
-                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumOtherField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumTargetField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                             }}
                         );
                         setActions(new ArrayList<>());

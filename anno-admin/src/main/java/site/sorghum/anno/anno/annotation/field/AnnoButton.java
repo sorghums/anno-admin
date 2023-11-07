@@ -142,7 +142,7 @@ public @interface AnnoButton {
          *
          * @return {@link Class}<{@link ?}>
          */
-        Class<?> joinAnnoMainClazz() default Object.class;
+        Class<?> joinTargetClazz() default Object.class;
 
         /**
          * SQL语句：? 为 joinThisClazzField的值
@@ -158,8 +158,12 @@ public @interface AnnoButton {
          *
          * @return {@link String}
          */
-        String joinThisClazzField() default "";
+        String joinThisClazzField() default "id";
 
+        /**
+         * 以哪个字段为条件【target】
+         */
+        String joinTargetClazzField() default "id";
 
         /**
          * 中间表的类
@@ -174,7 +178,7 @@ public @interface AnnoButton {
          *
          * @return {@link String}
          */
-        String mediumOtherField() default "";
+        String mediumTargetField() default "";
 
         /**
          * 中间表的字段【本表】

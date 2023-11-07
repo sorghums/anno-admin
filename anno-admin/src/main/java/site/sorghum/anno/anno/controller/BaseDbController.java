@@ -90,7 +90,7 @@ public class BaseDbController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = MapUtil.getStr(param, "joinThisClazzField");
+            String joinThisClazzField = MapUtil.getStr(param, "m2mJoinThisClazzField");
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, entity.getClazz());
@@ -179,15 +179,15 @@ public class BaseDbController {
     public <T> AnnoResult<T> removeRelation(String clazz, Map<String, String> param) throws SQLException {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.DELETE);
 
-        String mediumOtherField = param.get("mediumOtherField");
-        String otherValue = param.get("joinValue");
-        String thisValue = param.get(param.get("joinThisClazzField"));
-        String mediumThisField = param.get("mediumThisField");
+        String mediumOtherField = param.get("m2mMediumTargetField");
+        String otherValue = param.get("targetJoinValue");
+        String thisValue = param.get("thisJoinValue");
+        String mediumThisField = param.get("m2mMediumThisField");
         ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
             DbCondition.builder().field(mediumOtherField).value(otherValue).build(),
             DbCondition.builder().field(mediumThisField).value(thisValue).build()
         );
-        dbService.delete(metadataManager.getEntity(param.get("mediumTableClass")).getClazz(), dbConditions);
+        dbService.delete(metadataManager.getEntity(param.get("m2mMediumTableClass")).getClazz(), dbConditions);
         return AnnoResult.succeed();
     }
 
@@ -244,15 +244,15 @@ public class BaseDbController {
     public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
         // 中间表
-        String mediumTableClass = param.get("mediumTableClass").toString();
+        String mediumTableClass = param.get("m2mMediumTableClass").toString();
         Class<?> aClass = metadataManager.getEntity(mediumTableClass).getClazz();
         String[] split;
         Object ids = param.get("ids");
         // 字段一
-        String mediumThisField = param.get("mediumThisField").toString();
+        String mediumThisField = param.get("m2mMediumThisField").toString();
         // 字段二
-        String mediumOtherField = param.get("mediumOtherField").toString();
-        String mediumOtherValue = param.get("joinValue").toString();
+        String mediumOtherField = param.get("m2mMediumTargetField").toString();
+        String mediumThisValue = param.get("joinValue").toString();
 
         if (ids instanceof List) {
             List<String> idList = (List) ids;
@@ -264,13 +264,13 @@ public class BaseDbController {
         if (clearAll) {
             // 物理删除
             dbService.delete(aClass, CollUtil.newArrayList(
-                DbCondition.builder().field(mediumOtherField).value(mediumOtherValue).build()
+                DbCondition.builder().field(mediumThisField).value(mediumThisValue).build()
             ));
         }
-        for (String mediumThisValue : split) {
+        for (String mediumTargetValue : split) {
             Map<String, Object> addValue = new HashMap<>() {{
                 put(mediumThisField, mediumThisValue);
-                put(mediumOtherField, mediumOtherValue);
+                put(mediumOtherField, mediumTargetValue);
             }};
             dbService.insert(JSONUtil.toBean(addValue, aClass));
         }

@@ -73,9 +73,9 @@ public class AnColumnButton extends AnButton {
     /**
      * 多对多：目标表
      *
-     * @see AnnoButton.M2MJoinButton#joinAnnoMainClazz()
+     * @see AnnoButton.M2MJoinButton#joinTargetClazz()
      */
-    private Class<?> m2mJoinAnnoMainClazz;
+    private Class<?> m2mJoinTargetClazz;
 
     /**
      * 多对多：连表 sql
@@ -92,6 +92,13 @@ public class AnColumnButton extends AnButton {
     private String m2mJoinThisClazzField;
 
     /**
+     * 多对多：以哪个字段为条件【target】
+     *
+     * @see AnnoButton.M2MJoinButton#joinTargetClazzField()
+     */
+    private String m2mJoinTargetClazzField;
+
+    /**
      * 多对多：中间表的类
      *
      * @see AnnoButton.M2MJoinButton#mediumTableClass()
@@ -101,9 +108,9 @@ public class AnColumnButton extends AnButton {
     /**
      * 多对多：中间表的字段【目标表】
      *
-     * @see AnnoButton.M2MJoinButton#mediumOtherField()
+     * @see AnnoButton.M2MJoinButton#mediumTargetField()
      */
-    private String m2mMediumOtherField;
+    private String m2mMediumTargetField;
 
     /**
      * 多对多：中间表的字段【本表】

@@ -1,11 +1,14 @@
 package site.sorghum.anno.test.modular.better;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.field.*;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
+import site.sorghum.anno.anno.annotation.field.*;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
@@ -46,9 +49,9 @@ public class Article extends BaseMetaModel {
 
 
     @AnnoButton(name = "收藏夹", m2mJoinButton = @AnnoButton.M2MJoinButton(
-        joinAnnoMainClazz = Favorites.class,
+        joinTargetClazz = Favorites.class,
         mediumTableClass = ArticleFavoritesRelation.class,
-        mediumOtherField = "favorites_id",
+        mediumTargetField = "favorites_id",
         mediumThisField = "article_id",
         joinThisClazzField = "id",
         windowSize = "sm"

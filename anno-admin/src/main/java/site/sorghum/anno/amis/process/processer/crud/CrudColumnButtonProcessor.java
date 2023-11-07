@@ -21,7 +21,10 @@ import site.sorghum.anno.amis.process.BaseProcessor;
 import site.sorghum.anno.amis.process.BaseProcessorChain;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * CRUD视图初始化处理器
@@ -119,7 +122,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
         queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+        queryMap.put("mediumThisField", anColumnButton.getM2mMediumTargetField());
         queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
         queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
         queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
@@ -131,7 +134,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         dialog.setSize(anColumnButton.getM2mWindowSize());
         dialog.setShowCloseButton(true);
         IFrame iFrame = new IFrame();
-        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
         iFrame.setHeight(anColumnButton.getM2mWindowHeight());
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);

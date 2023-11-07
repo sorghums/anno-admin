@@ -42,15 +42,15 @@ public class Utils {
 
     public static <T> String m2mSql(Map<?, ?> param) {
         init();
-        if (StrUtil.isBlank(MapUtil.getStr(param, "mediumTableClass"))) {
+        if (StrUtil.isBlank(MapUtil.getStr(param, "m2mMediumTableClass"))) {
             return "";
         }
-        String mediumOtherField = MapUtil.getStr(param, "mediumOtherField");
-        String otherValue = MapUtil.getStr(param, "joinValue");
-        String mediumThisField = MapUtil.getStr(param, "mediumThisField");
-        AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "mediumTableClass"));
+        String mediumOtherField = MapUtil.getStr(param, "m2mMediumTargetField");
+        String thisValue = MapUtil.getStr(param, "joinValue");
+        String mediumThisField = MapUtil.getStr(param, "m2mMediumThisField");
+        AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "m2mMediumTableClass"));
         String mediumTable = mediumEntity.getTableName();
-        String sql = "select " + mediumThisField + " from " + mediumTable + " where " + mediumOtherField + " = '" + otherValue + "'";
+        String sql = "select " + mediumOtherField + " from " + mediumTable + " where " + mediumThisField + " = '" + thisValue + "'";
         return sql(mediumEntity.getClazz(), sql);
     }
 

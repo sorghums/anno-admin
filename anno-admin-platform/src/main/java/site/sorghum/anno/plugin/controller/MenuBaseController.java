@@ -128,7 +128,7 @@ public class MenuBaseController {
             }
         }
         // 加入默认工作台节点
-        roots.add(new ReactMenu(){{
+        roots.add(0,new ReactMenu(){{
             setPath("/dashboard/workplace");
             setName("Workplace");
             setMeta(

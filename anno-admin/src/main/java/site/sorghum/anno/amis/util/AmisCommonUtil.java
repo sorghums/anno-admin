@@ -15,10 +15,10 @@ import site.sorghum.amis.entity.layout.Tabs;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._metadata.AnButton;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.AnButton;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
@@ -154,7 +154,7 @@ public class AmisCommonUtil {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("joinValue", "${" + anColumnButton.getM2mJoinThisClazzField() + "}");
         queryMap.put("joinCmd", Base64.encodeStr(anColumnButton.getM2mJoinSql().getBytes(), false, true));
-        queryMap.put("mediumThisField", anColumnButton.getM2mMediumOtherField());
+        queryMap.put("mediumThisField", anColumnButton.getM2mMediumTargetField());
         queryMap.put("mediumOtherField", anColumnButton.getM2mMediumThisField());
         queryMap.put("mediumTableClass", anColumnButton.getM2mMediumTableClass().getSimpleName());
         queryMap.put("joinThisClazzField", anColumnButton.getM2mJoinThisClazzField());
@@ -174,7 +174,7 @@ public class AmisCommonUtil {
             Map<String, Object> queryMap = AmisCommonUtil.createM2mJoinQueryMap(anColumnButton,true);
             IFrame iFrame = new IFrame();
             iFrame.setHeight(anColumnButton.getM2mWindowHeight());
-            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
             tab.setBody(List.of(iFrame));
         }
         return tab;
