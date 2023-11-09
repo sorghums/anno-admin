@@ -31,6 +31,11 @@ public class AnnoCorePlugin extends AnnoPlugin {
     }
 
     @Override
+    public int runOrder() {
+        return 1000;
+    }
+
+    @Override
     public void run() {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
 

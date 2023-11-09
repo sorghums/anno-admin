@@ -5,6 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoConstants;
 
 /**
  * Pear控制器
@@ -20,10 +21,10 @@ public class WebController {
     @Mapping(value = "/")
     public void first(Context ctx) {
         if (StpUtil.isLogin()) {
-            ctx.redirect("/index.html#/home/index");
+            ctx.redirect(AnnoConstants.BASE_URL + "/index.html#/home/index");
             return;
         }
-        ctx.redirect("/index.html#/login");
+        ctx.redirect(AnnoConstants.BASE_URL + "/index.html#/login");
     }
 
 }

@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.MenuBaseController;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/05/19
  */
-@Mapping(value = "/system/config")
+@Mapping(value = AnnoConstants.BASE_URL + "/system/config")
 @Controller
 @Condition(onClass = AnnoPlatform.class)
 public class MenuController {

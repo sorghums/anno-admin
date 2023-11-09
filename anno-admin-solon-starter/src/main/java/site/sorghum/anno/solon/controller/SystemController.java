@@ -5,6 +5,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.SystemBaseController;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
@@ -20,6 +21,7 @@ import java.util.Map;
  */
 @Controller
 @Condition(onClass = AnnoPlatform.class)
+@Mapping(value = AnnoConstants.BASE_URL)
 public class SystemController {
 
     @Inject

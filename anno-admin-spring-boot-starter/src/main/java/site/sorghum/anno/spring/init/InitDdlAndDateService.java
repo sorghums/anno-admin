@@ -18,6 +18,7 @@ import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.util.List;
@@ -47,6 +48,8 @@ public class InitDdlAndDateService implements ApplicationListener<ApplicationSta
     AuthServiceImpl authService;
     @Inject
     Optional<PlatformFactory> platformFactoryOptional;
+    @Inject
+    PluginRunner pluginRunner;
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
@@ -84,8 +87,13 @@ public class InitDdlAndDateService implements ApplicationListener<ApplicationSta
             }
         }
 
+        // 初始化anno插件
+        pluginRunner.init();
+
         authService.initPermissions();
         authService.initMenus();
+
+        metadataManager.refresh();
     }
 
 }

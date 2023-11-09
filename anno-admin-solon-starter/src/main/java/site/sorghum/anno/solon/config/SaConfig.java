@@ -11,6 +11,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 
 /**
@@ -37,7 +38,7 @@ public class SaConfig {
             // [拦截路由]
             .addInclude("/**")
             // [放行路由]
-            .addExclude("/favicon.ico")
+            .addExclude(AnnoConstants.BASE_URL + "/favicon.ico")
             .addExclude("/solon-admin/api/**")
             // 认证函数: 每次请求执行
             .setAuth(req -> SaRouter.match("/**", StpUtil::checkLogin))

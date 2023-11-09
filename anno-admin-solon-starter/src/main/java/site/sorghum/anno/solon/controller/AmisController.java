@@ -5,6 +5,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.core.handle.Context;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.amis.controller.AmisBaseController;
 
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * @since 2023/05/19
  */
 @Controller
-@Mapping(value = "/system/config")
+@Mapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
 
     @Mapping(value = "/amisJson/{clazz}")

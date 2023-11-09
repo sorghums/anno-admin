@@ -9,12 +9,14 @@ import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.util.ClassUtil;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
 
 import java.util.HashMap;
 
 @Controller
 @SaIgnore
+@Mapping(value = AnnoConstants.BASE_URL)
 public class PageController {
     @Mapping(value = "/goAnnoSinglePage/{clazz}")
     public void goAnnoSinglePage(Context ctx, @Path String clazz,

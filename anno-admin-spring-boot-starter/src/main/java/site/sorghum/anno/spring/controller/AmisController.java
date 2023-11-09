@@ -2,6 +2,7 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import org.springframework.web.bind.annotation.*;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.amis.controller.AmisBaseController;
 
@@ -14,7 +15,7 @@ import java.util.HashMap;
  * @since 2023/05/19
  */
 @RestController
-@RequestMapping(value = "/system/config")
+@RequestMapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
 
     @RequestMapping(value = "/amisJson/{clazz}")

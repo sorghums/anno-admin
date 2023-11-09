@@ -3,6 +3,7 @@ package site.sorghum.anno.solon.controller.platform;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;
@@ -13,7 +14,7 @@ import java.io.InputStream;
  * @author Sorghum
  * @since 2023/08/02
  */
-@Mapping(value = "anLocal")
+@Mapping(value = AnnoConstants.BASE_URL + "/anLocal")
 @Controller
 @Condition(onClass = AnnoPlatform.class)
 public class AnFileController{

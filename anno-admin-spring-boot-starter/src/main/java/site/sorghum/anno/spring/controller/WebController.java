@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import site.sorghum.anno._common.AnnoConstants;
 
 import java.io.IOException;
 
@@ -23,15 +24,15 @@ public class WebController {
     @GetMapping(value = "/")
     public void first(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (StpUtil.isLogin()){
-            response.sendRedirect("/index.html#/home/index");
+            response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/home/index");
             return;
         }
-        response.sendRedirect("/index.html#/login");
+        response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/login");
     }
 
-    @GetMapping(value = "/goAnnoSinglePage/{clazz}")
+    @GetMapping(value = AnnoConstants.BASE_URL + "/goAnnoSinglePage/{clazz}")
     public void goAnnoSinglePage(HttpServletResponse response,@PathVariable String clazz) throws IOException {
-        response.sendRedirect("/index.html#/amisSingle/index/" + clazz);
+        response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + clazz);
     }
 
 }

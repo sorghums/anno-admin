@@ -1,5 +1,6 @@
 package site.sorghum.anno.spring.config;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -20,6 +21,7 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -62,7 +64,9 @@ public class AnnoConfig {
 
     @Bean
     public DbContext dbContext(DataSource dataSource) {
-        return new DbContext(dataSource);
+        DbContext dbContext = new DbContext(dataSource);
+        dbContext.nameSet(AnnoConstants.DEFAULT_DATASOURCE_NAME);
+        return dbContext;
     }
 
     @Bean
@@ -119,20 +123,19 @@ public class AnnoConfig {
                 if (clazz.isInterface()) {
                     continue;
                 }
-                AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+                AnnoMain annoMain = AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
                 if (annoMain != null) {
-
                     metadataManager.loadEntity(clazz);
                     // 缓存处理类
                     AnnoClazzCache.put(clazz.getSimpleName(), clazz);
+                    // 缓存字段信息
+                    AnnoUtil.getAnnoFields(clazz).forEach(
+                        field -> {
+                            String columnName = AnnoUtil.getColumnName(field);
+                            AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
+                        }
+                    );
                 }
-                // 缓存字段信息
-                AnnoUtil.getAnnoFields(clazz).forEach(
-                    field -> {
-                        String columnName = AnnoUtil.getColumnName(field);
-                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
-                    }
-                );
             }
         }
     }

@@ -4,8 +4,10 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.SystemBaseController;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
@@ -19,6 +21,7 @@ import java.util.Map;
  * @since 2023/05/30
  */
 @RestController
+@RequestMapping(value = AnnoConstants.BASE_URL)
 public class SystemController extends SystemBaseController {
 
     // 验证码
