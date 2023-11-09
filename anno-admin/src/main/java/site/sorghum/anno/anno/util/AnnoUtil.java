@@ -273,7 +273,9 @@ public class AnnoUtil {
                 AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
                 annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
                 annoTreeDto.setLabel(simpleToString(reflectGetValue(d, label)));
+                annoTreeDto.setTitle(simpleToString(reflectGetValue(d, label)));
                 annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
+                annoTreeDto.setKey(simpleToString(reflectGetValue(d, key)));
                 annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
                 annoTreeDto.setChildren(new ArrayList<>());
                 return annoTreeDto;

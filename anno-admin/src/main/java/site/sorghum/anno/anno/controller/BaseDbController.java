@@ -184,8 +184,13 @@ public class BaseDbController {
                                                                boolean reverseM2m,
                                                                Map<String, String> param) {
         List<T> list = queryTreeList(clazz, ignoreM2m, reverseM2m, param);
-        List<AnnoTreeDTO<String>> annoTreeDTOs = Utils.toTrees(list);
-        annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("0").label("无选择").value("").build());
+        List<AnnoTreeDTO<String>> annoTreeDTOs = null;
+        if (param.containsKey("idKey") && param.containsKey("labelKey")) {
+            annoTreeDTOs = Utils.toTrees(list, param.get("idKey"), param.get("labelKey"));
+        }else {
+            annoTreeDTOs = Utils.toTrees(list);
+        }
+        annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("0").label("无选择").title("无选择").value("").key("").build());
         return AnnoResult.succeed(annoTreeDTOs);
     }
 

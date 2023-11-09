@@ -43,7 +43,7 @@ public class AnnoOrgManager {
 
     public boolean isIgnoreFilter(Class<?> clazz) {
         try {
-            String loginId = (String) StpUtil.getLoginId();
+            String loginId = (String) StpUtil.getLoginId("-1");
             List<AnUserRole> list = dbServiceWithProxy.list(AnUserRole.class, CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "user_id", loginId)));
             boolean isAdmin = list.stream().anyMatch(
                 anUserRole -> "admin".equals(anUserRole.getRoleId())

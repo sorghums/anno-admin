@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -20,7 +21,7 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "沃特发表A")
+@AnnoMain(name = "沃特发表A",annoOrder = @AnnoOrder(orderValue = "id",orderType = "desc"))
 @Table("wtf_a")
 @AllArgsConstructor
 @NoArgsConstructor
