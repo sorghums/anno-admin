@@ -22,7 +22,7 @@ public class PageController {
     public void goAnnoSinglePage(Context ctx, @Path String clazz,
                                  @Param(value = "tokenKey", required = true) String tokenKey,
                                  @Param(value = "tokenValue", required = true) String tokenValue) {
-        ctx.redirect("/index.html#/amisSingle/index/" + clazz + "?tokenKey=" + tokenKey + "&tokenValue=" + tokenValue);
+        ctx.redirect(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + clazz + "?tokenKey=" + tokenKey + "&tokenValue=" + tokenValue);
     }
 
     @Mapping(value = "/annoTpl/{tplActionClass}/{tplName}")

@@ -168,13 +168,13 @@ public class AmisCommonUtil {
         if (anColumnButton.isO2mEnable()) {
             IFrame iFrame = new IFrame();
             iFrame.setHeight(anColumnButton.getO2mWindowHeight());
-            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+            iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
             tab.setBody(List.of(iFrame));
         } else if (anColumnButton.isM2mEnable()) {
             Map<String, Object> queryMap = AmisCommonUtil.createM2mJoinQueryMap(anColumnButton,true);
             IFrame iFrame = new IFrame();
             iFrame.setHeight(anColumnButton.getM2mWindowHeight());
-            iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+            iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
             tab.setBody(List.of(iFrame));
         }
         return tab;
