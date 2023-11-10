@@ -1,6 +1,7 @@
 package site.sorghum.anno;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,12 @@ public class AnnoCorePlugin extends AnnoPlugin {
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
                 ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
-                String taskName = String.format("%s\n%s params ==> %s", cmd.text, " ".repeat(16), cmd.paramMap());
+                String taskName;
+                if (CollUtil.isEmpty(cmd.paramMap())) {
+                    taskName = cmd.text;
+                } else {
+                    taskName = String.format("%s\n%s params ==> %s", cmd.text, " ".repeat(16), cmd.paramMap());
+                }
                 stopWatch.start(taskName);
             }
             return true;
