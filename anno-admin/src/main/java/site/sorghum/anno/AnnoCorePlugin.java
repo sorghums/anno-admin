@@ -42,7 +42,8 @@ public class AnnoCorePlugin extends AnnoPlugin {
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
                 ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
-                stopWatch.start(cmd.text);
+                String taskName = String.format("%s\n%s params ==> %s", cmd.text, " ".repeat(16), cmd.paramMap());
+                stopWatch.start(taskName);
             }
             return true;
         });

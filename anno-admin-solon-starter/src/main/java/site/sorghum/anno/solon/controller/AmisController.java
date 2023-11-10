@@ -22,8 +22,6 @@ import java.util.Map;
 @Controller
 @Mapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
-    @Inject
-    MetadataManager metadataManager;
 
     @Mapping(value = "/amisJson/{clazz}")
     @SaIgnore
