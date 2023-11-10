@@ -39,7 +39,7 @@ public @interface AnnoField {
     int fieldSize() default 0;
 
     /**
-     * 定义数据库中的默认值，比如：DEFAULT 0
+     * 字段默认值，比如 0
      */
     String defaultValue() default "";
 
