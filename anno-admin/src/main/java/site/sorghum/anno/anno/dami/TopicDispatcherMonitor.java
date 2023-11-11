@@ -12,6 +12,7 @@ import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author songyinyin
@@ -44,7 +45,7 @@ public class TopicDispatcherMonitor<C, R> extends TopicDispatcherDefault<C, R> {
         //结速监视...
         AnnoProperty annoProperty = AnnoBeanUtils.getBean(AnnoProperty.class);
         if (!AnnoContextUtil.hasContext() && stopWatch.getTotalTimeMillis() > annoProperty.getDetailLogThreshold()) {
-            log.info("{}", stopWatch.prettyPrint());
+            log.info("{}", stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
         }
     }
 

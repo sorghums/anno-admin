@@ -2,16 +2,15 @@ package site.sorghum.anno.plugin.manager;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.collection.CollUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.noear.wood.DbContext;
+import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
-import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.ao.AnUserRole;
 
 import java.util.List;
 
@@ -23,6 +22,9 @@ public class AnnoOrgManager {
 
     @Inject
     MetadataManager metadataManager;
+
+    @Db
+    DbContext dbContext;
 
 
     public String getLoginOrg() {
@@ -43,17 +45,15 @@ public class AnnoOrgManager {
 
     public boolean isIgnoreFilter(Class<?> clazz) {
         try {
-            String loginId = (String) StpUtil.getLoginId("-1");
-            List<AnUserRole> list = dbServiceWithProxy.list(AnUserRole.class, CollUtil.newArrayList(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "user_id", loginId)));
-            boolean isAdmin = list.stream().anyMatch(
-                anUserRole -> "admin".equals(anUserRole.getRoleId())
-            );
+            String loginId = StpUtil.getLoginId("-1");
+            List<String> roleIds = dbContext.table("an_user_role").where("user_id=?", loginId).selectArray("role_id");
+            boolean isAdmin = roleIds.stream().anyMatch("admin"::equals);
             AnEntity entity = metadataManager.getEntity(clazz);
             boolean orgFilter = entity.isOrgFilter();
             // admin 或者 不需要过滤 则不过滤
             return !orgFilter || isAdmin;
         } catch (Exception e) {
-            throw new BizException(e.getMessage());
+            throw new BizException(e);
         }
     }
 }

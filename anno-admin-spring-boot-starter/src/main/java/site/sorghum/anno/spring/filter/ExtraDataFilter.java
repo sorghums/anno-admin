@@ -110,12 +110,7 @@ public class ExtraDataFilter implements Filter {
             filterChain.doFilter(requestWrapper, servletResponse);
         } finally {
             // 清除请求上下文
-            ReentrantStopWatch stopWatch = context.getStopWatch();
-            if (context.isPrintDetailLog() && stopWatch != null
-                && stopWatch.getTotalTimeMillis() > annoProperty.getDetailLogThreshold()) {
-
-                log.info("{}", stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
-            }
+            AnnoContextUtil.printLog(log, annoProperty.getDetailLogThreshold());
             AnnoContextUtil.clearContext();
         }
     }

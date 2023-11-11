@@ -11,6 +11,7 @@ import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.proxy.AnAnnoMenuProxy;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     @Override
     public void beforeAdd(BaseMetaModel data) {
+
         data.setId(IdUtil.getSnowflakeNextIdStr());
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());
@@ -67,29 +69,4 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
         }
     }
 
-    // ----------------- 以下为默认实现 -----------------
-    @Override
-    public void afterAdd(BaseMetaModel data) {
-
-    }
-
-    @Override
-    public void afterUpdate(BaseMetaModel data) {
-
-    }
-
-    @Override
-    public void beforeDelete(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterDelete(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterFetch(Class<BaseMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseMetaModel> page) {
-        
-    }
 }

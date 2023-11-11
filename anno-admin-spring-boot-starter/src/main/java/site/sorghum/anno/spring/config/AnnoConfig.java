@@ -24,8 +24,8 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.PlatformFactory;
+import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.dami.DamiApiCached;
@@ -86,7 +86,9 @@ public class AnnoConfig {
         DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
         DamiConfig.configure(new DamiApiCached(Dami::bus));
 
-        Dami.api().registerListener(MetadataManager.METADATA_TOPIC, SpringUtil.getBean(PermissionContext.class));
+        for (MetadataContext metadataContext : SpringUtil.getBeansOfType(MetadataContext.class).values()) {
+            Dami.api().registerListener(MetadataManager.METADATA_TOPIC, metadataContext);
+        }
 
         // 加载 anno 元数据
         loadMetadata(packages);

@@ -26,11 +26,6 @@ public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public int index() {
-        return AnnoBaseProxy.super.index();
-    }
-
-    @Override
     public void beforeAdd(T data) {
         AnnoBaseProxy.super.beforeAdd(data);
     }

@@ -27,14 +27,7 @@ public class AnnoContextClearFilter implements Filter {
         try {
             chain.doFilter(ctx);
         } finally {
-            AnnoContextUtil.AnnoContext context = AnnoContextUtil.getContext();
-            ReentrantStopWatch stopWatch = context.getStopWatch();
-
-            if (context.isPrintDetailLog() && stopWatch != null
-                && stopWatch.getTotalTimeMillis() > annoProperty.getDetailLogThreshold()) {
-
-                log.info("{}", stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
-            }
+            AnnoContextUtil.printLog(log, annoProperty.getDetailLogThreshold());
             AnnoContextUtil.clearContext();
         }
     }

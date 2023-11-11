@@ -1,10 +1,12 @@
 package site.sorghum.anno._common.util;
 
-import cn.hutool.core.date.StopWatch;
 import lombok.Data;
+import org.slf4j.Logger;
+import site.sorghum.anno.anno.dami.AllEntityProxy;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * AnnoContext上下文工具
@@ -63,6 +65,23 @@ public class AnnoContextUtil {
                 this.stopWatch = new ReentrantStopWatch(name == null ? "" : name);
             }
             return this.stopWatch;
+        }
+    }
+
+    /**
+     * 打印详细日志
+     */
+    public static void printLog(Logger log, long detailLogThreshold) {
+        AnnoContext context = getContext();
+        if (context.printDetailLog && context.stopWatch != null
+            && context.stopWatch.getTotalTimeMillis() >= detailLogThreshold) {
+
+            log.info("{}", context.stopWatch.prettyPrint(TimeUnit.MILLISECONDS, taskInfo -> {
+                if (taskInfo.getTaskName().contains(AllEntityProxy.class.getName())) {
+                    return true;
+                }
+                return false;
+            }));
         }
     }
 }
