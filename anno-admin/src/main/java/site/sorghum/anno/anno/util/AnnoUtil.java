@@ -137,6 +137,14 @@ public class AnnoUtil {
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoField.class);
                 PrimaryKey primaryKey = AnnotationUtil.getAnnotation(declaredField, PrimaryKey.class);
                 if (annotation != null) {
+                    if (annotation.pkField()){
+                        primaryKey = new PrimaryKey(){
+                            @Override
+                            public Class<? extends Annotation> annotationType() {
+                                return PrimaryKey.class;
+                            }
+                        };
+                    }
                     annoFieldFields.add(new FieldAnnoField(declaredField,annotation,primaryKey));
                 }
             }
@@ -161,6 +169,14 @@ public class AnnoUtil {
                     Field field = ReflectUtil.getField(aClass, name);
                     if (field == null){
                         throw new BizException("%s,未找到对应的field".formatted(annotation.title()));
+                    }
+                    if(annotation.pkField()){
+                        primaryKey = new PrimaryKey(){
+                            @Override
+                            public Class<? extends Annotation> annotationType() {
+                                return PrimaryKey.class;
+                            }
+                        };
                     }
                     annoFieldFields.add(new FieldAnnoField(field,annotation,primaryKey));
                 }

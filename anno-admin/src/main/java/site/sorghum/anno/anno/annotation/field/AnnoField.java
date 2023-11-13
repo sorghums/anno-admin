@@ -94,4 +94,10 @@ public @interface AnnoField {
      * 可不绑定虚拟表独立使用
      */
     boolean virtualColumn() default false;
+
+    /**
+     * 是否是主键,默认为false
+     * 在使用重载方法时，@PrimaryKey注解无法使用，需要使用此注解
+     */
+    boolean pkField() default false;
 }
