@@ -9,6 +9,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
+import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.CryptoUtil;
@@ -20,10 +21,7 @@ import site.sorghum.anno._metadata.PermissionContext;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
-import site.sorghum.anno.anno.util.AnnoTableParamCache;
-import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.anno.util.QuerySqlCache;
-import site.sorghum.anno.anno.util.Utils;
+import site.sorghum.anno.anno.util.*;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.db.param.TableParam;
@@ -77,9 +75,8 @@ public class BaseDbController {
                                          boolean ignoreM2m,
                                          boolean reverseM2m,
                                          Map<String, Object> param) {
-
+        List<String> nullKeys = param.get("nullKeys") instanceof List ? (List<String>) param.get("nullKeys") : Collections.emptyList();
         AnEntity entity = metadataManager.getEntity(clazz);
-
         permissionProxy.checkPermission(entity, PermissionProxy.VIEW);
 
         param = emptyStringIgnore(param);
@@ -99,6 +96,12 @@ public class BaseDbController {
         }
         if (StrUtil.isNotEmpty(orderBy)) {
             dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(orderBy).getTableFieldName(),orderDir));
+        }
+        for (String nullKey : nullKeys) {
+            dbConditions.add(
+                DbCondition.builder().
+                    field(AnnoFieldCache.getSqlColumnByJavaName(entity.getClazz(),nullKey)).
+                    andOr(DbCondition.AndOr.AND).build());
         }
         IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(page, perPage));
         return AnnoResult.succeed(pageRes);
