@@ -191,7 +191,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setTreeDatas(treeDataList);
 
             // pk
-            PrimaryKey primaryKey = AnnotationUtil.getAnnotation(field, PrimaryKey.class);
+            PrimaryKey primaryKey = fieldAnnoField.getPrimaryKey();
             if (primaryKey != null) {
                 anField.setPrimaryKey(true);
                 entity.setPkField(anField);
