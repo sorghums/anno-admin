@@ -26,6 +26,13 @@ public @interface AnnoEdit {
      */
     String placeHolder() default "";
 
+    /**
+     * 编辑跨度
+     * 默认为 24 [1-24] 24为整行
+     *
+     * @return int
+     */
+    int span() default 24;
 
     /**
      * 新增启用

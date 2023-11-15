@@ -127,6 +127,13 @@ public class AnField {
     private String editPlaceHolder;
 
     /**
+     * 编辑跨度
+     * 默认为 24 [1-24] 24为整行
+     *
+     */
+    private int editSpan;
+
+    /**
      * 编辑 新增启用
      *
      * @see AnnoEdit#addEnable()
