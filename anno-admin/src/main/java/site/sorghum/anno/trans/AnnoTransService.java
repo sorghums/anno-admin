@@ -1,5 +1,8 @@
 package site.sorghum.anno.trans;
 
+import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -9,13 +12,16 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.plugin.join.aop.EasyJoin;
+import site.sorghum.plugin.join.aop.JoinResMap;
+import site.sorghum.plugin.join.aop.TransitionMap;
 import site.sorghum.plugin.join.entity.JoinParam;
+import site.sorghum.plugin.join.exception.JoinAnnoException;
 import site.sorghum.plugin.join.operator.JoinOperator;
+import site.sorghum.plugin.join.util.InvokeUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Named
 public class AnnoTransService {
@@ -65,12 +71,12 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if(StrUtil.isNotBlank(field.getOptionTypeSql())){
+                if (StrUtil.isNotBlank(field.getOptionTypeSql())) {
                     //select value, label from table where del_flag = 0 order by id desc
                     String originalSql = field.getOptionTypeSql();
                     String newSql = """
-                       select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                        """.formatted(field.getFieldName() + "_label"
+                        select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
+                         """.formatted(field.getFieldName() + "_label"
                         , field.getOptionAnnoClass().getIdKey(),
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
@@ -86,6 +92,10 @@ public class AnnoTransService {
                             , new EasyJoin.RpData[]{}
                             , false
                             , null));
+                }
+                if (CollUtil.isNotEmpty(field.getOptionDatas())) {
+                    Map<String, String> optionsMap = field.getOptionDatas().stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getFieldName());
                 }
             }
             if (dataType == AnnoDataType.TREE) {
@@ -115,12 +125,12 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if(StrUtil.isNotBlank(field.getTreeTypeSql())){
+                if (StrUtil.isNotBlank(field.getTreeTypeSql())) {
                     //select value, label from table where del_flag = 0 order by id desc
                     String originalSql = field.getTreeTypeSql();
                     String newSql = """
-                       select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                        """.formatted(field.getFieldName() + "_label"
+                        select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
+                         """.formatted(field.getFieldName() + "_label"
                         , field.getOptionAnnoClass().getIdKey(),
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
@@ -137,6 +147,10 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
+                if (CollUtil.isNotEmpty(field.getTreeDatas())) {
+                    Map<String, String> optionsMap = field.getOptionDatas().stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                }
             }
         }
         for (JoinParam joinParam : joinParams) {
@@ -144,4 +158,14 @@ public class AnnoTransService {
         }
         return t;
     }
+
+    private <T> void fixedDictTrans(List<T> t, Map<String, String> dict, String fieldName) {
+        for (T tItem : t) {
+            Object fieldValue = ReflectUtil.getFieldValue(tItem, fieldName);
+            if (fieldValue == null) continue;
+            Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
+            tansMap.put(fieldName + "_label", dict.getOrDefault(String.valueOf(fieldValue), String.valueOf(fieldValue)));
+        }
+    }
+
 }
