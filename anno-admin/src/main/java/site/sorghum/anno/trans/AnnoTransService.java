@@ -1,11 +1,13 @@
 package site.sorghum.anno.trans;
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.plugin.join.aop.EasyJoin;
 import site.sorghum.plugin.join.entity.JoinParam;
 import site.sorghum.plugin.join.operator.JoinOperator;
@@ -63,6 +65,28 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
+                if(StrUtil.isNotBlank(field.getOptionTypeSql())){
+                    //select value, label from table where del_flag = 0 order by id desc
+                    String originalSql = field.getOptionTypeSql();
+                    String newSql = """
+                       select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
+                        """.formatted(field.getFieldName() + "_label"
+                        , field.getOptionAnnoClass().getIdKey(),
+                        QuerySqlCache.get(originalSql));
+                    joinParams.add(
+                        new JoinParam(field.getFieldName()
+                            , field.getFieldName()
+                            , null
+                            , field.getOptionAnnoClass().getIdKey()
+                            , null
+                            , null
+                            , newSql
+                            , Map.class
+                            , true
+                            , new EasyJoin.RpData[]{}
+                            , false
+                            , null));
+                }
             }
             if (dataType == AnnoDataType.TREE) {
                 if (!Objects.equals(field.getTreeOptionAnnoClass().getAnnoClass(), Object.class)) {
@@ -85,6 +109,28 @@ public class AnnoTransService {
                             , null
                             , null
                             , querySql
+                            , Map.class
+                            , true
+                            , new EasyJoin.RpData[]{}
+                            , false
+                            , null));
+                }
+                if(StrUtil.isNotBlank(field.getTreeTypeSql())){
+                    //select value, label from table where del_flag = 0 order by id desc
+                    String originalSql = field.getTreeTypeSql();
+                    String newSql = """
+                       select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
+                        """.formatted(field.getFieldName() + "_label"
+                        , field.getOptionAnnoClass().getIdKey(),
+                        QuerySqlCache.get(originalSql));
+                    joinParams.add(
+                        new JoinParam(field.getFieldName()
+                            , field.getFieldName()
+                            , null
+                            , field.getOptionAnnoClass().getIdKey()
+                            , null
+                            , null
+                            , newSql
                             , Map.class
                             , true
                             , new EasyJoin.RpData[]{}
