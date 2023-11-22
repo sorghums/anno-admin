@@ -59,7 +59,7 @@ import java.util.Set;
  */
 public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
-
+    private static final String PLUGIN_BASE_PACKAGE = "site.sorghum.plugin";
     @Override
     public void start(AppContext context) throws Throwable {
 
@@ -111,6 +111,9 @@ public class XPluginImp implements Plugin {
                 }
             });
         });
+
+        // 扫描翻译插件
+        context.beanScan(PLUGIN_BASE_PACKAGE);
     }
 
     /**

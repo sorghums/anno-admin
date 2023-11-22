@@ -57,7 +57,7 @@ public class JobInfoDO extends BaseMetaModel {
     /**
      * 任务自带的参数
      */
-    @AnnoField(title = "任务参数", dataType = AnnoDataType.CODE_EDITOR, edit = @AnnoEdit(), show = false)
+    @AnnoField(title = "任务参数", dataType = AnnoDataType.CODE_EDITOR, edit = @AnnoEdit(span = 8), show = false)
     private String jobParams;
 
     /* ************************** 定时参数 ************************** */
@@ -73,12 +73,12 @@ public class JobInfoDO extends BaseMetaModel {
             @AnnoOptionType.OptionData(label = "工作流", value = "5"),
             @AnnoOptionType.OptionData(label = "每日固定间隔", value = "11")
         }),
-        edit = @AnnoEdit(placeHolder = "请选择类型", notNull = true), search = @AnnoSearch())
+        edit = @AnnoEdit(placeHolder = "请选择类型", notNull = true,span = 8), search = @AnnoSearch())
     private Integer timeExpressionType;
     /**
      * 时间表达式，CRON/NULL/LONG/LONG
      */
-    @AnnoField(title = "时间表达式", edit = @AnnoEdit(placeHolder = "CRON 填写 CRON 表达式，秒级任务填写整数，API 无需填写"))
+    @AnnoField(title = "时间表达式", edit = @AnnoEdit(placeHolder = "CRON 填写 CRON 表达式，秒级任务填写整数，API 无需填写",span = 8))
     private String timeExpression;
 
     /**
