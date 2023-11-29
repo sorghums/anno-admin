@@ -1,6 +1,9 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.json.JSONObject;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 @Controller
 @Mapping(value = "/system/config")
+@Api(tags = "功能控制器")
 public class AmisController extends AmisBaseController {
     @Inject
     MetadataManager metadataManager;
@@ -33,6 +37,7 @@ public class AmisController extends AmisBaseController {
 
     @Mapping(value = "/anEntity/{clazz}")
     @SaIgnore
+    @ApiOperation(value = "获取实体信息", notes = "获取实体信息")
     public AnnoResult<AnEntity> anEntity(@Path String clazz){
         return AnnoResult.succeed(metadataManager.getEntity(clazz));
     }

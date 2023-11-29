@@ -2,6 +2,7 @@ package site.sorghum.anno.trans;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
@@ -39,6 +40,8 @@ public class AnnoTransService {
      * @return {@link List}<{@link T}>
      */
     public <T> List<T> trans(List<T> t, Class<?> tClass) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         // 批量翻译
         List<JoinParam> joinParams = new ArrayList<>();
         AnEntity entity = metadataManager.getEntity(tClass);
@@ -156,6 +159,8 @@ public class AnnoTransService {
         for (JoinParam joinParam : joinParams) {
             joinOperator.batchJoinOne(joinParam, t);
         }
+        stopWatch.stop();
+        System.out.println("翻译耗时：" + stopWatch.getTotalTimeMillis());
         return t;
     }
 

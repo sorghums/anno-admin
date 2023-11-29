@@ -41,7 +41,7 @@
             <artifactId>solon-api</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>solon.boot.jlhttp</artifactId>
+                    <artifactId>solon.boot.smarthttp</artifactId>
                     <groupId>org.noear</groupId>
                 </exclusion>
             </exclusions>
@@ -54,7 +54,10 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.logback</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-openapi2-knife4j</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>sa-token-solon-plugin</artifactId>

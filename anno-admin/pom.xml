@@ -17,6 +17,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>snack3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
             <groupId>site.sorghum.sorghum-plugin</groupId>
             <artifactId>easy-join-core</artifactId>
             <version>${easyjoin.version}</version>

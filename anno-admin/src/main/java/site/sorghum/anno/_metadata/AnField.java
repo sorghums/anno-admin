@@ -1,6 +1,7 @@
 package site.sorghum.anno._metadata;
 
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -24,12 +25,14 @@ public class AnField {
     /**
      * 字段名
      */
+    @ApiModelProperty(value = "字段名",example = "userName")
     private String fieldName;
 
     /**
      * 虚拟列
      * @see AnnoField#virtualColumn()
      */
+    @ApiModelProperty(value = "虚拟列",example = "false")
     private boolean virtualColumn = false;
 
     /**
@@ -37,6 +40,7 @@ public class AnField {
      *
      * @see AnnoField#title()
      */
+    @ApiModelProperty(value = "标题",example = "用户名")
     private String title;
 
     /**
@@ -44,16 +48,19 @@ public class AnField {
      *
      * @see AnnoField#tableFieldName()
      */
+    @ApiModelProperty(value = "表字段名",example = "user_name")
     private String tableFieldName;
 
     /**
      * 是否主键
      */
+    @ApiModelProperty(value = "是否主键",example = "false")
     private boolean primaryKey;
 
     /**
      * 字段类型
      */
+    @ApiModelProperty(value = "字段类型",example = "java.lang.String")
     private Class<?> fieldType;
 
     /**
@@ -61,6 +68,7 @@ public class AnField {
      *
      * @see AnnoField#fieldSize()
      */
+    @ApiModelProperty(value = "数据库中的字段长度，为 0 时使用 anno 设置的默认长度",example = "0")
     private int fieldSize;
 
     /**
@@ -68,6 +76,7 @@ public class AnField {
      *
      * @see AnnoField#defaultValue()
      */
+    @ApiModelProperty(value = "定义数据库中的默认值，比如：DEFAULT 0",example = "DEFAULT 0")
     private String defaultValue;
 
     /**
@@ -75,6 +84,7 @@ public class AnField {
      *
      * @see AnnoField#show()
      */
+    @ApiModelProperty(value = "显示[是否在Table中显示]",example = "true")
     private boolean show;
 
     /**
@@ -82,6 +92,7 @@ public class AnField {
      *
      * @see AnnoSearch#enable()
      */
+    @ApiModelProperty(value = "搜索[是否在QueryForm中显示，支持搜索]",example = "true")
     private boolean searchEnable;
 
     /**
@@ -89,6 +100,7 @@ public class AnField {
      *
      * @see AnnoSearch#notNull()
      */
+    @ApiModelProperty(value = "搜索时是否必填",example = "false")
     private boolean searchNotNull;
 
     /**
@@ -96,6 +108,7 @@ public class AnField {
      *
      * @see AnnoSearch#placeHolder()
      */
+    @ApiModelProperty(value = "搜索时的提示信息[前端的placeholder]",example = "请输入用户名")
     private String searchPlaceHolder;
 
     /**
@@ -103,6 +116,7 @@ public class AnField {
      *
      * @see AnnoSearch#size()
      */
+    @ApiModelProperty(value = "搜索框大小",example = "default")
     private String searchSize;
 
     /**
@@ -110,6 +124,7 @@ public class AnField {
      *
      * @see AnnoEdit#editEnable()
      */
+    @ApiModelProperty(value = "编辑[是否在EditForm中显示，支持编辑]",example = "true")
     private boolean editEnable;
 
     /**
@@ -117,6 +132,7 @@ public class AnField {
      *
      * @see AnnoEdit#notNull()
      */
+    @ApiModelProperty(value = "编辑时是否必填",example = "false")
     private boolean editNotNull;
 
     /**
@@ -124,6 +140,7 @@ public class AnField {
      *
      * @see AnnoEdit#placeHolder()
      */
+    @ApiModelProperty(value = "编辑时的提示信息[前端的placeholder]",example = "请输入用户名")
     private String editPlaceHolder;
 
     /**
@@ -131,6 +148,7 @@ public class AnField {
      * 默认为 24 [1-24] 24为整行
      *
      */
+    @ApiModelProperty(value = "编辑跨度[1-24] 24为整行",example = "24")
     private int editSpan;
 
     /**
@@ -138,6 +156,7 @@ public class AnField {
      *
      * @see AnnoEdit#addEnable()
      */
+    @ApiModelProperty(value = "编辑[是否在AddForm中显示，支持新增]",example = "true")
     private boolean addEnable;
 
     /**
@@ -145,6 +164,7 @@ public class AnField {
      *
      * @see AnnoField#dataType()
      */
+    @ApiModelProperty(value = "数据类型",example = "STRING",allowableValues = "STRING,FILE,IMAGE,NUMBER,DATE,DATETIME,OPTIONS,PICKER,TREE,RICH_TEXT,CODE_EDITOR")
     private AnnoDataType dataType;
 
     /**
@@ -152,6 +172,7 @@ public class AnField {
      *
      * @see AnnoOptionType#sql()
      */
+    @ApiModelProperty(value = "[下拉框]查询Sql的Key",example = "a123456")
     private String optionTypeSql;
 
     /**
@@ -159,11 +180,13 @@ public class AnField {
      *
      * @see AnnoOptionType#optionAnno()
      */
+    @ApiModelProperty(value = "[下拉框]annoMain的自动解析Sql类")
     private OptionAnnoClass optionAnnoClass;
 
     /**
      * 是否多选，多选的值格式为逗号拼接 value 值
      */
+    @ApiModelProperty(value = "[下拉框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")
     private boolean optionIsMultiple;
 
     @Data
@@ -172,11 +195,13 @@ public class AnField {
         /**
          * 显示的标签 key
          */
+        @ApiModelProperty(value = "显示的标签 key",example = "name")
         String labelKey;
 
         /**
          * 显示的值 key
          */
+        @ApiModelProperty(value = "显示的值 key",example = "id")
         String idKey;
 
         /**
@@ -184,6 +209,7 @@ public class AnField {
          * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
          * 并且会自动走SysOrg的代理操作
          */
+        @ApiModelProperty(value = "annoMain注释的类，比如 SysOrg.class",example = "site.sorghum.anno.plugin.ao.SysOrg")
         Class<?> annoClass;
     }
     /**
@@ -191,6 +217,7 @@ public class AnField {
      *
      * @see AnnoOptionType.OptionData
      */
+    @ApiModelProperty(value = "[下拉框]选择数据[直接固定的数据]")
     private List<OptionData> optionDatas;
 
     @Data
@@ -202,6 +229,7 @@ public class AnField {
          *
          * @see AnnoOptionType.OptionData#label()
          */
+        @ApiModelProperty(value = "标签",example = "正常")
         private String label;
 
         /**
@@ -209,6 +237,7 @@ public class AnField {
          *
          * @see AnnoOptionType.OptionData#value()
          */
+        @ApiModelProperty(value = "值",example = "1")
         private String value;
     }
 
@@ -217,6 +246,7 @@ public class AnField {
      *
      * @see AnnoImageType#thumbRatio()
      */
+    @ApiModelProperty(value = "[图片]预览图比率",example = "RATE_ONE",allowableValues = "RATE_ONE,RATE_TWO,RATE_THREE")
     private AnnoImageType.ThumbRatio imageThumbRatio;
 
     /**
@@ -224,6 +254,7 @@ public class AnField {
      *
      * @see AnnoImageType#thumbMode()
      */
+    @ApiModelProperty(value = "[图片]图片模式",example = "DEFAULT",allowableValues = "DEFAULT,COVER,W_FULL,H_FULL")
     private AnnoImageType.ThumbMode imageThumbMode;
 
     /**
@@ -231,6 +262,7 @@ public class AnField {
      *
      * @see AnnoImageType#enlargeAble()
      */
+    @ApiModelProperty(value = "[图片]点击可放大展示",example = "true")
     private boolean imageEnlargeAble;
 
     /**
@@ -238,6 +270,7 @@ public class AnField {
      *
      * @see AnnoImageType#width()
      */
+    @ApiModelProperty(value = "[图片]宽度 px",example = "0")
     private int imageWidth;
 
     /**
@@ -245,6 +278,7 @@ public class AnField {
      *
      * @see AnnoImageType#height()
      */
+    @ApiModelProperty(value = "[图片]高度 px",example = "0")
     private int imageHeight;
 
     /**
@@ -252,6 +286,7 @@ public class AnField {
      *
      * @see AnnoTreeType#sql()
      */
+    @ApiModelProperty(value = "[树形选择框]查询Sql的Key",example = "a123456")
     private String treeTypeSql;
 
     /**
@@ -259,12 +294,14 @@ public class AnField {
      *
      * @see AnnoTreeType#value()
      */
+    @ApiModelProperty(value = "[树形选择框]查询Sql的Key",example = "a123456")
     private List<TreeData> treeDatas;
 
     /**
      * 选择类型-树形
      * @see AnnoTreeType#treeAnno();
      */
+    @ApiModelProperty(value = "[树形选择框]annoMain注释的类，比如 SysOrg.class")
     private TreeAnnoClass treeOptionAnnoClass;
 
     @Data
@@ -276,6 +313,7 @@ public class AnField {
          *
          * @see AnnoTreeType.TreeData#id()
          */
+        @ApiModelProperty(value = "节点id",example = "1")
         private String id;
 
         /**
@@ -283,6 +321,7 @@ public class AnField {
          *
          * @see AnnoTreeType.TreeData#label()
          */
+        @ApiModelProperty(value = "标签",example = "正常")
         private String label;
 
         /**
@@ -290,6 +329,7 @@ public class AnField {
          *
          * @see AnnoTreeType.TreeData#value()
          */
+        @ApiModelProperty(value = "传递给后端的值",example = "1")
         private String value;
 
         /**
@@ -297,6 +337,7 @@ public class AnField {
          *
          * @see AnnoTreeType.TreeData#pid()
          */
+        @ApiModelProperty(value = "父节点id",example = "0")
         private String pid;
     }
 
@@ -309,21 +350,25 @@ public class AnField {
          * 并且会自动解析类信息
          * 且走代理操作
          */
+        @ApiModelProperty(value = "annoMain注释的类，比如 SysOrg.class",example = "site.sorghum.anno.plugin.ao.SysOrg")
         Class<?> annoClass;
 
         /**
          * 显示的值 key
          */
+        @ApiModelProperty(value = "显示的值 key",example = "id")
         String idKey;
 
         /**
          * 显示的标签 key
          */
+        @ApiModelProperty(value = "显示的标签 key",example = "name")
         String labelKey;
 
         /**
          * 父主键 key
          */
+        @ApiModelProperty(value = "父主键 key",example = "pid")
         String pidKey;
     }
 }

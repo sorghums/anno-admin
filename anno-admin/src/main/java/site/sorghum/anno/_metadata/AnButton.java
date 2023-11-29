@@ -1,5 +1,6 @@
 package site.sorghum.anno._metadata;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 
@@ -17,6 +18,7 @@ public class AnButton {
      *
      * @see AnnoTableButton#name()
      */
+    @ApiModelProperty(value = "标题", example = "叽里呱啦")
     private String name;
 
     /**
@@ -24,6 +26,7 @@ public class AnButton {
      *
      * @see AnnoTableButton#size()
      */
+    @ApiModelProperty(value = "按钮大小 	'xs' | 'sm' | 'md' | 'lg'", example = "md")
     private String size;
 
     /**
@@ -31,6 +34,7 @@ public class AnButton {
      *
      * @see AnnoTableButton#jsCmd()
      */
+    @ApiModelProperty(value = "按下按钮后的js命令", example = "alert('hello world')")
     private String jsCmd;
 
     /**
@@ -38,6 +42,7 @@ public class AnButton {
      *
      * @see AnnoTableButton#jumpUrl()
      */
+    @ApiModelProperty(value = "跳转的url", example = "/user/add")
     private String jumpUrl;
 
 
@@ -46,6 +51,7 @@ public class AnButton {
      *
      * @see AnnoTableButton.JavaCmd#enable()
      */
+    @ApiModelProperty(value = "JavaCmd：启用", example = "true")
     private boolean javaCmdEnable;
 
     /**
@@ -53,6 +59,7 @@ public class AnButton {
      *
      * @see AnnoTableButton.JavaCmd#beanClass()
      */
+    @ApiModelProperty(value = "JavaCmd：bean类", example = "b12345")
     private Class<?> javaCmdBeanClass;
 
     /**
@@ -60,6 +67,7 @@ public class AnButton {
      *
      * @see AnnoTableButton.JavaCmd#methodName()
      */
+    @ApiModelProperty(value = "JavaCmd：方法名", example = "c12345")
     private String javaCmdMethodName;
 
 
@@ -68,5 +76,6 @@ public class AnButton {
      *
      * @see AnnoTableButton#permissionCode()
      */
+    @ApiModelProperty(value = "按钮权限码", example = "anno_mine_permission_user_button")
     private String permissionCode;
 }

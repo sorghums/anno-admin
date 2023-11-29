@@ -1,5 +1,7 @@
 package site.sorghum.anno._metadata;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
@@ -19,6 +21,7 @@ public class AnColumnButton extends AnButton {
     /**
      * 字段名
      */
+    @ApiModelProperty(value = "字段名",example = "id")
     private String fieldName;
 
     /**
@@ -26,6 +29,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#enable()
      */
+    @ApiModelProperty(value = "一对多：是否启用",example = "true")
     private boolean o2mEnable;
 
     /**
@@ -33,6 +37,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#joinAnnoMainClazz()
      */
+    @ApiModelProperty(value = "一对多：连表查询",example = "site.sorghum.anno._metadata.AnEntity")
     private Class<?> o2mJoinMainClazz;
 
     /**
@@ -40,6 +45,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#joinThisClazzField()
      */
+    @ApiModelProperty(value = "一对多：以哪个字段为条件【this】",example = "id")
     private String o2mJoinThisField;
 
     /**
@@ -47,6 +53,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#joinOtherClazzField()
      */
+    @ApiModelProperty(value = "一对多：以哪个字段为条件【target】",example = "id")
     private String o2mJoinOtherField;
 
     /**
@@ -54,6 +61,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#windowSize()
      */
+    @ApiModelProperty(value = "一对多：窗口大小",example = "md")
     private String o2mWindowSize;
 
     /**
@@ -61,6 +69,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.O2MJoinButton#windowHeight()
      */
+    @ApiModelProperty(value = "一对多：窗口高度",example = "md")
     private String o2mWindowHeight;
 
     /**
@@ -68,6 +77,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#enable()
      */
+    @ApiModelProperty(value = "多对多是否启用",example = "true")
     private boolean m2mEnable;
 
     /**
@@ -75,6 +85,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#joinTargetClazz()
      */
+    @ApiModelProperty(value = "多对多：目标表",example = "site.sorghum.anno._metadata.AnEntity")
     private Class<?> m2mJoinTargetClazz;
 
     /**
@@ -82,6 +93,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#joinSql()
      */
+    @ApiModelProperty(value = "多对多：连表 sql",example = "e12345")
     private String m2mJoinSql;
 
     /**
@@ -89,6 +101,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#joinThisClazzField()
      */
+    @ApiModelProperty(value = "多对多：以哪个字段为条件【this】",example = "id")
     private String m2mJoinThisClazzField;
 
     /**
@@ -96,6 +109,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#joinTargetClazzField()
      */
+    @ApiModelProperty(value = "多对多：以哪个字段为条件【target】",example = "id")
     private String m2mJoinTargetClazzField;
 
     /**
@@ -103,6 +117,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#mediumTableClass()
      */
+    @ApiModelProperty(value = "多对多：中间表的类",example = "site.sorghum.anno._metadata.AnEntity")
     private Class<?> m2mMediumTableClass;
 
     /**
@@ -110,6 +125,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#mediumTargetField()
      */
+    @ApiModelProperty(value = "多对多：中间表的字段【目标表】",example = "ta_id")
     private String m2mMediumTargetField;
 
     /**
@@ -117,6 +133,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#mediumThisField()
      */
+    @ApiModelProperty(value = "多对多：中间表的字段【本表】",example = "th_id")
     private String m2mMediumThisField;
 
     /**
@@ -124,6 +141,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#windowSize()
      */
+    @ApiModelProperty(value = "多对多：窗口大小",example = "md")
     private String m2mWindowSize;
 
     /**
@@ -131,6 +149,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoButton.M2MJoinButton#windowHeight()
      */
+    @ApiModelProperty(value = "多对多：窗口高度",example = "md")
     private String m2mWindowHeight;
 
     /**
@@ -138,6 +157,7 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoTpl#tplName()
      */
+    @ApiModelProperty(value = "模板资源名称",example = "tplName")
     private String tplName;
 
     /**
@@ -145,21 +165,25 @@ public class AnColumnButton extends AnButton {
      *
      * @see AnnoTpl#tplClazz()
      */
+    @ApiModelProperty(value = "模板资源类",example = "site.sorghum.anno._metadata.AnEntity")
     private Class<?> tplClazz;
 
     /**
      * 模板资源窗口大小
      * xs、sm、md、lg、xl、full
      */
+    @ApiModelProperty(value = "模板资源窗口大小",example = "md")
     private String tplWindowSize;
 
     /**
      * 模板资源窗口高度
      */
+    @ApiModelProperty(value = "模板资源窗口高度",example = "md")
     private String tplWindowHeight;
 
     /**
      * 模板资源是否启用
      */
+    @ApiModelProperty(value = "模板资源是否启用",example = "true")
     private boolean tplEnable;
 }

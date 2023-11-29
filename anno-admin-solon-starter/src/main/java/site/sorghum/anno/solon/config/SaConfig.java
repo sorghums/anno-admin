@@ -37,7 +37,7 @@ public class SaConfig {
             // [拦截路由]
             .addInclude("/**")
             // [放行路由]
-            .addExclude("/favicon.ico")
+            .addExclude("/favicon.ico","/doc.html", "/swagger-resources", "/swagger/*")
             .addExclude("/solon-admin/api/**")
             // 认证函数: 每次请求执行
             .setAuth(req -> SaRouter.match("/**", StpUtil::checkLogin))
