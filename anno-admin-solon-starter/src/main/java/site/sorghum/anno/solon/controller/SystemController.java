@@ -1,6 +1,8 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.UploadedFile;
@@ -19,6 +21,7 @@ import java.util.Map;
  * @since 2023/05/30
  */
 @Controller
+@Api(tags = "系统控制器")
 @Condition(onClass = AnnoPlatform.class)
 public class SystemController {
 
@@ -28,6 +31,8 @@ public class SystemController {
     // 验证码
     @Mapping(value = "/system/common/captcha")
     @SaIgnore
+    @Get
+    @ApiOperation(value = "获取验证码", notes = "获取验证码")
     public AnnoResult<CaptchaResponse> captcha() {
         return systemBaseController.captcha();
     }

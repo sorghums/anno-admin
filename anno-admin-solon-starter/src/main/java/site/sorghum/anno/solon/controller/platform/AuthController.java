@@ -2,6 +2,10 @@ package site.sorghum.anno.solon.controller.platform;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import site.sorghum.anno.AnnoPlatform;
@@ -20,6 +24,7 @@ import java.util.Map;
 @Mapping(value = "/system/auth")
 @Controller
 @SaIgnore
+@Api(tags = "登录控制器")
 @Condition(onClass = AnnoPlatform.class)
 public class AuthController {
 
@@ -28,22 +33,38 @@ public class AuthController {
 
     @Mapping(value = "/login", method = MethodType.POST, consumes = "application/json")
     @Post
+    @Consumes("application/json")
+    @ApiOperation(value = "登录")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "codeKey", value = "验证码的key", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "code", value = "验证码", required = true, dataType = "String")
+        }
+    )
     public AnnoResult<String> login(@Body Map<String, String> user) {
         return authBaseController.login(user);
     }
 
     @Mapping(value = "/logout", method = MethodType.POST)
+    @Post
+    @ApiOperation(value = "退出")
     public AnnoResult<String> logout() {
         return authBaseController.logout();
     }
 
     @SaCheckLogin
     @Mapping(value = "/clearSysUserCache", method = MethodType.POST)
+    @Post
+    @ApiOperation(value = "清除用户缓存")
     public AnnoResult<String> clearSysUserCache() {
         return authBaseController.clearSysUserCache();
     }
 
     @Mapping(value = "/me", method = MethodType.GET)
+    @Post
+    @ApiOperation("我的信息")
     public AnnoResult<UserInfo> me() {
         return authBaseController.me();
     }

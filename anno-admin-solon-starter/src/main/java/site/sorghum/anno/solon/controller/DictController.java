@@ -1,10 +1,11 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.noear.solon.annotation.*;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -28,7 +29,9 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/11/17
  */
+@Controller
 @Mapping("/amis/system/dict")
+@Api(tags = "字典控制器")
 public class DictController {
 
     @Inject("dbServiceWithProxy")
@@ -40,8 +43,19 @@ public class DictController {
     @Inject
     PermissionProxy permissionProxy;
 
-    @Mapping("/loadAllDict")
-    public AnnoResult<List<AnnoTreeDTO<String>>> loadAllDict(
+    @Mapping("/loadDict")
+    @Post
+    @Consumes("application/json")
+    @ApiOperation("加载字典")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "sqlKey", value = "[模式一]字典的查询sql的key", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "annoClazz", value = "[模式二]字典值的加载类", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "idKey", value = "[模式二]值的key", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
+        }
+    )
+    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(
         @Param("sqlKey") String sqlKey,
         @Param("annoClazz") String annoClazz,
         @Param("idKey") String idKey,
