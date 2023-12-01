@@ -14,10 +14,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno._metadata.PermissionContext;
+import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -76,6 +73,8 @@ public class BaseDbController {
                                          boolean reverseM2m,
                                          Map<String, Object> param) {
         List<String> nullKeys = param.get("nullKeys") instanceof List ? (List<String>) param.get("nullKeys") : Collections.emptyList();
+        List<?> anOrderMapList = param.get("anOrderList") instanceof List ? (List) param.get("anOrderList") : Collections.emptyList();
+        List<AnOrder> anOrderList = JSONUtil.toBeanList(JSONUtil.toJsonString(anOrderMapList), AnOrder.class);
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.VIEW);
 
@@ -96,6 +95,9 @@ public class BaseDbController {
         }
         if (StrUtil.isNotEmpty(orderBy)) {
             dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(orderBy).getTableFieldName(),orderDir));
+        }
+        for (AnOrder anOrder : anOrderList) {
+            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(anOrder.getOrderValue()).getTableFieldName(),anOrder.getOrderType()));
         }
         for (String nullKey : nullKeys) {
             dbConditions.add(

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -22,7 +23,9 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
     annoTree = @AnnoTree(label = "name", parentKey = "", key = "id", displayAsTree = true),
-    annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"))
+    annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"),
+    annoOrder = {@AnnoOrder(orderType = "desc",orderValue = "id")}
+)
 @Table("an_user")
 public class AnUser extends BaseOrgMetaModel implements Serializable {
 

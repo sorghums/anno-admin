@@ -31,6 +31,14 @@ public class AnRole extends BaseMetaModel implements Serializable {
             edit = @AnnoEdit(placeHolder = "请输入角色名称", notNull = true))
     String roleName;
 
+
+    /**
+     * 角色名称
+     */
+    @AnnoField(title = "角色编码", tableFieldName = "role_code", search = @AnnoSearch(),
+        edit = @AnnoEdit(placeHolder = "请输入角色编码", notNull = true))
+    String roleCode;
+
     /**
      * 排序
      */

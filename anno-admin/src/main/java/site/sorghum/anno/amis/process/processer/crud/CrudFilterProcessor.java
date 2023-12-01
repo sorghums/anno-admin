@@ -70,8 +70,8 @@ public class CrudFilterProcessor implements BaseProcessor {
             data = new HashMap<>();
             form.setData(data);
         }
-        data.put("orderBy", anEntity.getOrderValue());
-        data.put("orderDir", anEntity.getOrderType());
+//        data.put("orderBy", anEntity.getOrderValue());
+//        data.put("orderDir", anEntity.getOrderType());
 
         return form;
     }

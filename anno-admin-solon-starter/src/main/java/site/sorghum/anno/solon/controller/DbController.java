@@ -54,21 +54,22 @@ public class DbController extends BaseDbController {
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name = "current", value = "当前页", example = "1", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "页数", example = "1", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "perPage", value = "每页条数", example = "10", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "pageSize", value = "页码", example = "10", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "current", value = "当前页[通1]", example = "1", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "page", value = "当前页[通1]", example = "1", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "perPage", value = "每页条数[通2]", example = "10", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "pageSize", value = "每页条数[通2]", example = "10", required = true, dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "orderBy", value = "排序字段", example = "id", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "orderDir", value = "排序方向", example = "desc", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "nullKeys", value = "查询null值字段", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表"),
-            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段"),
-            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段"),
-            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段"),
-            @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值"),
-            @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段"),}
+            @ApiImplicitParam(name = "nullKeys", value = "查询null值字段", example = "[]", required = true, dataType = "Array", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", paramType = "query"),
+            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段", paramType = "query"),
+            @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值", paramType = "query"),
+            @ApiImplicitParam(name = "anOrderList", value = "排序数组 example: [{\"orderType\": \"asc\",\"orderValue\": \"id\"}]", dataType = "Array", paramType = "query"),
+            @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
     )
     public <T> AnnoResult<IPage<T>> page(@Path String clazz,
                                          @Param int current,
@@ -80,7 +81,6 @@ public class DbController extends BaseDbController {
                                          @Param(defaultValue = "false") boolean ignoreM2m,
                                          @Param(defaultValue = "false") boolean reverseM2m,
                                          @Body Map<String, Object> param) {
-
         return super.page(clazz, Math.max(page, current), Math.max(perPage, pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, param);
     }
 
@@ -159,7 +159,7 @@ public class DbController extends BaseDbController {
     @Consumes("application/json")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name  ="m2mMediumTableClass", value = "多对多中间表", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),

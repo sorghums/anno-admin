@@ -84,7 +84,7 @@ public class FailureFilter implements Filter {
                 ctx.render(AnnoResult.failure("权限不足"));
                 return;
             }
-            ctx.render(AnnoResult.failure(e.getMessage()));
+            ctx.render(AnnoResult.failure(e.getMessage()+":"+ctx.path()));
         } catch (Exception e) {
             log.error("未知异常 ==>", e);
 
@@ -94,8 +94,5 @@ public class FailureFilter implements Filter {
     }
 
     private void setHttpStatus(Context ctx,Runnable runnable) {
-        if (!ctx.path().contains("/amis/")){
-            runnable.run();
-        };
     }
 }

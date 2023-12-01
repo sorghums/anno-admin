@@ -11,6 +11,7 @@ import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
+import site.sorghum.anno.plugin.entity.response.VbenMenu;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.plugin.service.SysAnnoMenuService;
@@ -63,7 +64,7 @@ public class MenuBaseController {
                 return true;
             }
         ).collect(Collectors.toList());
-        return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(anAnnoMenus)));
+        return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(nList)));
     }
 
 
@@ -150,7 +151,59 @@ public class MenuBaseController {
         ).collect(Collectors.toList());
     }
 
+    public static List<VbenMenu> listToVbenVueTree(List<VbenMenu> list) {
+        Map<String, VbenMenu> map = new HashMap<>();
+        List<VbenMenu> roots = new ArrayList<>();
+        for (VbenMenu node : list) {
+            map.put(node.getId(), node);
+        }
+        for (VbenMenu node : list) {
+            if (isRootNode(node.getParentId())) {
+                roots.add(node);
+            } else {
+                VbenMenu parent = map.get(node.getParentId());
+                if (parent != null) {
+                    parent.getChildren().add(node);
+                }
+            }
+        }
+        // 加入默认工作台节点
+        VbenMenu vbenMenu = new VbenMenu();
+        vbenMenu.setPath("/dashboard/workplace");
+        vbenMenu.setName("Workplace");
+        vbenMenu.setMeta(new VbenMenu.VbenMeta());
+        vbenMenu.getMeta().setTitle("工作台");
+        vbenMenu.getMeta().setIcon("dashboard");
+        roots.add(0,vbenMenu);
+        return roots;
+    }
+
+    private static List<VbenMenu> list2VbenVueMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
+        return anAnnoMenus.stream().map(
+            sysAnnoMenu -> {
+                VbenMenu vbenMenu = VbenMenu.toVueMenu(sysAnnoMenu);;
+                vbenMenu.setChildren(new ArrayList<>());
+                return vbenMenu;
+            }
+        ).collect(Collectors.toList());
+    }
+
     private static boolean isRootNode(Object value) {
         return ObjectUtil.isEmpty(value) || "0".equals(value.toString());
+    }
+
+    public AnnoResult<List<VbenMenu>> vbenMenu() {
+        String uid = StpUtil.getLoginId().toString();
+        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
+        // 过滤需要权限的菜单
+        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
+            sysAnnoMenu -> {
+                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
+                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
+                }
+                return true;
+            }
+        ).collect(Collectors.toList());
+        return AnnoResult.succeed(listToVbenVueTree(list2VbenVueMenuResponse(nList)));
     }
 }

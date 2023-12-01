@@ -68,8 +68,8 @@ public class CrudProcess extends BaseProcess {
 
         //----------------- 设置初始化数据 --------------
         Map<String, Object> data = new HashMap<>();
-        data.put("orderBy", anEntity.getOrderValue());
-        data.put("orderDir", anEntity.getOrderType());
+//        data.put("orderBy", anEntity.getOrderValue());
+//        data.put("orderDir", anEntity.getOrderType());
 
         // 多对多新增按钮
         List<Action> bulkActions = new ArrayList<>();

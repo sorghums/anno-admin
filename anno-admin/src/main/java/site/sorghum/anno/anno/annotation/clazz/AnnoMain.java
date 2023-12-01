@@ -32,7 +32,7 @@ public @interface AnnoMain {
      *
      * @return {@link AnnoOrder}
      */
-    AnnoOrder annoOrder() default @AnnoOrder();
+    AnnoOrder[] annoOrder() default {};
 
     /**
      * 权限配置

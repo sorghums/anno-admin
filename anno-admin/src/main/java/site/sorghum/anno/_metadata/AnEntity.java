@@ -76,20 +76,11 @@ public class AnEntity {
     private String entityName;
 
     /**
-     * 排序类型 asc, desc
-     *
-     * @see AnnoOrder#orderType()
-     */
-    @ApiModelProperty(value = "排序类型 asc, desc",example = "asc")
-    private String orderType;
-
-    /**
      * 排序
-     *
-     * @see AnnoOrder#orderValue()
+     * @see AnnoOrder
      */
-    @ApiModelProperty(value = "排序",example = "id")
-    private String orderValue;
+    @ApiModelProperty(value = "排序数组")
+    AnOrder[] anOrder;
 
     /**
      * 主键字段
@@ -233,6 +224,14 @@ public class AnEntity {
      */
     @ApiModelProperty(value = "是否启用 左树",example = "true")
     private boolean enableLeftTree = false;
+
+    /**
+     * 左树分类键
+     *
+     * @see AnnoLeftTree#leftTreeName()
+     */
+    @ApiModelProperty(value = "左树的名称",example = "用户")
+    private String leftTreeName;
 
     /**
      * 左树分类键

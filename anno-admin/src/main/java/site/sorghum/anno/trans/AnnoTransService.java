@@ -47,7 +47,7 @@ public class AnnoTransService {
         AnEntity entity = metadataManager.getEntity(tClass);
         for (AnField field : entity.getFields()) {
             AnnoDataType dataType = field.getDataType();
-            if (dataType == AnnoDataType.OPTIONS) {
+            if (dataType == AnnoDataType.OPTIONS || dataType == AnnoDataType.PICKER) {
                 if (!Objects.equals(field.getOptionAnnoClass().getAnnoClass(), Object.class)) {
                     AnEntity optionClass = metadataManager.getEntity(field.getOptionAnnoClass().getAnnoClass());
                     String tableName = optionClass.getTableName();

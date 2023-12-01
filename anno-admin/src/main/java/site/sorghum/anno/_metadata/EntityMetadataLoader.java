@@ -7,6 +7,7 @@ import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * anno 实体 元数据加载
@@ -71,14 +73,23 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
 
-        entity.setOrderType(annoMain.annoOrder().orderType());
-        entity.setOrderValue(annoMain.annoOrder().orderValue());
+        AnOrder[] anOrders = new AnOrder[annoMain.annoOrder().length];
+        IntStream.range(0, annoMain.annoOrder().length)
+            .forEach(i -> {
+                AnnoOrder annoOrder = annoMain.annoOrder()[i];
+                AnOrder anOrder = new AnOrder();
+                anOrder.setOrderType(annoOrder.orderType());
+                anOrder.setOrderValue(annoOrder.orderValue());
+                anOrders[i] = anOrder;
+            });
+        entity.setAnOrder(anOrders);
 
         entity.setEnablePermission(annoMain.annoPermission().enable());
         entity.setPermissionCode(annoMain.annoPermission().baseCode());
         entity.setPermissionCodeTranslate(annoMain.annoPermission().baseCodeTranslate());
 
         entity.setEnableLeftTree(annoMain.annoLeftTree().enable());
+        entity.setLeftTreeName(annoMain.annoLeftTree().leftTreeName());
         entity.setLeftTreeCatKey(annoMain.annoLeftTree().catKey());
         entity.setLeftTreeClass(annoMain.annoLeftTree().treeClass());
 

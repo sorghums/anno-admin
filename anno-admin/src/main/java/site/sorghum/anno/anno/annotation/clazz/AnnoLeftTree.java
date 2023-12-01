@@ -14,6 +14,13 @@ import java.lang.annotation.*;
 public @interface AnnoLeftTree {
 
     /**
+     * 左树名称
+     *
+     * @return {@link String}
+     */
+    String leftTreeName() default "左树";
+
+    /**
      * 分类关键词
      * 查询的时候会用到
      *
