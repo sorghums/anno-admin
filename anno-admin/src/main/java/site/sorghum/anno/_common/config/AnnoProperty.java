@@ -25,11 +25,6 @@ public class AnnoProperty {
     private Boolean isAutoMaintainTable = true;
 
     /**
-     * 前端主题样式：默认为 antd，可选项为 antd、sdk、ang、cxd、dark
-     */
-    private String theme = "antd";
-
-    /**
      * 是否开启验证码，默认为 true 开启
      */
     private boolean captchaEnable = false;

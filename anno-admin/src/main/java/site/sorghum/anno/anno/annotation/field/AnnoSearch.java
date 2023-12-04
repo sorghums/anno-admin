@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import site.sorghum.anno.db.param.DbCondition;
+
 import java.lang.annotation.*;
 
 /**
@@ -28,6 +30,12 @@ public @interface AnnoSearch {
      */
     boolean enable() default true;
 
+    /**
+     * 查询类型
+     *
+     * @return {@link DbCondition.QueryType}
+     */
+    DbCondition.QueryType queryType() default DbCondition.QueryType.EQ;
 
     /**
      * 提示信息

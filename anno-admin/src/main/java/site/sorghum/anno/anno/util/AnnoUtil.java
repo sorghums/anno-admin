@@ -370,7 +370,7 @@ public class AnnoUtil {
             String sqlColumn = anField.getTableFieldName();
             Object value = ReflectUtil.getFieldValue(entity, anField.getFieldName());
             if (sqlColumn != null && value != null) {
-                conditions.add(DbCondition.builder().field(sqlColumn).value(value).build());
+                conditions.add(DbCondition.builder().field(sqlColumn).value(value).type(anField.getSearchQueryType()).build());
             }
         }
         return conditions;

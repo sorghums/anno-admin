@@ -11,6 +11,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.db.param.DbCondition;
 
 import java.util.List;
 
@@ -102,6 +103,14 @@ public class AnField {
      */
     @ApiModelProperty(value = "搜索时是否必填",example = "false")
     private boolean searchNotNull;
+
+    /**
+     * 搜索 查询类型
+     *
+     * @see AnnoSearch#queryType()
+     */
+    @ApiModelProperty(value = "搜索时查询类型",example = "EQ")
+    private DbCondition.QueryType searchQueryType;
 
     /**
      * 搜索 提示信息
