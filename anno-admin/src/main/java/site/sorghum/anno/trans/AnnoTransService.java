@@ -7,10 +7,12 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.plugin.join.aop.EasyJoin;
 import site.sorghum.plugin.join.aop.JoinResMap;
@@ -24,7 +26,11 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Sorghum
+ */
 @Named
+@Slf4j
 public class AnnoTransService {
 
     @Inject
@@ -48,23 +54,25 @@ public class AnnoTransService {
         for (AnField field : entity.getFields()) {
             AnnoDataType dataType = field.getDataType();
             if (dataType == AnnoDataType.OPTIONS || dataType == AnnoDataType.PICKER) {
+                String sqlIdKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getIdKey());
+                String sqlLabelKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getLabelKey());
                 if (!Objects.equals(field.getOptionAnnoClass().getAnnoClass(), Object.class)) {
                     AnEntity optionClass = metadataManager.getEntity(field.getOptionAnnoClass().getAnnoClass());
                     String tableName = optionClass.getTableName();
                     String isLogicRemove = optionClass.getRemoveType() == 1 ? " and %s = %s".formatted(optionClass.getRemoveField(), optionClass.getNotRemoveValue()) : "";
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
-                        """.formatted(field.getOptionAnnoClass().getLabelKey()
+                        """.formatted(sqlLabelKey
                         , field.getFieldName() + "_label"
-                        , field.getOptionAnnoClass().getIdKey()
+                        , sqlIdKey
                         , tableName
-                        , field.getOptionAnnoClass().getIdKey()
+                        , sqlIdKey
                         , isLogicRemove);
                     joinParams.add(
-                        new JoinParam(field.getFieldName()
+                        new JoinParam<>(field.getFieldName()
                             , field.getFieldName()
                             , null
-                            , field.getOptionAnnoClass().getIdKey()
+                            , sqlIdKey
                             , null
                             , null
                             , querySql
@@ -80,13 +88,13 @@ public class AnnoTransService {
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
                          """.formatted(field.getFieldName() + "_label"
-                        , field.getOptionAnnoClass().getIdKey(),
+                        , sqlIdKey,
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
-                        new JoinParam(field.getFieldName()
+                        new JoinParam<>(field.getFieldName()
                             , field.getFieldName()
                             , null
-                            , field.getOptionAnnoClass().getIdKey()
+                            , sqlIdKey
                             , null
                             , null
                             , newSql
@@ -102,23 +110,25 @@ public class AnnoTransService {
                 }
             }
             if (dataType == AnnoDataType.TREE) {
+                String sqlIdKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(),field.getTreeOptionAnnoClass().getIdKey());
+                String sqlLabelKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(),field.getTreeOptionAnnoClass().getLabelKey());
                 if (!Objects.equals(field.getTreeOptionAnnoClass().getAnnoClass(), Object.class)) {
                     AnEntity optionClass = metadataManager.getEntity(field.getTreeOptionAnnoClass().getAnnoClass());
                     String tableName = optionClass.getTableName();
                     String isLogicRemove = optionClass.getRemoveType() == 1 ? " and %s = %s".formatted(optionClass.getRemoveField(), optionClass.getNotRemoveValue()) : "";
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
-                        """.formatted(field.getTreeOptionAnnoClass().getLabelKey()
+                        """.formatted(sqlLabelKey
                         , field.getFieldName() + "_label"
-                        , field.getTreeOptionAnnoClass().getIdKey()
+                        , sqlIdKey
                         , tableName
-                        , field.getTreeOptionAnnoClass().getIdKey()
+                        , sqlIdKey
                         , isLogicRemove);
                     joinParams.add(
                         new JoinParam(field.getFieldName()
                             , field.getFieldName()
                             , null
-                            , field.getOptionAnnoClass().getIdKey()
+                            , sqlIdKey
                             , null
                             , null
                             , querySql
@@ -134,13 +144,13 @@ public class AnnoTransService {
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
                          """.formatted(field.getFieldName() + "_label"
-                        , field.getOptionAnnoClass().getIdKey(),
+                        , sqlIdKey,
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
                         new JoinParam(field.getFieldName()
                             , field.getFieldName()
                             , null
-                            , field.getOptionAnnoClass().getIdKey()
+                            , sqlIdKey
                             , null
                             , null
                             , newSql
@@ -170,6 +180,18 @@ public class AnnoTransService {
             if (fieldValue == null) continue;
             Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
             tansMap.put(fieldName + "_label", dict.getOrDefault(String.valueOf(fieldValue), String.valueOf(fieldValue)));
+        }
+    }
+
+    private String fileNameToTableName(Class<?> clazz, String fileName) {
+        if (clazz == Object.class || StrUtil.isBlank(fileName)){
+            return fileName;
+        }
+        try {
+            return AnnoFieldCache.getSqlColumnByJavaName(clazz,fileName);
+        }catch (NullPointerException e){
+            log.error("从Java字段名映射Sql字段名出错,类：{}，字段：{}，错误信息：{}", clazz, fileName, e.getMessage());
+            return fileName;
         }
     }
 
