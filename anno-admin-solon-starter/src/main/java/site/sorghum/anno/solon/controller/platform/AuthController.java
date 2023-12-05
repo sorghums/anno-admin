@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/05/19
  */
-@Mapping(value = "/system/auth")
+@Mapping(value = AnnoConstants.BASE_URL + "/system/auth")
 @Controller
 @SaIgnore
 @Api(tags = "登录控制器")

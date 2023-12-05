@@ -59,34 +59,4 @@ public class BaseOrgAnnoPreProxy implements AnnoBaseProxy<BaseOrgMetaModel> {
         dbConditions.add(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "org_id", orgId));
     }
 
-    @Override
-    public void afterAdd(BaseOrgMetaModel data) {
-
-    }
-
-    @Override
-    public void beforeUpdate(List<DbCondition> dbConditions, BaseOrgMetaModel data) {
-
-    }
-
-    @Override
-    public void afterUpdate(BaseOrgMetaModel data) {
-
-    }
-
-    @Override
-    public void beforeDelete(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterDelete(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions) {
-
-    }
-
-    @Override
-    public void afterFetch(Class<BaseOrgMetaModel> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BaseOrgMetaModel> page) {
-
-    }
-
 }

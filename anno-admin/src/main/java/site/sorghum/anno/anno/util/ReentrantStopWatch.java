@@ -2,6 +2,7 @@ package site.sorghum.anno.anno.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Filter;
 import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * 可重入，第二次之后 start 的任务，默认为子任务
@@ -317,17 +320,27 @@ public class ReentrantStopWatch {
      * @return 任务时间表
      */
     public String prettyPrint() {
-        return prettyPrint(null);
+        return prettyPrint(null, null);
+    }
+
+    /**
+     * 生成所有任务的一个任务花费时间表，单位纳秒
+     *
+     * @return 任务时间表
+     */
+    public String prettyPrint(TimeUnit unit) {
+        return prettyPrint(unit, null);
     }
 
     /**
      * 生成所有任务的一个任务花费时间表
      *
      * @param unit 时间单位，{@code null}则默认{@link TimeUnit#NANOSECONDS} 纳秒
+     * @param filter 过滤器，用于过滤不需要打印的任务
      * @return 任务时间表
      * @since 5.7.16
      */
-    public String prettyPrint(TimeUnit unit) {
+    public String prettyPrint(TimeUnit unit, Predicate<TaskInfo> filter) {
         if (null == unit) {
             unit = TimeUnit.NANOSECONDS;
         }
@@ -350,6 +363,9 @@ public class ReentrantStopWatch {
             pf.setGroupingUsed(false);
 
             for (TaskInfo task : getTaskInfo()) {
+                if (filter != null && filter.test(task)) {
+                    continue;
+                }
                 sb.append(nf.format(task.getTime(unit))).append("  ");
                 sb.append(pf.format((double) task.getTimeNanos() / getTotalTimeNanos())).append("   ");
                 sb.append(task.getTaskName()).append(FileUtil.getLineSeparator());

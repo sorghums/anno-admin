@@ -12,6 +12,7 @@ import site.sorghum.amis.entity.display.DialogButton;
 import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
@@ -99,7 +100,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
     private DialogButton createO2MDialogButton(AnColumnButton anColumnButton) {
         String label = anColumnButton.getName();
         String windowSize = anColumnButton.getO2mWindowSize();
-        String src = "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
+        String src = AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
                         + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}";
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel(label);
@@ -134,7 +135,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         dialog.setSize(anColumnButton.getM2mWindowSize());
         dialog.setShowCloseButton(true);
         IFrame iFrame = new IFrame();
-        iFrame.setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+        iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
         iFrame.setHeight(anColumnButton.getM2mWindowHeight());
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);

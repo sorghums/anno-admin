@@ -95,7 +95,7 @@ public class DbServiceWood implements DbService {
 
     @SneakyThrows
     @Override
-    public <T> int delete(Class<T> tClass,List<DbCondition> dbConditions) {
+    public <T> int delete(Class<T> tClass, List<DbCondition> dbConditions) {
         TableParam<T> tableParam = AnnoAdminCoreFunctions.tableParamFetchFunction.apply(tClass);
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
@@ -104,6 +104,10 @@ public class DbServiceWood implements DbService {
         } else {
             return dbTableQuery.delete();
         }
+    }
+
+    public <T> DbTableQuery toTbQuery(Class<T> entityClass, List<DbCondition> dbConditions) {
+        return buildCommonDbTableQuery(dbConditions, AnnoAdminCoreFunctions.tableParamFetchFunction.apply(entityClass));
     }
 
     @Override
@@ -126,7 +130,7 @@ public class DbServiceWood implements DbService {
     }
 
 
-    public  <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
+    private <T> DbTableQuery buildCommonDbTableQuery(List<DbCondition> dbConditions, TableParam<T> tableParam) {
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = tableParam.toTbQuery(dbContext).where(COMMON_CONDITION);
         if (removeParam.getLogic()) {

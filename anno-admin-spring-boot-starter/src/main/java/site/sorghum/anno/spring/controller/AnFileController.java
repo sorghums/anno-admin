@@ -8,12 +8,13 @@ import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;
 
 @RestController
-@RequestMapping(value = "anLocal")
+@RequestMapping(value = AnnoConstants.BASE_URL + "anLocal")
 public class AnFileController extends AnBaseFileController {
 
     @SneakyThrows

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import site.sorghum.anno._common.AnnoConstants;
 
 import java.util.Properties;
 
@@ -45,9 +46,9 @@ public class SaConfig implements WebMvcConfigurer {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin()))
             .addPathPatterns("/**")
-            .excludePathPatterns("/favicon.ico")
-            .excludePathPatterns("/assets/**")
-            .excludePathPatterns("/index.html");
+            .excludePathPatterns(AnnoConstants.BASE_URL + "/favicon.ico")
+            .excludePathPatterns(AnnoConstants.BASE_URL + "/assets/**")
+            .excludePathPatterns(AnnoConstants.BASE_URL + "/index.html");
     }
 
 }

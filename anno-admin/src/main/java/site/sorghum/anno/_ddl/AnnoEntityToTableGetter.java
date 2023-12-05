@@ -96,7 +96,11 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             }
 
             if (StrUtil.isNotBlank(field.getDefaultValue())) {
-                defaultValue = field.getDefaultValue();
+                if (sqlType == Types.VARCHAR || sqlType == Types.CHAR || sqlType == Types.CLOB) {
+                    defaultValue = "DEFAULT '" + field.getDefaultValue() + "'";
+                } else {
+                    defaultValue = "DEFAULT " + field.getDefaultValue();
+                }
             }
 
             ColumnWrap columnWrap = new ColumnWrap(anEntity.getTableName(), columnName, sqlType, size, digit, defaultValue, field.getTitle());

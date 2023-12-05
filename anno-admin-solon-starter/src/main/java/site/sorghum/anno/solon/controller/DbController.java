@@ -11,6 +11,7 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @since 2023/05/20
  */
 @Controller
-@Mapping("/amis/system/anno")
+@Mapping(AnnoConstants.BASE_URL + "/amis/system/anno")
 @Slf4j
 @SaIgnore
 @Api(tags = "数据控制器")

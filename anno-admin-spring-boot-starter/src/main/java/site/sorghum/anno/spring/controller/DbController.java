@@ -4,6 +4,7 @@ package site.sorghum.anno.spring.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
 import org.springframework.web.bind.annotation.*;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @since 2023/05/20
  */
 @RestController
-@RequestMapping("/amis/system/anno")
+@RequestMapping(AnnoConstants.BASE_URL + "/amis/system/anno")
 @Slf4j
 @SuppressWarnings("unchecked")
 public class DbController extends BaseDbController {

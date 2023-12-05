@@ -10,6 +10,7 @@ import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.function.Action;
 import site.sorghum.amis.entity.function.Api;
 import site.sorghum.amis.entity.input.Form;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.util.CryptoUtil;
 import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
@@ -69,7 +70,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getO2mWindowHeight());
-                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+                                setSrc(AnnoConstants.BASE_URL +"/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
                             }}
                         );
                     }}
@@ -96,7 +97,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getM2mWindowHeight());
-                                setSrc("/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumTargetField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
+                                setSrc(AnnoConstants.BASE_URL +"/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinTargetClazz().getSimpleName() + "?isM2m=true&" + anColumnButton.getM2mMediumTargetField() + "=${" + anColumnButton.getM2mJoinThisClazzField() + "}");
                             }}
                         );
                         setActions(new ArrayList<>());

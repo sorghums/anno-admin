@@ -7,4 +7,6 @@ package site.sorghum.anno._common;
 public interface AnnoConstants {
 
     String DEFAULT_DATASOURCE_NAME = "annoDataSource";
+
+    String BASE_URL = "/anno-admin-api";
 }

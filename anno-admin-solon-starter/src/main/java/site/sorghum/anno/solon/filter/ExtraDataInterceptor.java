@@ -11,6 +11,7 @@ import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.route.PathRule;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.ThrowableLogUtil;
@@ -30,7 +31,7 @@ public class ExtraDataInterceptor implements RouterInterceptor {
 
     @Override
     public PathRule pathPatterns() {
-        return new PathRule().include("/system/config/**","/amis/system/anno/**");
+        return new PathRule().include(AnnoConstants.BASE_URL + "/system/config/**", AnnoConstants.BASE_URL + "/amis/system/anno/**");
     }
 
     @Override

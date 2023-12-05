@@ -24,14 +24,14 @@ public class BaseMetaModel extends PrimaryKeyModel {
     private String createBy;
 
     @AnnoField(title = "创建时间", tableFieldName = "create_time", dataType = AnnoDataType.DATETIME, show = false,
-        defaultValue = "DEFAULT CURRENT_TIMESTAMP")
+        defaultValue = "CURRENT_TIMESTAMP")
     private LocalDateTime createTime;
 
     @AnnoField(title = "更新人", tableFieldName = "update_by", show = false, fieldSize = 32)
     private String updateBy;
 
     @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false,
-        defaultValue = "DEFAULT CURRENT_TIMESTAMP")
+        defaultValue = "CURRENT_TIMESTAMP")
     private LocalDateTime updateTime;
 
     /**
@@ -42,6 +42,6 @@ public class BaseMetaModel extends PrimaryKeyModel {
             optionType = @AnnoOptionType(value = {
                     @AnnoOptionType.OptionData(label = "已删除", value = "1"),
                     @AnnoOptionType.OptionData(label = "正常", value = "0")
-            }),show = false, fieldSize = 1, defaultValue = "DEFAULT 0")
+            }),show = false, fieldSize = 1, defaultValue = "0")
     private Integer delFlag;
 }

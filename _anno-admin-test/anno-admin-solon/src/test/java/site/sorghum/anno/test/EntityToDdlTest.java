@@ -3,23 +3,19 @@ package site.sorghum.anno.test;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.SolonTest;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbContextMetaData;
 import org.noear.wood.annotation.Db;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
+import site.sorghum.anno.test.base.BaseAppTest;
 
 /**
  * @author songyinyin
  * @since 2023/7/4 11:50
  */
 @Slf4j
-@SolonTest(AnnoSolonAdminStarter.class)
-@RunWith(SolonJUnit4ClassRunner.class)
-public class EntityToDdlTest {
+public class EntityToDdlTest extends BaseAppTest {
 
 
   @Db

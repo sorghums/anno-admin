@@ -28,6 +28,7 @@ import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -99,7 +100,7 @@ public class XPluginImp implements Plugin {
         loadMetadata(context, packages);
 
         // 前端静态文件
-        StaticMappings.add("/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
+        StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
 
         // 优先 初始化数据库表结构和预置数据，其他模块在创建 bean 时，可能会查库
         context.getBeanAsync(InitDdlAndDateService.class, initDdlAndDateService -> {

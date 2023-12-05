@@ -26,7 +26,7 @@ export const amisEnv: any = {
 		config, // 其他配置
 		headers // 请求头
 	}: any) => {
-		url = import.meta.env.VITE_API_URL + url;
+		url = import.meta.env.VITE_BASE_PATH + url;
 		config = config || {};
 		config.withCredentials = true;
 		responseType && (config.responseType = responseType);

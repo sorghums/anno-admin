@@ -2,18 +2,17 @@ package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
-import org.json.JSONObject;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
+import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.amis.controller.AmisBaseController;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 功能控制器
@@ -22,11 +21,9 @@ import java.util.Map;
  * @since 2023/05/19
  */
 @Controller
-@Mapping(value = "/system/config")
 @Api(tags = "功能控制器")
+@Mapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
-    @Inject
-    MetadataManager metadataManager;
 
     @Mapping(value = "/amisJson/{clazz}")
     @SaIgnore

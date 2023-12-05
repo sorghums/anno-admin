@@ -1,10 +1,10 @@
 insert into an_anno_menu (id, parent_id, title, type, open_type, sort, icon, href, permission_id, parse_data, create_by, create_time, del_flag, update_by, update_time) values
-('10', '', '系统菜单', 0, '_iframe', 0, 'layui-icon layui-icon-console', '', 'an_user', null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
-('11', '10', '菜单管理', 1, '_iframe', 995, 'layui-icon layui-icon-console', '/system/config/amis/AnAnnoMenu', 'an_anno_menu', 'AnAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
-('12', '10', '权限管理', 1, '_iframe', 996, 'layui-icon layui-icon-console', '/system/config/amis/AnPermission', 'an_permission', 'AnPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
-('13', '10', '用户管理', 1, '_iframe', 997, 'layui-icon layui-icon-console', '/system/config/amis/AnUser', 'an_user', 'AnUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
-('14', '10', '角色管理', 1, '_iframe', 998, 'layui-icon layui-icon-console', '/system/config/amis/AnRole', 'an_role', 'AnRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
-('15', '10', '组织管理', 1, '_iframe', 999, 'layui-icon layui-icon-console', '/system/config/amis/AnOrg', 'an_org', 'AnOrg', null, null, 0, null, '2023-06-29 20:13:35.706000');
+('10', '', '系统管理', 0, '_iframe', 10000, 'layui-icon layui-icon-console', '', 'an_user', null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
+('11', '10', '菜单管理', 1, '_iframe', 10005, 'layui-icon layui-icon-console', '/system/config/amis/AnAnnoMenu', 'an_anno_menu', 'AnAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
+('12', '10', '权限管理', 1, '_iframe', 10006, 'layui-icon layui-icon-console', '/system/config/amis/AnPermission', 'an_permission', 'AnPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
+('13', '10', '用户管理', 1, '_iframe', 10007, 'layui-icon layui-icon-console', '/system/config/amis/AnUser', 'an_user', 'AnUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
+('14', '10', '角色管理', 1, '_iframe', 10008, 'layui-icon layui-icon-console', '/system/config/amis/AnRole', 'an_role', 'AnRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
+('15', '10', '组织管理', 1, '_iframe', 10009, 'layui-icon layui-icon-console', '/system/config/amis/AnOrg', 'an_org', 'AnOrg', null, null, 0, null, '2023-06-29 20:13:35.706000');
 
 insert into an_org (id, org_name, create_by, create_time, del_flag, update_by, update_time) values
 ('1674391485808001024', '标准组织', null, '2023-06-29 20:16:53.563000', 0, null, '2023-06-29 20:16:53.563000');
