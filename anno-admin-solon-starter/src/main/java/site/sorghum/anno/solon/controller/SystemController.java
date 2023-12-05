@@ -39,12 +39,16 @@ public class SystemController {
 
     @Mapping(value = "/api/upload",multipart = true)
     @Post
+    @ApiOperation(value = "文件上传", notes = "文件上传")
+
     public AnnoResult<Map<String,Object>> upload(UploadedFile file,Context context) throws Exception {
         Map<String, List<UploadedFile>> stringListMap = context.filesMap();
         return systemBaseController.uploadFile(file.getContent(),file.getName());
     }
 
     @Mapping(value = "/api/upload/file")
+    @Post
+    @ApiOperation(value = "文件上传", notes = "文件上传")
     public AnnoResult<Map<String,Object>> uploadFile(Context ctx) throws Exception {
         UploadedFile filed = ctx.file("file");
         return systemBaseController.uploadFile(filed.getContent(),filed.getName());

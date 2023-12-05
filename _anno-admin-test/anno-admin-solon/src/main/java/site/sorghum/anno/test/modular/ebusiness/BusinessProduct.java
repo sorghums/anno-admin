@@ -16,6 +16,8 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
+import java.util.Date;
+
 /**
  * 电商商品
  *
@@ -25,6 +27,7 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "商品",
+    autoMaintainTable = true,
     annoLeftTree = @AnnoLeftTree(leftTreeName = "商品分类", catKey = "productCatId", treeClass = BusinessProductCat.class),
     annoTableButton = {
         @AnnoTableButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}"),
@@ -74,6 +77,7 @@ public class BusinessProduct extends BaseMetaModel {
 
     @AnnoField(
         title = "商品描述",
+        dataType = AnnoDataType.RICH_TEXT,
         tableFieldName = "product_desc",
         edit = @AnnoEdit)
     String productDesc;
@@ -94,10 +98,28 @@ public class BusinessProduct extends BaseMetaModel {
 
     @AnnoField(
         title = "运费",
+        dataType = AnnoDataType.NUMBER,
         tableFieldName = "product_freight",
-        edit = @AnnoEdit)
+        search = @AnnoSearch,
+        edit = @AnnoEdit(
+            showBy = {
+                @AnnoEdit.ShowBy(showIf = {
+                    @AnnoEdit.ShowIf(dependField = "productName", expr = "value != ''"),
+                    @AnnoEdit.ShowIf(dependField = "productImage", expr = "value != ''", andOr = "and")
+                }),
+                @AnnoEdit.ShowBy(showIf = {
+                    @AnnoEdit.ShowIf(dependField = "productDesc", expr = "value != ''"),
+                    @AnnoEdit.ShowIf(dependField = "productStatus", expr = "value == 1", andOr = "and")
+                }, andOr = "or")
+            }
+        ))
     Long productFreight;
 
+    @AnnoField(title = "测试日期时间", tableFieldName = "test_time", dataType = AnnoDataType.DATETIME, search = @AnnoSearch, edit = @AnnoEdit)
+    private Date testDate;
+
+    @AnnoField(title = "测试日期", tableFieldName = "test_date_time", dataType = AnnoDataType.DATE, search = @AnnoSearch, edit = @AnnoEdit)
+    private Date testDateTime;
 
     @AnnoButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
     private Object jump2BaiduButton;

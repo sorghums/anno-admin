@@ -37,9 +37,9 @@ public class LocalAnFileServiceImpl implements AnFileService {
         String month = String.valueOf(DateUtil.thisMonth());
         // 获取日
         String day = String.valueOf(DateUtil.thisDayOfMonth());
-        String fileUrl = AnFileService.joinPath( "anLocal",originalPath, year, month, day, guid + "." + suffix);
-        FileUtil.writeBytes(bytes,fileUrl);
-        fileInfo.setFileUrl(fileUrl);
+        String fileUrl = AnFileService.joinPath("anLocal", originalPath, year, month, day, guid + "." + suffix);
+        FileUtil.writeBytes(bytes, fileUrl);
+        fileInfo.setFileUrl(AnFileService.joinPath(annoProperty.getApiServerUrl(), fileUrl));
         return fileInfo;
     }
 

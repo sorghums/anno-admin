@@ -169,6 +169,57 @@ public class AnField {
     private boolean addEnable;
 
     /**
+     * 编辑/新增时候的依赖v-show展示逻辑
+     *
+     * @see AnnoEdit#showBy()
+     */
+    @ApiModelProperty(value = "编辑/新增时候的依赖v-show展示逻辑")
+    private List<EditShowBy> editShowBy;
+
+    @Data
+    public static class EditShowBy {
+
+        /**
+         * 展示条件
+         */
+        @ApiModelProperty(value = "展示条件")
+        List<EditShowIf> showIf;
+
+        /**
+         * 与或
+         */
+        @ApiModelProperty(value = "与或",example = "and")
+        private String andOr;
+
+        /**
+         * 是否启用
+         */
+        @ApiModelProperty(value = "是否启用",example = "true")
+        private Boolean enable;
+    }
+
+    @Data
+    public static class EditShowIf {
+        /**
+         * 依赖字段
+         */
+        @ApiModelProperty(value = "依赖字段",example = "productName")
+        private String dependField;
+
+        /**
+         * 表达式
+         */
+        @ApiModelProperty(value = "表达式",example = "value!= ''")
+        private String expr;
+
+        /**
+         * 与或
+         */
+        @ApiModelProperty(value = "与或",example = "and")
+        private String andOr;
+    }
+
+    /**
      * 数据类型
      *
      * @see AnnoField#dataType()

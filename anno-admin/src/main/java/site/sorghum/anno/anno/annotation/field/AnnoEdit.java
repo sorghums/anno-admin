@@ -47,4 +47,47 @@ public @interface AnnoEdit {
      * @return boolean
      */
     boolean editEnable() default true;
+
+    /**
+     * 展示依赖条件
+     * @return {@link ShowBy}
+     */
+    ShowBy[] showBy() default {@ShowBy(enable = false)};
+
+    /**
+     * 展示方式注解
+     */
+    public @interface ShowBy{
+        /**
+         * 是否启用展示
+         */
+        boolean enable() default true;
+        /**
+         * 当满足指定条件时才展示
+         */
+        ShowIf[] showIf() default {};
+        /**
+         * 条件之间的逻辑关系（与 or 或）
+         */
+        String andOr() default "and";
+    }
+
+    /**
+     * 展示条件注解
+     */
+    public @interface ShowIf{
+        /**
+         * 依赖的字段
+         */
+        String dependField() default "id";
+        /**
+         * 展示条件表达式
+         */
+        String expr() default "value == 0";
+        /**
+         * 条件之间的逻辑关系（与 or 或）
+         */
+        String andOr() default "and";
+    }
+
 }

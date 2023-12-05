@@ -56,13 +56,12 @@ db.main:
   username: root
   password: sorghum2021
 anno-admin:
+  apiServerUrl: http://114.55.168.135:9001
   redis:
     server: "sorghum-ubuntu:6379"
     db: 8
     maxTotal: '200'
     password: ''
-  # 主题：antd,cxd,ang
-  theme: 'antd'
   # 自动初始化数据，默认为 true
   isAutoMaintainInitData: true
   # 自动初始化表，默认为 true

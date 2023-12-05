@@ -9,9 +9,20 @@ import org.noear.solon.serialization.snack3.SnackRenderFactory;
 
 @Configuration
 public class SnackConfig {
+
+    private static final String SPLIT = "\\.";
     @Bean
-    public void jsonInit(@Inject SnackRenderFactory factory, @Inject SnackActionExecutor executor){
+    public void jsonInit(@Inject SnackRenderFactory factory, @Inject SnackActionExecutor executor) {
         // Class 类型转换为 String
-        factory.addConvertor(Class.class, Class::getName);
+        factory.addConvertor(Class.class,
+            c -> {
+                if (c == null) {
+                    return null;
+                } else {
+                    String[] names = c.getName().split(SPLIT);
+                    return names[names.length - 1];
+                }
+            }
+        );
     }
 }

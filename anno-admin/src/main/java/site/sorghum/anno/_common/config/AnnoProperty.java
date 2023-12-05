@@ -34,6 +34,11 @@ public class AnnoProperty {
     private String localFilePath = "./anLocal/";
 
     /**
+     * 接口服务地址
+     */
+    private String apiServerUrl = "http://localhost:8866";
+
+    /**
      * 是否打印执行的 sql
      */
     private boolean showSql = true;

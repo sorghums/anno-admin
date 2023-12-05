@@ -80,7 +80,7 @@ public class DictController {
             }else {
                 annoTreeDTOs = Utils.toTrees(list);
             }
-            annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("0").label("无选择").title("无选择").value("").key("").build());
+            annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
             return AnnoResult.succeed(annoTreeDTOs);
         }
         return AnnoResult.succeed(Collections.emptyList());

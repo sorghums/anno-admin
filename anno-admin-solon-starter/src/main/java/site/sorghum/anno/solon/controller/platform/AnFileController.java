@@ -3,6 +3,7 @@ package site.sorghum.anno.solon.controller.platform;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;
@@ -20,6 +21,8 @@ public class AnFileController{
     @Inject
     AnBaseFileController anBaseFileController;
 
+    @Inject
+    AnnoProperty annoProperty;
     @Get
     @Mapping(value = "/**")
     public void getFile(Context context) {
