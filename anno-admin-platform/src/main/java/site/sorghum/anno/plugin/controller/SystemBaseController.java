@@ -43,12 +43,12 @@ public class SystemBaseController {
         return AnnoResult.succeed(MapUtil.of("value", fileInfo.getFileUrl()));
     }
 
-    public AnnoResult<Map<String, Object>> uploadFile(InputStream inputStream, String fileName) {
+    public AnnoResult<String> uploadFile(InputStream inputStream, String fileName) {
         FileInfo fileInfo = new FileInfo();
         fileInfo.setInputStream(inputStream);
         fileInfo.setFileName(fileName);
         fileInfo = anFileService.uploadFile(fileInfo);
-        return AnnoResult.succeed(MapUtil.of("value", fileInfo.getFileUrl()));
+        return AnnoResult.succeed(fileInfo.getFileUrl());
     }
 
     public AnnoResult<Map<String ,Object>> getGlobalConfig(){

@@ -174,49 +174,19 @@ public class AnField {
      * @see AnnoEdit#showBy()
      */
     @ApiModelProperty(value = "编辑/新增时候的依赖v-show展示逻辑")
-    private List<EditShowBy> editShowBy;
+    private EditShowBy editShowBy;
 
     @Data
     public static class EditShowBy {
 
-        /**
-         * 展示条件
-         */
-        @ApiModelProperty(value = "展示条件")
-        List<EditShowIf> showIf;
-
-        /**
-         * 与或
-         */
-        @ApiModelProperty(value = "与或",example = "and")
-        private String andOr;
+        @ApiModelProperty(value = "解析语句",example = "annoDataForm.id != 0")
+        private String expr;
 
         /**
          * 是否启用
          */
         @ApiModelProperty(value = "是否启用",example = "true")
         private Boolean enable;
-    }
-
-    @Data
-    public static class EditShowIf {
-        /**
-         * 依赖字段
-         */
-        @ApiModelProperty(value = "依赖字段",example = "productName")
-        private String dependField;
-
-        /**
-         * 表达式
-         */
-        @ApiModelProperty(value = "表达式",example = "value!= ''")
-        private String expr;
-
-        /**
-         * 与或
-         */
-        @ApiModelProperty(value = "与或",example = "and")
-        private String andOr;
     }
 
     /**

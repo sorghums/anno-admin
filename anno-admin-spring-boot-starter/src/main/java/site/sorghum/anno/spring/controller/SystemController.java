@@ -29,12 +29,13 @@ public class SystemController extends SystemBaseController {
     }
 
     @PostMapping(value = "/api/upload")
-    public AnnoResult<Map<String,Object>> upload(MultipartFile file, HttpServletRequest request) throws Exception {
+    public AnnoResult<String> upload(MultipartFile file, HttpServletRequest request) throws Exception {
         return super.uploadFile(file.getInputStream(),file.getOriginalFilename());
     }
 
+
     @PostMapping(value = "/api/upload/file")
-    public AnnoResult<Map<String,Object>> uploadFile(MultipartFile file, HttpServletRequest request) throws Exception {
+    public AnnoResult<String> uploadFile(MultipartFile file, HttpServletRequest request) throws Exception {
         return super.uploadFile(file.getInputStream(),file.getOriginalFilename());
     }
 

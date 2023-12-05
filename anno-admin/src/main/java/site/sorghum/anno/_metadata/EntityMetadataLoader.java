@@ -161,12 +161,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setEditNotNull(anno.edit().notNull());
             anField.setEditPlaceHolder(anno.edit().placeHolder());
             anField.setEditSpan(anno.edit().span());
-            List<AnField.EditShowBy> showByList = new ArrayList<>();
-            for (AnnoEdit.ShowBy showByItem : anno.edit().showBy()) {
-                AnField.EditShowBy editShowBy = getEditShowBy(showByItem);
-                showByList.add(editShowBy);
-            }
-            anField.setEditShowBy(showByList);
+            AnnoEdit.ShowBy showBy = anno.edit().showBy();
+            AnField.EditShowBy editShowBy = new AnField.EditShowBy();
+            editShowBy.setEnable(showBy.enable());
+            editShowBy.setExpr(showBy.expr());
+            anField.setEditShowBy(editShowBy);
 
             anField.setDataType(anno.dataType());
 
@@ -220,28 +219,6 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anFields.add(anField);
         }
         entity.setFields(anFields);
-    }
-
-    /**
-     * 获取编辑展示依据
-     *
-     * @param showByItem 按项目显示
-     * @return {@link AnField.EditShowBy}
-     */
-    private static AnField.EditShowBy getEditShowBy(AnnoEdit.ShowBy showByItem) {
-        ArrayList<AnField.EditShowIf> showIfs = new ArrayList<>();
-        for (AnnoEdit.ShowIf showIf : showByItem.showIf()) {
-            AnField.EditShowIf editShowIf = new AnField.EditShowIf();
-            editShowIf.setDependField(showIf.dependField());
-            editShowIf.setExpr(showIf.expr());
-            editShowIf.setAndOr(showIf.andOr());
-            showIfs.add(editShowIf);
-        }
-        AnField.EditShowBy editShowBy = new AnField.EditShowBy();
-        editShowBy.setShowIf(showIfs);
-        editShowBy.setAndOr(showByItem.andOr());
-        editShowBy.setEnable(showByItem.enable());
-        return editShowBy;
     }
 
     private void setAnMany2ManyFields(AnEntity entity, Class<?> clazz) {

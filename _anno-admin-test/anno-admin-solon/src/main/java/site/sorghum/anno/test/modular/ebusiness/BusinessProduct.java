@@ -102,16 +102,7 @@ public class BusinessProduct extends BaseMetaModel {
         tableFieldName = "product_freight",
         search = @AnnoSearch,
         edit = @AnnoEdit(
-            showBy = {
-                @AnnoEdit.ShowBy(showIf = {
-                    @AnnoEdit.ShowIf(dependField = "productName", expr = "value != ''"),
-                    @AnnoEdit.ShowIf(dependField = "productImage", expr = "value != ''", andOr = "and")
-                }),
-                @AnnoEdit.ShowBy(showIf = {
-                    @AnnoEdit.ShowIf(dependField = "productDesc", expr = "value != ''"),
-                    @AnnoEdit.ShowIf(dependField = "productStatus", expr = "value == 1", andOr = "and")
-                }, andOr = "or")
-            }
+            showBy = @AnnoEdit.ShowBy(expr = "annoDataForm.productStatus == 1")
         ))
     Long productFreight;
 

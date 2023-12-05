@@ -52,7 +52,7 @@ public @interface AnnoEdit {
      * 展示依赖条件
      * @return {@link ShowBy}
      */
-    ShowBy[] showBy() default {@ShowBy(enable = false)};
+    ShowBy showBy() default @ShowBy(enable = false);
 
     /**
      * 展示方式注解
@@ -63,31 +63,10 @@ public @interface AnnoEdit {
          */
         boolean enable() default true;
         /**
-         * 当满足指定条件时才展示
-         */
-        ShowIf[] showIf() default {};
-        /**
-         * 条件之间的逻辑关系（与 or 或）
-         */
-        String andOr() default "and";
-    }
-
-    /**
-     * 展示条件注解
-     */
-    public @interface ShowIf{
-        /**
-         * 依赖的字段
-         */
-        String dependField() default "id";
-        /**
          * 展示条件表达式
+         * 必须以：annoDataForm.xx 为变量的取值
          */
-        String expr() default "value == 0";
-        /**
-         * 条件之间的逻辑关系（与 or 或）
-         */
-        String andOr() default "and";
+        String expr() default "annoDataForm.id == 0";
     }
 
 }
