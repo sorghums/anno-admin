@@ -1,5 +1,6 @@
 package site.sorghum.anno.solon.controller.platform;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import site.sorghum.anno.AnnoPlatform;
@@ -25,6 +26,7 @@ public class AnFileController{
     AnnoProperty annoProperty;
     @Get
     @Mapping(value = "/**")
+    @SaIgnore
     public void getFile(Context context) {
         String path = context.path();
         // 获取anLocal后面的路径

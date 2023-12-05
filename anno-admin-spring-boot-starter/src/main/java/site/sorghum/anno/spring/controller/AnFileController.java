@@ -1,5 +1,6 @@
 package site.sorghum.anno.spring.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.io.IoUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ public class AnFileController extends AnBaseFileController {
 
     @SneakyThrows
     @GetMapping(value = "/**")
+    @SaIgnore
     public void getFile(HttpServletRequest request, HttpServletResponse response) {
         String path = request.getServletPath();
         // 获取anLocal后面的路径
