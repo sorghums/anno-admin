@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -30,7 +31,7 @@ import java.util.Map;
  * @since 2023/11/17
  */
 @Controller
-@Mapping("/amis/system/dict")
+@Mapping(AnnoConstants.BASE_URL + "/amis/system/dict")
 @Api(tags = "字典控制器")
 public class DictController {
 

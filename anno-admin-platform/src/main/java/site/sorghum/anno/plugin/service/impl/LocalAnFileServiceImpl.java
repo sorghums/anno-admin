@@ -7,6 +7,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.plugin.entity.common.FileInfo;
 import site.sorghum.anno.plugin.service.AnFileService;
@@ -39,7 +40,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
         String day = String.valueOf(DateUtil.thisDayOfMonth());
         String fileUrl = AnFileService.joinPath("anLocal", originalPath, year, month, day, guid + "." + suffix);
         FileUtil.writeBytes(bytes, fileUrl);
-        fileInfo.setFileUrl(AnFileService.joinPath(annoProperty.getApiServerUrl(), fileUrl));
+        fileInfo.setFileUrl(AnFileService.joinPath(annoProperty.getApiServerUrl(),AnnoConstants.BASE_URL, fileUrl));
         return fileInfo;
     }
 

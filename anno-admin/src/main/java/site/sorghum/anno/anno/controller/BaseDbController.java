@@ -222,28 +222,28 @@ public class BaseDbController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = param.get("joinThisClazzField");
+            String joinThisClazzField = param.get("m2mJoinThisClazzField");
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
-        List<T> list = dbService.list(tableParam.getClazz(), dbConditions);
-        return list;
+        return dbService.list(tableParam.getClazz(), dbConditions);
     }
 
-    public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(String clazz,
+
+    public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
                                                         boolean ignoreM2m,
                                                         boolean reverseM2m,
                                                         Map<String, String> param) {
         List<Object> list = queryTreeList(clazz, ignoreM2m, reverseM2m, param);
         if (list == null || list.isEmpty()) {
-            return AnnoResult.succeed(Collections.emptyMap());
+            return AnnoResult.succeed(Collections.emptyList());
         }
         TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
-        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoUtil.getPkField(tableParam.getClazz()))).collect(Collectors.toList());
-        return AnnoResult.succeed(MapUtil.of("m2mTree", data));
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoFieldCache.getFieldByJavaName(tableParam.getClazz(),MapUtil.getStr(param,"m2mJoinTargetClazzField")))).collect(Collectors.toList());
+        return AnnoResult.succeed(data);
     }
 
     public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {

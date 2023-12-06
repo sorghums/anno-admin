@@ -68,6 +68,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", paramType = "query"),
             @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段", paramType = "query"),
+            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
             @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值", paramType = "query"),
             @ApiImplicitParam(name = "anOrderList", value = "排序数组 example: [{\"orderType\": \"asc\",\"orderValue\": \"id\"}]", dataType = "Array", paramType = "query"),
             @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
@@ -172,6 +173,7 @@ public class DbController extends BaseDbController {
 
     @Mapping("/{clazz}/annoTrees")
     @Post
+    @Consumes("application/json")
     @ApiOperation(value = "获取树形结构", notes = "获取树形结构")
     @ApiImplicitParams(
         value = {
@@ -181,6 +183,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段"),
             @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段"),
             @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段"),
+            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
             @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值"),
             @ApiImplicitParam(name = "idKey", value = "树的value字段"),
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
@@ -192,9 +195,25 @@ public class DbController extends BaseDbController {
         return super.annoTrees(clazz, ignoreM2m, reverseM2m, param);
     }
 
+    @Override
     @Mapping("/{clazz}/annoTreeSelectData")
     @Post
-    public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(@Path String clazz,
+    @Consumes("application/json")
+    @ApiOperation(value = "获取树形已选择的收据", notes = "获取树形结构")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表"),
+            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段"),
+            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段"),
+            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段"),
+            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
+            @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值"),
+            @ApiImplicitParam(name = "idKey", value = "树的value字段"),
+            @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
+    )
+    public <T> AnnoResult<List<Object>> annoTreeSelectData(@Path String clazz,
                                                         @Param(defaultValue = "false") boolean ignoreM2m,
                                                         @Param(defaultValue = "false") boolean reverseM2m,
                                                         @Body Map<String, String> param) {

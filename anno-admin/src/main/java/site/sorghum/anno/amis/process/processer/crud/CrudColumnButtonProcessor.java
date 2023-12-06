@@ -135,7 +135,7 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
         dialog.setSize(anColumnButton.getM2mWindowSize());
         dialog.setShowCloseButton(true);
         IFrame iFrame = new IFrame();
-        iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
+//        iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getM2mJoinAnnoMainClazz().getSimpleName() + "?" + URLUtil.buildQuery(queryMap, null));
         iFrame.setHeight(anColumnButton.getM2mWindowHeight());
         dialog.setBody(iFrame);
         dialogButton.setDialog(dialog);

@@ -2,6 +2,7 @@ package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;

@@ -3,10 +3,7 @@ package site.sorghum.anno.test.modular.ebusiness;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno.anno.annotation.clazz.AnnoLeftTree;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
-import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
+import site.sorghum.anno.anno.annotation.clazz.*;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -72,7 +69,6 @@ public class BusinessProduct extends BaseMetaModel {
         tableFieldName = "product_cat_id",
         dataType = AnnoDataType.TREE,
         treeType = @AnnoTreeType(sql = "SELECT id,cat_name as label,parent_id as pid FROM business_product_cat where del_flag = 0"),
-        search = @AnnoSearch,
         edit = @AnnoEdit)
     String productCatId;
 
@@ -107,17 +103,17 @@ public class BusinessProduct extends BaseMetaModel {
         ))
     Long productFreight;
 
-    @AnnoField(title = "测试日期时间", tableFieldName = "test_time", dataType = AnnoDataType.DATETIME, search = @AnnoSearch, edit = @AnnoEdit)
+    @AnnoField(title = "测试日期", tableFieldName = "test_time", dataType = AnnoDataType.DATE, search = @AnnoSearch, edit = @AnnoEdit)
     private Date testDate;
 
-    @AnnoField(title = "测试日期", tableFieldName = "test_date_time", dataType = AnnoDataType.DATE, search = @AnnoSearch, edit = @AnnoEdit)
+    @AnnoField(title = "测试日期时间", tableFieldName = "test_date_time", dataType = AnnoDataType.DATETIME, search = @AnnoSearch, edit = @AnnoEdit)
     private Date testDateTime;
 
     @AnnoButton(name = "跳去百度", jumpUrl = "https://www.baidu.com/?tn=${clazz}&props=${props}")
     private Object jump2BaiduButton;
 
 
-    @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log(props);")
+    @AnnoButton(name = "简单的JS命令", jsCmd = "alert('点击了按钮'); console.log('hello Js',props);")
     private Object jsCmd;
 
     /**

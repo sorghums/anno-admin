@@ -19,6 +19,7 @@ import java.io.InputStream;
 @Mapping(value = AnnoConstants.BASE_URL + "/anLocal")
 @Controller
 @Condition(onClass = AnnoPlatform.class)
+@SaIgnore
 public class AnFileController{
     @Inject
     AnBaseFileController anBaseFileController;

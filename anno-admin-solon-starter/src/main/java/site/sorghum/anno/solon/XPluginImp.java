@@ -25,6 +25,8 @@ import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorDefault;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
+import org.noear.wood.wrap.ClassWrap;
+import org.noear.wood.wrap.FieldWrap;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;

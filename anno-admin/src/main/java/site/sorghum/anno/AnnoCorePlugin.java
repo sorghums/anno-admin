@@ -7,14 +7,18 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
 import org.noear.wood.WoodConfig;
+import org.noear.wood.wrap.ClassWrap;
+import org.noear.wood.wrap.NamingStrategy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
 import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -39,6 +43,8 @@ public class AnnoCorePlugin extends AnnoPlugin {
     @Override
     public void run() {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
+        AnnoAdminCoreFunctions.javaField2DbFieldFunction = AnnoFieldCache::getSqlColumnByJavaName;
+        AnnoAdminCoreFunctions.dbField2JavaFieldFunction = AnnoFieldCache::getFieldBySqlColumn;
 
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
@@ -59,6 +65,23 @@ public class AnnoCorePlugin extends AnnoPlugin {
                 stopWatch.stop();
             }
         });
+
+        WoodConfig.namingStrategy = new NamingStrategy(){
+            @Override
+            public String classToTableName(Class<?> clz) {
+                // TODO 后续可解绑Wood
+                return super.classToTableName(clz);
+            }
+
+            @Override
+            public String fieldToColumnName(Class<?> clz, Field f) {
+                try {
+                    return AnnoFieldCache.getSqlColumnByField(clz, f);
+                }catch (Exception ignore){
+                    return super.fieldToColumnName(clz, f);
+                }
+            }
+        };
 
         // 将所有代理，注册到 dami 的监听器中
         List<AnnoBaseProxy> proxies = AnnoBeanUtils.getBeansOfType(AnnoBaseProxy.class);
