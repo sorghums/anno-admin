@@ -58,7 +58,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 状态 1 正常 0 封禁
      */
-    @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
+    @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(notNull = true),
             dataType = AnnoDataType.OPTIONS,
             optionType = @AnnoOptionType(value = {
                     @AnnoOptionType.OptionData(label = "正常", value = "1"),
@@ -73,8 +73,8 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinTargetClazz = AnRole.class,
             mediumTableClass = AnUserRole.class,
-            mediumTargetField = "role_id",
-            mediumThisField = "user_id"
+            mediumTargetField = "roleId",
+            mediumThisField = "userId"
     ))
     private Object roleButton;
 

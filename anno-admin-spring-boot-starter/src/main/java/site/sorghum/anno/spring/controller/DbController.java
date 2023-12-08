@@ -41,9 +41,10 @@ public class DbController extends BaseDbController {
                                          @RequestParam(required = false) String orderDir,
                                          @RequestParam(defaultValue = "false") boolean ignoreM2m,
                                          @RequestParam(defaultValue = "false") boolean reverseM2m,
+                                         @RequestParam(required = false) String annoM2mId,
                                          @RequestParam(required = false) Map<String, Object> param) {
 
-        return super.page(clazz, Math.max(page,current), Math.max(perPage,pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, param);
+        return super.page(clazz, Math.max(page,current), Math.max(perPage,pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, annoM2mId, param);
     }
 
     @PostMapping("/{clazz}/save")

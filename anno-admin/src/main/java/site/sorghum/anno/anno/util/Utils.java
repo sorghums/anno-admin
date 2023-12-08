@@ -5,6 +5,7 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.db.param.TableParam;
@@ -12,6 +13,7 @@ import site.sorghum.anno.db.param.TableParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 树工具
@@ -45,12 +47,25 @@ public class Utils {
         if (StrUtil.isBlank(MapUtil.getStr(param, "m2mMediumTableClass"))) {
             return "";
         }
-        String mediumOtherField = MapUtil.getStr(param, "m2mMediumTargetField");
-        String thisValue = MapUtil.getStr(param, "joinValue");
-        String mediumThisField = MapUtil.getStr(param, "m2mMediumThisField");
         AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "m2mMediumTableClass"));
+        String mediumOtherField =AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumTargetField"));
+        String thisValue = MapUtil.getStr(param, "joinValue");
+        String mediumThisField = AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumThisField"));
         String mediumTable = mediumEntity.getTableName();
         String sql = "select " + mediumOtherField + " from " + mediumTable + " where " + mediumThisField + " = '" + thisValue + "'";
+        return sql(mediumEntity.getClazz(), sql);
+    }
+
+    public static <T> String m2mSql(AnnoMtm annoMtm,String thisValue) {
+        init();
+        if (Objects.isNull(annoMtm)) {
+            return "";
+        }
+        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
+        String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
+        String mediumThisFieldSql = annoMtm.getM2mMediumThisFieldSql();
+        String mediumTable = mediumEntity.getTableName();
+        String sql = "select " + mediumOtherFieldSql + " from " + mediumTable + " where " + mediumThisFieldSql + " = '" + thisValue + "'";
         return sql(mediumEntity.getClazz(), sql);
     }
 
@@ -58,7 +73,7 @@ public class Utils {
     private static <T> String sql(Class<T> clazz, String sql) {
         init();
         // 如果有配置逻辑删除
-        TableParam tableParam = metadataManager.getTableParam(clazz);
+        TableParam<?> tableParam = metadataManager.getTableParam(clazz);
         if (tableParam.getRemoveParam().getLogic()) {
             sql = sql + " and " + tableParam.getRemoveParam().getRemoveColumn() + " = " + tableParam.getRemoveParam().getNotRemoveValue();
         }

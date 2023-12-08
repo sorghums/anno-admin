@@ -60,7 +60,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <easyjoin.version>0.0.1.M5</easyjoin.version>
+        <easyjoin.version>0.0.1.M6</easyjoin.version>
         <node.version>v18.16.0</node.version>
         <npm.version>9.5.1</npm.version>
     </properties>

@@ -64,8 +64,8 @@ public class AnRole extends BaseMetaModel implements Serializable {
     @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinTargetClazz = AnUser.class,
             mediumTableClass = AnUserRole.class,
-            mediumTargetField = "user_id",
-            mediumThisField = "role_id",
+            mediumTargetField = "userId",
+            mediumThisField = "roleId",
             joinThisClazzField = "id"
     ))
     private Object userButton;
@@ -77,8 +77,8 @@ public class AnRole extends BaseMetaModel implements Serializable {
     @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinTargetClazz = AnPermission.class,
             mediumTableClass = AnRolePermission.class,
-            mediumTargetField = "permission_id",
-            mediumThisField = "role_id",
+            mediumTargetField = "permissionId",
+            mediumThisField = "roleId",
             joinThisClazzField = "id",
             windowSize = "sm"
     ))

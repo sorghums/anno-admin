@@ -122,8 +122,8 @@ public class BusinessProduct extends BaseMetaModel {
     @AnnoButton(name = "虚拟商品多对多", m2mJoinButton = @AnnoButton.M2MJoinButton(
         joinTargetClazz = BusinessVirtualTable.class,
         mediumTableClass = BusinessVirtualProduct.class,
-        mediumTargetField = "product_id",
-        mediumThisField = "product_id",
+        mediumTargetField = "productId",
+        mediumThisField = "productId",
         joinThisClazzField = "id"
     ))
     private Object rvButton;

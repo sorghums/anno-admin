@@ -1,11 +1,14 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.util.JSONUtil;
+import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
@@ -261,21 +264,29 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // 多对多
             anColumnButton.setM2mEnable(anno.m2mJoinButton().enable());
-            anColumnButton.setM2mJoinTargetClazz(anno.m2mJoinButton().joinTargetClazz());
-            anColumnButton.setM2mJoinSql(anno.m2mJoinButton().joinSql());
-            anColumnButton.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());
-            anColumnButton.setM2mJoinTargetClazzField(anno.m2mJoinButton().joinTargetClazzField());
-            anColumnButton.setM2mMediumTableClass(anno.m2mJoinButton().mediumTableClass());
-            anColumnButton.setM2mMediumTargetField(anno.m2mJoinButton().mediumTargetField());
-            anColumnButton.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
-            anColumnButton.setM2mWindowSize(anno.m2mJoinButton().windowSize());
-            anColumnButton.setM2mWindowHeight(anno.m2mJoinButton().windowHeight());
+            if (anColumnButton.getM2mEnable()){
+                AnnoMtm annoMtm = new AnnoMtm();
+                annoMtm.setM2mJoinTargetClazz(getEntityName(anno.m2mJoinButton().joinTargetClazz()));
+                annoMtm.setM2mJoinThisClazz(getEntityName(clazz));
+                annoMtm.setM2mMediumTableClass(getEntityName(anno.m2mJoinButton().mediumTableClass()));
+                annoMtm.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
+                annoMtm.setM2mMediumTargetField(anno.m2mJoinButton().mediumTargetField());
+                annoMtm.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());
+                annoMtm.setM2mJoinTargetClazzField(anno.m2mJoinButton().joinTargetClazzField());
+                annoMtm.setId(annoMtm.getM2mJoinThisClazz() + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoMtm)));
+                AnnoMtm.annoMtmMap.put(annoMtm.getId(),annoMtm);
+                anColumnButton.setM2mData(annoMtm);
+            }
 
             // java cmd
             anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());
-            anColumnButton.setJavaCmdBeanClass(anno.javaCmd().beanClass());
-            anColumnButton.setJavaCmdMethodName(anno.javaCmd().methodName());
-
+            if (anColumnButton.getJavaCmdEnable()){
+                AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
+                annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
+                annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
+                annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
+                anColumnButton.setJavaCmdData(annoJavaCmd);
+            }
 
             // tpl
             anColumnButton.setTplEnable(anno.annoTpl().enable());
@@ -306,8 +317,14 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // java cmd
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
-            anButton.setJavaCmdBeanClass(anno.javaCmd().beanClass());
-            anButton.setJavaCmdMethodName(anno.javaCmd().methodName());
+            anButton.setJavaCmdEnable(anno.javaCmd().enable());
+            if (anButton.getJavaCmdEnable()){
+                AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
+                annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
+                annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
+                annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
+                anButton.setJavaCmdData(annoJavaCmd);
+            }
             anButtons.add(anButton);
         }
         return anButtons;

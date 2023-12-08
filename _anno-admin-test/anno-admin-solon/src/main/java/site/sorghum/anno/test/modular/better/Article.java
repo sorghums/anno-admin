@@ -51,8 +51,8 @@ public class Article extends BaseMetaModel {
     @AnnoButton(name = "收藏夹", m2mJoinButton = @AnnoButton.M2MJoinButton(
         joinTargetClazz = Favorites.class,
         mediumTableClass = ArticleFavoritesRelation.class,
-        mediumTargetField = "favorites_id",
-        mediumThisField = "article_id",
+        mediumTargetField = "favoritesId",
+        mediumThisField = "articleId",
         joinThisClazzField = "id",
         windowSize = "sm"
     ))

@@ -58,6 +58,9 @@ public class AnnoContextUtil {
          */
         ReentrantStopWatch stopWatch;
 
+        /**
+         * 打印详细日志
+         */
         private boolean printDetailLog;
 
         public ReentrantStopWatch getStopWatch(String name) {

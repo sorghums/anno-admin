@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.util;
 
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.entity.BiHashMap;
+import site.sorghum.anno._metadata.MetadataManager;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -75,6 +77,16 @@ public class AnnoFieldCache {
      */
     public static synchronized String getSqlColumnByJavaName(Class<?> clazz, String name) {
         return clazz2Sql2Field.get(clazz).reverseGet(clazz2Name2Field.get(clazz).get(name));
+    }
+
+    /**
+     * 按实体名称获取clazz
+     *
+     * @param entityName 实体名称
+     * @return {@link Class}<{@link ?}>
+     */
+    public static synchronized Class<?> getClazzByEntityName(String entityName) {
+        return AnnoBeanUtils.getBean(MetadataManager.class).getEntity(entityName).getClazz();
     }
 
 

@@ -6,6 +6,7 @@ import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
+import org.noear.dami.exception.DamiException;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Init;
@@ -20,6 +21,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 
+import java.sql.SQLException;
 import java.time.format.DateTimeParseException;
 
 /**
@@ -53,7 +55,11 @@ public class FailureFilter implements Filter {
             log.info("请求路径：{}", ctx.path());
         }
         try {
-            chain.doFilter(ctx);
+            try {
+                chain.doFilter(ctx);
+            }catch (DamiException damiException){
+                throw damiException.getCause();
+            }
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
                 setHttpStatus(ctx,() -> ctx.status(401));
@@ -73,7 +79,6 @@ public class FailureFilter implements Filter {
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage(), e);
-
             setHttpStatus(ctx,() -> ctx.status(400));
             ctx.render(AnnoResult.failure("非法参数"));
         } catch (SaTokenException e) {
@@ -85,10 +90,12 @@ public class FailureFilter implements Filter {
                 return;
             }
             ctx.render(AnnoResult.failure(e.getMessage()+":"+ctx.path()));
+        } catch (SQLException e) {
+            log.error("数据库异常 ==>", e);
+            ctx.render(AnnoResult.failure("数据库异常：%s".formatted(e.getMessage())));
         } catch (Exception e) {
             log.error("未知异常 ==>", e);
-
-            setHttpStatus(ctx,() -> ctx.status(500));
+            setHttpStatus(ctx, () -> ctx.status(500));
             ctx.render(AnnoResult.failure("系统异常，请联系管理员"));
         }
     }

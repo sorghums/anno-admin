@@ -64,11 +64,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "nullKeys", value = "查询null值字段", example = "[]", required = true, dataType = "Array", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", paramType = "query"),
-            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段", paramType = "query"),
-            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
+            @ApiImplicitParam(name = "annoM2mId", value = "多对多数据ID"),
             @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值", paramType = "query"),
             @ApiImplicitParam(name = "anOrderList", value = "排序数组 example: [{\"orderType\": \"asc\",\"orderValue\": \"id\"}]", dataType = "Array", paramType = "query"),
             @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
@@ -82,8 +78,9 @@ public class DbController extends BaseDbController {
                                          @Param String orderDir,
                                          @Param(defaultValue = "false") boolean ignoreM2m,
                                          @Param(defaultValue = "false") boolean reverseM2m,
+                                         @Param String annoM2mId,
                                          @Body Map<String, Object> param) {
-        return super.page(clazz, Math.max(page, current), Math.max(perPage, pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, param);
+        return super.page(clazz, Math.max(page, current), Math.max(perPage, pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, annoM2mId, param);
     }
 
     @Mapping("/{clazz}/save")
@@ -161,9 +158,7 @@ public class DbController extends BaseDbController {
     @Consumes("application/json")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "annoM2mId", value = "多对多数据ID"),
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "thisJoinValue", value = "本表值,是个数组 ['1',['2']]", required = true, dataType = "List", paramType = "query"),}
     )
@@ -179,11 +174,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表"),
-            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段"),
-            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段"),
-            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段"),
-            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
+            @ApiImplicitParam(name = "annoM2mId", value = "多对多数据ID"),
             @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值"),
             @ApiImplicitParam(name = "idKey", value = "树的value字段"),
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
@@ -204,11 +195,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表"),
-            @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段"),
-            @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段"),
-            @ApiImplicitParam(name = "m2mJoinThisClazzField", value = "多对多本表字段"),
-            @ApiImplicitParam(name = "m2mJoinTargetClazzField", value = "多对多目标表字段"),
+            @ApiImplicitParam(name = "annoM2mId", value = "多对多数据ID"),
             @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值"),
             @ApiImplicitParam(name = "idKey", value = "树的value字段"),
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}

@@ -52,23 +52,15 @@ public class AnButton {
      * @see AnnoTableButton.JavaCmd#enable()
      */
     @ApiModelProperty(value = "JavaCmd：启用", example = "true")
-    private boolean javaCmdEnable;
+    private Boolean javaCmdEnable;
 
     /**
      * JavaCmd：bean类
      *
      * @see AnnoTableButton.JavaCmd#beanClass()
      */
-    @ApiModelProperty(value = "JavaCmd：bean类", example = "b12345")
-    private Class<?> javaCmdBeanClass;
-
-    /**
-     * JavaCmd：方法名
-     *
-     * @see AnnoTableButton.JavaCmd#methodName()
-     */
-    @ApiModelProperty(value = "JavaCmd：方法名", example = "c12345")
-    private String javaCmdMethodName;
+    @ApiModelProperty(value = "JavaCmd数据", example = "b12345")
+    private AnnoJavaCmd javaCmdData;
 
 
     /**
