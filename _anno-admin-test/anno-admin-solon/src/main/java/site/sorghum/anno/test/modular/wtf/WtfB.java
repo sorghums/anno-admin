@@ -47,9 +47,9 @@ public class WtfB extends BaseMetaModel {
 
 
     @AnnoButton(name = "沃特发C",
-        o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = WtfC.class,
-            joinThisClazzField = "id",
-            joinOtherClazzField = "wtfB"))
+        o2mJoinButton = @AnnoButton.O2MJoinButton(targetClass = WtfC.class,
+            thisJavaField = "id",
+            targetJavaField = "wtfB"))
     private Object wtfC;
     
 }

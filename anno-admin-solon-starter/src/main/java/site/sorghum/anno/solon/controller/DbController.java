@@ -165,9 +165,9 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "thisJoinValue", value = "本表值", required = true, dataType = "String", paramType = "query"),}
+            @ApiImplicitParam(name = "thisJoinValue", value = "本表值,是个数组 ['1',['2']]", required = true, dataType = "List", paramType = "query"),}
     )
-    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String, String> param) throws SQLException {
+    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String, Object> param) throws SQLException {
         return super.removeRelation(clazz, param);
     }
 

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
@@ -22,6 +23,7 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "组织管理",
         orgFilter = true,
+        annoTree = @AnnoTree(label = "orgName", parentKey = "", key = "id", displayAsTree = false),
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
 @Table("an_org")
 public class AnOrg extends BaseMetaModel {
@@ -44,6 +46,6 @@ public class AnOrg extends BaseMetaModel {
 
 
     @AnnoButton(name = "组织用户",
-            o2mJoinButton = @AnnoButton.O2MJoinButton(joinAnnoMainClazz = AnUser.class, joinThisClazzField = "id", joinOtherClazzField = "orgId", enable = true))
+            o2mJoinButton = @AnnoButton.O2MJoinButton(targetClass = AnUser.class, thisJavaField = "id", targetJavaField = "orgId", enable = true))
     private Object userButton;
 }
