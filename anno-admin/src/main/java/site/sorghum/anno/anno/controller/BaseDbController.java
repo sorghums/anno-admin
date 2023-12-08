@@ -181,18 +181,18 @@ public class BaseDbController {
         return AnnoResult.succeed(data);
     }
 
-    public <T> AnnoResult<T> removeRelation(String clazz, Map<String, String> param) throws SQLException {
+    public <T> AnnoResult<T> removeRelation(String clazz, Map<String, Object> param) throws SQLException {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.DELETE);
 
-        String mediumOtherField = param.get("m2mMediumTargetField");
-        String otherValue = param.get("targetJoinValue");
-        String thisValue = param.get("thisJoinValue");
-        String mediumThisField = param.get("m2mMediumThisField");
+        String mediumOtherField = MapUtil.getStr(param,"m2mMediumTargetField");
+        String otherValue = MapUtil.getStr(param,"targetJoinValue");
+        List<String> thisValue = MapUtil.get(param,"thisJoinValue",List.class);
+        String mediumThisField = MapUtil.getStr(param,"m2mMediumThisField");
         ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
             DbCondition.builder().field(mediumOtherField).value(otherValue).build(),
-            DbCondition.builder().field(mediumThisField).value(thisValue).build()
+            DbCondition.builder().field(mediumThisField).value(thisValue).type(DbCondition.QueryType.IN).build()
         );
-        dbService.delete(metadataManager.getEntity(param.get("m2mMediumTableClass")).getClazz(), dbConditions);
+        dbService.delete(metadataManager.getEntity(MapUtil.getStr(param,"m2mMediumTableClass")).getClazz(), dbConditions);
         return AnnoResult.succeed();
     }
 

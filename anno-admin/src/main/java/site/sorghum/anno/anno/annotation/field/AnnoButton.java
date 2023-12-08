@@ -94,14 +94,14 @@ public @interface AnnoButton {
          *
          * @return {@link Class}<{@link ?}>
          */
-        Class<?> joinAnnoMainClazz() default Object.class;
+        Class<?> targetClass() default Object.class;
 
         /**
          * 以哪个字段为条件【this】
          *
          * @return {@link String}
          */
-        String joinThisClazzField() default "";
+        String thisJavaField() default "";
 
 
         /**
@@ -109,22 +109,7 @@ public @interface AnnoButton {
          *
          * @return {@link String}
          */
-        String joinOtherClazzField() default "";
-
-        /**
-         * 弹出窗口大小
-         * xs、sm、md、lg、xl、full
-         *
-         * @return {@link String}
-         */
-        String windowSize() default "xl";
-
-        /**
-         * 弹出窗口高度
-         *
-         * @return {@link String}
-         */
-        String windowHeight() default "700px";
+        String targetJavaField() default "";
 
         /**
          * 启用

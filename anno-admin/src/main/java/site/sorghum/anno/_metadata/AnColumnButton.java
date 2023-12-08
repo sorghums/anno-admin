@@ -1,7 +1,6 @@
 package site.sorghum.anno._metadata;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
@@ -35,26 +34,26 @@ public class AnColumnButton extends AnButton {
     /**
      * 一对多：连表查询
      *
-     * @see AnnoButton.O2MJoinButton#joinAnnoMainClazz()
+     * @see AnnoButton.O2MJoinButton#targetClass()
      */
     @ApiModelProperty(value = "一对多：连表查询",example = "site.sorghum.anno._metadata.AnEntity")
-    private Class<?> o2mJoinMainClazz;
+    private Class<?> o2mTargetClass;
 
     /**
      * 一对多：以哪个字段为条件【this】
      *
-     * @see AnnoButton.O2MJoinButton#joinThisClazzField()
+     * @see AnnoButton.O2MJoinButton#thisJavaField()
      */
     @ApiModelProperty(value = "一对多：以哪个字段为条件【this】",example = "id")
-    private String o2mJoinThisField;
+    private String o2mThisJavaField;
 
     /**
      * 一对多：以哪个字段为条件【target】
      *
-     * @see AnnoButton.O2MJoinButton#joinOtherClazzField()
+     * @see AnnoButton.O2MJoinButton#targetJavaField()
      */
     @ApiModelProperty(value = "一对多：以哪个字段为条件【target】",example = "id")
-    private String o2mJoinOtherField;
+    private String o2mTargetJavaField;
 
     /**
      * 一对多：窗口大小

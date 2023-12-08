@@ -70,7 +70,7 @@ public class TreeColumnButtonProcessor implements BaseProcessor {
                             new IFrame() {{
                                 setType("iframe");
                                 setHeight(anColumnButton.getO2mWindowHeight());
-                                setSrc(AnnoConstants.BASE_URL +"/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+                                setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mTargetClass().getSimpleName() + "?" + anColumnButton.getO2mTargetJavaField() + "=${" + anColumnButton.getO2mThisJavaField() + "}");
                             }}
                         );
                     }}

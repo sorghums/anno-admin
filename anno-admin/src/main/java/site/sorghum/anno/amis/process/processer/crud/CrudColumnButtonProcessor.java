@@ -3,7 +3,6 @@ package site.sorghum.anno.amis.process.processer.crud;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.amis.entity.AmisBaseWrapper;
@@ -100,8 +99,8 @@ public class CrudColumnButtonProcessor implements BaseProcessor {
     private DialogButton createO2MDialogButton(AnColumnButton anColumnButton) {
         String label = anColumnButton.getName();
         String windowSize = anColumnButton.getO2mWindowSize();
-        String src = AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName()
-                        + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}";
+        String src = AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mTargetClass().getSimpleName()
+                     + "?" + anColumnButton.getO2mTargetJavaField() + "=${" + anColumnButton.getO2mThisJavaField() + "}";
         DialogButton dialogButton = new DialogButton();
         dialogButton.setLabel(label);
         DialogButton.Dialog dialog = new DialogButton.Dialog();

@@ -168,7 +168,7 @@ public class AmisCommonUtil {
         if (anColumnButton.isO2mEnable()) {
             IFrame iFrame = new IFrame();
             iFrame.setHeight(anColumnButton.getO2mWindowHeight());
-            iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mJoinMainClazz().getSimpleName() + "?" + anColumnButton.getO2mJoinOtherField() + "=${" + anColumnButton.getO2mJoinThisField() + "}");
+            iFrame.setSrc(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + anColumnButton.getO2mTargetClass().getSimpleName() + "?" + anColumnButton.getO2mTargetJavaField() + "=${" + anColumnButton.getO2mThisJavaField() + "}");
             tab.setBody(List.of(iFrame));
         } else if (anColumnButton.isM2mEnable()) {
             Map<String, Object> queryMap = AmisCommonUtil.createM2mJoinQueryMap(anColumnButton,true);
