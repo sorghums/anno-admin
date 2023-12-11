@@ -16,10 +16,7 @@ import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.plugin.service.SysAnnoMenuService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -167,13 +164,15 @@ public class MenuBaseController {
                 }
             }
         }
+        roots.sort(Comparator.comparing(VbenMenu::getSort).reversed());
         // 加入默认工作台节点
         VbenMenu vbenMenu = new VbenMenu();
-        vbenMenu.setPath("/dashboard/workplace");
-        vbenMenu.setName("Workplace");
+        vbenMenu.setPath("/dashboard");
+        vbenMenu.setName("Analysis");
+        vbenMenu.setComponent("/dashboard/analysis/index");
         vbenMenu.setMeta(new VbenMenu.VbenMeta());
         vbenMenu.getMeta().setTitle("工作台");
-        vbenMenu.getMeta().setIcon("dashboard");
+        vbenMenu.getMeta().setIcon("bx:bx-home");
         roots.add(0,vbenMenu);
         return roots;
     }

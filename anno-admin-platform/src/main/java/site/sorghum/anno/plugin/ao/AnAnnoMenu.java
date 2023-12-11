@@ -51,7 +51,7 @@ public class AnAnnoMenu extends BaseMetaModel {
     }), dataType = AnnoDataType.OPTIONS)
     private String openType;
 
-    @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit)
+    @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit, dataType = AnnoDataType.ICON)
     private String icon;
 
     @AnnoField(title = "菜单链接", tableFieldName = "href", edit = @AnnoEdit)

@@ -25,7 +25,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "权限管理",
-    annoLeftTree = @AnnoLeftTree(leftTreeName = "权限", treeClass = AnPermission.class, catKey = "id"),
+    annoLeftTree = @AnnoLeftTree(leftTreeName = "父权限", treeClass = AnPermission.class, catKey = "parentId"),
     annoTree = @AnnoTree(label = "name", parentKey = "parentId", key = "id", displayAsTree = true),
     annoPermission = @AnnoPermission(enable = true, baseCode = "an_permission", baseCodeTranslate = "权限管理")
 )

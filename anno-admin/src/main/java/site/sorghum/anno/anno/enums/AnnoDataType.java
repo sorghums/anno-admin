@@ -2,13 +2,6 @@ package site.sorghum.anno.anno.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.SneakyThrows;
-import site.sorghum.amis.entity.AmisBase;
-import site.sorghum.amis.entity.input.FormItem;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno.amis.type.TypeParserFactory;
-
-import java.util.Map;
 
 /**
  * Anno数据类型
@@ -19,41 +12,22 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public enum AnnoDataType {
-    STRING("input-text", "字符串","text"),
-    FILE("input-file", "文件","link"),
-    IMAGE("input-image", "图片","static-image"),
-    NUMBER("input-number", "数字","text"),
-    DATE("input-date", "日期","text"),
-    DATETIME("input-datetime", "日期时间","text"),
-    OPTIONS("select", "下拉框","text"),
-    PICKER("picker", "下拉框[弹出]","text"),
-    TREE("tree-select", "树形下拉框","input-tree"),
-    RICH_TEXT("input-rich-text", "富文本","text"),
-    CODE_EDITOR("editor","代码编辑器","tpl")
-    ;
+    STRING( "字符串"),
+    FILE("文件"),
+    IMAGE( "图片"),
+    NUMBER("数字"),
+    DATE("日期"),
+    DATETIME("日期时间"),
+    OPTIONS("下拉框"),
+    PICKER("下拉框[弹出]"),
+    TREE("树形下拉框"),
+    RICH_TEXT("富文本"),
+    CODE_EDITOR("代码编辑器"),
+    ICON("图标");
 
     /**
      * 代码
      */
-    private final String code;
-
     private final String name;
-
-    private final String showCode;
-
-
-    @SneakyThrows
-    public static FormItem editorExtraInfo(FormItem item, AnField anField) {
-        AnnoDataType annoDataType = anField.getDataType();
-        item.setType(annoDataType.getCode());
-        return TypeParserFactory.getTypeParser(annoDataType).parseEdit(item,anField);
-    }
-
-    @SneakyThrows
-    public static Map<String,Object> displayExtraInfo(AmisBase item, AnField anField) {
-        AnnoDataType annoDataType = anField.getDataType();
-        item.setType(annoDataType.getShowCode());
-        return TypeParserFactory.getTypeParser(annoDataType).parseDisplay(item,anField);
-    }
 
 }

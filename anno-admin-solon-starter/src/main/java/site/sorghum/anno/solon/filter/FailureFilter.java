@@ -62,44 +62,32 @@ public class FailureFilter implements Filter {
             }
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
-                setHttpStatus(ctx,() -> ctx.status(401));
+                ctx.render(AnnoResult.failure(401, e.getMessage()));
             } else {
-                setHttpStatus(ctx,() -> ctx.status(500));
                 ctx.render(AnnoResult.failure(e.getCode(), e.getMessage()));
             }
         } catch (BizException e) {
-            setHttpStatus(ctx,() -> ctx.status(500));
-
             log.error(e.getMessage(), e);
             ctx.render(AnnoResult.failure(e.getMessage()));
         } catch (DateTimeParseException e) {
             log.error(e.getMessage(), e);
-
-            setHttpStatus(ctx,() -> ctx.status(500));
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage(), e);
-            setHttpStatus(ctx,() -> ctx.status(400));
             ctx.render(AnnoResult.failure("非法参数"));
         } catch (SaTokenException e) {
             log.error(e.getMessage(), e);
-
-            setHttpStatus(ctx,() -> ctx.status(401));
             if (e instanceof NotPermissionException) {
-                ctx.render(AnnoResult.failure("权限不足"));
+                ctx.render(AnnoResult.failure(400,"权限不足"));
                 return;
             }
-            ctx.render(AnnoResult.failure(e.getMessage()+":"+ctx.path()));
+            ctx.render(AnnoResult.failure(401,e.getMessage()));
         } catch (SQLException e) {
             log.error("数据库异常 ==>", e);
             ctx.render(AnnoResult.failure("数据库异常：%s".formatted(e.getMessage())));
         } catch (Exception e) {
             log.error("未知异常 ==>", e);
-            setHttpStatus(ctx, () -> ctx.status(500));
             ctx.render(AnnoResult.failure("系统异常，请联系管理员"));
         }
-    }
-
-    private void setHttpStatus(Context ctx,Runnable runnable) {
     }
 }

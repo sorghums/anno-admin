@@ -31,14 +31,5 @@ public class AnnoSolonAdminStarter {
             WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
 //            app.pluginAdd(1, new PowerjobWorkerPlugin());
         });
-        // 忽略登录检查 (仅测试用)
-        CheckPermissionFunction.loginCheckFunction = () -> {
-            // StpUtil.checkLogin();
-        };
-        // 忽略权限检查 (仅测试用)
-        CheckPermissionFunction.permissionCheckFunction = (code) -> {
-            // log.info("===[Anno] permission check: {}", code);
-            // StpUtil.checkPermission(code);
-        };
     }
 }

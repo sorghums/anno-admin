@@ -4,8 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MD5Util;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
+import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.ao.AnUser;
+
+import java.util.List;
 
 /**
  * 系统用户代理
@@ -33,4 +38,13 @@ public class AnUserProxy implements AnnoBaseProxy<AnUser> {
         data.setPassword(MD5Util.digestHex(data.getMobile() + ":" + data.getPassword()));
     }
 
+    @Override
+    public void afterFetch(Class<AnUser> anUserClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<AnUser> page) {
+        AnnoBaseProxy.super.afterFetch(anUserClass, dbConditions, pageParam, page);
+        page.getList().forEach(
+                anUser -> {
+                    anUser.setPassword("********");
+                }
+        );
+    }
 }

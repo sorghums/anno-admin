@@ -237,7 +237,7 @@ public class AuthServiceImpl implements AuthService {
         String userId = (String) StpUtil.getLoginId();
         List<String> permissionList = permissionList(userId);
         if (!permissionList.contains(permissionCode)) {
-            throw new BizException("401", "没有权限:" + permissionContext.getPermissionName(permissionCode));
+            throw new BizException("400", "没有权限:" + permissionContext.getPermissionName(permissionCode));
         }
     }
 

@@ -228,7 +228,7 @@ public class BaseDbController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = param.get("m2mJoinThisClazzField");
+            String joinThisClazzField = annoMtm.getM2mJoinThisClazzFieldSql();
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
@@ -247,8 +247,9 @@ public class BaseDbController {
         if (list == null || list.isEmpty()) {
             return AnnoResult.succeed(Collections.emptyList());
         }
-        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
-        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, AnnoFieldCache.getFieldByJavaName(tableParam.getClazz(),MapUtil.getStr(param,"m2mJoinTargetClazzField")))).collect(Collectors.toList());
+        String annoM2mId = MapUtil.getStr(param, "annoM2mId");
+        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.getM2mJoinTargetClazzField())).collect(Collectors.toList());
         return AnnoResult.succeed(data);
     }
 

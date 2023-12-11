@@ -43,22 +43,28 @@ public class VbenMenu {
     @ApiModelProperty("子菜单")
     List<VbenMenu> children;
 
+    @ApiModelProperty("排序")
+    public Integer sort;
+
     public static VbenMenu toVueMenu(AnAnnoMenu anAnnoMenu) {
         VbenMenu vbenMenu = new VbenMenu();
         vbenMenu.setId(anAnnoMenu.getId());
         vbenMenu.setParentId(anAnnoMenu.getParentId());
         if (StrUtil.isNotBlank(anAnnoMenu.getParseData())){
-            vbenMenu.setName("AnViewList");
+            vbenMenu.setName(anAnnoMenu.getParseData());
+            vbenMenu.setComponent("/anno/table/index");
             vbenMenu.setPath("/anView/anViewList/" + anAnnoMenu.getParseData());
         }
 
         if (StrUtil.isBlank(vbenMenu.getPath())){
-            vbenMenu.setName("AnViewLayout");
+            vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getTitle()));
+            vbenMenu.setComponent("LAYOUT");
             vbenMenu.setPath("/anViewLayout/" + MD5Util.digestHex(anAnnoMenu.getTitle()));
         }
         vbenMenu.setMeta(new VbenMeta());
         vbenMenu.getMeta().setTitle(anAnnoMenu.getTitle());
-        vbenMenu.getMeta().setIcon("ant-design:home-outlined");
+        vbenMenu.getMeta().setIcon(anAnnoMenu.getIcon());
+        vbenMenu.setSort(anAnnoMenu.getSort());
         return vbenMenu;
     }
 
