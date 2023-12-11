@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
@@ -292,21 +293,20 @@ public class BaseDbController {
         return AnnoResult.succeed();
     }
 
-    public AnnoResult<String> runJavaCmd(Map<String, String> map) throws ClassNotFoundException {
-        map.put("clazz", CryptoUtil.decrypt(map.get("clazz")));
-        map.put("method", CryptoUtil.decrypt(map.get("method")));
-        map.put("expireTime", CryptoUtil.decrypt(map.get("expireTime")));
-        // 校验权限
-        String permissionCode = permissionContext.getPermissionCode(map.get("clazz"), map.get("method"));
-        CheckPermissionFunction.permissionCheckFunction.accept(permissionCode);
-
-        // 判断是否过期
-        if (Long.parseLong(map.get("expireTime")) < System.currentTimeMillis()) {
-            return AnnoResult.failure("页面已过期，请刷新页面重试。");
+    public AnnoResult<String> runJavaCmd(String clazz, Map<String, String> map) throws ClassNotFoundException {
+        CheckPermissionFunction.loginCheckFunction.run();
+        AnEntity entity = metadataManager.getEntity(clazz);
+        String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
+        AnnoJavaCmd annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
+        if (annoJavaCmd == null){
+            return AnnoResult.failure("未找到对应的JavaCmd数据!");
+        }
+        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())){
+            permissionProxy.checkPermission(entity, annoJavaCmd.getPermissionCode());
         }
 
-        Object bean = AnnoBeanUtils.getBean(Class.forName(map.get("clazz")));
-        ReflectUtil.invoke(bean, map.get("method"), map);
+        Object bean = AnnoBeanUtils.getBean(annoJavaCmd.getJavaCmdBeanClass());
+        ReflectUtil.invoke(bean, annoJavaCmd.getJavaCmdMethodName(), map);
         return AnnoResult.succeed("执行成功");
     }
 

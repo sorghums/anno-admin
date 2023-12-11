@@ -284,7 +284,9 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
+                annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
+                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(),annoJavaCmd);
                 anColumnButton.setJavaCmdData(annoJavaCmd);
             }
 
@@ -322,7 +324,9 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
+                annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
+                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(),annoJavaCmd);
                 anButton.setJavaCmdData(annoJavaCmd);
             }
             anButtons.add(anButton);

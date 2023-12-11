@@ -12,10 +12,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
-import site.sorghum.anno._metadata.AnColumnButton;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.PermissionContext;
-import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -86,6 +83,23 @@ public class AuthServiceImpl implements AuthService {
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anColumnButton.getName());
+                        buttonPermission.setDelFlag(0);
+                        anPermissionDao.insert(buttonPermission, true);
+                    }
+                }
+
+                List<AnButton> anEntityTableButtons = anEntity.getTableButtons();
+                for (AnButton anButton : anEntityTableButtons) {
+                    if (StrUtil.isNotBlank(anButton.getPermissionCode())) {
+                        String buttonCode = baseCode + ":" + anButton.getPermissionCode();
+                        AnPermission anPermission = anPermissionDao.selectByCode(buttonCode);
+                        if (anPermission != null && anPermission.getId() != null) {
+                            continue;
+                        }
+                        AnPermission buttonPermission = new AnPermission();
+                        buttonPermission.setParentId(baseCode);
+                        buttonPermission.setCode(buttonCode);
+                        buttonPermission.setName(baseName + ":" + anButton.getName());
                         buttonPermission.setDelFlag(0);
                         anPermissionDao.insert(buttonPermission, true);
                     }
@@ -225,6 +239,16 @@ public class AuthServiceImpl implements AuthService {
         if (!permissionList.contains(permissionCode)) {
             throw new BizException("401", "没有权限:" + permissionContext.getPermissionName(permissionCode));
         }
+    }
+
+    @Override
+    public void resetPwd(Map<String, Object> props) {
+        AnUser anUser = new AnUser();
+        String mobile = props.get("mobile").toString();
+        String id = props.get("id").toString();
+        anUser.setId(id);
+        anUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
+        sysUserDao.updateById(anUser, true);
     }
 
     @Override

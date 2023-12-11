@@ -116,12 +116,12 @@ public class DbController extends BaseDbController {
         return super.addM2m(clazz, param, clearAll);
     }
 
-    @PostMapping(value = "runJavaCmd",consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@RequestBody HashMap map) throws ClassNotFoundException {
+    @PostMapping(value = "/${clazz}/runJavaCmd",consumes = "application/json")
+    public AnnoResult<String> runJavaCmd(@PathVariable String clazz,@RequestBody HashMap map) throws ClassNotFoundException {
         if (map == null) {
             map = new HashMap<>();
         }
-        return super.runJavaCmd(map);
+        return super.runJavaCmd(clazz, map);
     }
 
 }

@@ -19,7 +19,7 @@ public class AnnoJavaCmd {
     /**
      * 多对多映射值
      */
-    public static Map<String, AnnoMtm> annoJavCmdMap = new HashMap<>();
+    public static Map<String, AnnoJavaCmd> annoJavCmdMap = new HashMap<>();
 
     /**
      * id
@@ -42,5 +42,11 @@ public class AnnoJavaCmd {
      */
     @ApiModelProperty(value = "JavaCmd：方法名", example = "c12345")
     private String javaCmdMethodName;
+
+    /**
+     * 权限码
+     */
+    @ApiModelProperty(value = "权限码")
+    private String permissionCode;
 
 }

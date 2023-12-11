@@ -224,20 +224,18 @@ public class DbController extends BaseDbController {
         return super.addM2m(clazz, param, clearAll);
     }
 
-    @Mapping(value = "runJavaCmd", method = MethodType.POST, consumes = "application/json")
+    @Mapping(value = "/{clazz}/runJavaCmd", method = MethodType.POST, consumes = "application/json")
     @Post
     @Consumes("application/json")
     @ApiOperation(value = "执行java代码", notes = "执行java代码")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name = "clazz", value = "类名", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "method", value = "方法名", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "expireTime", value = "过期时间", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "annoJavaCmdId", value = "anno运行java的命令ID", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<String> runJavaCmd(@Body Map<String, String> map) throws ClassNotFoundException {
-        return super.runJavaCmd(map);
+    public AnnoResult<String> runJavaCmd(@Path String clazz,@Body Map<String, String> map) throws ClassNotFoundException {
+        return super.runJavaCmd(clazz,map);
     }
 
 }
