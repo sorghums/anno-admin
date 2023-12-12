@@ -132,8 +132,11 @@ public class DbServiceWood implements DbService {
      * entity 转数据库字段时，过滤掉不需要的字段
      */
     private boolean filterField(TableParam<?> tableParam, String tableFieldName, Object fieldValue) {
-        if (fieldValue == null) {
+        if (tableFieldName == null){
             return false;
+        }
+        if (fieldValue == null) {
+            return AnnoAdminCoreFunctions.sqlFieldCanClearFunction.apply(tableParam.getClazz(), tableFieldName);
         }
         return tableParam.getColumns().contains(tableFieldName);
     }

@@ -11,6 +11,7 @@ import org.noear.wood.wrap.ClassWrap;
 import org.noear.wood.wrap.NamingStrategy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;
+import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
@@ -45,7 +46,14 @@ public class AnnoCorePlugin extends AnnoPlugin {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
         AnnoAdminCoreFunctions.javaField2DbFieldFunction = AnnoFieldCache::getSqlColumnByJavaName;
         AnnoAdminCoreFunctions.dbField2JavaFieldFunction = AnnoFieldCache::getFieldBySqlColumn;
-
+        AnnoAdminCoreFunctions.fieldCanClearFunction = (clazz,fieldName) -> {
+            AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
+            return entity.getFieldMap().get(fieldName).isEditCanClear();
+        };
+        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz,fieldName) -> {
+            AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
+            return entity.getFieldMap().get(AnnoFieldCache.getFieldBySqlColumn(clazz,fieldName).getName()).isEditCanClear();
+        };
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
                 ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();

@@ -137,6 +137,12 @@ public class AnField {
     private boolean editEnable;
 
     /**
+     * 编辑可以清除
+     */
+    @ApiModelProperty(value = "编辑[是否可以清空,设置为null]",example = "false")
+    private boolean editCanClear;
+
+    /**
      * 编辑 是否必填
      *
      * @see AnnoEdit#notNull()

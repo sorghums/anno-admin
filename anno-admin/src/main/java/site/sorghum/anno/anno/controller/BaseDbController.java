@@ -325,4 +325,32 @@ public class BaseDbController {
         }
         return nParam;
     }
+
+    private Map<String, Object> emptyStringIgnore(Map<String, ?> param,AnEntity anEntity) {
+        Map<String, Object> nParam = new HashMap<>();
+        for (AnField dbAnField : anEntity.getDbAnFields()) {
+            String key = dbAnField.getFieldName();
+            if (param.containsKey(key)){
+                Object item = param.get(key);
+                if (item instanceof String sItem) {
+                    if (StrUtil.isNotBlank(sItem) || dbAnField.isEditCanClear()) {
+                        nParam.put(key, sItem);
+                    }
+                } else {
+                    nParam.put(key, param.get(key));
+                }
+            }
+        }
+        for (String key : param.keySet()) {
+            Object item = param.get(key);
+            if (item instanceof String sItem) {
+                if (StrUtil.isNotBlank(sItem)) {
+                    nParam.put(key, sItem);
+                }
+            } else {
+                nParam.put(key, param.get(key));
+            }
+        }
+        return nParam;
+    }
 }

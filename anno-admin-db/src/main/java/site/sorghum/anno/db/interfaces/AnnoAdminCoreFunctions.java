@@ -28,4 +28,14 @@ public class AnnoAdminCoreFunctions {
      * 数据库字段转java字段函数
      */
     public static BiFunction<Class,String, Field> dbField2JavaFieldFunction;
+
+    /**
+     * 字段是否可以清空函数
+     */
+    public static BiFunction<Class,String,Boolean> fieldCanClearFunction;
+
+    /**
+     * 字段是否可以清空函数
+     */
+    public static BiFunction<Class,String,Boolean> sqlFieldCanClearFunction;
 }

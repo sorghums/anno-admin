@@ -70,7 +70,7 @@ public class BusinessProduct extends BaseMetaModel {
         search = @AnnoSearch(queryType = DbCondition.QueryType.LIKE),
         dataType = AnnoDataType.TREE,
         treeType = @AnnoTreeType(sql = "SELECT id,cat_name as label,parent_id as pid FROM business_product_cat where del_flag = 0"),
-        edit = @AnnoEdit)
+        edit = @AnnoEdit(canClear = true))
     String productCatId;
 
     @AnnoField(

@@ -49,6 +49,13 @@ public @interface AnnoEdit {
     boolean editEnable() default true;
 
     /**
+     * 是否可以清空,一般情况下updateById不会设置为空.
+     *
+     * @return boolean
+     */
+    boolean canClear() default false;
+
+    /**
      * 展示依赖条件
      * @return {@link ShowBy}
      */
