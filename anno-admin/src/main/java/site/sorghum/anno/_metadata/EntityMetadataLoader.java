@@ -211,7 +211,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
                 .collect(Collectors.toList());
             anField.setTreeDatas(treeDataList);
-
+            anField.setTreeOptionIsMultiple(anno.treeType().isMultiple());
             // pk
             PrimaryKey primaryKey = fieldAnnoField.getPrimaryKey();
             if (primaryKey != null) {

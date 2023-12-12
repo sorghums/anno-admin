@@ -63,16 +63,19 @@ public class DbCondition {
 
             }
             case LIKE -> {
+                String valueString = value.toString();
+                boolean hasBlurValue = valueString.contains("%") || valueString.contains("_") || valueString.contains("?");
+                valueString = hasBlurValue ? valueString : "%" + valueString + "%";
                 if (andOr == AndOr.AND) {
                     {
                         if (value instanceof String || value instanceof StringBuilder || value instanceof StringBuffer) {
-                            dbTableQuery.andLk(field, value.toString());
+                            dbTableQuery.andLk(field, valueString);
                         }
                     }
                 } else {
                     {
                         if (value instanceof String || value instanceof StringBuilder || value instanceof StringBuffer) {
-                            dbTableQuery.orLk(field, value.toString());
+                            dbTableQuery.orLk(field, valueString);
                         }
                     }
                 }

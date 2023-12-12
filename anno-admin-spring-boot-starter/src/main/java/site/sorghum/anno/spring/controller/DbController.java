@@ -98,7 +98,7 @@ public class DbController extends BaseDbController {
     }
 
     @RequestMapping("/{clazz}/annoTreeSelectData")
-    public <T> AnnoResult<Map<?, ?>> annoTreeSelectData(@PathVariable String clazz,
+    public <T> AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
                                                         @RequestParam(defaultValue = "false") boolean ignoreM2m,
                                                         @RequestParam(defaultValue = "false") boolean reverseM2m,
                                                         @RequestBody(required = false) Map<String, String> param) {

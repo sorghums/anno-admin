@@ -26,7 +26,6 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "组织管理",
         orgFilter = true,
-        annoLeftTree = @AnnoLeftTree(leftTreeName = "父组织",catKey = "parentOrgId", treeClass = AnOrg.class),
         annoTree = @AnnoTree(label = "orgName", parentKey = "parentOrgId", key = "id", displayAsTree = true),
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
 @Table("an_org")

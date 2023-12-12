@@ -334,6 +334,12 @@ public class AnField {
     @ApiModelProperty(value = "[树形选择框]annoMain注释的类，比如 SysOrg.class")
     private TreeAnnoClass treeOptionAnnoClass;
 
+    /**
+     * 是否多选，多选的值格式为逗号拼接 value 值
+     */
+    @ApiModelProperty(value = "[树形选择框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")
+    private boolean treeOptionIsMultiple;
+
     @Data
     @AllArgsConstructor
     public static class TreeData {

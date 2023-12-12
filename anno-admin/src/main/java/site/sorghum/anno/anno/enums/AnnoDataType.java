@@ -19,6 +19,7 @@ public enum AnnoDataType {
     DATE("日期"),
     DATETIME("日期时间"),
     OPTIONS("下拉框"),
+    RADIO("单选矿"),
     PICKER("下拉框[弹出]"),
     TREE("树形下拉框"),
     RICH_TEXT("富文本"),

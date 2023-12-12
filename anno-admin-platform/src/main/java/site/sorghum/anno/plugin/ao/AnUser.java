@@ -59,7 +59,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      * 状态 1 正常 0 封禁
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
-            dataType = AnnoDataType.OPTIONS,
+            dataType = AnnoDataType.RADIO,
             optionType = @AnnoOptionType(value = {
                     @AnnoOptionType.OptionData(label = "正常", value = "1"),
                     @AnnoOptionType.OptionData(label = "封禁", value = "0")
