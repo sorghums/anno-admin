@@ -50,9 +50,9 @@ public class AnnoCorePlugin extends AnnoPlugin {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
             return entity.getFieldMap().get(fieldName).isEditCanClear();
         };
-        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz,fieldName) -> {
+        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz,sqlFieldName) -> {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
-            return entity.getFieldMap().get(AnnoFieldCache.getFieldBySqlColumn(clazz,fieldName).getName()).isEditCanClear();
+            return entity.getFieldMap().get(AnnoFieldCache.getFieldBySqlColumn(clazz,sqlFieldName).getName()).isEditCanClear();
         };
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
