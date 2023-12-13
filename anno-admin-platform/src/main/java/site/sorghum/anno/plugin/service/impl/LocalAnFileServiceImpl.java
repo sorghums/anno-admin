@@ -7,10 +7,13 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.plugin.entity.common.FileInfo;
 import site.sorghum.anno.plugin.service.AnFileService;
+
+import java.util.List;
 
 
 /**
@@ -24,8 +27,21 @@ public class LocalAnFileServiceImpl implements AnFileService {
     @Inject
     private AnnoProperty annoProperty;
 
+    /**
+     * 实际服务
+     */
+    private AnFileService actualService = null;
+
+    /**
+     * 查找实际服务
+     */
+    private boolean findActualService = true;
     @Override
     public FileInfo uploadFile(FileInfo fileInfo) {
+        findActualService();
+        if (actualService != null){
+            return actualService.uploadFile(fileInfo);
+        }
         String guid = IdUtil.fastUUID();
         String localFilePath = annoProperty.getLocalFilePath();
         String fileName = fileInfo.getFileName();
@@ -46,12 +62,30 @@ public class LocalAnFileServiceImpl implements AnFileService {
 
     @Override
     public FileInfo getFileInfo(String id) {
+        findActualService();
+        if (actualService != null){
+            return actualService.getFileInfo(id);
+        }
         throw new UnsupportedOperationException("不支持本地文件服务");
     }
 
     @Override
     public String getUrl(String key) {
+        findActualService();
+        if (actualService != null){
+            return actualService.getUrl(key);
+        }
         throw new UnsupportedOperationException("不支持本地文件服务");
     }
 
+    private void findActualService(){
+        if (findActualService){
+            List<AnFileService> beansOfType = AnnoBeanUtils.getBeansOfType(AnFileService.class);
+            for (AnFileService anFileService : beansOfType) {
+                if (anFileService != this){
+                    actualService = anFileService;
+                }
+            }
+        }
+    }
 }

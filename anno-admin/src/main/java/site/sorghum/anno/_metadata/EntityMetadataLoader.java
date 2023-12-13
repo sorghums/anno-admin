@@ -17,6 +17,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
@@ -213,6 +214,13 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 .collect(Collectors.toList());
             anField.setTreeDatas(treeDataList);
             anField.setTreeOptionIsMultiple(anno.treeType().isMultiple());
+
+            // 文件类型
+            AnnoFileType annoFileType = anno.fileType();
+            anField.setFileType(annoFileType.fileType());
+            anField.setFileMaxCount(annoFileType.fileMaxCount());
+            anField.setFileMaxSize(annoFileType.fileMaxSize());
+
             // pk
             PrimaryKey primaryKey = fieldAnnoField.getPrimaryKey();
             if (primaryKey != null) {

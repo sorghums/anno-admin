@@ -17,6 +17,8 @@ solon.app:
 solon.mime:
   yml: "text/html"
   json: "application/json"
+#设定最大的请求包大小（或表单项的值大小）//默认: 2m
+server.request.maxBodySize: 100mb #kb,mb
 solon.logging.appender:
   console:
     pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %magenta(${PID:-}) --- %-15([%15.15thread]) %-56(%cyan(%-40.40logger{39}%L)) : %msg%n"

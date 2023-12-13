@@ -7,6 +7,7 @@ import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
+import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
@@ -345,6 +346,28 @@ public class AnField {
      */
     @ApiModelProperty(value = "[树形选择框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")
     private boolean treeOptionIsMultiple;
+
+    /**
+     * 文件类型限制
+     *
+     * @see AnnoFileType#fileType()
+     */
+    @ApiModelProperty(value = "[文件类型限制]默认为*,多种格式以,分格",example = "pdf,jpg")
+    private String fileType;
+
+    /**
+     * 文件最大上传数量限制
+     * @see AnnoFileType#fileMaxCount()
+     */
+    @ApiModelProperty(value = "[文件最大上传数量限制]默认为1",example = "1")
+    private int fileMaxCount;
+
+    /**
+     * 文件最大上传大小限制
+     * @see AnnoFileType#fileMaxSize()
+     */
+    @ApiModelProperty(value = "[文件最大上传大小限制]默认为5Mb",example = "5")
+    private int fileMaxSize;
 
     @Data
     @AllArgsConstructor

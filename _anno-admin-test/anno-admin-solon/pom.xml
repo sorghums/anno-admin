@@ -88,6 +88,12 @@
             <artifactId>powerjob-remote-smart-http</artifactId>
             <version>${powerjob-remote-smart-http.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.jetty</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>tech.powerjob</groupId>
             <artifactId>powerjob-client</artifactId>

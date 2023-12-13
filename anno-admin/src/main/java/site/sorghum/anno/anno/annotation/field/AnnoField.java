@@ -1,5 +1,6 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
@@ -88,6 +89,13 @@ public @interface AnnoField {
      * @return {@link AnnoTreeType}
      */
     AnnoTreeType treeType() default @AnnoTreeType;
+
+    /**
+     * 文件类型
+     *
+     * @return {@link AnnoFileType}
+     */
+    AnnoFileType fileType() default @AnnoFileType;
 
     /**
      * 是否是虚拟列，不会在数据库中生成与查询

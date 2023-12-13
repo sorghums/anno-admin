@@ -37,6 +37,10 @@ public interface AnFileService {
                 sb.append("/");
             }
         }
+        // 如果最后一个为 / , 去除最后一个/
+        if(sb.length() > 1 && sb.charAt(sb.length() - 1) == '/'){
+            sb.deleteCharAt(sb.length() - 1);
+        }
         return sb.toString();
     }
 }
