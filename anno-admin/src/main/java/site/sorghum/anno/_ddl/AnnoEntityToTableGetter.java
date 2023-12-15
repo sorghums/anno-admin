@@ -1,7 +1,6 @@
 package site.sorghum.anno._ddl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;

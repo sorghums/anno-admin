@@ -3,7 +3,6 @@ package site.sorghum.anno.solon.filter;
 
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
-import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.exception.DamiException;
@@ -16,6 +15,7 @@ import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
 import org.noear.solon.validation.ValidatorException;
 import org.noear.solon.validation.annotation.Logined;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
@@ -48,6 +48,11 @@ public class FailureFilter implements Filter {
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         AnnoContextUtil.AnnoContext context = AnnoContextUtil.getContext();
+        // 只处理anno-admin-api请求
+        if (!ctx.path().startsWith(AnnoConstants.BASE_URL)) {
+            chain.doFilter(ctx);
+            return;
+        }
         context.getStopWatch(ctx.path());
 
         context.setPrintDetailLog(annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, ctx.path())));

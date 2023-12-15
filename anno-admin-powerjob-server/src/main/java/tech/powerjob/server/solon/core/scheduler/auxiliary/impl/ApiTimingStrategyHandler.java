@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.core.scheduler.auxiliary.impl;
 
 import org.noear.solon.annotation.Component;
-import tech.powerjob.server.solon.core.scheduler.auxiliary.AbstractTimingStrategyHandler;
 import tech.powerjob.common.enums.TimeExpressionType;
+import tech.powerjob.server.solon.core.scheduler.auxiliary.AbstractTimingStrategyHandler;
 
 /**
  * @author Echo009

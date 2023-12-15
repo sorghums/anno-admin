@@ -3,9 +3,9 @@ package tech.powerjob.server.solon.common.async;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.aspect.Interceptor;
 import org.noear.solon.core.aspect.Invocation;
+import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.server.solon.common.constants.PJThreadPool;
 import tech.powerjob.server.solon.config.ThreadPoolExecutorManager;
-import tech.powerjob.common.exception.PowerJobException;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;

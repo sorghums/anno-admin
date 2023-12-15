@@ -4,20 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import tech.powerjob.server.solon.remote.aware.TransportServiceAware;
-import tech.powerjob.server.solon.remote.server.election.Ping;
-import tech.powerjob.server.solon.remote.server.redirector.RemoteProcessReq;
-import tech.powerjob.server.solon.remote.server.redirector.RemoteRequestProcessor;
-import tech.powerjob.server.solon.remote.transporter.TransportService;
 import tech.powerjob.common.response.AskResponse;
 import tech.powerjob.common.serialize.JsonUtils;
 import tech.powerjob.remote.framework.actor.Actor;
 import tech.powerjob.remote.framework.actor.Handler;
 import tech.powerjob.remote.framework.actor.ProcessType;
+import tech.powerjob.server.solon.remote.aware.TransportServiceAware;
+import tech.powerjob.server.solon.remote.server.election.Ping;
+import tech.powerjob.server.solon.remote.server.redirector.RemoteProcessReq;
+import tech.powerjob.server.solon.remote.server.redirector.RemoteRequestProcessor;
+import tech.powerjob.server.solon.remote.transporter.TransportService;
 
-import static tech.powerjob.common.RemoteConstant.S4S_HANDLER_PING;
-import static tech.powerjob.common.RemoteConstant.S4S_HANDLER_PROCESS;
-import static tech.powerjob.common.RemoteConstant.S4S_PATH;
+import static tech.powerjob.common.RemoteConstant.*;
 
 /**
  * 处理朋友们的信息（处理服务器与服务器之间的通讯）

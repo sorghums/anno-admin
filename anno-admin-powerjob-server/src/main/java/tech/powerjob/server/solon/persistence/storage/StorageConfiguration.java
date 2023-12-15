@@ -1,6 +1,5 @@
 package tech.powerjob.server.solon.persistence.storage;
 
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;

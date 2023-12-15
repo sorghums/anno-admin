@@ -6,12 +6,10 @@ import org.noear.solon.SolonApp;
 import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
-import org.noear.solon.web.cors.CrossHandler;
 import org.noear.wood.WoodConfig;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
-import site.sorghum.anno.test.powerjob.PowerjobWorkerPlugin;
 
 /**
  * Ano 管理入门

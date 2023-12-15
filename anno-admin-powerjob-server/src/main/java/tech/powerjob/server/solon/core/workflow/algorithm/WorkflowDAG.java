@@ -2,13 +2,7 @@ package tech.powerjob.server.solon.core.workflow.algorithm;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import tech.powerjob.common.model.PEWorkflowDAG;
 
 import java.util.List;

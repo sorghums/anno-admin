@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.core.workflow.hanlder;
 
-import tech.powerjob.server.solon.persistence.remote.model.WorkflowInstanceInfoDO;
 import tech.powerjob.common.model.PEWorkflowDAG;
+import tech.powerjob.server.solon.persistence.remote.model.WorkflowInstanceInfoDO;
 
 /**
  * @author Echo009

@@ -7,7 +7,6 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
 import org.noear.wood.WoodConfig;
-import org.noear.wood.wrap.ClassWrap;
 import org.noear.wood.wrap.NamingStrategy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;

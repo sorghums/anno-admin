@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.persistence.remote.repository;
 
 import org.noear.wood.xml.Namespace;
-import tech.powerjob.server.solon.persistence.remote.model.ServerInfoDO;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
+import tech.powerjob.server.solon.persistence.remote.model.ServerInfoDO;
 
 import java.time.LocalDateTime;
 import java.util.Date;

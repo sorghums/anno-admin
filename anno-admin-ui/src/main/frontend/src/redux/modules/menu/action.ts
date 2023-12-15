@@ -1,6 +1,6 @@
 import * as types from "@/redux/mutation-types";
-import { getMenuList } from "@/api/modules/login";
-import { Dispatch } from "react";
+import {getMenuList} from "@/api/modules/login";
+import {Dispatch} from "react";
 
 // * updateCollapse
 export const updateCollapse = (isCollapse: boolean) => ({

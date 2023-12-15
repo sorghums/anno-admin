@@ -7,6 +7,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.RemoteConstant;
+import tech.powerjob.common.SystemInstanceResult;
+import tech.powerjob.common.enums.ExecuteType;
+import tech.powerjob.common.enums.InstanceStatus;
+import tech.powerjob.common.enums.ProcessorType;
+import tech.powerjob.common.enums.TimeExpressionType;
+import tech.powerjob.common.request.ServerScheduleJobReq;
+import tech.powerjob.common.utils.CollectionUtils;
+import tech.powerjob.remote.framework.base.URL;
 import tech.powerjob.server.solon.anno.utils.IdConvertUtil;
 import tech.powerjob.server.solon.common.Holder;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
@@ -19,15 +28,6 @@ import tech.powerjob.server.solon.persistence.remote.repository.InstanceInfoRepo
 import tech.powerjob.server.solon.remote.transporter.TransportService;
 import tech.powerjob.server.solon.remote.transporter.impl.ServerURLFactory;
 import tech.powerjob.server.solon.remote.worker.WorkerClusterQueryService;
-import tech.powerjob.common.RemoteConstant;
-import tech.powerjob.common.SystemInstanceResult;
-import tech.powerjob.common.enums.ExecuteType;
-import tech.powerjob.common.enums.InstanceStatus;
-import tech.powerjob.common.enums.ProcessorType;
-import tech.powerjob.common.enums.TimeExpressionType;
-import tech.powerjob.common.request.ServerScheduleJobReq;
-import tech.powerjob.common.utils.CollectionUtils;
-import tech.powerjob.remote.framework.base.URL;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,11 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static tech.powerjob.common.enums.InstanceStatus.CANCELED;
-import static tech.powerjob.common.enums.InstanceStatus.FAILED;
-import static tech.powerjob.common.enums.InstanceStatus.RUNNING;
-import static tech.powerjob.common.enums.InstanceStatus.WAITING_DISPATCH;
-import static tech.powerjob.common.enums.InstanceStatus.WAITING_WORKER_RECEIVE;
+import static tech.powerjob.common.enums.InstanceStatus.*;
 
 
 /**

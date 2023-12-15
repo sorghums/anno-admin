@@ -1,17 +1,15 @@
 package site.sorghum.anno.suppose.proxy;
 
 import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.util.AnnoContextUtil;
-import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.proxy.AnAnnoMenuProxy;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 import java.time.LocalDateTime;
@@ -59,7 +57,7 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     private String getLoginName() {
         try {
-            SaSession session = StpUtil.getSession(false);
+            SaSession session = AnnoStpUtil.getSession(false);
             AnUser anUser = session.get("user", new AnUser() {{
                 setName("system");
             }});

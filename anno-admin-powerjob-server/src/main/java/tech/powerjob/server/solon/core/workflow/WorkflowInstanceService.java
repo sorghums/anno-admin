@@ -7,6 +7,13 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.SystemInstanceResult;
+import tech.powerjob.common.enums.InstanceStatus;
+import tech.powerjob.common.enums.WorkflowInstanceStatus;
+import tech.powerjob.common.enums.WorkflowNodeType;
+import tech.powerjob.common.exception.PowerJobException;
+import tech.powerjob.common.model.PEWorkflowDAG;
+import tech.powerjob.common.response.WorkflowInstanceInfoDTO;
 import tech.powerjob.server.solon.common.constants.SwitchableStatus;
 import tech.powerjob.server.solon.core.instance.InstanceService;
 import tech.powerjob.server.solon.core.lock.UseCacheLock;
@@ -16,13 +23,6 @@ import tech.powerjob.server.solon.persistence.remote.model.WorkflowInstanceInfoD
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInstanceInfoRepository;
 import tech.powerjob.server.solon.remote.server.redirector.DesignateServer;
-import tech.powerjob.common.SystemInstanceResult;
-import tech.powerjob.common.enums.InstanceStatus;
-import tech.powerjob.common.enums.WorkflowInstanceStatus;
-import tech.powerjob.common.enums.WorkflowNodeType;
-import tech.powerjob.common.exception.PowerJobException;
-import tech.powerjob.common.model.PEWorkflowDAG;
-import tech.powerjob.common.response.WorkflowInstanceInfoDTO;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

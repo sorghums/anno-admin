@@ -1,4 +1,4 @@
-import { Tabs } from "antd";
+import {Tabs} from "antd";
 import Pie from "./components/pie";
 import Curve from "./components/curve";
 import "./index.less";

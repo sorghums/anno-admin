@@ -8,8 +8,8 @@ import site.sorghum.anno.AnnoPlatform;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.MenuBaseController;
-import site.sorghum.anno.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
+import site.sorghum.anno.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.plugin.entity.response.VbenMenu;
 
 import java.util.List;

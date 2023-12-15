@@ -3,11 +3,11 @@ package tech.powerjob.server.solon.core.validator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.annotation.Component;
-import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAG;
-import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
 import tech.powerjob.common.enums.WorkflowNodeType;
 import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.common.model.PEWorkflowDAG;
+import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAG;
+import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
 
 import java.util.Collection;
 

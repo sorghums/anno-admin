@@ -1,5 +1,5 @@
-import { useEcharts } from "@/hooks/useEcharts";
-import { EChartsOption } from "echarts";
+import {useEcharts} from "@/hooks/useEcharts";
+import {EChartsOption} from "echarts";
 
 interface ChartProp {
 	value: string;

@@ -2,7 +2,6 @@ package site.sorghum.anno.anno.proxy;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jdk.jfr.Name;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;

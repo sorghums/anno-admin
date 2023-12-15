@@ -3,10 +3,10 @@ package tech.powerjob.server.solon.remote.worker;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.common.model.DeployedContainerInfo;
 import tech.powerjob.common.request.WorkerHeartbeat;
 import tech.powerjob.common.utils.CollectionUtils;
+import tech.powerjob.server.solon.common.module.WorkerInfo;
 
 import java.util.Collections;
 import java.util.List;

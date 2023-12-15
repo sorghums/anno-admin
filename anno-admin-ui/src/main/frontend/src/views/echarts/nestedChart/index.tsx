@@ -1,4 +1,4 @@
-import { useEcharts } from "@/hooks/useEcharts";
+import {useEcharts} from "@/hooks/useEcharts";
 import * as echarts from "echarts";
 
 const NestedChart = () => {

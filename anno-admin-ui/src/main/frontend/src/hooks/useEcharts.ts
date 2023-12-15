@@ -1,5 +1,6 @@
 import * as echarts from "echarts";
-import { useEffect, useRef } from "react";
+import {useEffect, useRef} from "react";
+
 /**
  * @description 使用Echarts(只是为了添加图表响应式)
  * @param {Element} data 数据 目前只针对于次Hooks-admin里一些data都是写死在options 所以data为可选 根据项目自行修改即可

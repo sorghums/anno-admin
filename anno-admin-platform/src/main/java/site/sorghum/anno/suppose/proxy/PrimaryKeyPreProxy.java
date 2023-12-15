@@ -2,13 +2,8 @@ package site.sorghum.anno.suppose.proxy;
 
 import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Named;
-import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
-
-import java.util.List;
 
 /**
  * @author songyinyin

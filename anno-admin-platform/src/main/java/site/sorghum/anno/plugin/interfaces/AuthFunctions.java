@@ -2,8 +2,8 @@ package site.sorghum.anno.plugin.interfaces;
 
 
 import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.List;
 import java.util.Map;

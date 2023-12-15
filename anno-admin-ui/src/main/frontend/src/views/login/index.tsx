@@ -3,7 +3,7 @@ import loginLeft from "@/assets/images/login_left.png";
 import logo from "@/assets/images/logo.png";
 import "./index.less";
 import {useEffect, useState} from "react";
-import {apiGetGlobalConfig, goGlobalConfig} from "@/api/modules/config";
+import {goGlobalConfig} from "@/api/modules/config";
 
 const Login = () => {
 	const [globalConfig, setGlobalConfig] = useState({

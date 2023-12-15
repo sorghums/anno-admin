@@ -3,8 +3,8 @@ package tech.powerjob.server.solon.persistence.remote.repository;
 import org.noear.wood.IPage;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno.db.param.PageParam;
-import tech.powerjob.server.solon.persistence.remote.model.WorkflowInfoDO;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
+import tech.powerjob.server.solon.persistence.remote.model.WorkflowInfoDO;
 
 import java.util.List;
 

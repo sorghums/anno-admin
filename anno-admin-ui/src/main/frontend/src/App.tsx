@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { getBrowserLang } from "@/utils/util";
+import {useEffect, useState} from "react";
+import {getBrowserLang} from "@/utils/util";
 import {ConfigProvider, message} from "antd";
-import { connect } from "react-redux";
-import { setLanguage } from "@/redux/modules/global/action";
-import { HashRouter } from "react-router-dom";
+import {connect} from "react-redux";
+import {setLanguage} from "@/redux/modules/global/action";
+import {HashRouter} from "react-router-dom";
 import Router from "@/routers/index";
 import useTheme from "@/hooks/useTheme";
 import zhCN from "antd/lib/locale/zh_CN";
@@ -11,7 +11,7 @@ import enUS from "antd/lib/locale/en_US";
 import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
 
-import { AnAmis } from "@/components/Amis/AnAmis";
+import {AnAmis} from "@/components/Amis/AnAmis";
 
 const injectAmisItem = (item: any) => {
 	console.trace(item);

@@ -1,5 +1,5 @@
 import * as types from "@/redux/mutation-types";
-import { ThemeConfigProp } from "@/redux/interface/index";
+import {ThemeConfigProp} from "@/redux/interface/index";
 
 // * setToken
 export const setToken = (token: string) => ({

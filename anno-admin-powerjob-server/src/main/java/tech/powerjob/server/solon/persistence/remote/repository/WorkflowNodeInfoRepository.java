@@ -1,7 +1,7 @@
 package tech.powerjob.server.solon.persistence.remote.repository;
 
-import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
+import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
 
 import java.util.Date;
 import java.util.List;

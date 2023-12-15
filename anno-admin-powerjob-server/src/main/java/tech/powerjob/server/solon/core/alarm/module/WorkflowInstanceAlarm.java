@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.core.alarm.module;
 
 import lombok.Data;
-import tech.powerjob.server.solon.extension.alarm.Alarm;
 import tech.powerjob.common.model.PEWorkflowDAG;
+import tech.powerjob.server.solon.extension.alarm.Alarm;
 
 /**
  * 工作流执行失败告警对象

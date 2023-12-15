@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Context;
 import site.sorghum.anno.AnnoPlatform;
-import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.plugin.controller.AnBaseFileController;
 
 import java.io.InputStream;

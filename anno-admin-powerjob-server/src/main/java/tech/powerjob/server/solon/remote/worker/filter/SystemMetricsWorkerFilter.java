@@ -2,9 +2,9 @@ package tech.powerjob.server.solon.remote.worker.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
+import tech.powerjob.common.model.SystemMetrics;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
-import tech.powerjob.common.model.SystemMetrics;
 
 /**
  * filter worker by system metric

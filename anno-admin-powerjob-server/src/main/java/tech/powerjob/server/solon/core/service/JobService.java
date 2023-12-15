@@ -1,9 +1,9 @@
 package tech.powerjob.server.solon.core.service;
 
-import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 import tech.powerjob.common.PowerQuery;
 import tech.powerjob.common.request.http.SaveJobInfoRequest;
 import tech.powerjob.common.response.JobInfoDTO;
+import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 
 import java.util.List;
 

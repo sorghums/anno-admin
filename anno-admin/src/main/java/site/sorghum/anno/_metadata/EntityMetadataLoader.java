@@ -1,7 +1,6 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;

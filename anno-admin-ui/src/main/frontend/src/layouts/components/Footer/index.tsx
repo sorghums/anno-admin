@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import "./index.less";
 
 const LayoutFooter = (props: any) => {

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Space, message } from "antd";
+import {Button, Form, Input, message, Select, Space} from "antd";
 import "./index.less";
 
 const ValidateForm = () => {

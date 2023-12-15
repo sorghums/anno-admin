@@ -1,26 +1,19 @@
 package site.sorghum.anno.amis.util;
 
-import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import org.noear.wood.DbContext;
 import site.sorghum.amis.entity.AmisBase;
 import site.sorghum.amis.entity.display.Group;
-import site.sorghum.amis.entity.display.IFrame;
 import site.sorghum.amis.entity.input.FormItem;
 import site.sorghum.amis.entity.input.Options;
-import site.sorghum.amis.entity.layout.Tabs;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno._metadata.AnButton;
-import site.sorghum.anno._metadata.AnColumnButton;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
-import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

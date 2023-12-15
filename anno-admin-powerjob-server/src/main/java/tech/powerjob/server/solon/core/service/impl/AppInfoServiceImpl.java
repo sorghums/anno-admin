@@ -2,10 +2,10 @@ package tech.powerjob.server.solon.core.service.impl;
 
 import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.server.solon.core.service.AppInfoService;
 import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
 import tech.powerjob.server.solon.persistence.remote.repository.AppInfoRepository;
-import tech.powerjob.common.exception.PowerJobException;
 
 import java.util.Objects;
 

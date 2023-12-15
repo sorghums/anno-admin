@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.utils.CommonUtils;
+import tech.powerjob.common.utils.NetUtils;
 import tech.powerjob.server.solon.extension.LockService;
 import tech.powerjob.server.solon.persistence.remote.model.OmsLockDO;
 import tech.powerjob.server.solon.persistence.remote.repository.OmsLockRepository;
-import tech.powerjob.common.utils.CommonUtils;
-import tech.powerjob.common.utils.NetUtils;
 
 /**
  * 基于数据库实现的分布式锁

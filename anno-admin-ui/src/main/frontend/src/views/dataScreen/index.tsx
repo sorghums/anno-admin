@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { HOME_URL } from "@/config/config";
+import {useLayoutEffect, useRef} from "react";
+import {useNavigate} from "react-router-dom";
+import {HOME_URL} from "@/config/config";
 import AgeRatioChart from "./components/AgeRatioChart";
 import AnnualUseChart from "./components/AnnualUseChart";
 import HotPlateChart from "./components/HotPlateChart";

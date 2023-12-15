@@ -6,6 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.SystemInstanceResult;
+import tech.powerjob.common.enums.InstanceStatus;
+import tech.powerjob.common.enums.WorkflowInstanceStatus;
+import tech.powerjob.common.enums.WorkflowNodeType;
+import tech.powerjob.common.exception.PowerJobException;
+import tech.powerjob.common.model.PEWorkflowDAG;
+import tech.powerjob.common.utils.CommonUtils;
 import tech.powerjob.server.solon.common.constants.SwitchableStatus;
 import tech.powerjob.server.solon.core.workflow.WorkflowInstanceManager;
 import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAGUtils;
@@ -14,13 +21,6 @@ import tech.powerjob.server.solon.persistence.remote.model.WorkflowInfoDO;
 import tech.powerjob.server.solon.persistence.remote.model.WorkflowInstanceInfoDO;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInfoRepository;
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInstanceInfoRepository;
-import tech.powerjob.common.SystemInstanceResult;
-import tech.powerjob.common.enums.InstanceStatus;
-import tech.powerjob.common.enums.WorkflowInstanceStatus;
-import tech.powerjob.common.enums.WorkflowNodeType;
-import tech.powerjob.common.exception.PowerJobException;
-import tech.powerjob.common.model.PEWorkflowDAG;
-import tech.powerjob.common.utils.CommonUtils;
 
 import java.time.LocalDateTime;
 

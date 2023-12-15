@@ -1,6 +1,5 @@
 package site.sorghum.anno.plugin.service.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
@@ -14,11 +13,10 @@ import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-import site.sorghum.anno.plugin.interfaces.AuthFunctions;
-import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.plugin.ao.AnPermission;
 import site.sorghum.anno.plugin.ao.AnRole;
 import site.sorghum.anno.plugin.ao.AnUser;
@@ -26,6 +24,8 @@ import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
 import site.sorghum.anno.plugin.dao.AnPermissionDao;
 import site.sorghum.anno.plugin.dao.AnRoleDao;
 import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.interfaces.AuthFunctions;
+import site.sorghum.anno.plugin.service.AuthService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -234,7 +234,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void verifyPermission(String permissionCode) {
-        String userId = (String) StpUtil.getLoginId();
+        String userId = (String) AnnoStpUtil.getLoginId();
         List<String> permissionList = permissionList(userId);
         if (!permissionList.contains(permissionCode)) {
             throw new BizException("400", "没有权限:" + permissionContext.getPermissionName(permissionCode));

@@ -1,7 +1,6 @@
 package site.sorghum.anno.plugin.manager;
 
 import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.StpUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.noear.wood.DbContext;
@@ -10,6 +9,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnUser;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AnnoOrgManager {
 
     public String getLoginOrg() {
         try {
-            SaSession session = StpUtil.getSession(false);
+            SaSession session = AnnoStpUtil.getSession(false);
             AnUser anUser = session.get("user", new AnUser() {{
                 setName("system");
                 setOrgId("-1");
@@ -45,7 +45,7 @@ public class AnnoOrgManager {
 
     public boolean isIgnoreFilter(Class<?> clazz) {
         try {
-            String loginId = StpUtil.getLoginId("-1");
+            String loginId = AnnoStpUtil.getLoginId("-1");
             List<String> roleIds = dbContext.table("an_user_role").where("user_id=?", loginId).selectArray("role_id");
             boolean isAdmin = roleIds.stream().anyMatch("admin"::equals);
             AnEntity entity = metadataManager.getEntity(clazz);

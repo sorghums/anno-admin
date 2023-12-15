@@ -1,5 +1,5 @@
-import { connect } from "react-redux";
-import { setLanguage } from "@/redux/modules/global/action";
+import {connect} from "react-redux";
+import {setLanguage} from "@/redux/modules/global/action";
 
 const Language = () => {
 	return <div></div>;

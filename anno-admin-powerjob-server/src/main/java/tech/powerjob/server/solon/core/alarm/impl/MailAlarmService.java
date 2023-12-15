@@ -7,10 +7,10 @@ import org.noear.solon.annotation.Inject;
 import org.simplejavamail.api.email.Email;
 import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.email.EmailBuilder;
+import tech.powerjob.common.utils.CollectionUtils;
 import tech.powerjob.server.solon.extension.alarm.Alarm;
 import tech.powerjob.server.solon.extension.alarm.AlarmTarget;
 import tech.powerjob.server.solon.extension.alarm.Alarmable;
-import tech.powerjob.common.utils.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;

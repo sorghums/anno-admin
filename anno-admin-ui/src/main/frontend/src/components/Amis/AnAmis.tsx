@@ -1,6 +1,6 @@
-import { Renderer } from "amis";
+import {Renderer} from "amis";
 import React from "react";
-import { AMISComponentV2 } from "@/views/anAmis";
+import {AMISComponentV2} from "@/views/anAmis";
 
 export class AnAmis extends React.Component<any, any> {
 	render() {

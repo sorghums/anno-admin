@@ -1,6 +1,5 @@
 package site.sorghum.anno.plugin.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -8,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
@@ -35,7 +35,7 @@ public class MenuBaseController {
     AuthService authService;
 
     public List<AnAnnoMenuResponse> dataMenu() {
-        String uid = StpUtil.getLoginId().toString();
+        String uid = AnnoStpUtil.getLoginId().toString();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
@@ -50,7 +50,7 @@ public class MenuBaseController {
     }
 
     public AnnoResult<List<ReactMenu>> anMenu() {
-        String uid = StpUtil.getLoginId().toString();
+        String uid = AnnoStpUtil.getLoginId().toString();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
@@ -192,7 +192,7 @@ public class MenuBaseController {
     }
 
     public AnnoResult<List<VbenMenu>> vbenMenu() {
-        String uid = StpUtil.getLoginId().toString();
+        String uid = AnnoStpUtil.getLoginId().toString();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(

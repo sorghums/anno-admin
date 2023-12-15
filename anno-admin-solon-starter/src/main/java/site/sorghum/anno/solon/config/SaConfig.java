@@ -1,21 +1,16 @@
 package site.sorghum.anno.solon.config;
 
-import cn.dev33.satoken.context.SaHolder;
-import cn.dev33.satoken.context.model.SaResponse;
 import cn.dev33.satoken.dao.SaTokenDao;
-import cn.dev33.satoken.exception.SaTokenException;
-import cn.dev33.satoken.filter.SaFilterAuthStrategy;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
-import cn.dev33.satoken.stp.StpUtil;
 import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.auth.AnnoStpUtil;
 
 /**
  * @author Sorghum
@@ -39,11 +34,10 @@ public class SaConfig {
     public SaTokenInterceptor saTokenInterceptor() {
         return new SaTokenInterceptor()
             // [拦截路由]
-            .addInclude("/**")
+            .addInclude(AnnoConstants.BASE_URL + "/**")
             // [放行路由]
             .addExclude("/favicon.ico","/doc.html", "/swagger-resources", "/swagger/*")
-            .addExclude("/solon-admin/api/**")
             // 认证函数: 每次请求执行
-            .setAuth(req -> SaRouter.match("/**", StpUtil::checkLogin));
+            .setAuth(req -> SaRouter.match(AnnoConstants.BASE_URL + "/**", AnnoStpUtil::checkLogin));
     }
 }

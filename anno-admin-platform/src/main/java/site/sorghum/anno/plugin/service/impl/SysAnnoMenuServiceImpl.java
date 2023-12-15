@@ -3,8 +3,8 @@ package site.sorghum.anno.plugin.service.impl;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-import site.sorghum.anno.plugin.service.SysAnnoMenuService;
 import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
+import site.sorghum.anno.plugin.service.SysAnnoMenuService;
 
 import java.util.List;
 

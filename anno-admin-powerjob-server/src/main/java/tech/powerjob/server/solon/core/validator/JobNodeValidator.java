@@ -3,13 +3,13 @@ package tech.powerjob.server.solon.core.validator;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.enums.WorkflowNodeType;
+import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.server.solon.common.constants.SwitchableStatus;
 import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAG;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
 import tech.powerjob.server.solon.persistence.remote.repository.JobInfoRepository;
-import tech.powerjob.common.enums.WorkflowNodeType;
-import tech.powerjob.common.exception.PowerJobException;
 
 /**
  * @author Echo009

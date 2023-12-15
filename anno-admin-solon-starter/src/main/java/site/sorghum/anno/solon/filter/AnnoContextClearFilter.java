@@ -6,11 +6,9 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
 import org.noear.solon.core.handle.FilterChain;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.util.AnnoContextUtil;
-import site.sorghum.anno.anno.util.ReentrantStopWatch;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 清除上下文，index 设置为最大值，保证最后执行
@@ -24,6 +22,10 @@ public class AnnoContextClearFilter implements Filter {
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
+        if (!ctx.path().startsWith(AnnoConstants.BASE_URL)) {
+            chain.doFilter(ctx);
+            return;
+        }
         try {
             chain.doFilter(ctx);
         } finally {

@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.bean.LifecycleBean;
+import tech.powerjob.common.enums.WorkflowNodeType;
 import tech.powerjob.server.solon.core.validator.NodeValidator;
 import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAG;
 import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
-import tech.powerjob.common.enums.WorkflowNodeType;
 
 import java.util.EnumMap;
 import java.util.Map;

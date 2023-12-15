@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Table, DatePicker, Button, Space } from "antd";
+import {useEffect} from "react";
+import {Button, DatePicker, Space, Table} from "antd";
 import useAuthButtons from "@/hooks/useAuthButtons";
 
 import "./index.less";

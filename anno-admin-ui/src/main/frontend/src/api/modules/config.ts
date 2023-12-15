@@ -1,8 +1,7 @@
-import { System } from "@/api/interface";
-import { PORT1 } from "@/api/config/servicePort";
+import {System} from "@/api/interface";
+import {PORT1} from "@/api/config/servicePort";
 
 import http from "@/api";
-
 
 
 // * 获取按钮权限

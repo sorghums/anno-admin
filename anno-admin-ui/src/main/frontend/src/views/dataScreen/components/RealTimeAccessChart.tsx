@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useEcharts } from "@/hooks/useEcharts";
+import {useState} from "react";
+import {useEcharts} from "@/hooks/useEcharts";
 import "echarts-liquidfill";
 import "./RealTimeAccessChart.less";
 

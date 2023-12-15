@@ -1,6 +1,6 @@
-import { useEcharts } from "@/hooks/useEcharts";
-import { EChartsOption } from "echarts";
-import { randomNum } from "@/utils/util";
+import {useEcharts} from "@/hooks/useEcharts";
+import {EChartsOption} from "echarts";
+import {randomNum} from "@/utils/util";
 import "./OverNext30Chart.less";
 
 const OverNext30Chart = () => {

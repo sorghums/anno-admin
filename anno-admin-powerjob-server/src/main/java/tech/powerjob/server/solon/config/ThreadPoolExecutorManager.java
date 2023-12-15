@@ -8,11 +8,7 @@ import tech.powerjob.server.solon.common.RejectedExecutionHandlerFactory;
 import tech.powerjob.server.solon.common.constants.PJThreadPool;
 import tech.powerjob.server.solon.common.thread.NewThreadRunRejectedExecutionHandler;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * 线程池管理

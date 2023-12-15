@@ -7,10 +7,9 @@ import "./index.less";
 import "/src/styles/amisCommon.less";
 
 
-import { render as renderAmis, Schema } from "amis";
-import { apiGetAmisJson } from "@/api/modules/login";
+import {render as renderAmis, Schema} from "amis";
+import {apiGetAmisJson} from "@/api/modules/login";
 import {amisEnv} from "@/views/amis";
-
 
 
 export class AMISComponentV2 extends React.Component<any, any> {

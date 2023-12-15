@@ -9,8 +9,6 @@ import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.bean.LifecycleBean;
-import tech.powerjob.server.solon.remote.transporter.ProtocolInfo;
-import tech.powerjob.server.solon.remote.transporter.TransportService;
 import tech.powerjob.common.OmsConstant;
 import tech.powerjob.common.PowerSerializable;
 import tech.powerjob.common.enums.Protocol;
@@ -24,6 +22,8 @@ import tech.powerjob.remote.framework.engine.EngineConfig;
 import tech.powerjob.remote.framework.engine.EngineOutput;
 import tech.powerjob.remote.framework.engine.RemoteEngine;
 import tech.powerjob.remote.framework.engine.impl.PowerJobRemoteEngine;
+import tech.powerjob.server.solon.remote.transporter.ProtocolInfo;
+import tech.powerjob.server.solon.remote.transporter.TransportService;
 
 import java.util.LinkedHashMap;
 import java.util.List;

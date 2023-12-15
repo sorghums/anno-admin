@@ -1,7 +1,7 @@
 import logo from "@/assets/images/logo.png";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {useEffect, useState} from "react";
-import {apiGetGlobalConfig, goGlobalConfig} from "@/api/modules/config";
+import {goGlobalConfig} from "@/api/modules/config";
 
 const Logo = (props: any) => {
 	const { isCollapse } = props;

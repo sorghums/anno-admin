@@ -1,5 +1,5 @@
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Space } from "antd";
+import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
+import {Button, Form, Input, Space} from "antd";
 import "./index.less";
 
 const DynamicForm = () => {

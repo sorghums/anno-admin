@@ -1,4 +1,4 @@
-import { message } from "antd";
+import {message} from "antd";
 
 /**
  * @description: 校验网络请求状态码

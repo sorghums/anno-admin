@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.interfaces;
 
-import cn.dev33.satoken.stp.StpUtil;
+
+import site.sorghum.anno.auth.AnnoStpUtil;
 
 import java.util.function.Consumer;
 
@@ -14,10 +15,10 @@ public class CheckPermissionFunction {
     /**
      * 权限检查函数
      */
-    public static Consumer<String> permissionCheckFunction = StpUtil::checkPermission;
+    public static Consumer<String> permissionCheckFunction = AnnoStpUtil::checkPermission;
 
     /**
      * 登录检查函数
      */
-    public static Runnable loginCheckFunction = StpUtil::checkLogin;
+    public static Runnable loginCheckFunction = AnnoStpUtil::checkLogin;
 }

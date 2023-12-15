@@ -1,8 +1,8 @@
-import { Button, Dropdown, Menu } from "antd";
-import { DownOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { HOME_URL } from "@/config/config";
+import {Button, Dropdown, Menu} from "antd";
+import {DownOutlined} from "@ant-design/icons";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+import {HOME_URL} from "@/config/config";
 
 const MoreButton = (props: any) => {
 	const { t } = useTranslation();

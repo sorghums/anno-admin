@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import {Layout} from "antd";
 import AvatarIcon from "./components/AvatarIcon";
 import CollapseIcon from "./components/CollapseIcon";
 import BreadcrumbNav from "./components/BreadcrumbNav";
@@ -6,7 +6,7 @@ import AssemblySize from "./components/AssemblySize";
 import Theme from "./components/Theme";
 import "./index.less";
 import {useEffect, useState} from "react";
-import { apiMe } from "@/api/modules/login";
+import {apiMe} from "@/api/modules/login";
 
 const LayoutHeader = () => {
 	const { Header } = Layout;

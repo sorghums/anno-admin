@@ -1,4 +1,4 @@
-import { useEcharts } from "@/hooks/useEcharts";
+import {useEcharts} from "@/hooks/useEcharts";
 
 const Curve = () => {
 	const pieData: any = [

@@ -5,15 +5,7 @@ import tech.powerjob.remote.framework.base.HandlerLocation;
 import tech.powerjob.remote.framework.base.ServerType;
 import tech.powerjob.remote.framework.base.URL;
 
-import static tech.powerjob.common.RemoteConstant.S4S_HANDLER_PING;
-import static tech.powerjob.common.RemoteConstant.S4S_HANDLER_PROCESS;
-import static tech.powerjob.common.RemoteConstant.S4S_PATH;
-import static tech.powerjob.common.RemoteConstant.WORKER_HANDLER_DEPLOY_CONTAINER;
-import static tech.powerjob.common.RemoteConstant.WORKER_HANDLER_DESTROY_CONTAINER;
-import static tech.powerjob.common.RemoteConstant.WORKER_PATH;
-import static tech.powerjob.common.RemoteConstant.WTT_HANDLER_QUERY_INSTANCE_STATUS;
-import static tech.powerjob.common.RemoteConstant.WTT_HANDLER_RUN_JOB;
-import static tech.powerjob.common.RemoteConstant.WTT_HANDLER_STOP_INSTANCE;
+import static tech.powerjob.common.RemoteConstant.*;
 
 /**
  * 统一生成地址

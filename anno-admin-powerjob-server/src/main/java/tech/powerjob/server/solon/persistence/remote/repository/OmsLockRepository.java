@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.persistence.remote.repository;
 
 import org.noear.wood.xml.Namespace;
-import tech.powerjob.server.solon.persistence.remote.model.OmsLockDO;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
+import tech.powerjob.server.solon.persistence.remote.model.OmsLockDO;
 
 /**
  * 利用唯一性约束作为数据库锁

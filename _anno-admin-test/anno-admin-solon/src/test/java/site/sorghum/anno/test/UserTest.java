@@ -1,14 +1,8 @@
 package site.sorghum.anno.test;
 
-import cn.dev33.satoken.stp.StpUtil;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.annotation.Tran;
-import org.noear.solon.test.SolonJUnit4ClassRunner;
-import org.noear.solon.test.SolonTest;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;

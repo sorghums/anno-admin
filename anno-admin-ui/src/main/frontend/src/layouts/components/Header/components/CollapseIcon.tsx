@@ -1,6 +1,6 @@
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
-import { updateCollapse } from "@/redux/modules/menu/action";
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {connect} from "react-redux";
+import {updateCollapse} from "@/redux/modules/menu/action";
 
 const CollapseIcon = (props: any) => {
 	const { isCollapse, updateCollapse } = props;

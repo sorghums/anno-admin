@@ -9,11 +9,11 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import axios from "axios";
 import copy from "copy-to-clipboard";
 
-import { render as renderAmis, Schema } from "amis";
-import { useParams, useSearchParams } from "react-router-dom";
-import { apiGetAmisJson } from "@/api/modules/login";
-import { message, Modal } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import {render as renderAmis, Schema} from "amis";
+import {useParams, useSearchParams} from "react-router-dom";
+import {apiGetAmisJson} from "@/api/modules/login";
+import {message, Modal} from "antd";
+import {ExclamationCircleOutlined} from "@ant-design/icons";
 
 // amis 环境配置
 export const amisEnv: any = {

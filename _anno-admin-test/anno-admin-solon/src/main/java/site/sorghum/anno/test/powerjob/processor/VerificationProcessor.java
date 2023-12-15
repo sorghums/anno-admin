@@ -2,11 +2,7 @@ package site.sorghum.anno.test.powerjob.processor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import tech.powerjob.common.exception.PowerJobException;
 import tech.powerjob.common.utils.NetUtils;

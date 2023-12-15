@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Button, Form, Input, message } from "antd";
-import { useNavigate } from "react-router-dom";
-import { Login } from "@/api/interface";
-import { loginApi } from "@/api/modules/login";
-import { HOME_URL } from "@/config/config";
-import { connect } from "react-redux";
-import { setToken } from "@/redux/modules/global/action";
-import { useTranslation } from "react-i18next";
-import { setTabsList } from "@/redux/modules/tabs/action";
-import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import React, {useState} from "react";
+import {Button, Form, Input, message} from "antd";
+import {useNavigate} from "react-router-dom";
+import {Login} from "@/api/interface";
+import {loginApi} from "@/api/modules/login";
+import {HOME_URL} from "@/config/config";
+import {connect} from "react-redux";
+import {setToken} from "@/redux/modules/global/action";
+import {useTranslation} from "react-i18next";
+import {setTabsList} from "@/redux/modules/tabs/action";
+import {CloseCircleOutlined, LockOutlined, UserOutlined} from "@ant-design/icons";
 import CaptchaInput from "@/views/login/components/CaptchaInput";
 
 const LoginForm = (props: any) => {

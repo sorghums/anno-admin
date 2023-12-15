@@ -8,6 +8,8 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.scheduling.annotation.Scheduled;
 import org.noear.wood.annotation.Db;
+import tech.powerjob.common.enums.InstanceStatus;
+import tech.powerjob.common.enums.WorkflowInstanceStatus;
 import tech.powerjob.server.solon.common.async.PjAsync;
 import tech.powerjob.server.solon.common.constants.PJThreadPool;
 import tech.powerjob.server.solon.common.utils.OmsFileUtils;
@@ -18,8 +20,6 @@ import tech.powerjob.server.solon.persistence.remote.repository.WorkflowInstance
 import tech.powerjob.server.solon.persistence.remote.repository.WorkflowNodeInfoRepository;
 import tech.powerjob.server.solon.persistence.storage.Constants;
 import tech.powerjob.server.solon.remote.worker.WorkerClusterManagerService;
-import tech.powerjob.common.enums.InstanceStatus;
-import tech.powerjob.common.enums.WorkflowInstanceStatus;
 
 import java.io.File;
 import java.util.Date;

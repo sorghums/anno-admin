@@ -1,4 +1,4 @@
-import { Alert, Descriptions } from "antd";
+import {Alert, Descriptions} from "antd";
 import SvgIcon from "@/components/svgIcon";
 import "./index.less";
 

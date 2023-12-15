@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import { Layout } from "antd";
-import { setAuthButtons } from "@/redux/modules/auth/action";
-import { updateCollapse } from "@/redux/modules/menu/action";
-import { getAuthorButtons } from "@/api/modules/login";
-import { connect } from "react-redux";
+import {useEffect} from "react";
+import {Outlet} from "react-router-dom";
+import {Layout} from "antd";
+import {setAuthButtons} from "@/redux/modules/auth/action";
+import {updateCollapse} from "@/redux/modules/menu/action";
+import {getAuthorButtons} from "@/api/modules/login";
+import {connect} from "react-redux";
 import LayoutMenu from "./components/Menu";
 import LayoutHeader from "./components/Header";
 import LayoutTabs from "./components/Tabs";

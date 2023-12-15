@@ -1,7 +1,7 @@
 import React from "react";
 import lazyLoad from "@/routers/utils/lazyLoad";
-import { RouteObject } from "@/routers/interface";
-import { LayoutIndex } from "@/routers/constant";
+import {RouteObject} from "@/routers/interface";
+import {LayoutIndex} from "@/routers/constant";
 
 // amis页面模块
 const amisRouter: Array<RouteObject> = [

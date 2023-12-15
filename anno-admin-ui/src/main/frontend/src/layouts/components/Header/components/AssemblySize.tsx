@@ -1,5 +1,5 @@
-import { setAssemblySize } from "@/redux/modules/global/action";
-import { connect } from "react-redux";
+import {setAssemblySize} from "@/redux/modules/global/action";
+import {connect} from "react-redux";
 
 const AssemblySize = () => {
 	return <div></div>;

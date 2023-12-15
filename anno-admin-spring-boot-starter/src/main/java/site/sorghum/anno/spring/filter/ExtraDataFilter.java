@@ -17,11 +17,9 @@ import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.ThrowableLogUtil;
-import site.sorghum.anno.anno.util.ReentrantStopWatch;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 额外数据重新设置

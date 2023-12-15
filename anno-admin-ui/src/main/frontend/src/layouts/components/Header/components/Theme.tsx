@@ -1,9 +1,9 @@
-import { Drawer, Divider, Switch } from "antd";
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { FireOutlined, SettingOutlined } from "@ant-design/icons";
-import { setThemeConfig } from "@/redux/modules/global/action";
-import { updateCollapse } from "@/redux/modules/menu/action";
+import {Divider, Drawer, Switch} from "antd";
+import {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import {FireOutlined, SettingOutlined} from "@ant-design/icons";
+import {setThemeConfig} from "@/redux/modules/global/action";
+import {updateCollapse} from "@/redux/modules/menu/action";
 
 const Theme = (props: any) => {
 	const [visible, setVisible] = useState<boolean>(false);

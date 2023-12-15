@@ -1,13 +1,13 @@
 package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.dev33.satoken.stp.StpUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno.auth.AnnoStpUtil;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class WebController {
 
     @GetMapping(value = "/")
     public void first(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (StpUtil.isLogin()){
+        if (AnnoStpUtil.isLogin()){
             response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/home/index");
             return;
         }

@@ -1,6 +1,5 @@
 package site.sorghum.anno.trans;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
@@ -15,14 +14,9 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.plugin.join.aop.EasyJoin;
-import site.sorghum.plugin.join.aop.JoinResMap;
-import site.sorghum.plugin.join.aop.TransitionMap;
 import site.sorghum.plugin.join.entity.JoinParam;
-import site.sorghum.plugin.join.exception.JoinAnnoException;
 import site.sorghum.plugin.join.operator.JoinOperator;
-import site.sorghum.plugin.join.util.InvokeUtil;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,6 +33,7 @@ public class AnnoTransService {
     @Inject
     MetadataManager metadataManager;
 
+    public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO);
     /**
      * 批量翻译
      *
@@ -53,7 +48,7 @@ public class AnnoTransService {
         AnEntity entity = metadataManager.getEntity(tClass);
         for (AnField field : entity.getFields()) {
             AnnoDataType dataType = field.getDataType();
-            if (dataType == AnnoDataType.OPTIONS || dataType == AnnoDataType.PICKER) {
+            if (OPTIONS_TYPE.contains(dataType)) {
                 String sqlIdKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getIdKey());
                 String sqlLabelKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getLabelKey());
                 if (!Objects.equals(field.getOptionAnnoClass().getAnnoClass(), Object.class)) {

@@ -1,6 +1,5 @@
-import { legacy_createStore as createStore, combineReducers, Store, compose } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
-import { applyMiddleware } from "redux";
+import {applyMiddleware, combineReducers, compose, legacy_createStore as createStore, Store} from "redux";
+import {persistReducer, persistStore} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import reduxThunk from "redux-thunk";
 import reduxPromise from "redux-promise";

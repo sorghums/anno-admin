@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Input } from "antd";
-import { SafetyCertificateOutlined } from "@ant-design/icons";
-import { apiGetCaptcha } from "@/api/modules/login";
+import React, {useEffect, useState} from "react";
+import {Input} from "antd";
+import {SafetyCertificateOutlined} from "@ant-design/icons";
+import {apiGetCaptcha} from "@/api/modules/login";
 
 interface CaptchaInputValue {
 	captchaCode?: string;

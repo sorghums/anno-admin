@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import tech.powerjob.common.enums.DispatchStrategy;
+import tech.powerjob.common.model.DeployedContainerInfo;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 import tech.powerjob.server.solon.remote.server.redirector.DesignateServer;
 import tech.powerjob.server.solon.remote.worker.filter.WorkerFilter;
-import tech.powerjob.common.enums.DispatchStrategy;
-import tech.powerjob.common.model.DeployedContainerInfo;
 
 import java.util.Collections;
 import java.util.List;

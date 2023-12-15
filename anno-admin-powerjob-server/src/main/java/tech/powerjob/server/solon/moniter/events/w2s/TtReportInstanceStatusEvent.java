@@ -2,9 +2,9 @@ package tech.powerjob.server.solon.moniter.events.w2s;
 
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.server.solon.common.SJ;
 import tech.powerjob.server.solon.moniter.Event;
-import tech.powerjob.common.enums.InstanceStatus;
 
 /**
  * TaskTrackerReportInstanceStatus

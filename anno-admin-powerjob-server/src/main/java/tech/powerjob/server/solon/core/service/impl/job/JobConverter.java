@@ -4,8 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import tech.powerjob.server.solon.common.SJ;
-import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 import tech.powerjob.common.enums.DispatchStrategy;
 import tech.powerjob.common.enums.ExecuteType;
 import tech.powerjob.common.enums.ProcessorType;
@@ -16,6 +14,8 @@ import tech.powerjob.common.model.LogConfig;
 import tech.powerjob.common.request.http.SaveJobInfoRequest;
 import tech.powerjob.common.response.JobInfoDTO;
 import tech.powerjob.common.serialize.JsonUtils;
+import tech.powerjob.server.solon.common.SJ;
+import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 
 import java.util.stream.Collectors;
 

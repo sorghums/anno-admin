@@ -1,8 +1,8 @@
 package tech.powerjob.server.solon.core.validator;
 
+import tech.powerjob.common.enums.WorkflowNodeType;
 import tech.powerjob.server.solon.core.workflow.algorithm.WorkflowDAG;
 import tech.powerjob.server.solon.persistence.remote.model.WorkflowNodeInfoDO;
-import tech.powerjob.common.enums.WorkflowNodeType;
 
 /**
  * @author Echo009

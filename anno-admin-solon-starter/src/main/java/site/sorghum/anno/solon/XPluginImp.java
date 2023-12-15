@@ -13,20 +13,13 @@ import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanBuilder;
-import org.noear.solon.core.BeanInjector;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorDefault;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
-import org.noear.wood.wrap.ClassWrap;
-import org.noear.wood.wrap.FieldWrap;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -47,12 +40,7 @@ import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Solon Anno-Admin 插件
@@ -153,6 +141,8 @@ public class XPluginImp implements Plugin {
                     field -> {
                         String columnName = AnnoUtil.getColumnName(field);
                         AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
+                        // 同时保存其实际节点的类的字段信息
+                        AnnoFieldCache.putFieldName2FieldAndSql(field.getField().getDeclaringClass(), columnName, field.getField());
                     }
                 );
             }
