@@ -79,7 +79,7 @@ public class FailureFilter implements Filter {
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage(), e);
-            ctx.render(AnnoResult.failure("非法参数"));
+            ctx.render(AnnoResult.failure("非法参数,%s".formatted(e.getMessage())));
         } catch (SaTokenException e) {
             log.error(e.getMessage(), e);
             if (e instanceof NotPermissionException) {
