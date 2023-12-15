@@ -24,6 +24,7 @@ public enum AnnoDataType {
     TREE("树形下拉框"),
     RICH_TEXT("富文本"),
     CODE_EDITOR("代码编辑器"),
+    COLOR("颜色"),
     ICON("图标");
 
     /**

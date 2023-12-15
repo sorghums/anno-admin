@@ -65,6 +65,13 @@ public class BusinessProduct extends BaseMetaModel {
     String productCode;
 
     @AnnoField(
+        title = "商品颜色",
+        tableFieldName = "product_color",
+        dataType = AnnoDataType.COLOR,
+        edit = @AnnoEdit)
+    String productColor;
+
+    @AnnoField(
         title = "商品分类",
         tableFieldName = "product_cat_id",
         search = @AnnoSearch(queryType = DbCondition.QueryType.LIKE),
