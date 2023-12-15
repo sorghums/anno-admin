@@ -30,9 +30,19 @@ public class AnnoStpUtil {
     public static final String TYPE = "anno-login";
 
     /**
+     * 令牌名称
+     */
+    public static final String TOKEN_NAME = "anno-token";
+
+    /**
      * 底层使用的 StpLogic 对象
      */
-    public static StpLogic stpLogic = new StpLogic(TYPE);
+    public static StpLogic stpLogic = new StpLogic(TYPE){
+        @Override
+        public String splicingKeyTokenName() {
+            return TOKEN_NAME;
+        }
+    };
 
     /**
      * 获取当前 StpLogic 的账号类型
@@ -82,7 +92,7 @@ public class AnnoStpUtil {
      * @return /
      */
     public static String getTokenName() {
-        return "anno-token";
+        return stpLogic.getTokenName();
     }
 
     /**

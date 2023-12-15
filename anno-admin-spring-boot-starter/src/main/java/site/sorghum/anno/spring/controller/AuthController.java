@@ -5,6 +5,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 
@@ -31,7 +32,7 @@ public class AuthController extends AuthBaseController {
         return super.logout();
     }
 
-    @SaCheckLogin
+    @SaCheckLogin(type = AnnoStpUtil.TYPE)
     @PostMapping(value = "/clearSysUserCache")
     public AnnoResult<String> clearSysUserCache() {
         return super.clearSysUserCache();

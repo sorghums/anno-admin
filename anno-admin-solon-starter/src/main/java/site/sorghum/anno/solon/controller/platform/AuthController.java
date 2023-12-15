@@ -9,8 +9,10 @@ import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import site.sorghum.anno.AnnoPlatform;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 
@@ -55,7 +57,7 @@ public class AuthController {
         return authBaseController.logout();
     }
 
-    @SaCheckLogin
+    @SaCheckLogin(type = AnnoStpUtil.TYPE)
     @Mapping(value = "/clearSysUserCache", method = MethodType.POST)
     @Post
     @ApiOperation(value = "清除用户缓存")
