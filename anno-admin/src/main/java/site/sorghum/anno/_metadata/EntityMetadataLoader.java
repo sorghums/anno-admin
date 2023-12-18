@@ -26,6 +26,7 @@ import site.sorghum.anno.anno.util.QuerySqlCache;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -227,8 +228,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 entity.setPkField(anField);
             }
 
+            // 排序
+            anField.setSort(anno.sort());
+
             anFields.add(anField);
         }
+        anFields.sort(Comparator.comparingInt(AnField::getSort).reversed());
         entity.setFields(anFields);
     }
 

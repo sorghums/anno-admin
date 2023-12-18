@@ -54,7 +54,9 @@ public class AnAnnoMenu extends BaseMetaModel {
     @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit, dataType = AnnoDataType.ICON)
     private String icon;
 
-    @AnnoField(title = "菜单链接", tableFieldName = "href", edit = @AnnoEdit)
+    /**
+     * 由解析数据生成
+     */
     private String href;
 
     @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit,
@@ -63,10 +65,12 @@ public class AnAnnoMenu extends BaseMetaModel {
     private String permissionId;
 
     @AnnoField(title = "解析类型", tableFieldName = "parse_type", edit = @AnnoEdit,
-            dataType = AnnoDataType.OPTIONS,
-            optionType =@AnnoOptionType(value = {
-                    @AnnoOptionType.OptionData(label = "Anno组件", value = "annoMain")
-            }))
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "Anno组件", value = "annoMain"),
+            @AnnoOptionType.OptionData(label = "IFrame页面", value = "iframe"),
+            @AnnoOptionType.OptionData(label = "外链", value = "link")
+        }))
     private String parseType;
 
     @AnnoField(title = "解析数据", tableFieldName = "parse_data", edit = @AnnoEdit)

@@ -20,6 +20,7 @@ import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorDefault;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
+import org.noear.wood.WoodConfig;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -37,6 +38,7 @@ import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.solon.init.InitDdlAndDateService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
+import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
@@ -105,6 +107,9 @@ public class XPluginImp implements Plugin {
 
         // 扫描翻译插件
         context.beanScan(PLUGIN_BASE_PACKAGE);
+
+        // WOOD
+        WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
     }
 
     /**

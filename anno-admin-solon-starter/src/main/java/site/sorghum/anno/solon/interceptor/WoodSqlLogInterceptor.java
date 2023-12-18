@@ -58,8 +58,8 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
     }
 
     private void printSql(Command cmd) {
-        log.debug("sql: {}, cost: {}ms", cmd.text, cmd.timespan());
-        log.debug("var: {}", cmd.paramMap());
+        log.info("sql: {}, cost: {}ms", cmd.text, cmd.timespan());
+        log.info("var: {}", cmd.paramMap());
     }
 
 

@@ -108,4 +108,12 @@ public @interface AnnoField {
      * 在使用重载方法时，@PrimaryKey注解无法使用，需要使用此注解
      */
     boolean pkField() default false;
+
+    /**
+     * 字段排序，越大优先级越高
+     * 使用在表格列、表单列中等
+     *
+     * @return long
+     */
+    int sort() default 0;
 }

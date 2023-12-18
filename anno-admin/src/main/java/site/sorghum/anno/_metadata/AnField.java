@@ -369,6 +369,11 @@ public class AnField {
     @ApiModelProperty(value = "[文件最大上传大小限制]默认为5Mb",example = "5")
     private int fileMaxSize;
 
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序",example = "1")
+    private int sort;
     @Data
     @AllArgsConstructor
     public static class TreeData {

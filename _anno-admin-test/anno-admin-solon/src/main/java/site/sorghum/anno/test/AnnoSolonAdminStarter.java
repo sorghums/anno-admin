@@ -25,8 +25,6 @@ import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
 public class AnnoSolonAdminStarter {
     public static void main(String[] args) {
         SolonApp start = Solon.start(AnnoSolonAdminStarter.class, args, app -> {
-            //执行后打印sql
-            WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
 //            app.pluginAdd(1, new PowerjobWorkerPlugin());
         });
         // 忽略登录检查 (仅测试用)
