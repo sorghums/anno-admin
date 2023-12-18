@@ -32,7 +32,7 @@ public @interface AnnoEdit {
      *
      * @return int
      */
-    int span() default 24;
+    int span() default 0;
 
     /**
      * 新增启用

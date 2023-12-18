@@ -36,15 +36,5 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
             parseData = data.getParseData().trim();
         }
         data.setParseData(parseData);
-        //1. AnnoMain --> 转成菜单
-        if ("annoMain".equals(data.getParseType())) {
-            Class<?> targetClazz = AnnoClazzCache.get(data.getParseData());
-            AnEntity anEntity = metadataManager.getEntity(targetClazz);
-            data.setParseType("anno");
-            data.setHref("/system/config/amis/" + data.getParseData());
-            data.setTitle(StrUtil.isBlank(data.getTitle()) ? anEntity.getTitle() : data.getTitle());
-            data.setOpenType("_iframe");
-            data.setType(1);
-        }
     }
 }

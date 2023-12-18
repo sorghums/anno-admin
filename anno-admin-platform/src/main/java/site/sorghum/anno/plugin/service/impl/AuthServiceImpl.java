@@ -279,7 +279,6 @@ public class AuthServiceImpl implements AuthService {
                     anAnnoMenu.setTitle(anPluginMenu.getTitle());
                     anAnnoMenu.setType(anPluginMenu.getType());
                     anAnnoMenu.setSort(anPluginMenu.getSort());
-                    anAnnoMenu.setOpenType("_iframe");
                     anAnnoMenu.setIcon(anPluginMenu.getIcon());
                     if (anPluginMenu.getEntity() != null) {
                         anAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());

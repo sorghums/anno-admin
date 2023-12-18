@@ -27,6 +27,20 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"))
 @Table("an_anno_menu")
 public class AnAnnoMenu extends BaseMetaModel {
+    public static class ParseTypeConstant {
+        /**
+         * anno组件
+         */
+        public static final String ANNO_MAIN = "annoMain";
+        /**
+         * iframe
+         */
+        public static final String IFRAME = "iframe";
+        /**
+         * 外链
+         */
+        public static final String LINK = "link";
+    }
 
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit)
     private String parentId;
@@ -46,11 +60,6 @@ public class AnAnnoMenu extends BaseMetaModel {
     @AnnoField(title = "菜单排序", tableFieldName = "sort", edit = @AnnoEdit)
     private Integer sort;
 
-    @AnnoField(title = "打开方式", tableFieldName = "open_type", edit = @AnnoEdit, optionType = @AnnoOptionType(value = {
-            @AnnoOptionType.OptionData(label = "内置页", value = "_iframe"),
-    }), dataType = AnnoDataType.OPTIONS)
-    private String openType;
-
     @AnnoField(title = "菜单图标", tableFieldName = "icon", edit = @AnnoEdit, dataType = AnnoDataType.ICON)
     private String icon;
 
@@ -67,9 +76,9 @@ public class AnAnnoMenu extends BaseMetaModel {
     @AnnoField(title = "解析类型", tableFieldName = "parse_type", edit = @AnnoEdit,
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(value = {
-            @AnnoOptionType.OptionData(label = "Anno组件", value = "annoMain"),
-            @AnnoOptionType.OptionData(label = "IFrame页面", value = "iframe"),
-            @AnnoOptionType.OptionData(label = "外链", value = "link")
+            @AnnoOptionType.OptionData(label = "Anno组件", value = ParseTypeConstant.ANNO_MAIN),
+            @AnnoOptionType.OptionData(label = "IFrame页面", value = ParseTypeConstant.IFRAME),
+            @AnnoOptionType.OptionData(label = "外链", value = ParseTypeConstant.LINK)
         }))
     private String parseType;
 

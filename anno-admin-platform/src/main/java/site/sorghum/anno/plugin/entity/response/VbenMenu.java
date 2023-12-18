@@ -50,18 +50,36 @@ public class VbenMenu {
         VbenMenu vbenMenu = new VbenMenu();
         vbenMenu.setId(anAnnoMenu.getId());
         vbenMenu.setParentId(anAnnoMenu.getParentId());
-        if (StrUtil.isNotBlank(anAnnoMenu.getParseData())){
-            vbenMenu.setName(anAnnoMenu.getParseData());
-            vbenMenu.setComponent("/anno/table/index");
-            vbenMenu.setPath("/anView/anViewList/" + anAnnoMenu.getParseData());
+        vbenMenu.setMeta(new VbenMeta());
+        if (AnAnnoMenu.ParseTypeConstant.ANNO_MAIN.equals(anAnnoMenu.getParseType())) {
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
+                vbenMenu.setName(anAnnoMenu.getParseData());
+                vbenMenu.setComponent("/anno/table/index");
+                vbenMenu.setPath("/anView/anViewList/" + anAnnoMenu.getParseData());
+            }
+        } else if (AnAnnoMenu.ParseTypeConstant.IFRAME.equals(anAnnoMenu.getParseType())) {
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
+                vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getParseData()));
+                vbenMenu.setComponent("IFrame");
+                vbenMenu.setPath(vbenMenu.getName());
+                vbenMenu.getMeta().setFrameSrc(anAnnoMenu.getParseData());
+            }
+        } else if (AnAnnoMenu.ParseTypeConstant.LINK.equals(anAnnoMenu.getParseType())) {
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
+                vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getParseData()));
+                vbenMenu.setComponent("IFrame");
+                vbenMenu.setPath(anAnnoMenu.getParseData());
+            }
+        }else {
+            vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getTitle()));
+            vbenMenu.setComponent("LAYOUT");
+            vbenMenu.setPath("/anViewLayout/" + MD5Util.digestHex(anAnnoMenu.getTitle()));
         }
-
         if (StrUtil.isBlank(vbenMenu.getPath())){
             vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getTitle()));
             vbenMenu.setComponent("LAYOUT");
             vbenMenu.setPath("/anViewLayout/" + MD5Util.digestHex(anAnnoMenu.getTitle()));
         }
-        vbenMenu.setMeta(new VbenMeta());
         vbenMenu.getMeta().setTitle(anAnnoMenu.getTitle());
         vbenMenu.getMeta().setIcon(anAnnoMenu.getIcon());
         vbenMenu.setSort(anAnnoMenu.getSort());
@@ -70,6 +88,9 @@ public class VbenMenu {
 
     @Data
     public static class VbenMeta {
+
+        @ApiModelProperty("内嵌参数")
+        String frameSrc;
 
         @ApiModelProperty("菜单标题")
         public String title;
