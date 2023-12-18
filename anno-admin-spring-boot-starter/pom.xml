@@ -6,7 +6,7 @@
     <parent>
         <groupId>site.sorghum.anno</groupId>
         <artifactId>anno-admin-parent</artifactId>
-        <version>0.0.1.M2</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>anno-admin-spring-boot-starter</artifactId>
@@ -25,11 +25,6 @@
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-ui</artifactId>
         </dependency>
 
         <dependency>

@@ -13,7 +13,7 @@
 
     <groupId>site.sorghum.anno</groupId>
     <artifactId>anno-admin-parent</artifactId>
-    <version>0.0.1.M2</version>
+    <version>1.0.0</version>
 
     <packaging>pom</packaging>
     <name>anno-admin</name>
@@ -25,8 +25,6 @@
         <module>anno-admin</module>
         <!-- AMIS包 -->
         <module>anno-admin-amis</module>
-        <!-- 静态资源的WEB包 -->
-        <module>anno-admin-ui</module>
         <!-- 自动生成表结构 -->
         <module>anno-admin-ddl</module>
         <!-- 数据库支持模块 -->
@@ -38,7 +36,6 @@
         <module>anno-admin-spring-boot-starter</module>
         <!-- 任务调度：PowerJob -->
         <module>anno-admin-powerjob-server</module>
-
         <!-- 测试类 -->
         <module>_anno-admin-test</module>
         <module>anno-admin-platform</module>
@@ -172,6 +169,12 @@
             <email>sorghum2021@163.com</email>
             <timezone>+8</timezone>
         </developer>
+        <developer>
+            <name>dudiao</name>
+            <email>idudiao@163.com</email>
+            <timezone>+8</timezone>
+        </developer>
+
         <!-- 岂无嘉色在，留待后人来 -->
     </developers>
     <distributionManagement>
