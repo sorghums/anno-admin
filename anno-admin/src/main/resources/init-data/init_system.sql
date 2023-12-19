@@ -1,10 +1,10 @@
-insert into an_anno_menu (id, parent_id, title, type, sort, icon, href, permission_id, parse_data, create_by, create_time, del_flag, update_by, update_time) values
-('10', '', '系统管理', 0, 10000, 'ant-design:bars-outlined', '', 'an_user', null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
-('11', '10', '菜单管理', 1, 10005, 'ant-design:bars-outlined', '/system/config/amis/AnAnnoMenu', 'an_anno_menu', 'AnAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
-('12', '10', '权限管理', 1, 10006, 'ant-design:bars-outlined', '/system/config/amis/AnPermission', 'an_permission', 'AnPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
-('13', '10', '用户管理', 1, 10007, 'ant-design:bars-outlined', '/system/config/amis/AnUser', 'an_user', 'AnUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
-('14', '10', '角色管理', 1, 10008, 'ant-design:bars-outlined', '/system/config/amis/AnRole', 'an_role', 'AnRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
-('15', '10', '组织管理', 1, 10009, 'ant-design:bars-outlined', '/system/config/amis/AnOrg', 'an_org', 'AnOrg', null, null, 0, null, '2023-06-29 20:13:35.706000');
+insert into an_anno_menu (id, parent_id, title, type, sort, icon, permission_id, parse_data, create_by, create_time, del_flag, update_by, update_time) values
+('10', '', '系统管理', 0, 10000, 'ant-design:bars-outlined',    'an_user', null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
+('11', '10', '菜单管理', 1, 10005, 'ant-design:bars-outlined',  'an_anno_menu', 'AnAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
+('12', '10', '权限管理', 1, 10006, 'ant-design:bars-outlined',  'an_permission', 'AnPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
+('13', '10', '用户管理', 1, 10007, 'ant-design:bars-outlined',  'an_user', 'AnUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
+('14', '10', '角色管理', 1, 10008, 'ant-design:bars-outlined',  'an_role', 'AnRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
+('15', '10', '组织管理', 1, 10009, 'ant-design:bars-outlined',  'an_org', 'AnOrg', null, null, 0, null, '2023-06-29 20:13:35.706000');
 
 insert into an_org (id, org_name, create_by, create_time, del_flag, update_by, update_time) values
 ('1674391485808001024', '标准组织', null, '2023-06-29 20:16:53.563000', 0, null, '2023-06-29 20:16:53.563000');
