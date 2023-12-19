@@ -56,7 +56,7 @@ public class AnRole extends BaseMetaModel implements Serializable {
                     @AnnoOptionType.OptionData(label = "封禁", value = "0")
             }),
             edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
-    String enable;
+    Integer enable;
 
     /**
      * 用户按钮
