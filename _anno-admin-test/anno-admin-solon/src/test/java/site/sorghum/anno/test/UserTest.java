@@ -30,7 +30,7 @@ public class UserTest extends BaseAppTest{
         AnUser user = new AnUser();
         user.setMobile("18800000009");
         user.setName("test-009");
-        user.setEnable(0);
+        user.setEnable("0");
         user.setOrgId("abc");
         user.setPassword("123456");
         dbServiceWithProxy.insert(user);
