@@ -1,5 +1,6 @@
 package site.sorghum.anno.plugin.ao;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
@@ -14,6 +15,7 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 @Data
@@ -84,4 +86,6 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     @AnnoButton(permissionCode = "resetPwd",name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
     private Object resetPwdButton;
 
+    @Serial
+    private static final long serialVersionUID = 1;
 }

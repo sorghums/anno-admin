@@ -3,7 +3,7 @@ package site.sorghum.anno._common;
 import java.util.List;
 
 /**
- * bean 容器接口抽象
+ * 接口用于访问一组相关的Bean对象。
  *
  * @author songyinyin
  * @since 2023/7/30 15:46
@@ -11,17 +11,29 @@ import java.util.List;
 public interface AnnoBean {
 
     /**
-     * 通过名称 获取 bean
+     * 根据名称获取单个Bean对象。
+     *
+     * @param name Bean的名称。
+     * @param <T>  Bean的类型。
+     * @return 返回找到的Bean对象。
      */
     <T> T getBean(String name);
 
     /**
-     * 通过类型 获取 bean
+     * 根据类型获取单个Bean对象。
+     *
+     * @param type Bean的类型。
+     * @param <T>  Bean的类型。
+     * @return 返回找到的Bean对象。
      */
     <T> T getBean(Class<T> type);
 
     /**
-     * 通过类型 获取 bean 集合
+     * 根据类型获取所有相应类型的Bean对象集合。
+     *
+     * @param baseType Bean的基类类型。
+     * @param <T>  Bean的类型。
+     * @return 返回包含所有相应类型的Bean对象集合。
      */
     <T> List<T> getBeansOfType(Class<T> baseType);
 

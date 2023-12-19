@@ -26,13 +26,7 @@ import java.util.HashMap;
 @Mapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
 
-    @Mapping(value = "/amisJson/{clazz}")
-    @SaIgnore
-    public AnnoResult<Object> amisJ3son(String clazz, Context context, @Param("isM2m") boolean isM2m) {
-        HashMap<String, Object> data = new HashMap<>(context.paramMap());
-        return super.toJson(clazz, data, isM2m);
-    }
-
+    @Override
     @Mapping(value = "/anEntity/{clazz}")
     @SaIgnore
     @ApiOperation(value = "获取实体信息", notes = "获取实体信息")

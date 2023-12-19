@@ -6,8 +6,10 @@ import org.noear.wood.IPage;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -33,18 +35,9 @@ public class DbController extends BaseDbController {
      */
     @PostMapping("/{clazz}/page")
     public <T> AnnoResult<IPage<T>> page(@PathVariable String clazz,
-                                         @RequestParam int page,
-                                         @RequestParam int current,
-                                         @RequestParam int perPage,
-                                         @RequestParam int pageSize,
-                                         @RequestParam(required = false) String orderBy,
-                                         @RequestParam(required = false) String orderDir,
-                                         @RequestParam(defaultValue = "false") boolean ignoreM2m,
-                                         @RequestParam(defaultValue = "false") boolean reverseM2m,
-                                         @RequestParam(required = false) String annoM2mId,
-                                         @RequestParam(required = false) Map<String, Object> param) {
+                                         @RequestBody Map<String,Object> body) {
 
-        return super.page(clazz, Math.max(page,current), Math.max(perPage,pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, annoM2mId, param);
+        return super.page(clazz, JSONUtil.toBean(body, AnnoPageRequestAnno.class), body);
     }
 
     @PostMapping("/{clazz}/save")

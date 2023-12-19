@@ -15,6 +15,9 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.*;
@@ -58,43 +61,35 @@ public class BaseDbController {
         );
         return AnnoResult.succeed(trees);
     }
+
+
     /**
      * 分页查询
      *
      * @return {@link AnnoResult}<{@link IPage}<{@link T}>>
      */
     public <T> AnnoResult<IPage<T>> page(String clazz,
-                                         int page,
-                                         int perPage,
-                                         String orderBy,
-                                         String orderDir,
-                                         boolean ignoreM2m,
-                                         boolean reverseM2m,
-                                         String annoM2mId, Map<String, Object> param) {
-        List<String> nullKeys = param.get("nullKeys") instanceof List ? (List<String>) param.get("nullKeys") : Collections.emptyList();
-        List<?> anOrderMapList = param.get("anOrderList") instanceof List ? (List) param.get("anOrderList") : Collections.emptyList();
-        List<AnOrder> anOrderList = JSONUtil.toBeanList(JSONUtil.toJsonString(anOrderMapList), AnOrder.class);
+                                         AnnoPageRequestAnno pageRequest,
+                                         Map<String, Object> param) {
+        List<String> nullKeys = pageRequest.getNullKeys();
+        List<AnOrder> anOrderList = pageRequest.getAnOrderList();
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.VIEW);
-
         param = emptyStringIgnore(param);
-        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        String m2mSql = Utils.m2mSql(annoMtm, MapUtil.getStr(param, "joinValue"));
+        AnnoMtm annoMtm = pageRequest.getAnnoMtm();
+        String m2mSql = Utils.m2mSql(annoMtm, pageRequest.getJoinValue());
         String andSql = null;
         String inPrefix = " in (";
-        if (reverseM2m) {
+        if (pageRequest.isReverseM2m()) {
             inPrefix = " not in (";
         }
-        if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
+        if (StrUtil.isNotEmpty(m2mSql) && !pageRequest.isIgnoreM2m()) {
             String joinThisClazzFieldSql = annoMtm.getM2mJoinThisClazzFieldSql();
             andSql = joinThisClazzFieldSql + inPrefix + m2mSql + ")";
         }
         List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, entity.getClazz());
         if (andSql != null) {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
-        }
-        if (StrUtil.isNotEmpty(orderBy)) {
-            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(orderBy).getTableFieldName(),orderDir));
         }
         for (AnOrder anOrder : anOrderList) {
             dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(anOrder.getOrderValue()).getTableFieldName(),anOrder.getOrderType()));
@@ -105,7 +100,7 @@ public class BaseDbController {
                     field(AnnoFieldCache.getSqlColumnByJavaName(entity.getClazz(),nullKey)).
                     andOr(DbCondition.AndOr.AND).build());
         }
-        IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(page, perPage));
+        IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(pageRequest.getPage(), pageRequest.getPageSize()));
         return AnnoResult.succeed(pageRes);
     }
 
@@ -213,6 +208,21 @@ public class BaseDbController {
         return AnnoResult.succeed(annoTreeDTOs);
     }
 
+    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
+                                                               AnnoTreesRequestAnno annoTreesRequest,
+                                                               AnnoTreeListRequestAnno treeListRequestAnno,
+                                                               Map<String, String> param) {
+        List<T> list = queryTreeList(clazz, treeListRequestAnno, param);
+        List<AnnoTreeDTO<String>> annoTreeDTOList = null;
+        if (annoTreesRequest.hasFrontSetKey()) {
+            annoTreeDTOList = Utils.toTrees(list, annoTreesRequest.getIdKey(), annoTreesRequest.getLabelKey());
+        }else {
+            annoTreeDTOList = Utils.toTrees(list);
+        }
+        annoTreeDTOList.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
+        return AnnoResult.succeed(annoTreeDTOList);
+    }
+
     private <T> List<T> queryTreeList(String clazz, boolean ignoreM2m, boolean reverseM2m, Map<String, String> param) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.VIEW);
 
@@ -236,6 +246,27 @@ public class BaseDbController {
         return dbService.list(tableParam.getClazz(), dbConditions);
     }
 
+    private <T> List<T> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, String> param) {
+        permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.VIEW);
+        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
+        AnnoMtm annoMtm = annoTreeListRequestAnno.getAnnoMtm();
+        String m2mSql = Utils.m2mSql(annoMtm, annoTreeListRequestAnno.getJoinValue());
+        String andSql = null;
+        String inPrefix = " in (";
+        if (annoTreeListRequestAnno.isReverseM2m()) {
+            inPrefix = " not in (";
+        }
+        if (StrUtil.isNotEmpty(m2mSql) && !annoTreeListRequestAnno.isIgnoreM2m()) {
+            String joinThisClazzField = annoMtm.getM2mJoinThisClazzFieldSql();
+            andSql = joinThisClazzField + inPrefix + m2mSql + ")";
+        }
+        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
+        if (andSql != null) {
+            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
+        }
+        return dbService.list(tableParam.getClazz(), dbConditions);
+    }
+
 
     public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
                                                         boolean ignoreM2m,
@@ -247,6 +278,19 @@ public class BaseDbController {
         }
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.getM2mJoinTargetClazzField())).collect(Collectors.toList());
+        return AnnoResult.succeed(data);
+    }
+
+    public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
+                                                           AnnoTreesRequestAnno annoTreesRequest,
+                                                           AnnoTreeListRequestAnno treeListRequestAnno,
+                                                           Map<String, String> param) {
+        List<Object> list = queryTreeList(clazz, treeListRequestAnno, param);
+        if (list == null || list.isEmpty()) {
+            return AnnoResult.succeed(Collections.emptyList());
+        }
+        AnnoMtm annoMtm = annoTreesRequest.getAnnoMtm();
         List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.getM2mJoinTargetClazzField())).collect(Collectors.toList());
         return AnnoResult.succeed(data);
     }

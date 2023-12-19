@@ -1,9 +1,11 @@
 package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.amis.controller.AmisBaseController;
 
 import java.util.HashMap;
@@ -18,13 +20,12 @@ import java.util.HashMap;
 @RequestMapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AmisController extends AmisBaseController {
 
-    @RequestMapping(value = "/amisJson/{clazz}")
+    @Override
+    @RequestMapping(value = "/anEntity/{clazz}")
     @SaIgnore
-    public AnnoResult<Object> amisJson(@PathVariable String clazz, @RequestParam(value = "isM2m",defaultValue = "false") boolean isM2m,@RequestBody(required = false) HashMap paramMap) {
-        if (paramMap == null) {
-            paramMap = new HashMap<>();
-        }
-        return super.toJson(clazz, paramMap, isM2m);
+    @ApiOperation(value = "获取实体信息", notes = "获取实体信息")
+    public AnnoResult<AnEntity> anEntity(@PathVariable String clazz){
+        return AnnoResult.succeed(metadataManager.getEntity(clazz));
     }
 
 }

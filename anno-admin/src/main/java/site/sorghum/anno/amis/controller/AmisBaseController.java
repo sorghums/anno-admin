@@ -2,6 +2,7 @@ package site.sorghum.anno.amis.controller;
 
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.Map;
@@ -17,8 +18,7 @@ public class AmisBaseController {
     @Inject
     protected MetadataManager metadataManager;
 
-    public AnnoResult<Object> toJson(String clazz, Map<String, Object> data, boolean isM2m) {
-        return AnnoResult.succeed(null);
+    public AnnoResult<AnEntity> anEntity(String clazz){
+        return AnnoResult.succeed(metadataManager.getEntity(clazz));
     }
-
 }

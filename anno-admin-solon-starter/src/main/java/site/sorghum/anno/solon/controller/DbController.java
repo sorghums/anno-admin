@@ -15,6 +15,9 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -49,38 +52,19 @@ public class DbController extends BaseDbController {
      *
      * @return {@link Result}<{@link IPage}<{@link T}>>
      */
+    @Override
     @Mapping("/{clazz}/page")
     @Post
     @Consumes("application/json")
     @ApiOperation(value = "分页查询", notes = "分页查询")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name = "current", value = "当前页[通1]", example = "1", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "page", value = "当前页[通1]", example = "1", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "perPage", value = "每页条数[通2]", example = "10", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "pageSize", value = "每页条数[通2]", example = "10", required = true, dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "orderBy", value = "排序字段", example = "id", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "orderDir", value = "排序方向", example = "desc", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "ignoreM2m", value = "是否忽略多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "reverseM2m", value = "是否反转多对多", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "nullKeys", value = "查询null值字段", example = "[]", required = true, dataType = "Array", paramType = "query"),
-            @ApiImplicitParam(name = "annoM2mId", value = "多对多数据ID"),
-            @ApiImplicitParam(name = "joinValue", value = "多对多本表字段值", paramType = "query"),
-            @ApiImplicitParam(name = "anOrderList", value = "排序数组 example: [{\"orderType\": \"asc\",\"orderValue\": \"id\"}]", dataType = "Array", paramType = "query"),
             @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
     )
     public <T> AnnoResult<IPage<T>> page(@Path String clazz,
-                                         @Param int current,
-                                         @Param int page,
-                                         @Param int perPage,
-                                         @Param int pageSize,
-                                         @Param String orderBy,
-                                         @Param String orderDir,
-                                         @Param(defaultValue = "false") boolean ignoreM2m,
-                                         @Param(defaultValue = "false") boolean reverseM2m,
-                                         @Param String annoM2mId,
+                                         @Body AnnoPageRequestAnno pageRequest,
                                          @Body Map<String, Object> param) {
-        return super.page(clazz, Math.max(page, current), Math.max(perPage, pageSize), orderBy, orderDir, ignoreM2m, reverseM2m, annoM2mId, param);
+        return super.page(clazz, pageRequest, param);
     }
 
     @Mapping("/{clazz}/save")
@@ -166,6 +150,7 @@ public class DbController extends BaseDbController {
         return super.removeRelation(clazz, param);
     }
 
+    @Override
     @Mapping("/{clazz}/annoTrees")
     @Post
     @Consumes("application/json")
@@ -180,10 +165,10 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
     )
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
-                                                               @Param(defaultValue = "false") boolean ignoreM2m,
-                                                               @Param(defaultValue = "false") boolean reverseM2m,
+                                                               @Body AnnoTreesRequestAnno annoTreesRequest,
+                                                               @Body AnnoTreeListRequestAnno annoTreeListRequestAnno,
                                                                @Body Map<String, String> param) {
-        return super.annoTrees(clazz, ignoreM2m, reverseM2m, param);
+        return super.annoTrees(clazz, annoTreesRequest, annoTreeListRequestAnno, param);
     }
 
     @Override
@@ -201,10 +186,10 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
     )
     public <T> AnnoResult<List<Object>> annoTreeSelectData(@Path String clazz,
-                                                        @Param(defaultValue = "false") boolean ignoreM2m,
-                                                        @Param(defaultValue = "false") boolean reverseM2m,
-                                                        @Body Map<String, String> param) {
-        return super.annoTreeSelectData(clazz, ignoreM2m, reverseM2m, param);
+                                                           @Body AnnoTreesRequestAnno annoTreesRequest,
+                                                           @Body AnnoTreeListRequestAnno treeListRequestAnno,
+                                                           @Body Map<String, String> param) {
+        return super.annoTreeSelectData(clazz, annoTreesRequest, treeListRequestAnno, param);
     }
 
     @Mapping("/{clazz}/addM2m")
@@ -234,8 +219,8 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<String> runJavaCmd(@Path String clazz,@Body Map<String, String> map) throws ClassNotFoundException {
-        return super.runJavaCmd(clazz,map);
+    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body Map<String, String> map) throws ClassNotFoundException {
+        return super.runJavaCmd(clazz, map);
     }
 
 }
