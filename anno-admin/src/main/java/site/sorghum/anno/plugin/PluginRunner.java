@@ -6,6 +6,12 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * 插件运行程序
+ *
+ * @author Sorghum
+ * @since 2023/12/20
+ */
 @Named
 public class PluginRunner {
 

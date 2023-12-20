@@ -10,6 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
@@ -42,7 +43,8 @@ public class AnAnnoMenu extends BaseMetaModel {
         public static final String LINK = "link";
     }
 
-    @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit)
+    @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit,
+        dataType = AnnoDataType.TREE, treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class)))
     private String parentId;
 
     @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)

@@ -48,18 +48,20 @@ public class PlatformFactory {
    * @param dbContextMetaData 数据库元信息
    */
   private Platform getPlatformInstance0(DbContextMetaData dbContextMetaData) {
-    for (Class<? extends Platform> platformClass : platforms) {
-      try {
-        Platform platform = platformClass.getDeclaredConstructor(DbContextMetaData.class).newInstance(dbContextMetaData);
-        if (platform.isSupport()) {
-          return platform;
-        }
-      } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-        log.warn("init platform error, continue", e);
+      for (Class<? extends Platform> platformClass : platforms) {
+          try {
+              Platform platform = platformClass.getDeclaredConstructor(DbContextMetaData.class).newInstance(dbContextMetaData);
+              if (platform.isSupport()) {
+                  return platform;
+              }
+          } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                   NoSuchMethodException e) {
+              log.warn("init platform error, continue", e);
+          }
       }
-    }
-    DbType type = dbContextMetaData.getType();
-    throw new DdlException("不支持的数据库类型: " + type.name());
+      DbType type = dbContextMetaData.getType();
+      log.error("不支持的数据库类型,{},将强制匹配默认类型:{}", type.name(), MysqlPlatform.class);
+      return new MysqlPlatform(dbContextMetaData);
   }
 
   public void registerDefaultDatabasePlatform() {
