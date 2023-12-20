@@ -10,6 +10,8 @@ import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
+import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -81,26 +83,23 @@ public class DbController extends BaseDbController {
 
     @RequestMapping("/{clazz}/annoTrees")
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@PathVariable String clazz,
-                                                               @RequestParam(defaultValue = "false") boolean ignoreM2m,
-                                                               @RequestParam(defaultValue = "false") boolean reverseM2m,
                                                                @RequestBody(required = false) HashMap param) {
         if (param == null) {
             param = new HashMap<>();
         }
-        return super.annoTrees(clazz, ignoreM2m, reverseM2m, param);
+        return super.annoTrees(clazz, JSONUtil.toBean(param, AnnoTreesRequestAnno.class), JSONUtil.toBean(param, AnnoTreeListRequestAnno.class), param);
     }
 
     @RequestMapping("/{clazz}/annoTreeSelectData")
     public <T> AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
-                                                        @RequestParam(defaultValue = "false") boolean ignoreM2m,
-                                                        @RequestParam(defaultValue = "false") boolean reverseM2m,
                                                         @RequestBody(required = false) Map<String, String> param) {
         if (param == null) {
-            param = new HashMap<>();
+            param = new HashMap<>(0);
         }
-        return super.annoTreeSelectData(clazz, ignoreM2m, reverseM2m, param);
+        return super.annoTreeSelectData(clazz, JSONUtil.toBean(param, AnnoTreesRequestAnno.class), JSONUtil.toBean(param, AnnoTreeListRequestAnno.class), param);
     }
 
+    @Override
     @PostMapping("/{clazz}/addM2m")
     public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param, @RequestParam(defaultValue = "false") boolean clearAll) {
         if (param == null) {

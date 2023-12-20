@@ -45,8 +45,7 @@ public class BaseDbController {
 
     @Inject
     MetadataManager metadataManager;
-    @Inject
-    PermissionContext permissionContext;
+
     @Inject
     PermissionProxy permissionProxy;
 
@@ -194,21 +193,6 @@ public class BaseDbController {
     }
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
-                                                               boolean ignoreM2m,
-                                                               boolean reverseM2m,
-                                                               Map<String, String> param) {
-        List<T> list = queryTreeList(clazz, ignoreM2m, reverseM2m, param);
-        List<AnnoTreeDTO<String>> annoTreeDTOs = null;
-        if (param.containsKey("idKey") && param.containsKey("labelKey")) {
-            annoTreeDTOs = Utils.toTrees(list, param.get("idKey"), param.get("labelKey"));
-        }else {
-            annoTreeDTOs = Utils.toTrees(list);
-        }
-        annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
-        return AnnoResult.succeed(annoTreeDTOs);
-    }
-
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
                                                                AnnoTreesRequestAnno annoTreesRequest,
                                                                AnnoTreeListRequestAnno treeListRequestAnno,
                                                                Map<String, String> param) {
@@ -267,20 +251,6 @@ public class BaseDbController {
         return dbService.list(tableParam.getClazz(), dbConditions);
     }
 
-
-    public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
-                                                        boolean ignoreM2m,
-                                                        boolean reverseM2m,
-                                                        Map<String, String> param) {
-        List<Object> list = queryTreeList(clazz, ignoreM2m, reverseM2m, param);
-        if (list == null || list.isEmpty()) {
-            return AnnoResult.succeed(Collections.emptyList());
-        }
-        String annoM2mId = MapUtil.getStr(param, "annoM2mId");
-        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.getM2mJoinTargetClazzField())).collect(Collectors.toList());
-        return AnnoResult.succeed(data);
-    }
 
     public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
                                                            AnnoTreesRequestAnno annoTreesRequest,
@@ -355,34 +325,6 @@ public class BaseDbController {
 
     private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
         Map<String, Object> nParam = new HashMap<>();
-        for (String key : param.keySet()) {
-            Object item = param.get(key);
-            if (item instanceof String sItem) {
-                if (StrUtil.isNotBlank(sItem)) {
-                    nParam.put(key, sItem);
-                }
-            } else {
-                nParam.put(key, param.get(key));
-            }
-        }
-        return nParam;
-    }
-
-    private Map<String, Object> emptyStringIgnore(Map<String, ?> param,AnEntity anEntity) {
-        Map<String, Object> nParam = new HashMap<>();
-        for (AnField dbAnField : anEntity.getDbAnFields()) {
-            String key = dbAnField.getFieldName();
-            if (param.containsKey(key)){
-                Object item = param.get(key);
-                if (item instanceof String sItem) {
-                    if (StrUtil.isNotBlank(sItem) || dbAnField.isEditCanClear()) {
-                        nParam.put(key, sItem);
-                    }
-                } else {
-                    nParam.put(key, param.get(key));
-                }
-            }
-        }
         for (String key : param.keySet()) {
             Object item = param.get(key);
             if (item instanceof String sItem) {
