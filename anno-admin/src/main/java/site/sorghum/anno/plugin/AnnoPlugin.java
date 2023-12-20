@@ -1,6 +1,7 @@
 package site.sorghum.anno.plugin;
 
 
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +31,10 @@ public class AnnoPlugin implements Runnable {
      */
     public String pluginDesc;
 
+    /**
+     * 默认图标
+     */
+    private static final String DEFAULT_ICON = "ant-design:bars-outlined";
     /**
      * 执行顺序，越大越先执行
      */
@@ -76,6 +81,9 @@ public class AnnoPlugin implements Runnable {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setId(id);
         anPluginMenu.setTitle(title);
+        if (StrUtil.isBlank(icon)){
+            icon = DEFAULT_ICON;
+        }
         anPluginMenu.setIcon(icon);
         anPluginMenu.setSort(sort);
         anPluginMenu.setType(0);
@@ -106,11 +114,13 @@ public class AnnoPlugin implements Runnable {
     protected AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String title, String icon, Integer sort) {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setTitle(title);
+        if (StrUtil.isBlank(icon)){
+            icon = DEFAULT_ICON;
+        }
         anPluginMenu.setIcon(icon);
         anPluginMenu.setSort(sort);
         anPluginMenu.setType(1);
         anPluginMenu.setParentId(parentId);
-
         anPluginMenu.setEntity(metadataManager.getEntity(entityClass));
         return anPluginMenu;
     }
