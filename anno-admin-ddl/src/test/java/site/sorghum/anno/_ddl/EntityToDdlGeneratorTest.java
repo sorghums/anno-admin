@@ -1,5 +1,7 @@
 package site.sorghum.anno._ddl;
 
+import com.github.drinkjava2.jdialects.Dialect;
+import com.github.drinkjava2.jdialects.model.TableModel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,9 +11,12 @@ import org.noear.solon.test.SolonTest;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbContextMetaData;
 import org.noear.wood.annotation.Db;
+import org.noear.wood.dialect.DbH2Dialect;
 import site.sorghum.anno._ddl.entity.TestEntity;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._ddl.entity2db.SampleEntityToTableGetter;
+
+import java.util.Arrays;
 
 /**
  * @author songyinyin
@@ -52,5 +57,25 @@ public class EntityToDdlGeneratorTest {
         DbContextMetaData metaData = dbContext.getMetaData();
 
         Assert.assertEquals(10, metaData.getTable("test_entity").getColumns().size());
+    }
+
+    public static void main(String[] args) {
+        Dialect guessedDialect = Dialect.H2Dialect;
+
+        TableModel t = new TableModel("testTable");
+        t.column("b1").BOOLEAN();
+        t.column("d2").DOUBLE();
+        t.column("f3").FLOAT(5);
+        t.column("i4").INTEGER().pkey();
+        t.column("l5").LONG();
+        t.column("s6").SHORT();
+        t.column("b7").BIGDECIMAL(10, 2);
+        t.column("s8").STRING(20);
+        t.column("d9").DATE();
+        t.column("t10").TIME();
+        t.column("t11").TIMESTAMP();
+        t.column("v12").VARCHAR(300);
+        String[] createDDL = guessedDialect.toCreateDDL(t);
+        System.out.println(Arrays.toString(createDDL));
     }
 }

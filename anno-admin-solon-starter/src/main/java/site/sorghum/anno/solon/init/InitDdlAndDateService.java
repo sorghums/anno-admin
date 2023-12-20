@@ -14,7 +14,6 @@ import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno._ddl.InitDataService;
-import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -44,13 +43,11 @@ public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
     AnnoProperty annoProperty;
     @Inject
     MetadataManager metadataManager;
-    @Inject
-    PlatformFactory platformFactory;
 
     public void initDdl() throws Throwable {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, platformFactory, annoEntityToTableGetter);
+            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<AnEntity>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
                 if (anEntity.isAutoMaintainTable()) {

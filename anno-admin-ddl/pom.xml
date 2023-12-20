@@ -12,13 +12,19 @@
     <artifactId>anno-admin-ddl</artifactId>
 
     <properties>
-
+        <jdialects.version>5.0.13.jre8</jdialects.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>wood</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.drinkjava2</groupId>
+            <artifactId>jdialects</artifactId>
+            <version>${jdialects.version}</version>
         </dependency>
 
         <!-- 解析 sql -->

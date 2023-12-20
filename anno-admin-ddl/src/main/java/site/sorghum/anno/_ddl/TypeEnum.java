@@ -1,6 +1,8 @@
 package site.sorghum.anno._ddl;
 
+import com.github.drinkjava2.jdialects.Type;
 import lombok.Getter;
+import site.sorghum.anno._ddl.jdialects.JdiDataBaseInfo;
 
 import java.sql.Types;
 
@@ -10,43 +12,47 @@ import java.sql.Types;
  */
 @Getter
 public enum TypeEnum {
-
-  ARRAY(Types.ARRAY, "ARRAY"),
-  BIGINT(Types.BIGINT, "BIGINT"),
-  BINARY(Types.BINARY, "BINARY"),
-  BIT(Types.BIT, "BIT"),
-  BLOB(Types.BLOB, "BLOB"),
-  CHAR(Types.CHAR, "CHAR"),
-  CLOB(Types.CLOB, "CLOB"),
-  DATE(Types.DATE, "DATE"),
-  DECIMAL(Types.DECIMAL, "DECIMAL"),
-  DISTINCT(Types.DISTINCT, "DISTINCT"),
-  DOUBLE(Types.DOUBLE, "DOUBLE"),
-  FLOAT(Types.FLOAT, "FLOAT"),
-  INTEGER(Types.INTEGER, "INTEGER"),
-  JAVA_OBJECT(Types.JAVA_OBJECT, "JAVA_OBJECT"),
-  LONGVARBINARY(Types.LONGVARBINARY, "LONGVARBINARY"),
-  LONGVARCHAR(Types.LONGVARCHAR, "LONGVARCHAR"),
-  NULL(Types.NULL, "NULL"),
-  NUMERIC(Types.NUMERIC, "NUMERIC"),
-  OTHER(Types.OTHER, "OTHER"),
-  REAL(Types.REAL, "REAL"),
-  REF(Types.REF, "REF"),
-  SMALLINT(Types.SMALLINT, "SMALLINT"),
-  STRUCT(Types.STRUCT, "STRUCT"),
-  TIME(Types.TIME, "TIME"),
-  TIMESTAMP(Types.TIMESTAMP, "TIMESTAMP"),
-  TINYINT(Types.TINYINT, "TINYINT"),
-  VARBINARY(Types.VARBINARY, "VARBINARY"),
-  VARCHAR(Types.VARCHAR, "VARCHAR"),
+  ARRAY(Types.ARRAY, Type.JAVA_OBJECT),
+  BIGINT(Types.BIGINT, Type.BIGINT),
+  BINARY(Types.BINARY, Type.BINARY),
+  BIT(Types.BIT, Type.BIT),
+  BLOB(Types.BLOB, Type.BLOB),
+  CHAR(Types.CHAR, Type.CHAR),
+  CLOB(Types.CLOB, Type.CLOB),
+  DATE(Types.DATE, Type.DATE),
+  DECIMAL(Types.DECIMAL, Type.DECIMAL),
+  DOUBLE(Types.DOUBLE, Type.DOUBLE),
+  FLOAT(Types.FLOAT, Type.FLOAT),
+  INTEGER(Types.INTEGER, Type.INTEGER),
+  JAVA_OBJECT(Types.JAVA_OBJECT, Type.JAVA_OBJECT),
+  LONGVARBINARY(Types.LONGVARBINARY, Type.LONGVARBINARY),
+  LONGVARCHAR(Types.LONGVARCHAR, Type.LONGVARCHAR),
+  NUMERIC(Types.NUMERIC, Type.NUMERIC),
+  REAL(Types.REAL, Type.REAL),
+  SMALLINT(Types.SMALLINT, Type.SMALLINT),
+  STRUCT(Types.STRUCT, Type.JSON),
+  TIME(Types.TIME, Type.TIME),
+  TIMESTAMP(Types.TIMESTAMP, Type.TIMESTAMP),
+  TINYINT(Types.TINYINT, Type.TINYINT),
+  VARBINARY(Types.VARBINARY, Type.VARBINARY),
+  VARCHAR(Types.VARCHAR, Type.VARCHAR),
 
   ;
   private final Integer typeCode;
 
-  private final String nativeSqlName;
+  private final Type nativeType;
 
-  TypeEnum(Integer typeCode, String nativeSqlName) {
+  TypeEnum(Integer typeCode, Type nativeType) {
     this.typeCode = typeCode;
-    this.nativeSqlName = nativeSqlName;
+    this.nativeType = nativeType;
+  }
+
+  public static Type getType(Integer typeCode) {
+    for (TypeEnum typeEnum : TypeEnum.values()) {
+      if (typeEnum.typeCode.equals(typeCode)) {
+        return typeEnum.getNativeType();
+      }
+    }
+    return JdiDataBaseInfo.getNativeType(typeCode);
   }
 }

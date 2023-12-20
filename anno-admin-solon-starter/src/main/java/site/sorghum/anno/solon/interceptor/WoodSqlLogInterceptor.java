@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.interceptor;
 
 import cn.hutool.core.collection.CollUtil;
+import com.github.drinkjava2.jdialects.Dialect;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -42,7 +43,6 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
         if (CollUtil.isNotEmpty(skipTableList)) {
             try {
                 Statement parse = CCJSqlParserUtil.parse(sql);
-
                 List<String> tableList = tablesNamesFinder.getTableList(parse);
                 if (tableList.stream().anyMatch(skipTableList::contains)) {
                     return;

@@ -1,14 +1,18 @@
 package site.sorghum.anno._ddl.entity2db;
 
+import com.github.drinkjava2.jdialects.Dialect;
+import com.github.drinkjava2.jdialects.model.ColumnModel;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
+import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
 import site.sorghum.anno._ddl.DdlException;
-import site.sorghum.anno._ddl.DdlGenerator;
-import site.sorghum.anno._ddl.Platform;
-import site.sorghum.anno._ddl.PlatformFactory;
+import site.sorghum.anno._ddl.DialectUtil;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,20 +27,19 @@ public class EntityToDdlGenerator<T> {
 
     protected DbContext dbContext;
 
-    protected PlatformFactory platformFactory;
-
     protected EntityToTableGetter<T> entityToTableGetter;
+
+    protected Dialect dialect;
 
     public EntityToDdlGenerator(DbContext dbContext, EntityToTableGetter<T> entityToTableGetter) {
         this.dbContext = dbContext;
-        this.platformFactory = new PlatformFactory();
         this.entityToTableGetter = entityToTableGetter;
-    }
-
-    public EntityToDdlGenerator(DbContext dbContext, PlatformFactory platformFactory, EntityToTableGetter<T> entityToTableGetter) {
-        this.dbContext = dbContext;
-        this.platformFactory = platformFactory;
-        this.entityToTableGetter = entityToTableGetter;
+        try (Connection connection = dbContext.getConnection()) {
+            this.dialect = Dialect.guessDialect(connection);
+        } catch (SQLException e) {
+            log.error("annoAdmin guess Dialect error, default is mysql.");
+            this.dialect = Dialect.MySQLDialect;
+        }
     }
 
     /**
@@ -62,11 +65,8 @@ public class EntityToDdlGenerator<T> {
      * @return 创建表的 DDL 语句
      */
     public String getCreateTableDDL(T entity) {
-        Platform platform = platformFactory.getPlatformInstance(dbContext.getMetaData());
-        DdlGenerator ddlGenerator = platform.getDdlGenerator();
-
         TableWrap table = entityToTableGetter.getTable(entity);
-        return ddlGenerator.getTableDDL(table);
+        return String.join("\n", dialect.toCreateDDL(DialectUtil.tableWrap2TableModel(table)));
     }
 
     /**
@@ -97,10 +97,14 @@ public class EntityToDdlGenerator<T> {
         if (existsTable == null) {
             throw new DdlException("table not exists: " + table.getName());
         }
-
-        Platform platform = platformFactory.getPlatformInstance(dbContext.getMetaData());
-        DdlGenerator ddlGenerator = platform.getDdlGenerator();
-        return ddlGenerator.getAddColumnDDL(table, existsTable);
+        List<ColumnWrap> columns = table.getColumns();
+        List<String> existsTableColumnNames = existsTable.getColumns().stream().map(ColumnWrap::getName).map(String::toLowerCase).toList();
+        List<ColumnWrap> addColumnWrap = columns.stream().filter(columnWrap -> !existsTableColumnNames.contains(columnWrap.getName().toLowerCase())).toList();
+        if (addColumnWrap.isEmpty()){
+            return Collections.emptyList();
+        }
+        List<ColumnModel> columnModels = DialectUtil.columnWrap2ColumnModel(addColumnWrap, table);
+        return List.of(dialect.toAddColumnDDL(columnModels.toArray(new ColumnModel[0])));
     }
 
     /**

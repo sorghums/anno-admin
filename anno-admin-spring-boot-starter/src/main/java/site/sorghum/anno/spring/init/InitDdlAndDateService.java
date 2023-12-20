@@ -14,7 +14,6 @@ import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno._ddl.InitDataService;
-import site.sorghum.anno._ddl.PlatformFactory;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -47,8 +46,6 @@ public class InitDdlAndDateService implements ApplicationListener<ApplicationSta
     @Inject
     AuthServiceImpl authService;
     @Inject
-    Optional<PlatformFactory> platformFactoryOptional;
-    @Inject
     PluginRunner pluginRunner;
 
     @Override
@@ -63,9 +60,7 @@ public class InitDdlAndDateService implements ApplicationListener<ApplicationSta
     private void init() throws Exception {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            PlatformFactory platformFactory = platformFactoryOptional.orElse(new PlatformFactory());
-
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, platformFactory, annoEntityToTableGetter);
+            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
                 if (anEntity.isAutoMaintainTable()) {
