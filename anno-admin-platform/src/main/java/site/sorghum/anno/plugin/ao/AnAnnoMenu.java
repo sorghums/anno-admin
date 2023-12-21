@@ -44,7 +44,7 @@ public class AnAnnoMenu extends BaseMetaModel {
     }
 
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit,
-        dataType = AnnoDataType.TREE, treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class)))
+        dataType = AnnoDataType.TREE, treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class,labelKey = "title",pidKey = "parentId")))
     private String parentId;
 
     @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)
