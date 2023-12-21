@@ -2,6 +2,7 @@ package site.sorghum.anno.anno.annotation.common;
 
 
 import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
+import site.sorghum.anno.anno.tpl.TplRender;
 
 import java.lang.annotation.*;
 
@@ -16,31 +17,23 @@ import java.lang.annotation.*;
 @Documented
 public @interface AnnoTpl {
     /**
-     *  页面名称
-     *  如：helloWord.html
-     *  会在resources/WEB-INF/templates下寻找
-     */
-    String tplName() default "";
-
-    /**
      * 解析的Action类
      */
-    Class<? extends DefaultAnTplAction> tplClazz() default DefaultAnTplAction.class;
+    Class<? extends TplRender> tplClazz() default TplRender.class;
 
     /**
-     * 弹出窗口大小
-     * xs、sm、md、lg、xl、full
+     * 弹出窗口宽度
      *
      * @return {@link String}
      */
-    String windowSize() default "xl";
+    String windowWidth() default "960px";
 
     /**
      * 弹出窗口高度
      *
      * @return {@link String}
      */
-    String windowHeight() default "700px";
+    String windowHeight() default "800px";
 
     /**
      * 是否启用

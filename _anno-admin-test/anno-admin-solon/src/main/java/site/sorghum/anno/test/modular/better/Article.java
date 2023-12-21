@@ -59,6 +59,6 @@ public class Article extends BaseMetaModel {
     Object favoritesM2mButton;
 
 
-    @AnnoButton(name = "测试TPL",annoTpl = @AnnoTpl(tplName = "helloWord.ftl?id=${id}",tplClazz = ArticleTplAction.class))
+    @AnnoButton(name = "测试TPL",annoTpl = @AnnoTpl(tplClazz = ArticleTplRender.class))
     Object helloWord;
 }

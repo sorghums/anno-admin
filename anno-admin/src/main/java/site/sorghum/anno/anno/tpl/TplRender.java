@@ -39,10 +39,15 @@ public class TplRender {
      * @param view  view对象
      * @param props 支柱
      */
-    public TplRender(String view, Map<String, Object> props){
+    public void init(String view, Map<String, Object> props){
         this.view = view;
         this.props.putAll(props);
-        this.id = MD5Util.digestHex(JSONUtil.toJsonString(this));
+        this.id =toId(this.getClass());
+        put(this.id,this);
+    }
+
+    public static String toId(Class<? extends TplRender> clazz){
+        return clazz.getSimpleName() + ":" + MD5Util.digestHex(clazz.getName());
     }
 
     public static void put(String key, TplRender tplRender) {

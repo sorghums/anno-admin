@@ -20,6 +20,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
+import site.sorghum.anno.anno.tpl.TplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 
@@ -304,10 +305,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             }
 
             // tpl
+            anColumnButton.setTplId(TplRender.toId(anno.annoTpl().tplClazz()));
+            anColumnButton.setTplName(anno.name());
             anColumnButton.setTplEnable(anno.annoTpl().enable());
-            anColumnButton.setTplWindowSize(anno.annoTpl().windowSize());
+            anColumnButton.setTplWindowWidth(anno.annoTpl().windowWidth());
             anColumnButton.setTplWindowHeight(anno.annoTpl().windowHeight());
-            anColumnButton.setTplName(anno.annoTpl().tplName());
             anColumnButton.setTplClazz(anno.annoTpl().tplClazz());
 
 

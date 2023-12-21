@@ -1,20 +1,15 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Param;
 import org.noear.solon.annotation.Path;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
-import org.noear.solon.core.util.ClassUtil;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
 import site.sorghum.anno.anno.tpl.TplRender;
-
-import java.util.HashMap;
 
 @Controller
 @SaIgnore
