@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno.amis.controller.AmisBaseController;
-
-import java.util.HashMap;
+import site.sorghum.anno.anno.controller.AnEntityBaseController;
 
 /**
  * 功能控制器
@@ -18,7 +16,7 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping(value = AnnoConstants.BASE_URL + "/system/config")
-public class AmisController extends AmisBaseController {
+public class AnEntityController extends AnEntityBaseController {
 
     @Override
     @RequestMapping(value = "/anEntity/{clazz}")

@@ -7,7 +7,10 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
+import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
+
+import java.util.List;
 
 /**
  * 菜单代理
@@ -25,9 +28,6 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
         };
     }
 
-    @Inject
-    MetadataManager metadataManager;
-
     @Override
     public void beforeAdd(AnAnnoMenu data) {
         String parseData = null;
@@ -36,5 +36,15 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
             parseData = data.getParseData().trim();
         }
         data.setParseData(parseData);
+        // 默认Sort设置
+        if (data.getSort() == null){
+            data.setSort(0);
+        }
     }
+
+    @Override
+    public void beforeUpdate(List<DbCondition> dbConditions, AnAnnoMenu data) {
+        beforeAdd(data);
+    }
+
 }

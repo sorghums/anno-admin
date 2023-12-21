@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.auth.AnnoStpUtil;
@@ -34,33 +35,16 @@ public class MenuBaseController {
     @Inject
     AuthService authService;
 
+    @Inject
+    AnnoProperty annoProperty;
+
     public List<AnAnnoMenuResponse> dataMenu() {
-        String uid = AnnoStpUtil.getLoginId().toString();
-        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
-        // 过滤需要权限的菜单
-        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
-            sysAnnoMenu -> {
-                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
-                }
-                return true;
-            }
-        ).collect(Collectors.toList());
+        List<AnAnnoMenu> nList = getAnAnnoMenus();
         return listToTree(list2AnnoMenuResponse(nList));
     }
 
     public AnnoResult<List<ReactMenu>> anMenu() {
-        String uid = AnnoStpUtil.getLoginId().toString();
-        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
-        // 过滤需要权限的菜单
-        List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
-            sysAnnoMenu -> {
-                if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
-                    return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
-                }
-                return true;
-            }
-        ).collect(Collectors.toList());
+        List<AnAnnoMenu> nList = getAnAnnoMenus();
         return AnnoResult.succeed(listToVueTree(list2VueMenuResponse(nList)));
     }
 
@@ -192,7 +176,14 @@ public class MenuBaseController {
     }
 
     public AnnoResult<List<VbenMenu>> vbenMenu() {
-        String uid = AnnoStpUtil.getLoginId().toString();
+        List<AnAnnoMenu> nList = getAnAnnoMenus();
+        return AnnoResult.succeed(listToVbenVueTree(list2VbenVueMenuResponse(nList)));
+    }
+
+    private List<AnAnnoMenu> getAnAnnoMenus() {
+        String uid = AnnoStpUtil.getLoginIdAsString();
+        String tokenValue = AnnoStpUtil.getTokenValue();
+        String apiServerUrl = annoProperty.getApiServerUrl();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
@@ -203,6 +194,13 @@ public class MenuBaseController {
                 return true;
             }
         ).collect(Collectors.toList());
-        return AnnoResult.succeed(listToVbenVueTree(list2VbenVueMenuResponse(nList)));
+        // 默认值设置
+        for (AnAnnoMenu anAnnoMenu : nList) {
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())){
+                String temp = anAnnoMenu.getParseData().replace("[[[token]]]",tokenValue).replace("[[[apiServerUrl]]]",apiServerUrl);
+                anAnnoMenu.setParseData(temp);
+            }
+        }
+        return nList;
     }
 }

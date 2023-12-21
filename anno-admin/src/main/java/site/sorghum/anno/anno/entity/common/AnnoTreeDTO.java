@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import site.sorghum.amis.entity.input.Options;
-import site.sorghum.anno._common.util.JSONUtil;
 
 import java.util.List;
 
@@ -52,15 +50,4 @@ public class AnnoTreeDTO<T> {
      * 子节点
      */
     List<AnnoTreeDTO<T>> children;
-
-    /**
-     * 转换为 Options
-     * @param annoTrees AnnoTreeDto
-     * @return {@link List<Options.Option>}
-     */
-    public static List<Options.Option> toOptions(List<AnnoTreeDTO<String>> annoTrees) {
-        // 转换为 Options
-        String jsonString = JSONUtil.toJsonString(annoTrees);
-        return JSONUtil.toBeanList(jsonString, Options.Option.class);
-    }
 }
