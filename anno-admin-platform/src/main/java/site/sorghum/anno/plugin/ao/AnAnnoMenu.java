@@ -41,6 +41,10 @@ public class AnAnnoMenu extends BaseMetaModel {
          * 外链
          */
         public static final String LINK = "link";
+        /**
+         * TPL 服务端页面
+         */
+        public static final String TPL = "tpl";
     }
 
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit,
@@ -80,7 +84,8 @@ public class AnAnnoMenu extends BaseMetaModel {
         optionType = @AnnoOptionType(value = {
             @AnnoOptionType.OptionData(label = "Anno组件", value = ParseTypeConstant.ANNO_MAIN),
             @AnnoOptionType.OptionData(label = "IFrame页面", value = ParseTypeConstant.IFRAME),
-            @AnnoOptionType.OptionData(label = "外链", value = ParseTypeConstant.LINK)
+            @AnnoOptionType.OptionData(label = "外链", value = ParseTypeConstant.LINK),
+            @AnnoOptionType.OptionData(label = "TPL模板", value = ParseTypeConstant.TPL)
         }))
     private String parseType;
 

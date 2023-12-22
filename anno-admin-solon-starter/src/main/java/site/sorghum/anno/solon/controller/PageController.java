@@ -9,7 +9,9 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.ModelAndView;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.tpl.TplRender;
+import site.sorghum.anno.anno.tpl.BaseTplRender;
+
+import java.util.HashMap;
 
 @Controller
 @SaIgnore
@@ -23,13 +25,15 @@ public class PageController {
     }
 
     @Mapping(value = "/annoTpl")
-    public ModelAndView annoTpl(Context ctx, @Param String tplId) {
-        TplRender render = TplRender.getClone(tplId);
+    public ModelAndView annoTpl(Context ctx, @Param String _tplId, @Param String _tplClassName) {
+        BaseTplRender render = BaseTplRender.getClone(_tplId, _tplClassName);
         if (render == null) {
             throw new BizException("未找到渲染器");
         }
         // 注入参数 保留原参数
-        render.getProps().putAll(ctx.paramMap());
-        return new ModelAndView(render.getView(),render.getProps());
+        render.addProps(new HashMap<>(ctx.paramMap()));
+        // 执行函数
+        render.hook();
+        return new ModelAndView(render.getViewName(), render.getProps());
     }
 }

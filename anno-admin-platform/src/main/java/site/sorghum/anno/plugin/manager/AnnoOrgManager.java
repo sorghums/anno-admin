@@ -9,6 +9,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnUser;
 
@@ -29,15 +30,11 @@ public class AnnoOrgManager {
 
     public String getLoginOrg() {
         try {
-            SaSession session = AnnoStpUtil.getSession(false);
-            AnUser anUser = session.get("user", new AnUser() {{
-                setName("system");
-                setOrgId("-1");
-            }});
-            if (anUser.getOrgId() == null || anUser.getOrgId().equals("-1")) {
+            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getLoginId());
+            if (authUser == null || authUser.getOrgId() == null){
                 throw new BizException("获取用户组织失败,请先绑定组织或者点击右上角清除缓存。");
             }
-            return anUser.getOrgId();
+            return authUser.getOrgId();
         } catch (Exception e) {
             throw new BizException(e.getMessage());
         }

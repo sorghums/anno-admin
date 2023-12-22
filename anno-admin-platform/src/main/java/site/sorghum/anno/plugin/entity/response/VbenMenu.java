@@ -46,7 +46,7 @@ public class VbenMenu {
     @ApiModelProperty("排序")
     public Integer sort;
 
-    public static VbenMenu toVueMenu(AnAnnoMenu anAnnoMenu) {
+    public static VbenMenu toVbenMenu(AnAnnoMenu anAnnoMenu) {
         VbenMenu vbenMenu = new VbenMenu();
         vbenMenu.setId(anAnnoMenu.getId());
         vbenMenu.setParentId(anAnnoMenu.getParentId());
@@ -70,7 +70,15 @@ public class VbenMenu {
                 vbenMenu.setComponent("IFrame");
                 vbenMenu.setPath(anAnnoMenu.getParseData());
             }
-        }else {
+        } else if (AnAnnoMenu.ParseTypeConstant.TPL.equals(anAnnoMenu.getParseType())){
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
+                vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getParseData()));
+                vbenMenu.setComponent("IFrame");
+                vbenMenu.setPath(vbenMenu.getName());
+                vbenMenu.getMeta().setFrameSrc(anAnnoMenu.getParseData());
+            }
+        }
+        else {
             vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getTitle()));
             vbenMenu.setComponent("LAYOUT");
             vbenMenu.setPath("/anViewLayout/" + MD5Util.digestHex(anAnnoMenu.getTitle()));

@@ -1,8 +1,7 @@
 package site.sorghum.anno.anno.annotation.common;
 
 
-import site.sorghum.anno.anno.tpl.DefaultAnTplAction;
-import site.sorghum.anno.anno.tpl.TplRender;
+import site.sorghum.anno.anno.tpl.BaseTplRender;
 
 import java.lang.annotation.*;
 
@@ -19,7 +18,7 @@ public @interface AnnoTpl {
     /**
      * 解析的Action类
      */
-    Class<? extends TplRender> tplClazz() default TplRender.class;
+    Class<? extends BaseTplRender> tplClazz() default BaseTplRender.class;
 
     /**
      * 弹出窗口宽度

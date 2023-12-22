@@ -3,7 +3,9 @@ package site.sorghum.anno.plugin.controller;
 import cn.dev33.satoken.session.SaSession;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
@@ -41,8 +43,23 @@ public class AuthBaseController {
         }
         // 校验用户名密码
         AnUser anUser = AuthFunctions.verifyLogin.apply(user);
+        if ("0".equals(anUser.getEnable())){
+            throw new BizException("账号已被禁用");
+        }
         // 登录
         AnnoStpUtil.login(anUser.getId());
+        AnnoStpUtil.setAuthUser(
+            anUser.getId(),
+            AnnoAuthUser.builder().
+                userId(anUser.getId()).
+                userName(anUser.getName()).
+                userAccount(anUser.getMobile()).
+                userMobile(anUser.getMobile()).
+                userStatus(anUser.getEnable()).
+                orgId(anUser.getOrgId()).
+                build()
+        );
+
         SaSession session = AnnoStpUtil.getSession(true);
         session.set("user", anUser);
         return AnnoResult.succeed(AnnoStpUtil.getTokenValue());
@@ -60,8 +77,17 @@ public class AuthBaseController {
         }
         // 登录用户
         AnUser anUser = AuthFunctions.getUserById.apply(loginId);
-        anUser.setPassword(null);
-        AnnoStpUtil.getSession().set("user", anUser);
+        AnnoStpUtil.setAuthUser(
+            anUser.getId(),
+            AnnoAuthUser.builder().
+                userId(anUser.getId()).
+                userName(anUser.getName()).
+                userAccount(anUser.getMobile()).
+                userMobile(anUser.getMobile()).
+                userStatus(anUser.getEnable()).
+                orgId(anUser.getOrgId()).
+                build()
+        );
         AuthFunctions.removePermRoleCacheList.accept(loginId);
         return AnnoResult.succeed("清除成功");
     }

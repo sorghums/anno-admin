@@ -44,6 +44,22 @@ public class AnnoStpUtil {
         }
     };
 
+    // --------------------------------------------------- 自定义方法 ---------------------------------------------------
+
+    public static AnnoAuthUser getAuthUser(Object loginId) {
+        SaSession sessionByLoginId = AnnoStpUtil.getSessionByLoginId(loginId);
+        Object authUser = sessionByLoginId.get("authUser");
+        if (authUser == null){
+            return null;
+        }
+        return (AnnoAuthUser) authUser;
+    }
+
+    public static AnnoAuthUser setAuthUser(Object loginId, AnnoAuthUser authUser) {
+        SaSession sessionByLoginId = AnnoStpUtil.getSessionByLoginId(loginId);
+        sessionByLoginId.set("authUser", authUser);
+        return authUser;
+    }
     /**
      * 获取当前 StpLogic 的账号类型
      *

@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
@@ -110,12 +111,12 @@ public class MenuBaseController {
             }
         }
         // 加入默认工作台节点
-        roots.add(0,new ReactMenu(){{
+        roots.add(0, new ReactMenu() {{
             setPath("/dashboard/workplace");
             setName("Workplace");
             setMeta(
                 Map.of(
-                    "locale","工作台"
+                    "locale", "工作台"
                 )
             );
         }});
@@ -125,7 +126,8 @@ public class MenuBaseController {
     private static List<ReactMenu> list2VueMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
         return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
-                ReactMenu reactMenu = ReactMenu.toVueMenu(sysAnnoMenu);;
+                ReactMenu reactMenu = ReactMenu.toVueMenu(sysAnnoMenu);
+                ;
                 reactMenu.setChildren(new ArrayList<>());
                 return reactMenu;
             }
@@ -157,14 +159,15 @@ public class MenuBaseController {
         vbenMenu.setMeta(new VbenMenu.VbenMeta());
         vbenMenu.getMeta().setTitle("工作台");
         vbenMenu.getMeta().setIcon("bx:bx-home");
-        roots.add(0,vbenMenu);
+        roots.add(0, vbenMenu);
         return roots;
     }
 
     private static List<VbenMenu> list2VbenVueMenuResponse(List<AnAnnoMenu> anAnnoMenus) {
         return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
-                VbenMenu vbenMenu = VbenMenu.toVueMenu(sysAnnoMenu);;
+                VbenMenu vbenMenu = VbenMenu.toVbenMenu(sysAnnoMenu);
+                ;
                 vbenMenu.setChildren(new ArrayList<>());
                 return vbenMenu;
             }
@@ -196,11 +199,34 @@ public class MenuBaseController {
         ).collect(Collectors.toList());
         // 默认值设置
         for (AnAnnoMenu anAnnoMenu : nList) {
-            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())){
-                String temp = anAnnoMenu.getParseData().replace("[[[token]]]",tokenValue).replace("[[[apiServerUrl]]]",apiServerUrl);
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
+                String temp = anAnnoMenu.getParseData().replace("[[[token]]]", tokenValue).replace("[[[apiServerUrl]]]", apiServerUrl);
                 anAnnoMenu.setParseData(temp);
             }
         }
+        // TPL模板配置
+        for (AnAnnoMenu anAnnoMenu : nList) {
+            if (StrUtil.isNotBlank(anAnnoMenu.getParseType()) && AnAnnoMenu.ParseTypeConstant.TPL.equals(anAnnoMenu.getParseType())) {
+                anAnnoMenu.setParseData(
+                    jointPath(apiServerUrl, AnnoConstants.BASE_URL, "annoTpl?_tplId=%s&_tokenValue=%s".formatted(anAnnoMenu.getParseData(), tokenValue))
+                );
+            }
+        }
         return nList;
+    }
+
+    private String jointPath(Object... tempPath) {
+        //1.去除空格 2.去除重复的/
+        for (int i = 0; i < tempPath.length; i++) {
+            String var = tempPath[i].toString();
+            if (var.startsWith("/")){
+                var = var.substring(1);
+            }
+            if (var.endsWith("/")){
+                var = var.substring(0, var.length() - 1);
+            }
+            tempPath[i] = var.trim();
+        }
+        return StrUtil.join("/", tempPath);
     }
 }

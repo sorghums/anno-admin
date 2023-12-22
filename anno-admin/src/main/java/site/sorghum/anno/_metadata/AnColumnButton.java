@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.anno.tpl.TplRender;
+import site.sorghum.anno.anno.tpl.BaseTplRender;
 
 /**
  * 行级按钮信息
@@ -91,7 +91,7 @@ public class AnColumnButton extends AnButton {
      * @see AnnoTpl#tplClazz()
      */
     @ApiModelProperty(value = "模板资源类",example = "site.sorghum.anno._metadata.AnEntity")
-    private Class<? extends TplRender> tplClazz;
+    private Class<? extends BaseTplRender> tplClazz;
 
     /**
      * 模板资源窗口大小
