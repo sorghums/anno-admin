@@ -23,6 +23,8 @@ import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
@@ -30,7 +32,6 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.dami.DamiApiCached;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
-import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.spring.auth.StpInterfaceImpl;
 
@@ -121,16 +122,18 @@ public class AnnoConfig {
                 }
                 AnnoMain annoMain = AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
                 if (annoMain != null) {
-                    metadataManager.loadEntity(clazz);
+                    AnEntity anEntity = metadataManager.loadEntity(clazz);
                     // 缓存处理类
                     AnnoClazzCache.put(clazz.getSimpleName(), clazz);
                     // 缓存字段信息
-                    AnnoUtil.getAnnoFields(clazz).forEach(
-                        field -> {
-                            String columnName = AnnoUtil.getColumnName(field);
-                            AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getField());
+                    for (AnField field : anEntity.getFields()) {
+                        String columnName = field.getTableFieldName();
+                        AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getFieldName());
+                        // 同时保存其实际节点的类的字段信息
+                        if (clazz != field.getDeclaringClass()) {
+                            AnnoFieldCache.putFieldName2FieldAndSql(field.getDeclaringClass(), columnName, field.getFieldName());
                         }
-                    );
+                    }
                 }
             }
         }

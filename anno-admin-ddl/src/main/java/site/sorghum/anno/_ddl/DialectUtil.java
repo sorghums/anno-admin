@@ -26,7 +26,9 @@ public class DialectUtil {
             if (StrUtil.equalsIgnoreCase(column.getName(),tableWrap.getPk1())){
                 columnModel.setPkey(true);
             }
-            columnModel.setLength(column.getSize());
+            if (column.getSize() != null) {
+                columnModel.setLength(column.getSize());
+            }
             tableModel.addColumn(columnModel);
         }
         return tableModel;

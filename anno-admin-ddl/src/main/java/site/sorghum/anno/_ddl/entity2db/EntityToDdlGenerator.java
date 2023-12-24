@@ -40,6 +40,7 @@ public class EntityToDdlGenerator<T> {
             log.error("annoAdmin guess Dialect error, default is mysql.");
             this.dialect = Dialect.MySQLDialect;
         }
+        Dialect.setGlobalAllowReservedWords(true);
     }
 
     /**
@@ -80,6 +81,7 @@ public class EntityToDdlGenerator<T> {
             dbContext.exe(tableDDL);
             log.info("exe ddl ==> {}", tableDDL);
         } catch (Exception e) {
+            log.error("exe ddl error ==> {}", tableDDL);
             throw new DdlException(e);
         }
     }

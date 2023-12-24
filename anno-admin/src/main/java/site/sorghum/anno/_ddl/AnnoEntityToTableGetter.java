@@ -44,14 +44,18 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
         fields.add(0, idField);
 
         for (AnField field : fields) {
+            // 虚拟列，跳过
+            if (field.isVirtualColumn()) {
+                continue;
+            }
             // 不是基本类型，跳过
             if (!columnIsSupport(field.getFieldType())) {
                 continue;
             }
             String columnName = field.getTableFieldName();
             if (StrUtil.isBlank(columnName)) {
-                // 虚拟列，跳过
-                continue;
+                // 默认使用小写，下划线命名
+                columnName = StrUtil.toUnderlineCase(field.getFieldName());
             }
 
             int sqlType;

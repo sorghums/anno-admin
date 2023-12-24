@@ -31,6 +31,12 @@ public class AnField {
     private String fieldName;
 
     /**
+     * 字段所在的类。父类上的字段，为父类的类
+     */
+    @ApiModelProperty(value = "字段所在的类", example = "site.sorghum.anno.suppose.model.BaseMetaModel")
+    private Class<?> declaringClass;
+
+    /**
      * 虚拟列
      * @see AnnoField#virtualColumn()
      */

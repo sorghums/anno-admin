@@ -22,7 +22,7 @@ public class AnnoTablesNamesFinder extends TablesNamesFinder implements Initiali
 
     @Override
     public void afterInjection() throws Throwable {
-        this.delimiterToken =" ";
+        this.delimiterToken ="`";
     }
 
     @Override

@@ -73,7 +73,7 @@ public class WorkflowInfoDO extends BaseMetaModel {
     /**
      * 工作流整体失败的报警
      */
-    @AnnoField(title = "工作流整体失败的报警")
+    @AnnoField(title = "失败通知用户")
     private String notifyUserIds;
 
     /**

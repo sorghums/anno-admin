@@ -37,18 +37,20 @@ public class MetadataManager {
     private EntityMetadataLoader entityMetadataLoader;
 
     /**
-     * 从实体类中加载元数据
+     * 从实体类中加载元数据，已存在的实体不会重复加载
      *
      * @param clazz anno 实体类
      */
-    public void loadEntity(Class<?> clazz) {
-        if (entityMap.containsKey(entityMetadataLoader.getEntityName(clazz))) {
-            return;
+    public AnEntity loadEntity(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        if (entityMap.containsKey(entityName)) {
+            return entityMap.get(entityName);
         }
 
         AnEntity entity = entityMetadataLoader.load(clazz);
 
         postProcess(entity);
+        return entity;
     }
 
     /**

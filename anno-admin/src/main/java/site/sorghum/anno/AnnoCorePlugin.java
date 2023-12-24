@@ -43,15 +43,10 @@ public class AnnoCorePlugin extends AnnoPlugin {
     @Override
     public void run() {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
-        AnnoAdminCoreFunctions.javaField2DbFieldFunction = AnnoFieldCache::getSqlColumnByJavaName;
-        AnnoAdminCoreFunctions.dbField2JavaFieldFunction = AnnoFieldCache::getFieldBySqlColumn;
-        AnnoAdminCoreFunctions.fieldCanClearFunction = (clazz,fieldName) -> {
+
+        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz, sqlFieldName) -> {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
-            return entity.getFieldMap().get(fieldName).isEditCanClear();
-        };
-        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz,sqlFieldName) -> {
-            AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
-            return entity.getFieldMap().get(AnnoFieldCache.getFieldBySqlColumn(clazz,sqlFieldName).getName()).isEditCanClear();
+            return entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(clazz, sqlFieldName)).isEditCanClear();
         };
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
@@ -73,7 +68,7 @@ public class AnnoCorePlugin extends AnnoPlugin {
             }
         });
 
-        WoodConfig.namingStrategy = new NamingStrategy(){
+        WoodConfig.namingStrategy = new NamingStrategy() {
             @Override
             public String classToTableName(Class<?> clz) {
                 // TODO 后续可解绑Wood
@@ -83,8 +78,8 @@ public class AnnoCorePlugin extends AnnoPlugin {
             @Override
             public String fieldToColumnName(Class<?> clz, Field f) {
                 try {
-                    return AnnoFieldCache.getSqlColumnByField(clz, f);
-                }catch (Exception ignore){
+                    return AnnoFieldCache.getSqlColumnByJavaName(clz, f.getName());
+                } catch (Exception ignore) {
                     return super.fieldToColumnName(clz, f);
                 }
             }

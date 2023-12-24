@@ -92,11 +92,6 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
     @Override
     public void beforeDelete(Class<WtfABCVirtual> tClass, List<DbCondition> dbConditions) {
         log.info("before delete:{}", dbConditions);
-        for (DbCondition dbCondition : dbConditions) {
-            String field = dbCondition.getField();
-            // 根据SQL Column获取对应的Field
-            Field fieldBySqlColumn = AnnoFieldCache.getFieldBySqlColumn(WtfABCVirtual.class, field);
-        }
         // 查询要删除的数据原信息
         WtfABCVirtual wtfABCVirtual = getDbServiceWood().queryOne(tClass, dbConditions);
         log.info("before delete:{}", wtfABCVirtual);

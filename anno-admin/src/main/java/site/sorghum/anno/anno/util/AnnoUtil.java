@@ -85,44 +85,6 @@ public class AnnoUtil {
     }
 
     /**
-     * 得到表名
-     *
-     * @param clazz clazz
-     * @return {@link String}
-     */
-    public static String getTableName(Class<?> clazz) {
-        Table table = AnnotationUtil.getAnnotation(clazz, Table.class);
-        if (table == null) {
-            throw new BizException("请在类上添加@Table注解");
-        }
-        return table.value();
-    }
-
-    /**
-     * 得到表名
-     *
-     * @param field clazz
-     * @return {@link String}
-     */
-    public static String getColumnName(Field field) {
-        AnnoField annoField = AnnotationUtil.getAnnotation(field, AnnoField.class);
-        if (annoField == null) {
-            throw new BizException("请在类上添加@AnnoField注解");
-        }
-        return annoField.tableFieldName();
-    }
-
-    /**
-     * 得到表名
-     *
-     * @param field clazz
-     * @return {@link String}
-     */
-    public static String getColumnName(FieldAnnoField field) {
-        return field.getAnnoField().tableFieldName();
-    }
-
-    /**
      * 获取表字段
      *
      * @param clazz 类

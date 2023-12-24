@@ -137,6 +137,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             Field field = fieldAnnoField.getField();
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
+            anField.setDeclaringClass(field.getDeclaringClass());
             anField.setVirtualColumn(anno.virtualColumn());
             anField.setTitle(anno.title());
             // 列名没有设置时，默认使用下划线
