@@ -81,7 +81,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
                     defaultValue = simpleColumn.getIsNullable();
                 }
                 case RICH_TEXT, CODE_EDITOR -> sqlType = Types.CLOB;
-                case FILE,IMAGE -> {
+                case FILE,IMAGE,LINK -> {
                     sqlType = Types.VARCHAR;
                     size = 1024;
                 }
