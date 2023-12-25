@@ -57,7 +57,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
         Integer sqlType;
         Integer size = null;
         Integer digit = null;
-        String defaultValue = "DEFAULT NULL";
+        String defaultValue = "";
         if (fieldName.equals(defaultPkName)) {
             defaultValue = "NOT NULL";
         }
@@ -80,7 +80,7 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
             sqlType = Types.NUMERIC;
             size = 25;
             digit = 6;
-            defaultValue = "NOT NULL DEFAULT 0";
+            defaultValue = "DEFAULT 0";
         } else {
             throw new DdlException("%s#%s 不支持的字段类型：%s".formatted(clazz.getName(), field.getName(), fieldType.getSimpleName()));
         }

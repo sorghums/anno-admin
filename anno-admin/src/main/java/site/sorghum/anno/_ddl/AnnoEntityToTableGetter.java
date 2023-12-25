@@ -61,29 +61,34 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             int sqlType;
             Integer size = null;
             Integer digit = null;
-            String defaultValue = "DEFAULT NULL";
+            String defaultValue = "";
 
+            final ColumnWrap simpleColumn = getColumn(anEntity, field);
             switch (field.getDataType()) {
                 // TREE 和 OPTIONS，通过 anno 注解获取不到字段类型，需要通过字段类型获取
                 // 默认类型是STRING，也需要通过字段类型获取
                 case STRING, TREE, OPTIONS, PICKER -> {
-                    ColumnWrap column = getColumn(anEntity, field);
-                    sqlType = column.getSqlType();
-                    size = column.getSize();
-                    digit = column.getDigit();
+                    sqlType = simpleColumn.getSqlType();
+                    size = simpleColumn.getSize();
+                    digit = simpleColumn.getDigit();
                 }
                 case DATE -> sqlType = Types.DATE;
                 case DATETIME -> sqlType = Types.TIMESTAMP;
                 case NUMBER -> {
-                    sqlType = Types.NUMERIC;
-                    size = 25;
-                    digit = 6;
-                    defaultValue = "NOT NULL DEFAULT 0";
+                    sqlType = simpleColumn.getSqlType();
+                    size = simpleColumn.getSize();
+                    digit = simpleColumn.getDigit();
+                    defaultValue = simpleColumn.getIsNullable();
                 }
                 case RICH_TEXT, CODE_EDITOR -> sqlType = Types.CLOB;
-                default -> { // FILE, IMAGE and others
+                case FILE,IMAGE -> {
                     sqlType = Types.VARCHAR;
-                    size = 512;
+                    size = 1024;
+                }
+                default -> {
+                    sqlType = simpleColumn.getSqlType();
+                    size = simpleColumn.getSize();
+                    defaultValue = simpleColumn.getIsNullable();
                 }
             }
 
@@ -119,7 +124,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
         int sqlType;
         Integer size = null;
         Integer digit = null;
-        String defaultValue = "DEFAULT NULL";
+        String defaultValue = "";
         if (fieldName.equals(defaultPkName)) {
             defaultValue = "NOT NULL";
         }
@@ -142,13 +147,14 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             sqlType = Types.NUMERIC;
             size = 25;
             digit = 6;
-            defaultValue = "NOT NULL DEFAULT 0";
+            defaultValue = "DEFAULT 0";
         } else if (fieldType == Boolean.class) {
             sqlType = Types.BIT;
             size = 1;
-            defaultValue = "NOT NULL DEFAULT 0";
+            defaultValue = "DEFAULT 0";
         } else {
-            throw new DdlException("%s.%s 不支持的字段类型：%s".formatted(anEntity.getEntityName(), field.getFieldName(), fieldType.getSimpleName()));
+            sqlType = Types.VARCHAR;
+            size = 512;
         }
 
         return new ColumnWrap(anEntity.getTableName(), fieldName, sqlType, size, digit, defaultValue, null);
