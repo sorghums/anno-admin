@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.core.collection.CollUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
@@ -42,9 +43,17 @@ public class SystemController {
     @Mapping(value = "/api/upload",multipart = true)
     @Post
     @ApiOperation(value = "文件上传", notes = "文件上传")
-
     public AnnoResult<String> upload(UploadedFile file,Context context) throws Exception {
         Map<String, List<UploadedFile>> stringListMap = context.filesMap();
+        if (file == null && CollUtil.isNotEmpty(stringListMap)){
+            List<UploadedFile> next = stringListMap.values().iterator().next();
+            if (CollUtil.isNotEmpty(next)){
+                file = next.get(0);
+            }
+        }
+        if(file == null){
+            return AnnoResult.failure("未读取到有效文件");
+        }
         return systemBaseController.uploadFile(file.getContent(),file.getName());
     }
 

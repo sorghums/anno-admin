@@ -25,7 +25,10 @@ public enum AnnoDataType {
     TREE("树形下拉框"),
     RICH_TEXT("富文本"),
     CODE_EDITOR("代码编辑器"),
+    TEXT_AREA("长文本"),
+    MARK_DOWN("MarkDown文本"),
     COLOR("颜色"),
+    QR_CODE("二维码"),
     ICON("图标");
 
     /**

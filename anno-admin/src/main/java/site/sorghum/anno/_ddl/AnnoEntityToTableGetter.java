@@ -80,8 +80,8 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
                     digit = simpleColumn.getDigit();
                     defaultValue = simpleColumn.getIsNullable();
                 }
-                case RICH_TEXT, CODE_EDITOR -> sqlType = Types.CLOB;
-                case FILE,IMAGE,LINK -> {
+                case RICH_TEXT, CODE_EDITOR, TEXT_AREA, MARK_DOWN -> sqlType = Types.CLOB;
+                case FILE, IMAGE, LINK -> {
                     sqlType = Types.VARCHAR;
                     size = 1024;
                 }
