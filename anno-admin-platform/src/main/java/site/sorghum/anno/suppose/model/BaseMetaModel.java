@@ -23,15 +23,13 @@ public class BaseMetaModel extends PrimaryKeyModel {
     @AnnoField(title = "创建人", tableFieldName = "create_by", show = false, fieldSize = 32)
     private String createBy;
 
-    @AnnoField(title = "创建时间", tableFieldName = "create_time", dataType = AnnoDataType.DATETIME, show = false,
-        defaultValue = "CURRENT_TIMESTAMP")
+    @AnnoField(title = "创建时间", tableFieldName = "create_time", dataType = AnnoDataType.DATETIME, show = false)
     private LocalDateTime createTime;
 
     @AnnoField(title = "更新人", tableFieldName = "update_by", show = false, fieldSize = 32)
     private String updateBy;
 
-    @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false,
-        defaultValue = "CURRENT_TIMESTAMP")
+    @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false)
     private LocalDateTime updateTime;
 
     /**
