@@ -2,6 +2,7 @@ package site.sorghum.anno.plugin.proxy;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
+import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -9,6 +10,7 @@ import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
 import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.dao.SysUserDao;
 
 import java.util.List;
 
@@ -20,6 +22,9 @@ import java.util.List;
  */
 @Named
 public class AnUserProxy implements AnnoBaseProxy<AnUser> {
+
+    @Db
+    SysUserDao sysUserDao;
     @Override
     public String[] supportEntities() {
         return new String[]{
@@ -39,11 +44,21 @@ public class AnUserProxy implements AnnoBaseProxy<AnUser> {
     }
 
     @Override
+    public void beforeUpdate(List<DbCondition> dbConditions, AnUser data) {
+        // 根据ID查询用户
+        AnUser anUser = sysUserDao.findById(data.getId()).orElseThrow(() -> new BizException("用户不存在"));
+        if (StrUtil.isNotBlank(data.getPassword())) {
+            // 重新设置密码
+            data.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + data.getPassword()));
+        }
+    }
+
+    @Override
     public void afterFetch(Class<AnUser> anUserClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<AnUser> page) {
         AnnoBaseProxy.super.afterFetch(anUserClass, dbConditions, pageParam, page);
         page.getList().forEach(
                 anUser -> {
-                    anUser.setPassword("********");
+                    anUser.setPassword("");
                 }
         );
     }

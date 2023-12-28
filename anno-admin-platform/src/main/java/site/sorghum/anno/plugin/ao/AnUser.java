@@ -42,13 +42,13 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      * 手机号
      */
     @AnnoField(title = "手机号", tableFieldName = "mobile", search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true))
+            edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true, editEnable = false))
     private String mobile;
     /**
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
-            edit = @AnnoEdit(placeHolder = "请输入密码", notNull = true, editEnable = false), show = false)
+            edit = @AnnoEdit(placeHolder = "请输入密码"), show = false)
     private String password;
     /**
      * 用户名
