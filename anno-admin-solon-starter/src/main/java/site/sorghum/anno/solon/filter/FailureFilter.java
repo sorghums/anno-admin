@@ -3,6 +3,7 @@ package site.sorghum.anno.solon.filter;
 
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
+import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.exception.DamiException;
@@ -62,8 +63,8 @@ public class FailureFilter implements Filter {
         try {
             try {
                 chain.doFilter(ctx);
-            }catch (DamiException damiException){
-                throw damiException.getCause();
+            }catch (DamiException | InvocationTargetRuntimeException exception){
+                throw exception.getCause();
             }
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
