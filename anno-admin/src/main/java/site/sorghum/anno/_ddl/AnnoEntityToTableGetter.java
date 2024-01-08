@@ -133,12 +133,16 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             size = 254;
         } else if (fieldType == LocalDate.class) {
             sqlType = Types.DATE;
+            size = 10;
         } else if (fieldType == LocalDateTime.class || fieldType == java.util.Date.class || fieldType == java.sql.Date.class) {
             sqlType = Types.TIMESTAMP;
+            size = 23;
         } else if (fieldType == Integer.class) {
             sqlType = Types.INTEGER;
+            size = 10;
         } else if (fieldType == Long.class) {
             sqlType = Types.BIGINT;
+            size = 19;
         } else if (fieldType == Float.class) {
             sqlType = Types.FLOAT;
         } else if (fieldType == Double.class) {

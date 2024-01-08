@@ -23,6 +23,8 @@
     <modules>
         <!-- 核心包 -->
         <module>anno-admin</module>
+        <!-- 数据库方言包-->
+        <module>anno-admin-jdialects</module>
         <!-- 自动生成表结构 -->
         <module>anno-admin-ddl</module>
         <!-- 数据库支持模块 -->
@@ -107,6 +109,11 @@
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-i18n</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-jdialects</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

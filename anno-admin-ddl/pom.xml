@@ -20,13 +20,10 @@
             <groupId>org.noear</groupId>
             <artifactId>wood</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.github.drinkjava2</groupId>
-            <artifactId>jdialects</artifactId>
-            <version>${jdialects.version}</version>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-jdialects</artifactId>
         </dependency>
-
         <!-- 解析 sql -->
         <dependency>
             <groupId>com.github.jsqlparser</groupId>
