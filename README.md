@@ -86,6 +86,7 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 新增Link,二维码,MarkDown,TextArea类型.
 + 支持RichText预览.
 + 修复annoField中数据库名不自定义出现的问题,优化字段和数据库字段名称映射逻辑.
++ 修复javaCmd异常无法获取到的问题,新增管理员修改密码功能.
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 
