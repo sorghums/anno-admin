@@ -63,8 +63,10 @@ public class FailureFilter implements Filter {
         try {
             try {
                 chain.doFilter(ctx);
-            }catch (DamiException | InvocationTargetRuntimeException exception){
+            }catch (DamiException exception){
                 throw exception.getCause();
+            }catch (InvocationTargetRuntimeException exception){
+                throw exception.getCause().getCause();
             }
         } catch (ValidatorException e) {
             if (e.getAnnotation() instanceof Logined) {
