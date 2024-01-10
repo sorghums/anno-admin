@@ -8,7 +8,6 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.SneakyThrows;
 import org.noear.wood.annotation.PrimaryKey;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.JSONUtil;

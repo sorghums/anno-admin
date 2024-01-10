@@ -7,13 +7,14 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
+import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.MethodType;
 import site.sorghum.anno.AnnoPlatform;
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
+import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 
 import java.util.Map;
@@ -47,7 +48,7 @@ public class AuthController {
         }
     )
     public AnnoResult<String> login(@Body Map<String, String> user) {
-        return authBaseController.login(user);
+        return authBaseController.login(user, LoginInfo.builder().ip(Context.current().realIp()).userAgent(Context.current().header("User-Agent")).build());
     }
 
     @Mapping(value = "/logout", method = MethodType.POST)

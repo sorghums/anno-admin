@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._annotations.Proxy;
@@ -14,12 +15,10 @@ import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
+import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-import site.sorghum.anno.plugin.ao.AnPermission;
-import site.sorghum.anno.plugin.ao.AnRole;
-import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.ao.*;
 import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
 import site.sorghum.anno.plugin.dao.AnPermissionDao;
 import site.sorghum.anno.plugin.dao.AnRoleDao;
@@ -42,6 +41,7 @@ import java.util.stream.Collectors;
  */
 @Named
 @Proxy
+@Slf4j
 public class AuthServiceImpl implements AuthService {
     @Db
     SysUserDao sysUserDao;
@@ -58,6 +58,9 @@ public class AuthServiceImpl implements AuthService {
     @Db
     DbContext dbContext;
 
+    @Inject
+    @Named("dbServiceWood")
+    DbService dbService;
     @Inject
     MetadataManager metadataManager;
     @Inject
@@ -258,6 +261,21 @@ public class AuthServiceImpl implements AuthService {
             throw new BizException("该方法不是按钮权限");
         }
         verifyPermission(permissionCode);
+    }
+
+    @Override
+    public void saveLoginLog(AnLoginLog anLoginLog) {
+        try {
+            dbService.insert(anLoginLog);
+        } catch (Exception e) {
+            log.error("登录日志保存失败===>" + e);
+        }
+    }
+
+    @Override
+    public void forceLogout(Map<String, Object> data) {
+        String userId = data.get("userId").toString();
+        AnnoStpUtil.logout(userId);
     }
 
     /**

@@ -1,5 +1,6 @@
 package site.sorghum.anno.plugin.service;
 
+import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
 
 import java.util.List;
@@ -43,4 +44,14 @@ public interface AuthService {
      * 校验是否有按钮权限
      */
     void verifyButtonPermission(String className, String methodName);
+
+    /**
+     * 保存登录日志
+     */
+    void saveLoginLog(AnLoginLog anLoginLog);
+
+    /**
+     * 强制注销
+     */
+    void forceLogout(Map<String, Object> data);
 }

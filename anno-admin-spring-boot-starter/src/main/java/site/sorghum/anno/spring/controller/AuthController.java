@@ -2,11 +2,13 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
+import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 
 import java.util.Map;
@@ -22,9 +24,9 @@ import java.util.Map;
 @SaIgnore
 public class AuthController extends AuthBaseController {
 
-    @PostMapping(value = "/login",  consumes = "application/json")
-    public AnnoResult<String> login(@RequestBody Map user) {
-        return super.login(user);
+    @PostMapping(value = "/login", consumes = "application/json")
+    public AnnoResult<String> login(@RequestBody Map user, HttpServletRequest request) {
+        return super.login(user, LoginInfo.builder().ip(request.getRemoteAddr()).userAgent(request.getHeader("User-Agent")).build());
     }
 
     @PostMapping(value = "/logout")

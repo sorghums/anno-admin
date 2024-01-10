@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Anno验证用户
@@ -50,4 +51,29 @@ public class AnnoAuthUser implements Serializable {
      * 组织id
      */
     String orgId;
+
+    /**
+     * ip
+     */
+    String ip;
+
+    /**
+     * 登录时间
+     */
+    Date loginTime;
+
+    /**
+     * 浏览器
+     */
+    String browser;
+
+    /**
+     * 系统
+     */
+    String os;
+
+    /**
+     * 设备
+     */
+    String device;
 }
