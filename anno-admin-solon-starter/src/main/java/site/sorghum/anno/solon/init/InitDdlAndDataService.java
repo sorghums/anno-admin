@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class InitDdlAndDateService implements EventListener<AppLoadEndEvent> {
+public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;

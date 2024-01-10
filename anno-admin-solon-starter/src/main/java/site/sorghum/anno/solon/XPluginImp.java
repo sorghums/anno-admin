@@ -38,7 +38,7 @@ import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
-import site.sorghum.anno.solon.init.InitDdlAndDateService;
+import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
 
@@ -97,10 +97,10 @@ public class XPluginImp implements Plugin {
         StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
 
         // 优先 初始化数据库表结构和预置数据，其他模块在创建 bean 时，可能会查库
-        context.getBeanAsync(InitDdlAndDateService.class, initDdlAndDateService -> {
+        context.getBeanAsync(InitDdlAndDataService.class, initDdlAndDataService -> {
             context.getBeanAsync(DataSource.class, dataSource -> {
                 try {
-                    initDdlAndDateService.initDdl();
+                    initDdlAndDataService.initDdl();
                 } catch (Throwable e) {
                     throw new BizException(e);
                 }
@@ -131,6 +131,7 @@ public class XPluginImp implements Plugin {
     private void loadMetadata(AppContext context, Set<String> packages) {
         MetadataManager metadataManager = context.getBean(MetadataManager.class);
         HashSet<Class<?>> classSet = new HashSet<>();
+        // 所有类
         for (String scanPackage : packages) {
             classSet.addAll(ClassUtil.scanPackage(scanPackage));
         }
@@ -138,8 +139,10 @@ public class XPluginImp implements Plugin {
             if (clazz.isInterface()) {
                 continue;
             }
+            // annoMain 主注释
             AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
             if (annoMain != null) {
+                // 加载anEntity
                 AnEntity anEntity = metadataManager.loadEntity(clazz);
                 // 缓存处理类
                 AnnoClazzCache.put(clazz.getSimpleName(), clazz);

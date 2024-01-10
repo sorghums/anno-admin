@@ -21,7 +21,6 @@ import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 初始化数据库表结构和预置数据
@@ -31,7 +30,7 @@ import java.util.Optional;
  */
 @Slf4j
 @Component
-public class InitDdlAndDateService implements ApplicationListener<ApplicationStartedEvent> {
+public class InitDdlAndDataService implements ApplicationListener<ApplicationStartedEvent> {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
