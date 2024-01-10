@@ -51,7 +51,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
         // 获取年
         String year = String.valueOf(DateUtil.thisYear());
         // 获取月
-        String month = String.valueOf(DateUtil.thisMonth());
+        String month = String.valueOf(DateUtil.thisMonth() + 1);
         // 获取日
         String day = String.valueOf(DateUtil.thisDayOfMonth());
         String fileUrl = AnFileService.joinPath("anLocal", originalPath, year, month, day, guid + "." + suffix);
