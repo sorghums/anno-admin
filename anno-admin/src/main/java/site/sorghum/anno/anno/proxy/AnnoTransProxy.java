@@ -29,6 +29,11 @@ public class AnnoTransProxy implements AnnoBaseProxy<Object> {
     }
 
     @Override
+    public int index() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public void afterFetch(Class<Object> objectClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<Object> page) {
         AnnoBaseProxy.super.afterFetch(objectClass, dbConditions, pageParam, page);
         // 获取数组的第一个元素的类型
