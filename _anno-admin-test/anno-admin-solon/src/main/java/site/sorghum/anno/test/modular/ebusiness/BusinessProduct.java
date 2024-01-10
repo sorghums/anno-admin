@@ -54,6 +54,13 @@ public class BusinessProduct extends BaseMetaModel {
     String productImage;
 
     @AnnoField(
+        title = "商品头像",
+        tableFieldName = "product_head_image",
+        dataType = AnnoDataType.AVATAR,
+        edit = @AnnoEdit)
+    String productHeadImage;
+
+    @AnnoField(
         title = "商品资料",
         tableFieldName = "product_file",
         dataType = AnnoDataType.FILE,

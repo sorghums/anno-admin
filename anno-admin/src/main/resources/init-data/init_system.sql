@@ -1,12 +1,12 @@
 insert into an_anno_menu (id, parent_id, title, type, sort, icon, permission_id, parse_type,parse_data, create_by, create_time, del_flag, update_by, update_time) values
-('10', '', '系统管理', 0, 10000, 'ant-design:bars-outlined',    'an_user', '',null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
+('10', '', '系统管理', 0, 10000, 'ant-design:bars-outlined',    '', '',null, null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:21:01.462000'),
 ('11', '10', '菜单管理', 1, 10005, 'ant-design:bars-outlined',  'an_anno_menu','annoMain', 'AnAnnoMenu', null, null, 0, null, '2023-06-30 09:39:02.826000'),
 ('12', '10', '权限管理', 1, 10006, 'ant-design:bars-outlined',  'an_permission','annoMain', 'AnPermission', null, null, 0, null, '2023-06-30 09:38:35.653000'),
 ('13', '10', '用户管理', 1, 10007, 'ant-design:bars-outlined',  'an_user','annoMain', 'AnUser', null, null, 0, null, '2023-06-29 20:13:47.910000'),
 ('14', '10', '角色管理', 1, 10008, 'ant-design:bars-outlined',  'an_role','annoMain', 'AnRole', null, '2023-06-09 15:59:12.000000', 0, null, '2023-06-29 20:13:10.674000'),
 ('15', '10', '组织管理', 1, 10009, 'ant-design:bars-outlined',  'an_org','annoMain', 'AnOrg', null, null, 0, null, '2023-06-29 20:13:35.706000'),
 ('16', '10', '接口文档', 1, 10010, 'ant-design:bars-outlined',  null,'iframe', '[[[apiServerUrl]]]/doc.html', null, null, 0, null, '2023-06-29 20:13:35.706000'),
-('20', '', '会话管理', 0, 9000, 'ant-design:bars-outlined', 'an_auth', '', null, null, '2024-01-10 14:36:12.000000', 0, null, '2024-01-10 14:36:12.000000'),
+('20', '', '会话管理', 0, 9000, 'ant-design:bars-outlined', '', '', null, null, '2024-01-10 14:36:12.000000', 0, null, '2024-01-10 14:36:12.000000'),
 ('21', '20', '在线用户', 1, 9001, 'ant-design:bars-outlined', 'an_online_user', 'annoMain', 'AnOnlineUser', null, null, 0, null, '2024-01-10 14:36:12.000000'),
 ('22', '20', '登录日志', 1, 9002, 'ant-design:bars-outlined', 'an_login_log', 'annoMain', 'AnLoginLog', null, null, 0, null, '2024-01-10 14:36:12.000000');
 

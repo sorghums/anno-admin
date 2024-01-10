@@ -29,6 +29,7 @@ public enum AnnoDataType {
     MARK_DOWN("MarkDown文本"),
     COLOR("颜色"),
     QR_CODE("二维码"),
+    AVATAR("头像"),
     ICON("图标");
 
     /**
