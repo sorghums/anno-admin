@@ -1,26 +1,18 @@
-package site.sorghum.anno.solon.controller;
+package site.sorghum.anno.spring.controller;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.map.MapUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.noear.solon.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.controller.BaseDictController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.anno.proxy.PermissionProxy;
-import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.anno.util.QuerySqlCache;
-import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.db.service.DbService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +23,11 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/11/17
  */
-@Controller
-@Mapping(AnnoConstants.BASE_URL + "/amis/system/dict")
+@RestController
+@RequestMapping(AnnoConstants.BASE_URL + "/amis/system/dict")
 @Api(tags = "字典控制器")
 public class DictController extends BaseDictController {
-    @Override
-    @Mapping("/loadDict")
-    @Post
-    @Consumes("application/json")
+    @RequestMapping("/loadDict")
     @ApiOperation("加载字典")
     @ApiImplicitParams(
         value = {
@@ -48,7 +37,7 @@ public class DictController extends BaseDictController {
             @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
         }
     )
-    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param String sqlKey, @Param String annoClazz, @Param String idKey, @Param String labelKey) {
-        return super.loadDict(sqlKey, annoClazz, idKey, labelKey);
+    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@RequestBody Map<String, Object> dictParam) {
+        return super.loadDict(MapUtil.getStr(dictParam, "sqlKey"), MapUtil.getStr(dictParam, "annoClazz"), MapUtil.getStr(dictParam, "idKey"), MapUtil.getStr(dictParam, "labelKey"));
     }
 }

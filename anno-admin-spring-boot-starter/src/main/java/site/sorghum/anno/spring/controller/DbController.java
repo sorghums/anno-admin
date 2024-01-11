@@ -47,6 +47,7 @@ public class DbController extends BaseDbController {
         return super.save(clazz, param);
     }
 
+    @Override
     @PostMapping("/{clazz}/queryById")
     public <T> AnnoResult<T> queryById(@PathVariable String clazz, @RequestParam(required = false) String pkValue, @RequestParam(required = false) String _cat) {
         return super.queryById(clazz, pkValue, _cat);
@@ -58,6 +59,7 @@ public class DbController extends BaseDbController {
      * @param id id
      * @return {@link AnnoResult}
      */
+    @Override
     @PostMapping("/{clazz}/removeById")
     public AnnoResult<String> removeById(@PathVariable String clazz, @RequestParam("id") String id) {
         return super.removeById(clazz, id);
@@ -108,7 +110,7 @@ public class DbController extends BaseDbController {
         return super.addM2m(clazz, param, clearAll);
     }
 
-    @PostMapping(value = "/${clazz}/runJavaCmd",consumes = "application/json")
+    @PostMapping(value = "/{clazz}/runJavaCmd",consumes = "application/json")
     public AnnoResult<String> runJavaCmd(@PathVariable String clazz,@RequestBody HashMap map) throws ClassNotFoundException {
         if (map == null) {
             map = new HashMap<>();

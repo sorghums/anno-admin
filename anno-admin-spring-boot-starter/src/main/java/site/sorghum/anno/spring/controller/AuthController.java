@@ -24,23 +24,25 @@ import java.util.Map;
 @SaIgnore
 public class AuthController extends AuthBaseController {
 
-    @PostMapping(value = "/login", consumes = "application/json")
+    @RequestMapping(value = "/login", consumes = "application/json")
     public AnnoResult<String> login(@RequestBody Map user, HttpServletRequest request) {
         return super.login(user, LoginInfo.builder().ip(request.getRemoteAddr()).userAgent(request.getHeader("User-Agent")).build());
     }
 
-    @PostMapping(value = "/logout")
+    @Override
+    @RequestMapping(value = "/logout")
     public AnnoResult<String> logout() {
         return super.logout();
     }
 
+    @Override
     @SaCheckLogin(type = AnnoStpUtil.TYPE)
-    @PostMapping(value = "/clearSysUserCache")
+    @RequestMapping(value = "/clearSysUserCache")
     public AnnoResult<String> clearSysUserCache() {
         return super.clearSysUserCache();
     }
 
-    @GetMapping(value = "/me")
+    @RequestMapping(value = "/me")
     public AnnoResult<UserInfo> me() {
         return super.me();
     }

@@ -20,6 +20,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -70,7 +71,12 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
 
         // 初始化数据
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath:init-data/*.sql");
+        Resource[] resources = {};
+        try {
+            resources = resolver.getResources("classpath:init-data/*.sql");
+        }catch (FileNotFoundException e){
+            log.info("init-data/*.sql not found, please check if the file exists, resource: classpath:init-data/*.sql");
+        }
 
         for (Resource resource : resources) {
             try {

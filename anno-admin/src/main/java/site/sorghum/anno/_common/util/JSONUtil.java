@@ -1,9 +1,7 @@
 package site.sorghum.anno._common.util;
 
 
-import cn.hutool.core.bean.BeanUtil;
-import com.alibaba.fastjson2.*;
-import site.sorghum.anno._common.exception.BizException;
+import org.noear.snack.ONode;
 
 import java.net.URL;
 import java.util.List;
@@ -18,20 +16,15 @@ import java.util.Map;
 public class JSONUtil {
 
     public static <T> List<T> toBeanList(String json, Class<T> objectClass) {
-        return JSONArray.parseArray(json, objectClass);
+        return ONode.loadStr(json).toObjectList(objectClass);
     }
 
     public static <T> T toBean(Map<?,?> map, Class<T> objectClass) {
-        if (map instanceof JSONObject) {
-            return ((JSONObject) map).toJavaObject(objectClass);
-        }
-        JSONObject jsonObject = new JSONObject();
-        BeanUtil.copyProperties(map,jsonObject);
-        return jsonObject.toJavaObject(objectClass, JSONReader.Feature.SupportSmartMatch);
+        return ONode.loadObj(map).toObject(objectClass);
     }
 
     public static <T> T toBean(String json, Class<T> objectClass) {
-        return JSONObject.parseObject(json, objectClass);
+        return ONode.loadStr(json).toObject(objectClass);
     }
 
     public static <T> T toBean(Object object, Class<T> objectClass) {
@@ -41,44 +34,30 @@ public class JSONUtil {
         if (object instanceof String) {
             return toBean((String) object, objectClass);
         }
-        return JSONObject.parseObject(JSONObject.toJSONString(object), objectClass);
+        return ONode.loadObj(object).toObject(objectClass);
     }
 
     public static <T> T toBean(URL url, Class<T> objectClass) {
-        return JSON.parseObject(url, objectClass);
+        return ONode.loadObj(url).toObject(objectClass);
     }
 
     public static <T> T copy(T object) {
-        return JSON.copy(object);
+        return ONode.loadObj(object).toObject(object.getClass());
     }
 
     public static <T> T read(Object obj, String path, Class<T> type) {
-        Object eval = JSONPath.eval(obj, path);
-        if (eval instanceof JSONArray) {
-            throw new BizException("类型不匹配");
-        }
-        if (eval instanceof JSONObject evalJson) {
-            return evalJson.toJavaObject(type);
-        }
-        return JSONObject.parseObject(JSON.toJSONString(obj), type);
+        return ONode.loadObj(obj).select(path).toObject(type);
     }
 
     public static <T> List<T> readList(Object obj, String path, Class<T> type) {
-        Object eval = JSONPath.eval(obj, path);
-        if (eval instanceof JSONArray evalArray) {
-            return evalArray.toJavaList(type);
-        }
-        if (eval instanceof JSONObject) {
-            throw new BizException("类型不匹配");
-        }
-        return JSONArray.parseArray(JSON.toJSONString(eval), type);
+        return ONode.loadObj(obj).select(path).toObjectList(type);
     }
 
     public static Object write(Object obj, String path, Object value) {
-        return JSONPath.set(obj, path, value);
+        return ONode.loadObj(obj).set(path, value).toObject(obj.getClass());
     }
 
     public static String toJsonString(Object object) {
-        return JSON.toJSONString(object);
+        return ONode.loadObj(object).toJson();
     }
 }

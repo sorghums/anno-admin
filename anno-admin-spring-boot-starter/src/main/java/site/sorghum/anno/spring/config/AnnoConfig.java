@@ -10,6 +10,7 @@ import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.wood.DbContext;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
@@ -45,10 +46,10 @@ import java.util.Set;
  * @since 2023/7/30 12:16
  */
 @Configuration
-@ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE})
+@ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE,AnnoConfig.PLUGIN_BASE_PACKAGE})
 public class AnnoConfig {
     public static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
-
+    public static final String PLUGIN_BASE_PACKAGE = "site.sorghum.plugin";
 
     @Bean
     @Primary
