@@ -74,7 +74,7 @@ public class AnAnnoMenu extends BaseMetaModel {
      */
     private String href;
 
-    @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit,
+    @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit(canClear = true),
             dataType = AnnoDataType.OPTIONS,
             optionType = @AnnoOptionType(sql = "select id, name as label from an_permission where del_flag = 0 and parent_id is null order by id desc"))
     private String permissionId;

@@ -160,6 +160,9 @@ public class MenuBaseController {
         vbenMenu.getMeta().setTitle("工作台");
         vbenMenu.getMeta().setIcon("bx:bx-home");
         roots.add(0, vbenMenu);
+
+        // 如果component="LAYOUT" 且children为空,则不显示
+        roots.removeIf(node -> "LAYOUT".equals(node.getComponent()) && node.getChildren().isEmpty());
         return roots;
     }
 
@@ -167,7 +170,6 @@ public class MenuBaseController {
         return anAnnoMenus.stream().map(
             sysAnnoMenu -> {
                 VbenMenu vbenMenu = VbenMenu.toVbenMenu(sysAnnoMenu);
-                ;
                 vbenMenu.setChildren(new ArrayList<>());
                 return vbenMenu;
             }

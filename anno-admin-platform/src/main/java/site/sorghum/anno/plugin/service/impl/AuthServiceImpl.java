@@ -15,6 +15,7 @@ import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
+import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -290,7 +291,7 @@ public class AuthServiceImpl implements AuthService {
             }
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
                 AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
-                Map<String, Object> map = new HashMap<>();
+                AnAnnoMenu updateAnnoMenu = null;
                 if (anAnnoMenu == null) {
                     anAnnoMenu = new AnAnnoMenu();
                     anAnnoMenu.setId(anPluginMenu.getId());
@@ -300,33 +301,41 @@ public class AuthServiceImpl implements AuthService {
                     anAnnoMenu.setIcon(anPluginMenu.getIcon());
                     if (anPluginMenu.getEntity() != null) {
                         anAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
-                        anAnnoMenu.setHref("/system/config/amis/" + anPluginMenu.getEntity().getEntityName());
                         if (anPluginMenu.getEntity().isEnablePermission()) {
-                            anAnnoMenu.setPermissionId(anPluginMenu.getEntity().getTableName());
+                            anAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
                         }
                     }
-                    anAnnoMenu.setParseType("annoMain");
+                    anAnnoMenu.setParseType(AnAnnoMenu.ParseTypeConstant.ANNO_MAIN);
                     anAnnoMenu.setParentId(anPluginMenu.getParentId());
                     anAnnoMenu.setDelFlag(0);
-                    anAnnoMenuDao.insert(anAnnoMenu, true);
+                    dbService.insert(anAnnoMenu);
                 } else {
+                    int update = 0;
+                    updateAnnoMenu = new AnAnnoMenu();
                     if (!StrUtil.equals(anPluginMenu.getTitle(), anAnnoMenu.getTitle())) {
-                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "title").getTableFieldName(), anPluginMenu.getTitle());
+                        updateAnnoMenu.setTitle(anPluginMenu.getTitle());
+                        update = 1;
                     }
                     if (!Objects.equals(anPluginMenu.getSort(), anAnnoMenu.getSort())) {
-                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "sort").getTableFieldName(), anPluginMenu.getSort());
+                        updateAnnoMenu.setSort(anPluginMenu.getSort());
+                        update = 1;
                     }
                     if (!StrUtil.equals(anPluginMenu.getIcon(), anAnnoMenu.getIcon())) {
-                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "icon").getTableFieldName(), anPluginMenu.getIcon());
+                        updateAnnoMenu.setIcon(anPluginMenu.getIcon());
+                        update = 1;
                     }
                     if (!StrUtil.equals(anPluginMenu.getParentId(), anAnnoMenu.getParentId())) {
-                        map.put(metadataManager.getEntityField(AnAnnoMenu.class, "parentId").getTableFieldName(), anPluginMenu.getParentId());
+                        updateAnnoMenu.setParentId(anPluginMenu.getParentId());
+                        update = 1;
                     }
-                    if (CollUtil.isNotEmpty(map)) {
-                        dbContext.table(metadataManager.getEntity(AnAnnoMenu.class).getTableName())
-                                .setMap(map)
-                                .whereEq("id", anPluginMenu.getId())
-                                .update();
+                    if (anPluginMenu.getEntity() != null){
+                        if (!StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
+                            updateAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
+                            update = 1;
+                        }
+                    }
+                    if (update == 1) {
+                        dbService.update(CollUtil.newArrayList(DbCondition.builder().field("id").andOr(DbCondition.AndOr.AND).value(anPluginMenu.getId()).build()), updateAnnoMenu);
                     }
                 }
 
