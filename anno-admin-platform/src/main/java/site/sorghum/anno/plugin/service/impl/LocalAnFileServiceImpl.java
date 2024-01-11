@@ -5,8 +5,9 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
@@ -22,9 +23,11 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/07/28
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class LocalAnFileServiceImpl implements AnFileService {
     @Inject
+    @Autowired
     private AnnoProperty annoProperty;
 
     /**

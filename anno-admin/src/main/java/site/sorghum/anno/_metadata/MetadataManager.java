@@ -1,10 +1,11 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.util.AnnoTableParamCache;
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
  * @since 2023/7/12 21:32
  */
 @Slf4j
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class MetadataManager {
 
     private final Map<String, AnEntity> entityMap = new ConcurrentHashMap<>();
@@ -34,6 +36,7 @@ public class MetadataManager {
 
 
     @Inject
+    @Autowired
     private EntityMetadataLoader entityMetadataLoader;
 
     /**

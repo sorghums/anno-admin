@@ -2,7 +2,7 @@ package site.sorghum.anno.plugin;
 
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
+import org.noear.solon.annotation.Inject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;

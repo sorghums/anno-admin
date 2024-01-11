@@ -1,8 +1,8 @@
 package site.sorghum.anno.plugin.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
@@ -18,7 +18,8 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/07/03
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
 
     @Override

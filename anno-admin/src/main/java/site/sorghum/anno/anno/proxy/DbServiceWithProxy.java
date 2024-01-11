@@ -2,12 +2,15 @@ package site.sorghum.anno.anno.proxy;
 
 
 import cn.hutool.core.collection.CollUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
+import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.wood.IPage;
 import org.noear.wood.impl.IPageImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.bind.Name;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -28,16 +31,19 @@ import java.util.function.Supplier;
  * @since 2023/07/10
  */
 @Slf4j
-@Named("dbServiceWithProxy")
+@Component("dbServiceWithProxy")
+@org.springframework.stereotype.Component("dbServiceWithProxy")
 public class DbServiceWithProxy implements DbService {
 
     public static final String BASE_ENTITY_TOPIC = "anno.entity.";
 
-    @Inject
-    @Named("dbServiceWood")
+    @Inject("dbServiceWood")
+    @Autowired
+    @Qualifier("dbServiceWood")
     DbService dbService;
 
     @Inject
+    @Autowired
     MetadataManager metadataManager;
 
     @Override

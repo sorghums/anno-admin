@@ -1,6 +1,6 @@
 package site.sorghum.anno._common.util;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import org.noear.redisx.RedisClient;
 import org.noear.redisx.plus.RedisBucket;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -13,7 +13,8 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/08/02
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class CacheUtil {
     private static final String BASE_PREFIX = "anno-cache";
     static RedisBucket bucket;

@@ -5,12 +5,12 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.AntPathMatcher;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.RequestFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 public class ExtraDataFilter implements Filter {
     private static final String EXTRA_DATA = "_extraData";
 
-    @Inject
+    @Autowired
     AnnoProperty annoProperty;
 
     AntPathMatcher antPathMatcher = new AntPathMatcher();

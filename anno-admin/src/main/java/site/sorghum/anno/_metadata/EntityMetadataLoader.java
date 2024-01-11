@@ -2,7 +2,7 @@ package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno._common.exception.BizException;
@@ -38,7 +38,8 @@ import java.util.stream.IntStream;
  * @author songyinyin
  * @since 2023/7/15 19:21
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     @Override

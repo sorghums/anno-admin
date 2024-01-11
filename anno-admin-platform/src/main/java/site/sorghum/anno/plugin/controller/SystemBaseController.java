@@ -2,8 +2,9 @@ package site.sorghum.anno.plugin.controller;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.map.MapUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.plugin.entity.common.FileInfo;
@@ -21,16 +22,18 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/05/30
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class SystemBaseController {
 
     @Inject
+    @Autowired
     CaptchaManager captchaManager;
 
     @Inject
+    @Autowired
     AnFileService anFileService;
 
-    // 验证码
     public AnnoResult<CaptchaResponse> captcha() {
         return AnnoResult.succeed(captchaManager.createImageCaptcha());
     }

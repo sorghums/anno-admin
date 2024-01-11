@@ -3,7 +3,7 @@ package site.sorghum.anno;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
 import org.noear.wood.WoodConfig;
@@ -28,7 +28,8 @@ import java.util.List;
  * @since 2023/07/15
  */
 @Slf4j
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnnoCorePlugin extends AnnoPlugin {
 
     public AnnoCorePlugin() {

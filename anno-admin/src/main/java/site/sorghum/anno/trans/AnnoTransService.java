@@ -4,9 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -23,14 +24,17 @@ import java.util.stream.Collectors;
 /**
  * @author Sorghum
  */
-@Named
+@Component
 @Slf4j
+@org.springframework.stereotype.Component
 public class AnnoTransService {
 
     @Inject
+    @Autowired
     JoinOperator joinOperator;
 
     @Inject
+    @Autowired
     MetadataManager metadataManager;
 
     public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO);
@@ -165,7 +169,11 @@ public class AnnoTransService {
             joinOperator.batchJoinOne(joinParam, t);
         }
         stopWatch.stop();
-        System.out.println("翻译耗时：" + stopWatch.getTotalTimeMillis());
+        log.debug(
+            "trans cost: {}ms, size: {}"
+                , stopWatch.getTotalTimeMillis()
+                , t.size()
+        );
         return t;
     }
 

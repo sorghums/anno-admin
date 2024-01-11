@@ -1,8 +1,9 @@
 package site.sorghum.anno.plugin.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -20,11 +21,14 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/30
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnUserProxy implements AnnoBaseProxy<AnUser> {
 
     @Db
+    @Autowired
     SysUserDao sysUserDao;
+
     @Override
     public String[] supportEntities() {
         return new String[]{

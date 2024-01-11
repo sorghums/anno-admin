@@ -3,8 +3,9 @@ package site.sorghum.anno.plugin.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
@@ -27,16 +28,20 @@ import java.util.stream.Collectors;
  * @author Sorghum
  * @since 2023/05/19
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class MenuBaseController {
 
     @Inject
+    @Autowired
     SysAnnoMenuService sysAnnoMenuService;
 
     @Inject
+    @Autowired
     AuthService authService;
 
     @Inject
+    @Autowired
     AnnoProperty annoProperty;
 
     public List<AnAnnoMenuResponse> dataMenu() {

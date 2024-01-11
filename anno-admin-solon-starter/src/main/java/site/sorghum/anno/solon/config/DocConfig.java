@@ -7,10 +7,15 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.docs.DocDocket;
 
+/**
+ * 文档配置
+ *
+ * @author Sorghum
+ * @since 2024/01/11
+ */
 @Configuration
 public class DocConfig {
 
-    // knife4j 的配置，由它承载
     @Inject
     OpenApiExtensionResolver openApiExtensionResolver;
 

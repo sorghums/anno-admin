@@ -1,6 +1,6 @@
 package site.sorghum.anno.test.modular.ebusiness;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
@@ -18,7 +18,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/07/04
  */
-@Named
+@Component
 @Slf4j
 public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualTable> {
     @Db

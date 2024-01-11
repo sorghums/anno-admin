@@ -1,8 +1,8 @@
 package site.sorghum.anno.spring.auth;
 
 import cn.dev33.satoken.stp.StpInterface;
-import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 
@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 public class StpInterfaceImpl implements StpInterface {
 
-    @Inject
+    @Autowired
     AuthService authService;
     /**
      * 返回一个账号所拥有的权限码集合

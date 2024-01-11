@@ -1,9 +1,10 @@
 package site.sorghum.anno.spring.init;
 
-import jakarta.inject.Inject;
+import cn.hutool.core.io.resource.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
@@ -20,6 +21,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -32,19 +34,19 @@ import java.util.List;
 @Component
 public class InitDdlAndDataService implements ApplicationListener<ApplicationStartedEvent> {
 
-    @Inject
+    @Autowired
     AnnoEntityToTableGetter annoEntityToTableGetter;
-    @Inject
+    @Autowired
     InitDataService initDataService;
-    @Db
+    @Autowired
     DbContext dbContext;
-    @Inject
+    @Autowired
     AnnoProperty annoProperty;
-    @Inject
+    @Autowired
     MetadataManager metadataManager;
-    @Inject
+    @Autowired
     AuthServiceImpl authService;
-    @Inject
+    @Autowired
     PluginRunner pluginRunner;
 
     @Override
@@ -70,7 +72,12 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
 
         // 初始化数据
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources("classpath:init-data/*.sql");
+        Resource[] resources = {};
+        try {
+            resources = resolver.getResources("classpath:init-data/*.sql");
+        }catch (FileNotFoundException e){
+            log.warn(e.getMessage());
+        }
 
         for (Resource resource : resources) {
             try {

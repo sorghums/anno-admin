@@ -3,10 +3,12 @@ package site.sorghum.anno.plugin.manager;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.RandomUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.redisx.RedisClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
@@ -20,13 +22,16 @@ import java.util.Objects;
  * @since 2023/04/28
  */
 @Slf4j
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class CaptchaManager {
 
     @Inject
+    @Autowired
     private AnnoProperty annoProperty;
 
     @Inject
+    @Autowired
     private RedisClient redisClient;
 
     /**

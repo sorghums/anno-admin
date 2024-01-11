@@ -1,7 +1,8 @@
 package site.sorghum.anno.anno.proxy;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.param.DbCondition;
 import site.sorghum.anno.db.param.PageParam;
@@ -15,10 +16,12 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/11/22
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnnoTransProxy implements AnnoBaseProxy<Object> {
 
     @Inject
+    @Autowired
     AnnoTransService transService;
 
     @Override

@@ -1,11 +1,12 @@
 package site.sorghum.anno.db.service.impl;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.SneakyThrows;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.db.param.DbCondition;
@@ -25,7 +26,8 @@ import java.util.Map;
  * @author sorghum
  * @since 2023/07/07
  */
-@Named("dbServiceWood")
+@Component("dbServiceWood")
+@org.springframework.stereotype.Component("dbServiceWood")
 public class DbServiceWood implements DbService {
 
     /**
@@ -37,6 +39,7 @@ public class DbServiceWood implements DbService {
      * Wood数据库上下文
      */
     @Db
+    @Autowired
     DbContext dbContext;
 
     @SneakyThrows

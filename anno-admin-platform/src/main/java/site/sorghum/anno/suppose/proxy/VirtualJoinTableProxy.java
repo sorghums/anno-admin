@@ -1,10 +1,11 @@
 package site.sorghum.anno.suppose.proxy;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.noear.wood.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
@@ -14,10 +15,12 @@ import site.sorghum.anno.db.service.impl.DbServiceWood;
 import java.util.List;
 
 @Getter
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class VirtualJoinTableProxy<T> implements AnnoBaseProxy<T> {
 
     @Inject
+    @Autowired
     DbServiceWood dbServiceWood;
 
     @Override

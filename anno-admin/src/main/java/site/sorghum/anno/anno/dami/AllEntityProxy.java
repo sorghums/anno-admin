@@ -1,6 +1,6 @@
 package site.sorghum.anno.anno.dami;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
@@ -15,7 +15,8 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/10/7 17:50
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 @Slf4j
 public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
     @Override

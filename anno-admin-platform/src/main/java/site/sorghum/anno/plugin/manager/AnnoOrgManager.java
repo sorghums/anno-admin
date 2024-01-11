@@ -1,10 +1,12 @@
 package site.sorghum.anno.plugin.manager;
 
 import cn.dev33.satoken.session.SaSession;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -15,16 +17,20 @@ import site.sorghum.anno.plugin.ao.AnUser;
 
 import java.util.List;
 
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnnoOrgManager {
 
     @Inject
+    @Autowired
     DbServiceWithProxy dbServiceWithProxy;
 
     @Inject
+    @Autowired
     MetadataManager metadataManager;
 
     @Db
+    @Autowired
     DbContext dbContext;
 
 

@@ -60,7 +60,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <easyjoin.version>0.0.1.M6</easyjoin.version>
+        <easyjoin.version>0.0.1.M7</easyjoin.version>
         <node.version>v18.16.0</node.version>
         <npm.version>9.5.1</npm.version>
     </properties>
@@ -116,7 +116,11 @@
                 <artifactId>anno-admin-jdialects</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-solon-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>_anno-admin-test</artifactId>

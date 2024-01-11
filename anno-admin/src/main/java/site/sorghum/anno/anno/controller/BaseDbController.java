@@ -5,10 +5,12 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
@@ -39,17 +41,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BaseDbController {
 
-    @Inject
-    @Named("dbServiceWithProxy")
+    @Inject("dbServiceWithProxy")
+    @Autowired
+    @Qualifier("dbServiceWithProxy")
     DbService dbService;
 
     @Inject
+    @Autowired
     MetadataManager metadataManager;
 
     @Inject
+    @Autowired
     PermissionProxy permissionProxy;
 
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql){
+    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
         if (StrUtil.isEmpty(actualSql)) {
             return AnnoResult.failure("sql 不存在,请检查相关配置项");
@@ -91,12 +96,12 @@ public class BaseDbController {
             dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
         }
         for (AnOrder anOrder : anOrderList) {
-            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(anOrder.getOrderValue()).getTableFieldName(),anOrder.getOrderType()));
+            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY, null, entity.getField(anOrder.getOrderValue()).getTableFieldName(), anOrder.getOrderType()));
         }
         for (String nullKey : nullKeys) {
             dbConditions.add(
                 DbCondition.builder().
-                    field(AnnoFieldCache.getSqlColumnByJavaName(entity.getClazz(),nullKey)).
+                    field(AnnoFieldCache.getSqlColumnByJavaName(entity.getClazz(), nullKey)).
                     andOr(DbCondition.AndOr.AND).build());
         }
         IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(pageRequest.getPage(), pageRequest.getPageSize()));
@@ -181,8 +186,8 @@ public class BaseDbController {
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
         AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
         String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
-        List<String> targetValue = MapUtil.get(param,"targetJoinValue",List.class);
-        String thisValue = MapUtil.getStr(param,"thisJoinValue");
+        List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
+        String thisValue = MapUtil.getStr(param, "thisJoinValue");
         String mediumThisField = annoMtm.getM2mMediumThisFieldSql();
         ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
             DbCondition.builder().field(mediumOtherFieldSql).value(targetValue).type(DbCondition.QueryType.IN).build(),
@@ -200,7 +205,7 @@ public class BaseDbController {
         List<AnnoTreeDTO<String>> annoTreeDTOList = null;
         if (annoTreesRequest.hasFrontSetKey()) {
             annoTreeDTOList = Utils.toTrees(list, annoTreesRequest.getIdKey(), annoTreesRequest.getLabelKey());
-        }else {
+        } else {
             annoTreeDTOList = Utils.toTrees(list);
         }
         annoTreeDTOList.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
@@ -269,7 +274,7 @@ public class BaseDbController {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        if(Objects.isNull(annoMtm)){
+        if (Objects.isNull(annoMtm)) {
             throw new BizException("未找到对应的多对多数据!");
         }
         // 中间表
@@ -311,10 +316,10 @@ public class BaseDbController {
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
         AnnoJavaCmd annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
-        if (annoJavaCmd == null){
+        if (annoJavaCmd == null) {
             return AnnoResult.failure("未找到对应的JavaCmd数据!");
         }
-        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())){
+        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())) {
             permissionProxy.checkPermission(entity, annoJavaCmd.getPermissionCode());
         }
 

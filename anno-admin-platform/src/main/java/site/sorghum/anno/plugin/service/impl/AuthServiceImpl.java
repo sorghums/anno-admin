@@ -2,11 +2,13 @@ package site.sorghum.anno.plugin.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
@@ -40,31 +42,41 @@ import java.util.stream.Collectors;
  * @author Sorghum
  * @since 2023/06/27
  */
-@Named
-@Proxy
+@Component
 @Slf4j
+@org.springframework.stereotype.Component
 public class AuthServiceImpl implements AuthService {
     @Db
+    @Autowired
     SysUserDao sysUserDao;
 
     @Db
+    @Autowired
     AnRoleDao anRoleDao;
 
     @Db
+    @Autowired
     AnPermissionDao anPermissionDao;
 
     @Db
+    @Autowired
     AnAnnoMenuDao anAnnoMenuDao;
 
     @Db
+    @Autowired
     DbContext dbContext;
 
-    @Inject
-    @Named("dbServiceWood")
+    @Inject("dbServiceWood")
+    @Autowired
+    @Qualifier("dbServiceWood")
     DbService dbService;
+
     @Inject
+    @Autowired
     MetadataManager metadataManager;
+
     @Inject
+    @Autowired
     PermissionContext permissionContext;
 
     public void initPermissions() {

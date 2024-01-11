@@ -1,7 +1,8 @@
 package site.sorghum.anno.plugin.proxy;
 
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
@@ -11,10 +12,12 @@ import site.sorghum.anno.plugin.manager.AnnoOrgManager;
 
 import java.util.List;
 
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
 
     @Inject
+    @Autowired
     AnnoOrgManager annoOrgManager;
 
     @Override

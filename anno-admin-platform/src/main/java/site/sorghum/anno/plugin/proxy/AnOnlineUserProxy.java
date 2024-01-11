@@ -1,7 +1,7 @@
 package site.sorghum.anno.plugin.proxy;
 
 import cn.dev33.satoken.session.SaSession;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.auth.AnnoAuthUser;
@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnOnlineUserProxy implements AnnoBaseProxy<AnOnlineUser> {
 
     @Override

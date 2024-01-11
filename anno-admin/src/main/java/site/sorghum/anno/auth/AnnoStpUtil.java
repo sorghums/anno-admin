@@ -8,7 +8,7 @@ import cn.dev33.satoken.session.TokenSign;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpLogic;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 
 import java.util.List;
 
@@ -19,7 +19,8 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/12/15
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnnoStpUtil {
 
     public AnnoStpUtil() {}

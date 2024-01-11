@@ -1,7 +1,8 @@
 package site.sorghum.anno.plugin.service.impl;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
 import site.sorghum.anno.plugin.service.SysAnnoMenuService;
@@ -14,9 +15,11 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/30
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class SysAnnoMenuServiceImpl implements SysAnnoMenuService {
     @Db
+    @Autowired
     AnAnnoMenuDao anAnnoMenuDao;
 
     @Override

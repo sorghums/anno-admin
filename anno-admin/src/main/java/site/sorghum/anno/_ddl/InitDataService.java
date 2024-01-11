@@ -3,8 +3,8 @@ package site.sorghum.anno._ddl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
@@ -13,6 +13,7 @@ import net.sf.jsqlparser.statement.insert.Insert;
 import org.noear.wood.DbContext;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.util.ScriptUtils;
 
@@ -30,13 +31,16 @@ import java.util.stream.Collectors;
  * @since 2023/7/9 11:49
  */
 @Slf4j
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class InitDataService {
 
     @Db
+    @Autowired
     DbContext dbContext;
 
     @Inject
+    @Autowired
     AnnoProperty annoProperty;
 
     public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");

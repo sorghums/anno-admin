@@ -3,7 +3,7 @@ package site.sorghum.anno.anno.proxy;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaRequest;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 
@@ -13,7 +13,8 @@ import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
  * @author Sorghum
  * @since 2023/06/05
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class PermissionProxy {
 
     public static final String VIEW = "view";

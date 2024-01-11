@@ -1,6 +1,6 @@
 package site.sorghum.anno.plugin;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno._common.AnnoBeanUtils;
 
 import java.util.Comparator;
@@ -12,7 +12,8 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/12/20
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class PluginRunner {
 
     public void init() {

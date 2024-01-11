@@ -2,9 +2,11 @@ package site.sorghum.anno;
 
 
 import cn.hutool.core.collection.CollUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.db.param.DbCondition;
@@ -26,10 +28,12 @@ import java.util.List;
  * @since 2023/07/15
  */
 @Slf4j
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class BaseAnnoPlugin extends AnnoPlugin {
-    @Inject
-    @Named("dbServiceWood")
+    @Inject("dbServiceWood")
+    @Autowired
+    @Qualifier("dbServiceWood")
     DbService dbService;
 
     public BaseAnnoPlugin() {

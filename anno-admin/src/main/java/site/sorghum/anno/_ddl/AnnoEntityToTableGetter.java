@@ -3,7 +3,7 @@ package site.sorghum.anno._ddl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.Setter;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
@@ -25,7 +25,8 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/7/4 22:44
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     @Setter

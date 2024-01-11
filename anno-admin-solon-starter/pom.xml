@@ -44,10 +44,6 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.logback</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
             <artifactId>solon-openapi2-knife4j</artifactId>
         </dependency>
         <dependency>

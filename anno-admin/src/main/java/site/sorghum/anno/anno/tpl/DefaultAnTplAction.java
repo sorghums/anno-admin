@@ -1,12 +1,13 @@
 package site.sorghum.anno.anno.tpl;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
-@Named
+@Component
 @Slf4j
+@org.springframework.stereotype.Component
 public class DefaultAnTplAction {
 
     /**

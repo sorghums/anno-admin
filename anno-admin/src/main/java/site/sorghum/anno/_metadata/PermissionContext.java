@@ -2,7 +2,7 @@ package site.sorghum.anno._metadata;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.HashMap;
@@ -13,7 +13,8 @@ import java.util.Map;
  * @author songyinyin
  * @since 2023/9/15 10:37
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class PermissionContext implements MetadataContext {
 
     /**

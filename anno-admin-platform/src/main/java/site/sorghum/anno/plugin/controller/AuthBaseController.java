@@ -5,8 +5,9 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.auth.AnnoAuthUser;
@@ -27,13 +28,16 @@ import java.util.Map;
  * @author Sorghum
  * @since 2023/05/19
  */
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AuthBaseController {
 
     @Inject
+    @Autowired
     AuthService authService;
 
     @Inject
+    @Autowired
     CaptchaManager captchaManager;
 
     public AnnoResult<String> login(Map<String, String> user, LoginInfo loginInfo) {

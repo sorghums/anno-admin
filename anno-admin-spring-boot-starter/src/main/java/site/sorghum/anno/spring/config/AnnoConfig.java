@@ -4,12 +4,12 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import jakarta.annotation.PostConstruct;
 import org.noear.dami.Dami;
 import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.wood.DbContext;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
@@ -45,10 +45,10 @@ import java.util.Set;
  * @since 2023/7/30 12:16
  */
 @Configuration
-@ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE})
-public class AnnoConfig {
+@ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE,AnnoConfig.PLUGIN_BASE_PACKAGE})
+public class AnnoConfig implements InitializingBean {
     public static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
-
+    public static final String PLUGIN_BASE_PACKAGE = "site.sorghum.plugin";
 
     @Bean
     @Primary
@@ -70,8 +70,11 @@ public class AnnoConfig {
         return new StpInterfaceImpl();
     }
 
+    @Override
+    public void afterPropertiesSet() {
+        init();
+    }
 
-    @PostConstruct
     public void init() {
         String[] basePackage = this.getBasePackage(AnnoScanConfig.importingClassMetadata);
         Set<String> packages = CollUtil.newHashSet(basePackage);

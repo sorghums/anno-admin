@@ -1,6 +1,6 @@
 package site.sorghum.anno.plugin.proxy;
 
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.param.DbCondition;
@@ -8,7 +8,8 @@ import site.sorghum.anno.plugin.ao.AnRole;
 
 import java.util.List;
 
-@Named
+@Component
+@org.springframework.stereotype.Component
 public class AnRoleProxy implements AnnoBaseProxy<AnRole> {
 
     @Override

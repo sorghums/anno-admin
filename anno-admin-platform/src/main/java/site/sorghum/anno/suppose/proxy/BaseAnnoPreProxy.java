@@ -1,7 +1,7 @@
 package site.sorghum.anno.suppose.proxy;
 
 import cn.hutool.core.util.IdUtil;
-import jakarta.inject.Named;
+import org.noear.solon.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
@@ -20,8 +20,9 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/05/26
  */
-@Named
+@Component
 @Slf4j
+@org.springframework.stereotype.Component
 public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     @Override

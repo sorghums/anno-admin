@@ -1,7 +1,7 @@
 package site.sorghum.anno.test.modular.wtf;
 
 import cn.hutool.core.collection.CollUtil;
-import jakarta.inject.Inject;
+import org.noear.solon.annotation.Inject;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
