@@ -10,7 +10,6 @@ import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.wood.DbContext;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
@@ -31,6 +30,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.dami.DamiApiCached;
+import site.sorghum.anno.anno.dami.TopicDispatcherMonitor;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.i18n.I18nUtil;
@@ -59,6 +59,7 @@ public class AnnoConfig {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public DbContext dbContext(DataSource dataSource) {
         DbContext dbContext = new DbContext(dataSource);
         dbContext.nameSet(AnnoConstants.DEFAULT_DATASOURCE_NAME);
@@ -81,6 +82,7 @@ public class AnnoConfig {
         // dami 配置项
         DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
         DamiConfig.configure(new DamiApiCached(Dami::bus));
+        DamiConfig.configure(new TopicDispatcherMonitor<>());
 
         for (MetadataContext metadataContext : SpringUtil.getBeansOfType(MetadataContext.class).values()) {
             Dami.api().registerListener(MetadataManager.METADATA_TOPIC, metadataContext);

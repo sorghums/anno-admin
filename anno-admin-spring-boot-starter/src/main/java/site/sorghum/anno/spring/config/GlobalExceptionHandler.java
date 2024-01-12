@@ -21,8 +21,8 @@ import java.time.format.DateTimeParseException;
  * @since 2023/8/4 11:46
  */
 @Slf4j
-@Order(1000)
-@RestControllerAdvice(basePackages = AnnoConfig.ANNO_BASE_PACKAGE)
+//@Order(1000)
+//@RestControllerAdvice(basePackages = AnnoConfig.ANNO_BASE_PACKAGE)
 public class GlobalExceptionHandler {
 
 

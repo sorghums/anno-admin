@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
@@ -165,7 +166,10 @@ public class AnnoTransService {
             joinOperator.batchJoinOne(joinParam, t);
         }
         stopWatch.stop();
-        System.out.println("翻译耗时：" + stopWatch.getTotalTimeMillis());
+        log.info(
+            "转换耗时：{} ms",
+            stopWatch.getTotalTimeMillis()
+        );
         return t;
     }
 

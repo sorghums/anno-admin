@@ -1,25 +1,30 @@
 package site.sorghum.anno.spring.filter;
 
 
-import cn.hutool.core.map.MapUtil;
+import cn.dev33.satoken.exception.NotPermissionException;
+import cn.dev33.satoken.exception.SaTokenException;
+import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.text.AntPathMatcher;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.RequestFacade;
+import org.noear.dami.exception.DamiException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._common.util.ThrowableLogUtil;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.sql.SQLException;
+import java.time.format.DateTimeParseException;
 
 /**
  * 额外数据重新设置
@@ -33,7 +38,7 @@ import java.util.HashMap;
 public class ExtraDataFilter implements Filter {
     private static final String EXTRA_DATA = "_extraData";
 
-    @Inject
+    @Autowired
     AnnoProperty annoProperty;
 
     AntPathMatcher antPathMatcher = new AntPathMatcher();
@@ -45,71 +50,61 @@ public class ExtraDataFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String extraData = null;
-        HashMap<String, Object> bdMap;
-        if (!(servletRequest instanceof HttpServletRequest)) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        }
-        AnnoContextUtil.AnnoContext context = AnnoContextUtil.getContext();
-        if (servletRequest instanceof RequestFacade) {
-            String requestURI = ((RequestFacade) servletRequest).getRequestURI();
-            context.getStopWatch(requestURI);
-
-            context.setPrintDetailLog(annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, requestURI)));
-        }
-
-
         try {
-            // 如果是文件上传则不进行处理
-            if (servletRequest.getContentType() != null && servletRequest.getContentType().startsWith("multipart/form-data")) {
+            try {
+                if (!(servletRequest instanceof HttpServletRequest)) {
+                    filterChain.doFilter(servletRequest, servletResponse);
+                }
+                AnnoContextUtil.AnnoContext context = AnnoContextUtil.getContext();
+                if (servletRequest instanceof RequestFacade) {
+                    String requestUri = ((RequestFacade) servletRequest).getRequestURI();
+                    context.getStopWatch(requestUri);
+                    context.setPrintDetailLog(annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, requestUri)));
+                }
                 filterChain.doFilter(servletRequest, servletResponse);
-                // 清除请求上下文
-                AnnoContextUtil.clearContext();
+            } catch (DamiException exception) {
+                throw exception.getCause();
+            } catch (InvocationTargetRuntimeException exception) {
+                throw exception.getCause().getCause();
+            } catch (ServletException servletException) {
+                throw servletException.getRootCause();
+            }
+        } catch (BizException e) {
+            log.error(e.getMessage(), e);
+            writeResponse(servletResponse, AnnoResult.failure(e.getMessage()));
+        } catch (DateTimeParseException e) {
+            log.error(e.getMessage(), e);
+            writeResponse(servletResponse, AnnoResult.failure("日期格式化出错"));
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage(), e);
+            writeResponse(servletResponse, AnnoResult.failure("非法参数,%s".formatted(e.getMessage())));
+        } catch (SaTokenException e) {
+            log.error(e.getMessage(), e);
+            if (e instanceof NotPermissionException) {
+                writeResponse(servletResponse, AnnoResult.failure(400, "权限不足"));
                 return;
             }
-            RequestWrapper requestWrapper = new RequestWrapper(servletRequest);
-            String body = requestWrapper.getBody();
-            if (body.startsWith("{")) {
-                bdMap = JSONUtil.toBean(body, HashMap.class);
-                if (bdMap.containsKey("_extraData")) {
-                    extraData = MapUtil.getStr(bdMap, EXTRA_DATA);
-                }
-            } else if (StrUtil.isBlank(body)) {
-                bdMap = new HashMap<>();
-            } else {
-                bdMap = null;
-            }
-            if (StrUtil.isNotBlank(requestWrapper.getParameter(EXTRA_DATA))) {
-                extraData = requestWrapper.getParameter(EXTRA_DATA);
-            }
-            if (bdMap != null && StrUtil.isNotBlank(extraData)) {
-                try {
-                    HashMap<String, Object> param = JSONUtil.toBean(extraData, HashMap.class);
-                    param.forEach(
-                        (k, v) -> {
-                            if (ObjUtil.isNotEmpty(v)) {
-                                requestWrapper.paramMap.put(k, new String[]{v.toString()});
-                                bdMap.put(k, v);
-                            }
-                        }
-                    );
-                    bdMap.forEach((k, v) -> {
-                        if (ObjUtil.isNotEmpty(v)) {
-                            requestWrapper.paramMap.put(k, new String[]{v.toString()});
-                            bdMap.put(k, v);
-                        }
-                    });
-                    requestWrapper.setBody(JSONUtil.toJsonString(bdMap));
-                } catch (Exception e) {
-                    ThrowableLogUtil.error(e);
-                }
-            }
-            AnnoContextUtil.getContext().setRequestParams(bdMap);
-            filterChain.doFilter(requestWrapper, servletResponse);
+            writeResponse(servletResponse, AnnoResult.failure(401, e.getMessage()));
+        } catch (SQLException e) {
+            log.error("数据库异常 ==>", e);
+            writeResponse(servletResponse, AnnoResult.failure("数据库异常：%s".formatted(e.getMessage())));
+        } catch (Throwable e) {
+            log.error("未知异常 ==>", e);
+            writeResponse(servletResponse, AnnoResult.failure("系统异常，请联系管理员"));
         } finally {
             // 清除请求上下文
-            AnnoContextUtil.printLog(log, annoProperty.getDetailLogThreshold());
             AnnoContextUtil.clearContext();
+        }
+    }
+
+    private void writeResponse(ServletResponse response, AnnoResult<?> result) throws IOException {
+        if (result == null) {
+            return;
+        }
+        if (response instanceof HttpServletResponse httpServletResponse) {
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            httpServletResponse.getWriter().print(JSONUtil.toJsonString(result));
         }
     }
 
