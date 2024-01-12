@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+    <a href="https://gitee.com/cmeet/anno-admin-demo">Demo项目</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin-ant-design-ui">前端仓库(ant-design)</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin">码云仓库</a> &nbsp; | &nbsp; 
     <a href="https://github.com/sorghums/anno-admin">Github 仓库</a> &nbsp; | &nbsp; 
