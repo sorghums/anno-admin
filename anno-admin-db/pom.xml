@@ -36,7 +36,11 @@
             <groupId>org.noear</groupId>
             <artifactId>wood</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
         <!-- 测试 -->
         <dependency>
             <groupId>org.noear</groupId>

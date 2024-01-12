@@ -3,6 +3,7 @@ package site.sorghum.anno.db.interfaces;
 
 import site.sorghum.anno.db.param.TableParam;
 
+import java.lang.reflect.Field;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -23,4 +24,9 @@ public class AnnoAdminCoreFunctions {
      * 字段是否可以清空函数
      */
     public static BiFunction<Class, String, Boolean> sqlFieldCanClearFunction;
+
+    /**
+     * 数据库字段到Java字段映射函数
+     */
+    public static BiFunction<Class, String, Field> sqlFieldToJavaFieldFunction;
 }

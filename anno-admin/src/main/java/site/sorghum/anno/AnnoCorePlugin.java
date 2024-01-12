@@ -3,6 +3,7 @@ package site.sorghum.anno;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ReflectUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
@@ -43,11 +44,11 @@ public class AnnoCorePlugin extends AnnoPlugin {
     @Override
     public void run() {
         AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
-
         AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz, sqlFieldName) -> {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
             return entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(clazz, sqlFieldName)).isEditCanClear();
         };
+        AnnoAdminCoreFunctions.sqlFieldToJavaFieldFunction = (clazz, sqlFieldName) -> ReflectUtil.getField(clazz, AnnoFieldCache.getFieldNameBySqlColumn(clazz, sqlFieldName));
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
                 ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();

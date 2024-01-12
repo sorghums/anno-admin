@@ -1,5 +1,7 @@
 package site.sorghum.anno._ddl.entity2db;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import lombok.Data;
@@ -65,9 +67,9 @@ public class EntityToDdlGenerator<T> {
      * @param entity 实体类
      * @return 创建表的 DDL 语句
      */
-    public String getCreateTableDDL(T entity) {
+    public String[] getCreateTableDDL(T entity) {
         TableWrap table = entityToTableGetter.getTable(entity);
-        return String.join("\n", dialect.toCreateDDL(DialectUtil.tableWrap2TableModel(table)));
+        return dialect.toCreateDDL(DialectUtil.tableWrap2TableModel(table));
     }
 
     /**
@@ -76,12 +78,15 @@ public class EntityToDdlGenerator<T> {
      * @param entity 实体类
      */
     public void executeCreateTableDDL(T entity) {
-        String tableDDL = getCreateTableDDL(entity);
+        String[] tableDDL = getCreateTableDDL(entity);
         try {
-            dbContext.exe(tableDDL);
-            log.info("exe ddl ==> {}", tableDDL);
+            for (String ddl : tableDDL) {
+                dbContext.exe(ddl);
+                log.info("exe ddl ==> {}", ddl);
+            }
         } catch (Exception e) {
-            log.error("exe ddl error ==> {}", tableDDL);
+            //String[] 转 string
+            log.error("exe ddl error ==> {}", ArrayUtil.join(tableDDL, "\n"));
             throw new DdlException(e);
         }
     }
