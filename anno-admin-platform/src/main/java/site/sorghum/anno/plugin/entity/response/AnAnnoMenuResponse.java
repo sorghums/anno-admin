@@ -19,7 +19,6 @@ public class AnAnnoMenuResponse extends AnAnnoMenu {
     /**
      * 子节点
      */
-    @JSONField(name = "children")
     List<AnAnnoMenuResponse> children;
 
 }

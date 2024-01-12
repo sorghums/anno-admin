@@ -28,11 +28,6 @@
             <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>${fastjson2.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>wood</artifactId>
         </dependency>

@@ -1,7 +1,6 @@
 package site.sorghum.anno.db.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import com.alibaba.fastjson2.util.TypeUtils;
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
 import org.noear.wood.DbContext;
