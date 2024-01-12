@@ -59,7 +59,7 @@ public class AnnoTransService {
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
                         """.formatted(sqlLabelKey
-                        , field.getFieldName() + "_label"
+                        , field.getFieldName().toLowerCase() + "_label"
                         , sqlIdKey
                         , tableName
                         , sqlIdKey
@@ -83,7 +83,7 @@ public class AnnoTransService {
                     String originalSql = field.getOptionTypeSql();
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getFieldName() + "_label"
+                         """.formatted(field.getFieldName().toLowerCase() + "_label"
                         , sqlIdKey,
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
@@ -115,7 +115,7 @@ public class AnnoTransService {
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
                         """.formatted(sqlLabelKey
-                        , field.getFieldName() + "_label"
+                        , field.getFieldName().toLowerCase() + "_label"
                         , sqlIdKey
                         , tableName
                         , sqlIdKey
@@ -139,7 +139,7 @@ public class AnnoTransService {
                     String originalSql = field.getTreeTypeSql();
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getFieldName() + "_label"
+                         """.formatted(field.getFieldName().toLowerCase() + "_label"
                         , sqlIdKey,
                         QuerySqlCache.get(originalSql));
                     joinParams.add(
@@ -178,7 +178,7 @@ public class AnnoTransService {
             Object fieldValue = ReflectUtil.getFieldValue(tItem, fieldName);
             if (fieldValue == null) continue;
             Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
-            tansMap.put(fieldName + "_label", dict.getOrDefault(String.valueOf(fieldValue), String.valueOf(fieldValue)));
+            tansMap.put(fieldName.toLowerCase() + "_label", dict.getOrDefault(String.valueOf(fieldValue), String.valueOf(fieldValue)));
         }
     }
 

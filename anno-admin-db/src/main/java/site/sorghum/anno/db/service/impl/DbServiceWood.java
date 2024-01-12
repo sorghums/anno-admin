@@ -1,11 +1,15 @@
 package site.sorghum.anno.db.service.impl;
 
+import cn.hutool.core.convert.Convert;
+import com.alibaba.fastjson2.util.TypeUtils;
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
+import org.noear.wood.wrap.SqlTypeUtil;
+import org.noear.wood.wrap.TypeConverter;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.db.param.DbCondition;
@@ -15,6 +19,7 @@ import site.sorghum.anno.db.param.TableParam;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.i18n.I18nUtil;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +93,13 @@ public class DbServiceWood implements DbService {
             table(tableParam.getTableName()).
             setEntityIf(t, (k, v) -> filterField(tableParam, k, v));
         if (removeParam.getLogic()) {
-            dbTableQuery.set(removeParam.getRemoveColumn(), removeParam.getNotRemoveValue());
+            // 查询当前字段的类型
+            Field field = AnnoAdminCoreFunctions.sqlFieldToJavaFieldFunction.apply(tableParam.getClazz(), removeParam.getRemoveColumn());
+            if (field == null) {
+                throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(removeParam.getRemoveColumn()));
+            }
+            Object converted = Convert.convert(field.getType(), removeParam.getNotRemoveValue());
+            dbTableQuery.set(removeParam.getRemoveColumn(), converted);
         }
         return dbTableQuery.insert();
     }
@@ -100,7 +111,13 @@ public class DbServiceWood implements DbService {
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(dbConditions, tableParam);
         if (removeParam.getLogic()) {
-            return dbTableQuery.set(removeParam.getRemoveColumn(), removeParam.getRemoveValue()).update();
+            // 查询当前字段的类型
+            Field field = AnnoAdminCoreFunctions.sqlFieldToJavaFieldFunction.apply(tableParam.getClazz(), removeParam.getRemoveColumn());
+            if (field == null) {
+                throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(removeParam.getRemoveColumn()));
+            }
+            Object converted = Convert.convert(field.getType(), removeParam.getNotRemoveValue());
+            return dbTableQuery.set(removeParam.getRemoveColumn(), converted).update();
         } else {
             return dbTableQuery.delete();
         }
@@ -137,7 +154,13 @@ public class DbServiceWood implements DbService {
         RemoveParam removeParam = tableParam.getRemoveParam();
         DbTableQuery dbTableQuery = tableParam.toTbQuery(dbContext).where(COMMON_CONDITION);
         if (removeParam.getLogic()) {
-            dbConditions.add(DbCondition.builder().field(removeParam.getRemoveColumn()).value(removeParam.getNotRemoveValue()).build());
+            // 查询当前字段的类型
+            Field field = AnnoAdminCoreFunctions.sqlFieldToJavaFieldFunction.apply(tableParam.getClazz(), removeParam.getRemoveColumn());
+            if (field == null) {
+                throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(removeParam.getRemoveColumn()));
+            }
+            Object converted = Convert.convert(field.getType(), removeParam.getNotRemoveValue());
+            dbConditions.add(DbCondition.builder().field(removeParam.getRemoveColumn()).value(converted).build());
         }
         tableParam.getOrderByParam().fillSql(dbTableQuery);
         for (DbCondition dbCondition : dbConditions) {

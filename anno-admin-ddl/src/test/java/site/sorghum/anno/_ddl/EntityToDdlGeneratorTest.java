@@ -1,5 +1,6 @@
 package site.sorghum.anno._ddl;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.model.TableModel;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +36,8 @@ public class EntityToDdlGeneratorTest {
     public void testCreateTableDDL() throws Exception {
         dbContext.exe("DROP TABLE IF EXISTS test_entity");
         EntityToDdlGenerator<Class<?>> generator = new EntityToDdlGenerator<>(dbContext, new SampleEntityToTableGetter());
-        String tableDDL = generator.getCreateTableDDL(TestEntity.class);
-        log.info("ddl==>{}", tableDDL);
+        String[] tableDDL = generator.getCreateTableDDL(TestEntity.class);
+        log.info("ddl==>{}", ArrayUtil.join(tableDDL, "\n"));
 
         generator.executeCreateTableDDL(TestEntity.class);
         dbContext.getMetaData().refresh();
