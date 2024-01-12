@@ -34,7 +34,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoField(title = "用户头像",
             tableFieldName = "avatar",
-            dataType = AnnoDataType.IMAGE,
+            dataType = AnnoDataType.AVATAR,
             edit = @AnnoEdit(placeHolder = "请上传用户头像"),
             imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE,width = 50,height = 50))
     private String avatar;
