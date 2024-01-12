@@ -39,6 +39,13 @@ public class Article extends BaseMetaModel {
         edit = @AnnoEdit(placeHolder = "请输入文章内容"), dataType = AnnoDataType.CODE_EDITOR)
     String content;
 
+    @AnnoField(
+        title = "文章排序",
+        tableFieldName = "order",
+        search = @AnnoSearch,
+        edit = @AnnoEdit(placeHolder = "请输入文章排序"), dataType = AnnoDataType.NUMBER)
+    String order;
+
 
     @AnnoMany2ManyField(
         mediumTable = "better_article_favorite_relation",

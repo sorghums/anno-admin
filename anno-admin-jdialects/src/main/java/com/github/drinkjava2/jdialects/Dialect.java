@@ -239,7 +239,7 @@ public class Dialect {
 	 * Check if is current dialect or ANSI reserved word, if yes throw exception. if
 	 * is other database's reserved word, log output a warning.
 	 */
-	private void checkIfReservedWord(String word, String... tableName) {
+	private boolean checkIfReservedWord(String word, String... tableName) {
 		if (ReservedDBWords.isReservedWord(word)) {
 			String inTable = tableName.length > 0 ? "In table " + tableName[0] + ", " : "";
 			String reservedForDB = ReservedDBWords.reservedForDB(word);
@@ -255,7 +255,9 @@ public class Dialect {
 				logger.warn(inTable + "\"" + word + "\" is a reserved word of other database \"" + reservedForDB
 						+ "\", not recommend be used as table, column, unique or index name");
 			}
+            return true;
 		}
+        return false;
 	}
 
 	/**
@@ -276,12 +278,27 @@ public class Dialect {
 	 * exception. if is other database's reserved word, log output a warning.
 	 * Otherwise return word itself.
 	 */
-	public String checkNotEmptyReservedWords(String word, String type, String tableName) {
-		if (StrUtils.isEmpty(word))
-			DialectException.throwEX(type + " can not be empty");
-		checkIfReservedWord(word, tableName);
-		return word;
-	}
+    public String checkNotEmptyReservedWords(String word, String type, String tableName) {
+        if (StrUtils.isEmpty(word))
+            DialectException.throwEX(type + " can not be empty");
+        boolean isReservedWord = checkIfReservedWord(word, tableName);
+        if (isReservedWord) {
+            if (this.name.toLowerCase().contains("mysql")) {
+                return "`%s`".formatted(word);
+            } else if (this.name.toLowerCase().contains("postgres")) {
+                return "\"%s\"".formatted(word);
+            } else if (this.name.toLowerCase().contains("oracle")) {
+                return "\"%s\"".formatted(word);
+            } else if (this.name.toLowerCase().contains("sqlserver")) {
+                return "[%s]".formatted(word);
+            } else if (this.name.toLowerCase().contains("h2")) {
+                return "\"%s\"".formatted(word);
+            } else if (this.name.toLowerCase().contains("db2")) {
+                return "[%s]".formatted(word);
+            }
+        }
+        return word;
+    }
 
 	/**
 	 * Transfer columnModel to a real dialect's DDL definition String, lengths is

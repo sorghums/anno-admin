@@ -65,7 +65,7 @@ public class DialectUtil {
 
 
     private static ColumnModel getColumnModel(TableModel tableModel, TableWrap tableWrap, ColumnWrap column) {
-        ColumnModel columnModel = new ColumnModel("`%s`".formatted(column.getName())).comment(column.getRemarks());
+        ColumnModel columnModel = new ColumnModel("%s".formatted(column.getName())).comment(column.getRemarks());
         columnModel.setColumnType(TypeEnum.getType(column.getSqlType()));
         if (StrUtil.equalsIgnoreCase(column.getName(), tableWrap.getPk1())){
             columnModel.setPkey(true);

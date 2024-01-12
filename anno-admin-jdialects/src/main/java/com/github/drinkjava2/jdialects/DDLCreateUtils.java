@@ -141,7 +141,7 @@ public class DDLCreateUtils {// NOSONAR
 		List<ColumnModel> columns = t.getColumns();
 
 		// Reserved words check
-		dialect.checkNotEmptyReservedWords(tableName, "Table name", tableName);
+        tableName = dialect.checkNotEmptyReservedWords(tableName, "Table name", tableName);
 
 		List<IndexModel> idexChks = t.getIndexConsts();// check index names
 		if (idexChks != null && !idexChks.isEmpty())
@@ -160,7 +160,7 @@ public class DDLCreateUtils {// NOSONAR
 
 		for (ColumnModel col : columns)// check column names
 			if (!col.getTransientable())
-				dialect.checkNotEmptyReservedWords(col.getColumnName(), "Column name", tableName);
+                col.setColumnName(dialect.checkNotEmptyReservedWords(col.getColumnName(), "Column name", tableName));
 
 		// idGenerator
 		for (IdGenerator idGen : t.getIdGenerators())

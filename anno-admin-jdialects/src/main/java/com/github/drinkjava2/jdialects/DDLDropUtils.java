@@ -126,7 +126,7 @@ public class DDLDropUtils {
         List<ColumnModel> columns = t.getColumns();
 
         // Reserved words check
-        dialect.checkNotEmptyReservedWords(tableName, "Table name", tableName);
+        tableName =  dialect.checkNotEmptyReservedWords(tableName, "Table name", tableName);
 
         List<IndexModel> l = t.getIndexConsts();// check index names
         if (l != null && !l.isEmpty())
@@ -145,7 +145,7 @@ public class DDLDropUtils {
 
         for (ColumnModel col : columns)
             if (!col.getTransientable())
-                dialect.checkNotEmptyReservedWords(col.getColumnName(), "Column name", tableName);
+                col.setColumnName(dialect.checkNotEmptyReservedWords(col.getColumnName(), "Column name", tableName));
 
         // idGenerator
         for (IdGenerator idGen : t.getIdGenerators())
