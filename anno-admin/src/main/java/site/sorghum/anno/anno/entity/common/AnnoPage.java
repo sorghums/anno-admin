@@ -11,7 +11,7 @@ public class AnnoPage<T> {
     /**
      * 是否是分页结果
      */
-    boolean isPage = false;
+    boolean isPage;
 
     /**
      * 数据

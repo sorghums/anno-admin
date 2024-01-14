@@ -2,20 +2,17 @@ package site.sorghum.anno.anno.controller;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.db.DbCriteria;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +27,7 @@ import java.util.Map;
 public class BaseDictController {
 
     @Inject
-    @Named("dbServiceWithProxy")
-    DbService dbService;
+    AnnoBaseService baseService;
 
     @Inject
     MetadataManager metadataManager;
@@ -50,15 +46,17 @@ public class BaseDictController {
             if (StrUtil.isEmpty(actualSql)) {
                 return AnnoResult.failure("sql 不存在,请检查相关配置项");
             }
-            List<Map<String, Object>> mapList = dbService.sql2MapList(actualSql);
+            List<Map<String, Object>> mapList = baseService.sql2MapList(actualSql);
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
                 mapList, "label", "id", "pid"
             );
             return AnnoResult.succeed(trees);
         }
         if (StrUtil.isNotBlank(annoClazz)) {
-            List<Object> list = queryTreeList(annoClazz, new ArrayList<DbCondition>());
-            List<AnnoTreeDTO<String>> annoTreeDTOs = null;
+            DbCriteria criteria = new DbCriteria();
+            criteria.setEntityName(annoClazz);
+            List<Object> list = queryTreeList(criteria);
+            List<AnnoTreeDTO<String>> annoTreeDTOs;
             if (StrUtil.isNotBlank(idKey) && StrUtil.isNotBlank(labelKey)) {
                 annoTreeDTOs = Utils.toTrees(list, idKey, labelKey);
             } else {
@@ -70,9 +68,8 @@ public class BaseDictController {
         return AnnoResult.succeed(Collections.emptyList());
     }
 
-    private <T> List<T> queryTreeList(String annoClazz, List<DbCondition> dbConditions) {
-        permissionProxy.checkPermission(metadataManager.getEntity(annoClazz), PermissionProxy.VIEW);
-        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(annoClazz);
-        return dbService.list(tableParam.getClazz(), dbConditions);
+    private <T> List<T> queryTreeList(DbCriteria criteria) {
+        permissionProxy.checkPermission(metadataManager.getEntity(criteria.getEntityName()), PermissionProxy.VIEW);
+        return baseService.list(criteria);
     }
 }

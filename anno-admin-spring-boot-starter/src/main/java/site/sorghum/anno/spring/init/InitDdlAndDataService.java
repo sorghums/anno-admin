@@ -58,6 +58,8 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
     }
 
     private void init() throws Exception {
+        metadataManager.refresh();
+
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
             EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
@@ -92,8 +94,6 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
 
         authService.initPermissions();
         authService.initMenus();
-
-        metadataManager.refresh();
     }
 
 }

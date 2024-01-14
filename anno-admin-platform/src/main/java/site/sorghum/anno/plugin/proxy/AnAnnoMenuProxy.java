@@ -1,13 +1,10 @@
 package site.sorghum.anno.plugin.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.anno.util.AnnoClazzCache;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 
 import java.util.List;
@@ -43,7 +40,7 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
     }
 
     @Override
-    public void beforeUpdate(List<DbCondition> dbConditions, AnAnnoMenu data) {
+    public void beforeUpdate(AnAnnoMenu data, DbCriteria criteria) {
         beforeAdd(data);
     }
 

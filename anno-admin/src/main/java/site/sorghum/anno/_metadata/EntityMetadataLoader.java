@@ -83,9 +83,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         IntStream.range(0, annoMain.annoOrder().length)
             .forEach(i -> {
                 AnnoOrder annoOrder = annoMain.annoOrder()[i];
-                AnOrder anOrder = new AnOrder();
-                anOrder.setOrderType(annoOrder.orderType());
-                anOrder.setOrderValue(annoOrder.orderValue());
+                AnOrder anOrder = new AnOrder(annoOrder.orderType(), annoOrder.orderValue());
                 anOrders[i] = anOrder;
             });
         entity.setAnOrder(anOrders);

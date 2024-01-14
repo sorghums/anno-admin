@@ -1,6 +1,5 @@
 package site.sorghum.anno.solon.controller;
 
-import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -8,21 +7,10 @@ import io.swagger.annotations.ApiOperation;
 import org.noear.solon.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.controller.BaseDictController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.anno.proxy.PermissionProxy;
-import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.anno.util.QuerySqlCache;
-import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.db.service.DbService;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 /**

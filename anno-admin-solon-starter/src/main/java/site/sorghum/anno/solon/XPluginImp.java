@@ -158,6 +158,7 @@ public class XPluginImp implements Plugin {
             }
 
         }
+        metadataManager.refresh();
     }
 
     static class InjectBeanInjector implements BeanInjector<Inject> {

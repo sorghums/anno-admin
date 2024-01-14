@@ -8,6 +8,7 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.controller.BaseDbController;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
@@ -36,8 +37,8 @@ public class DbController extends BaseDbController {
      * @return {@link AnnoResult}<{@link IPage}<{@link T}>>
      */
     @PostMapping("/{clazz}/page")
-    public <T> AnnoResult<IPage<T>> page(@PathVariable String clazz,
-                                         @RequestBody Map<String,Object> body) {
+    public <T> AnnoResult<AnnoPage<T>> page(@PathVariable String clazz,
+                                            @RequestBody Map<String, Object> body) {
 
         return super.page(clazz, JSONUtil.toBean(body, AnnoPageRequestAnno.class), body);
     }
@@ -94,7 +95,7 @@ public class DbController extends BaseDbController {
 
     @RequestMapping("/{clazz}/annoTreeSelectData")
     public <T> AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
-                                                        @RequestBody(required = false) Map<String, String> param) {
+                                                        @RequestBody(required = false) Map<String, Object> param) {
         if (param == null) {
             param = new HashMap<>(0);
         }

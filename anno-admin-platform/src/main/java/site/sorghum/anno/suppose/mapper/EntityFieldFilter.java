@@ -2,7 +2,7 @@ package site.sorghum.anno.suppose.mapper;
 
 import org.noear.wood.ext.Fun2;
 import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.db.TableParam;
 
 /**
  * baseMapper 中 entity 转数据库字段时，过滤掉不需要的字段

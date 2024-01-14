@@ -1,8 +1,10 @@
-package site.sorghum.anno.db.param;
+package site.sorghum.anno.db;
 
-import lombok.*;
-import org.noear.wood.DbContext;
-import org.noear.wood.DbTableQuery;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +37,12 @@ public class TableParam<T> {
     /**
      * 删除参数
      */
-    RemoveParam removeParam;
+    DbRemove dbRemove;
 
     /**
      * 排序参数
      */
-    OrderByParam orderByParam = new OrderByParam();
+    DbOrderBy dbOrderBy = new DbOrderBy();
 
 
     /**
@@ -102,28 +104,6 @@ public class TableParam<T> {
          * 连接条件
          */
         String joinCondition;
-    }
-
-
-    public DbTableQuery toTbQuery(DbContext dbContext) {
-        if (joinTables.isEmpty()) {
-            return dbContext.table(tableName);
-        } else {
-            DbTableQuery dbTableQuery = dbContext.table(tableName);
-            for (JoinTable joinTable : joinTables) {
-                String tbName = joinTable.tableName;
-                if (!joinTable.alias.isEmpty()) {
-                    tbName = joinTable.tableName + " as " + joinTable.alias;
-                }
-                switch (joinTable.joinType) {
-                    case 1 -> dbTableQuery.leftJoin(tbName).on(joinTable.joinCondition);
-                    case 2 -> dbTableQuery.rightJoin(tbName).on(joinTable.joinCondition);
-                    case 3 -> dbTableQuery.innerJoin(tbName).on(joinTable.joinCondition);
-                    default -> throw new IllegalArgumentException("不支持的连接类型");
-                }
-            }
-            return dbTableQuery;
-        }
     }
 
 }

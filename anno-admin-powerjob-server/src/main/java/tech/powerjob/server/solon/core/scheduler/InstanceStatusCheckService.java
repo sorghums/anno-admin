@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbPage;
 import tech.powerjob.common.SystemInstanceResult;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.common.enums.TimeExpressionType;
@@ -152,7 +152,7 @@ public class InstanceStatusCheckService {
     private void handleWaitingDispatchInstance(List<String> partAppIds) {
         // 1. 检查等待 WAITING_DISPATCH 状态的任务
         long threshold = System.currentTimeMillis() - DISPATCH_TIMEOUT_MS;
-        List<InstanceInfoDO> waitingDispatchInstances = instanceInfoRepository.findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_DISPATCH.getV(), threshold, PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+        List<InstanceInfoDO> waitingDispatchInstances = instanceInfoRepository.findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_DISPATCH.getV(), threshold, DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         while (!waitingDispatchInstances.isEmpty()) {
             List<String> overloadAppIdList = new ArrayList<>();
             long startTime = System.currentTimeMillis();
@@ -198,7 +198,7 @@ public class InstanceStatusCheckService {
             if (partAppIds.isEmpty()) {
                 break;
             }
-            waitingDispatchInstances = instanceInfoRepository.findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_DISPATCH.getV(), threshold, PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+            waitingDispatchInstances = instanceInfoRepository.findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_DISPATCH.getV(), threshold, DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         }
 
     }
@@ -206,7 +206,7 @@ public class InstanceStatusCheckService {
     private void handleWaitingWorkerReceiveInstance(List<String> partAppIds) {
         // 2. 检查 WAITING_WORKER_RECEIVE 状态的任务
         long threshold = System.currentTimeMillis() - RECEIVE_TIMEOUT_MS;
-        List<BriefInstanceInfo> waitingWorkerReceiveInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_WORKER_RECEIVE.getV(), threshold, PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+        List<BriefInstanceInfo> waitingWorkerReceiveInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_WORKER_RECEIVE.getV(), threshold, DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         while (!waitingWorkerReceiveInstances.isEmpty()) {
             log.warn("[InstanceStatusChecker] find some instance didn't receive any reply from worker, try to redispatch: {}", waitingWorkerReceiveInstances.stream().map(BriefInstanceInfo::getInstanceId).collect(Collectors.toList()));
             final List<List<BriefInstanceInfo>> partitions = Lists.partition(waitingWorkerReceiveInstances, MAX_BATCH_UPDATE_NUM);
@@ -215,14 +215,14 @@ public class InstanceStatusCheckService {
             }
             // 重新查询
             threshold = System.currentTimeMillis() - RECEIVE_TIMEOUT_MS;
-            waitingWorkerReceiveInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_WORKER_RECEIVE.getV(), threshold, PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+            waitingWorkerReceiveInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(partAppIds, InstanceStatus.WAITING_WORKER_RECEIVE.getV(), threshold, DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         }
     }
 
     private void handleRunningInstance(List<String> partAppIds) {
         // 3. 检查 RUNNING 状态的任务（一定时间没收到 TaskTracker 的状态报告，视为失败）
         long threshold = System.currentTimeMillis() - RUNNING_TIMEOUT_MS;
-        List<BriefInstanceInfo> failedInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(partAppIds, InstanceStatus.RUNNING.getV(), new Date(threshold), PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+        List<BriefInstanceInfo> failedInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(partAppIds, InstanceStatus.RUNNING.getV(), new Date(threshold), DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         while (!failedInstances.isEmpty()) {
             // collect job id
             Set<String> jobIds = failedInstances.stream().map(BriefInstanceInfo::getJobId).collect(Collectors.toSet());
@@ -259,7 +259,7 @@ public class InstanceStatusCheckService {
                 }
             });
             threshold = System.currentTimeMillis() - RUNNING_TIMEOUT_MS;
-            failedInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(partAppIds, InstanceStatus.RUNNING.getV(), new Date(threshold), PageParam.of(1, MAX_BATCH_NUM_INSTANCE));
+            failedInstances = instanceInfoRepository.selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(partAppIds, InstanceStatus.RUNNING.getV(), new Date(threshold), DbPage.of(1, MAX_BATCH_NUM_INSTANCE));
         }
 
     }

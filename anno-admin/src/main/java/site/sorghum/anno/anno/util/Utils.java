@@ -8,7 +8,7 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
-import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.db.TableParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,8 +74,8 @@ public class Utils {
         init();
         // 如果有配置逻辑删除
         TableParam<?> tableParam = metadataManager.getTableParam(clazz);
-        if (tableParam.getRemoveParam().getLogic()) {
-            sql = sql + " and " + tableParam.getRemoveParam().getRemoveColumn() + " = " + tableParam.getRemoveParam().getNotRemoveValue();
+        if (tableParam.getDbRemove().getLogic()) {
+            sql = sql + " and " + tableParam.getDbRemove().getRemoveColumn() + " = " + tableParam.getDbRemove().getNotRemoveValue();
         }
         return sql;
     }

@@ -1,5 +1,6 @@
 package site.sorghum.anno.test;
 
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.SolonApp;

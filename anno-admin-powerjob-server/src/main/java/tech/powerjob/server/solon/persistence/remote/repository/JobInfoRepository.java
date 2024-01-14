@@ -2,7 +2,7 @@ package tech.powerjob.server.solon.persistence.remote.repository;
 
 import org.noear.wood.IPage;
 import org.noear.wood.xml.Namespace;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 
@@ -38,11 +38,11 @@ public interface JobInfoRepository extends AnnoBaseMapper<JobInfoDO> {
         return objects.stream().map(String::valueOf).collect(Collectors.toList());
     }
 
-    default IPage<JobInfoDO> findByAppIdAndStatusNot(String appId, int status, PageParam page) {
+    default IPage<JobInfoDO> findByAppIdAndStatusNot(String appId, int status, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(), m -> m.whereEq("app_id", appId).andNeq("status", status));
     }
 
-    default IPage<JobInfoDO> findByAppIdAndJobNameLikeAndStatusNot(String appId, String condition, int status, PageParam page) {
+    default IPage<JobInfoDO> findByAppIdAndJobNameLikeAndStatusNot(String appId, String condition, int status, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(), m ->
             m.whereEq("app_id", appId)
                 .andLk("job_name", condition)

@@ -15,7 +15,8 @@ import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -28,7 +29,6 @@ import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -55,9 +55,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Db
     AnAnnoMenuDao anAnnoMenuDao;
-
-    @Db
-    DbContext dbContext;
 
     @Inject
     @Named("dbServiceWood")
@@ -282,7 +279,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 初始化菜单数据
      */
-    public void initMenus() throws SQLException {
+    public void initMenus() {
         List<AnnoPlugin> annoPlugins = AnnoBeanUtils.getBeansOfType(AnnoPlugin.class);
         for (AnnoPlugin annoPlugin : annoPlugins) {
             List<AnPluginMenu> anPluginMenus = annoPlugin.initEntityMenus();
@@ -335,7 +332,7 @@ public class AuthServiceImpl implements AuthService {
                         }
                     }
                     if (update == 1) {
-                        dbService.update(CollUtil.newArrayList(DbCondition.builder().field("id").andOr(DbCondition.AndOr.AND).value(anPluginMenu.getId()).build()), updateAnnoMenu);
+                        dbService.update(updateAnnoMenu, DbCriteria.of(metadataManager.getEntity(AnAnnoMenu.class)).eq("id", anAnnoMenu.getId()));
                     }
                 }
 

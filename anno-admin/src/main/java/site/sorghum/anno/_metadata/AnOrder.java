@@ -12,7 +12,7 @@ public class AnOrder {
      *
      * @see AnnoOrder#orderType()
      */
-    @ApiModelProperty(value = "排序类型 asc, desc",example = "asc")
+    @ApiModelProperty(value = "排序类型 asc, desc", example = "asc")
     private String orderType;
 
     /**
@@ -20,6 +20,11 @@ public class AnOrder {
      *
      * @see AnnoOrder#orderValue()
      */
-    @ApiModelProperty(value = "排序",example = "id")
+    @ApiModelProperty(value = "排序", example = "id")
     private String orderValue;
+
+    public AnOrder(String orderType, String orderValue) {
+        this.orderType = orderType;
+        this.orderValue = orderValue;
+    }
 }

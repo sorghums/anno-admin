@@ -19,12 +19,12 @@ public class PermissionContext implements MetadataContext {
     /**
      * key=className#methodName, value=permissionCode
      */
-    public Map<String, String> javaCmdPermissionMap = new HashMap<>();
+    private final Map<String, String> javaCmdPermissionMap = new HashMap<>();
 
     /**
      * key=permissionCode, value=permissionName
      */
-    public Map<String, String> permissionCodeAndNameMap = new HashMap<>();
+    private final Map<String, String> permissionCodeAndNameMap = new HashMap<>();
 
     @Override
     public void refresh(List<AnEntity> allEntities) {

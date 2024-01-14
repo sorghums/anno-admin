@@ -1,8 +1,7 @@
 package site.sorghum.anno.anno.proxy;
 
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +65,9 @@ public interface AnnoBaseProxy<T> {
     /**
      * 在更新之前
      *
-     * @param dbConditions db条件
-     * @param data         data
+     * @param data data
      */
-    default void beforeUpdate(List<DbCondition> dbConditions, T data) {
+    default void beforeUpdate(T data, DbCriteria criteria) {
 
     }
 
@@ -85,44 +83,31 @@ public interface AnnoBaseProxy<T> {
 
     /**
      * 在删除之前
-     *
-     * @param tClass       表参数
-     * @param dbConditions db条件
      */
-    default void beforeDelete(Class<T> tClass, List<DbCondition> dbConditions) {
+    default void beforeDelete(DbCriteria criteria) {
 
     }
 
     /**
      * 删除后
-     *
-     * @param tClass       类
-     * @param dbConditions db条件
      */
-    default void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {
+    default void afterDelete(DbCriteria criteria) {
 
     }
 
     /**
      * 查询前，返回值为：自定义查询条件
-     *
-     * @param tClass       表参数
-     * @param dbConditions db条件
-     * @param pageParam    页面参数
      */
-    default void beforeFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
+    default void beforeFetch(DbCriteria criteria) {
 
     }
 
     /**
      * 返回结果后
      *
-     * @param tClass       表参数
-     * @param dbConditions db条件
-     * @param pageParam    页面参数
-     * @param page         分页结果数据
+     * @param page 分页结果数据
      */
-    default void afterFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
+    default void afterFetch(DbCriteria criteria, AnnoPage<T> page) {
 
     }
 

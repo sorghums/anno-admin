@@ -14,7 +14,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 import java.util.Date;
@@ -42,7 +43,7 @@ public class BusinessProduct extends BaseMetaModel {
     @AnnoField(
         title = "商品名称",
         tableFieldName = "product_name",
-        search = @AnnoSearch(queryType = DbCondition.QueryType.LIKE),
+        search = @AnnoSearch(queryType = QueryType.LIKE),
         edit = @AnnoEdit)
     String productName;
 
@@ -84,7 +85,7 @@ public class BusinessProduct extends BaseMetaModel {
     @AnnoField(
         title = "商品分类",
         tableFieldName = "product_cat_id",
-        search = @AnnoSearch(queryType = DbCondition.QueryType.LIKE),
+        search = @AnnoSearch(queryType = QueryType.LIKE),
         dataType = AnnoDataType.TREE,
         treeType = @AnnoTreeType(sql = "SELECT id,cat_name as label,parent_id as pid FROM business_product_cat where del_flag = 0"),
         edit = @AnnoEdit(canClear = true))

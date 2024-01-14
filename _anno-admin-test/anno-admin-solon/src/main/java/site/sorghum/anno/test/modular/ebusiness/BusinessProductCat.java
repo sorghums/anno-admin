@@ -12,7 +12,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 
 /**
@@ -54,7 +55,7 @@ public class BusinessProductCat extends BaseMetaModel {
         title = "父级分类",
         tableFieldName = "parent_id",
         edit = @AnnoEdit,
-        search = @AnnoSearch(queryType = DbCondition.QueryType.EQ),
+        search = @AnnoSearch(queryType = QueryType.EQ),
         dataType = AnnoDataType.TREE,
         treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = BusinessProductCat.class, idKey = "id", pidKey = "parentId", labelKey = "catName"))
     )

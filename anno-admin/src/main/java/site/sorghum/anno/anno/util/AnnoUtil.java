@@ -21,7 +21,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.DbCriteria;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -307,33 +308,21 @@ public class AnnoUtil {
      * 简单实体转条件
      *
      * @param entity 参数
-     * @param clazz  类
-     * @param <T>    泛型
      */
-    @SneakyThrows
-    public static <T> List<DbCondition> simpleEntity2conditions(Object entity, Class<T> clazz) {
-        ArrayList<DbCondition> conditions = new ArrayList<>();
-        if (entity instanceof Map map) {
-            entity = JSONUtil.toBean(JSONUtil.toJsonString(map), clazz);
-        }
-        if (entity.getClass() != clazz) {
-            throw new IllegalArgumentException("entity must be instance of " + clazz.getName());
-        }
-        MetadataManager metadataManager = AnnoBeanUtils.getBean(MetadataManager.class);
-        AnEntity anEntity = metadataManager.getEntity(clazz);
-        List<AnField> anFields;
-        if (anEntity.isVirtualTable()){
-            anFields = anEntity.getFields();
-        }else {
-            anFields = anEntity.getDbAnFields();
-        }
+    public static DbCriteria simpleEntity2conditions(AnEntity entity, Map<String, Object> params) {
+
+        DbCriteria criteria = new DbCriteria();
+        criteria.setEntityName(entity.getEntityName());
+        criteria.setTableName(entity.getTableName());
+
+        List<AnField> anFields = entity.getDbAnFields();
         for (AnField anField : anFields) {
             String sqlColumn = anField.getTableFieldName();
-            Object value = ReflectUtil.getFieldValue(entity, anField.getFieldName());
+            Object value = params.get(anField.getFieldName());
             if (sqlColumn != null && value != null) {
-                conditions.add(DbCondition.builder().field(sqlColumn).value(value).type(anField.getSearchQueryType()).build());
+                criteria.condition().create(sqlColumn, anField.getSearchQueryType(), value);
             }
         }
-        return conditions;
+        return criteria;
     }
 }

@@ -7,13 +7,20 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Body;
+import org.noear.solon.annotation.Consumes;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Param;
+import org.noear.solon.annotation.Path;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
@@ -61,9 +68,9 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
     )
-    public <T> AnnoResult<IPage<T>> page(@Path String clazz,
-                                         @Body AnnoPageRequestAnno pageRequest,
-                                         @Body Map<String, Object> param) {
+    public <T> AnnoResult<AnnoPage<T>> page(@Path String clazz,
+                                            @Body AnnoPageRequestAnno pageRequest,
+                                            @Body Map<String, Object> param) {
         return super.page(clazz, pageRequest, param);
     }
 
@@ -167,7 +174,7 @@ public class DbController extends BaseDbController {
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
                                                                @Body AnnoTreesRequestAnno annoTreesRequest,
                                                                @Body AnnoTreeListRequestAnno annoTreeListRequestAnno,
-                                                               @Body Map<String, String> param) {
+                                                               @Body Map<String, Object> param) {
         return super.annoTrees(clazz, annoTreesRequest, annoTreeListRequestAnno, param);
     }
 
@@ -188,7 +195,7 @@ public class DbController extends BaseDbController {
     public <T> AnnoResult<List<Object>> annoTreeSelectData(@Path String clazz,
                                                            @Body AnnoTreesRequestAnno annoTreesRequest,
                                                            @Body AnnoTreeListRequestAnno treeListRequestAnno,
-                                                           @Body Map<String, String> param) {
+                                                           @Body Map<String, Object> param) {
         return super.annoTreeSelectData(clazz, annoTreesRequest, treeListRequestAnno, param);
     }
 

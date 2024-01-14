@@ -5,7 +5,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.annotation.Tran;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.test.base.BaseAppTest;
 
@@ -16,7 +16,7 @@ import site.sorghum.anno.test.base.BaseAppTest;
 public class UserTest extends BaseAppTest{
 
     @Inject
-    DbServiceWithProxy dbServiceWithProxy;
+    AnnoBaseService annoBaseService;
 
     @Db
     DbContext dbContext;
@@ -33,7 +33,7 @@ public class UserTest extends BaseAppTest{
         user.setEnable("0");
         user.setOrgId("abc");
         user.setPassword("123456");
-        dbServiceWithProxy.insert(user);
+        annoBaseService.insert(user);
 
     }
 }

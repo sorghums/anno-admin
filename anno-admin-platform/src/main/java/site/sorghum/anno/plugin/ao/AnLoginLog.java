@@ -10,7 +10,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
 
 import java.io.Serial;
@@ -45,7 +46,7 @@ public class AnLoginLog extends PrimaryKeyModel implements Serializable {
         title = "用户",
         tableFieldName = "user_id",
         dataType = AnnoDataType.OPTIONS,
-        search = @AnnoSearch(queryType = DbCondition.QueryType.EQ),
+        search = @AnnoSearch(queryType = QueryType.EQ),
         optionType = @AnnoOptionType(
             optionAnno = @AnnoOptionType.OptionAnnoClass(
                 annoClass = AnUser.class

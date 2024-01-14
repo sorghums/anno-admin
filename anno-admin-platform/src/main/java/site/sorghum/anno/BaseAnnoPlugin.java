@@ -7,16 +7,18 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
-import site.sorghum.anno.db.param.DbCondition;
+import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.plugin.ao.*;
+import site.sorghum.anno.plugin.ao.AnAnnoMenu;
+import site.sorghum.anno.plugin.ao.AnOrg;
+import site.sorghum.anno.plugin.ao.AnPermission;
+import site.sorghum.anno.plugin.ao.AnRole;
+import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.ao.AnUserRole;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,66 +52,52 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 权限初始化
         List<AnPermission> anPermissions = getAnPermissions();
         for (AnPermission anPermission : anPermissions) {
-            AnPermission one = dbService.queryOne(
-                AnPermission.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anPermission.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnPermission.class).eq("id", anPermission.getId());
+            AnPermission one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anPermission);
             } else {
-                dbService.update(CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anPermission.getId()).build()
-                ), anPermission);
+                dbService.update(anPermission, criteria);
             }
         }
         // 菜单初始化
         List<AnAnnoMenu> anMenus = getAnMenus();
         for (AnAnnoMenu anMenu : anMenus) {
-            AnAnnoMenu one = dbService.queryOne(
-                AnAnnoMenu.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anMenu.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnAnnoMenu.class).eq("id", anMenu.getId());
+            AnAnnoMenu one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anMenu);
-            }else {
-                dbService.update(CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anMenu.getId()).build()
-                ), anMenu);
+            } else {
+                dbService.update(anMenu, criteria);
             }
         }
         // 组织初始化
         List<AnOrg> anOrgs = getAnOrgs();
         for (AnOrg anOrg : anOrgs) {
-            AnOrg one = dbService.queryOne(
-                AnOrg.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anOrg.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnOrg.class).eq("id", anOrg.getId());
+            AnOrg one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anOrg);
             } else {
-                dbService.update(CollUtil.newArrayList(DbCondition.builder().field("id").value(anOrg.getId()).build()), anOrg);
+                dbService.update(anOrg, criteria);
             }
         }
         // 角色初始化
         List<AnRole> anRoles = getAnRoles();
         for (AnRole anRole : anRoles) {
-            AnRole one = dbService.queryOne(
-                AnRole.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anRole.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnRole.class).eq("id", anRole.getId());
+            AnRole one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anRole);
             } else {
-                dbService.update(CollUtil.newArrayList(DbCondition.builder().field("id").value(anRole.getId()).build()), anRole);
+                dbService.update(anRole, criteria);
             }
         }
         // 管理用户初始化
         List<AnUser> anUsers = getAnUsers();
         for (AnUser anUser : anUsers) {
-            AnUser one = dbService.queryOne(
-                AnUser.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anUser.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnUser.class).eq("id", anUser.getId());
+            AnUser one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anUser);
             }
@@ -117,17 +105,15 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 用户角色初始化
         List<AnUserRole> anUserRoles = getAnUserRoles();
         for (AnUserRole anUserRole : anUserRoles) {
-            AnUserRole one = dbService.queryOne(
-                AnUserRole.class, CollUtil.newArrayList(
-                    DbCondition.builder().field("id").value(anUserRole.getId()).build()
-                ));
+            DbCriteria criteria = DbCriteria.ofClass(AnUserRole.class).eq("id", anUserRole.getId());
+            AnUserRole one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anUserRole);
             }
         }
     }
 
-    private List<AnPermission> getAnPermissions(){
+    private List<AnPermission> getAnPermissions() {
         AnPermission permission1 = new AnPermission();
         permission1.setId("an_api_doc");
         permission1.setName("接口文档");
@@ -135,7 +121,8 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         permission1.setCreateTime(LocalDateTime.now());
         return CollUtil.newArrayList(permission1);
     }
-    private List<AnAnnoMenu> getAnMenus(){
+
+    private List<AnAnnoMenu> getAnMenus() {
         AnAnnoMenu menu1 = new AnAnnoMenu();
         menu1.setId("10");
         menu1.setParentId("");
@@ -260,7 +247,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         );
     }
 
-    private List<AnOrg> getAnOrgs(){
+    private List<AnOrg> getAnOrgs() {
         AnOrg org = new AnOrg();
         org.setId("1674391485808001024");
         org.setOrgName("标准组织");
@@ -272,7 +259,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         return CollUtil.newArrayList(org);
     }
 
-    private List<AnRole> getAnRoles(){
+    private List<AnRole> getAnRoles() {
         AnRole role = new AnRole();
         role.setId("admin");
         role.setRoleName("超级管理员（默认所有权限）");
@@ -288,7 +275,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
     }
 
 
-    private List<AnUser> getAnUsers(){
+    private List<AnUser> getAnUsers() {
         AnUser user = new AnUser();
         user.setId("1666356287765979136");
         user.setAvatar("https://solon.noear.org/img/solon/favicon.png");
@@ -306,7 +293,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         return CollUtil.newArrayList(user);
     }
 
-    private List<AnUserRole> getAnUserRoles(){
+    private List<AnUserRole> getAnUserRoles() {
         AnUserRole userRole = new AnUserRole();
         userRole.setId("1674390418047348736");
         userRole.setRoleId("admin");

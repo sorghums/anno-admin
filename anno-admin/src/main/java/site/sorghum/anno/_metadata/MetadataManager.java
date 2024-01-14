@@ -1,21 +1,18 @@
 package site.sorghum.anno._metadata;
 
-import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.util.AnnoTableParamCache;
-import site.sorghum.anno.db.param.RemoveParam;
-import site.sorghum.anno.db.param.TableParam;
+import site.sorghum.anno.db.DbTableContext;
+import site.sorghum.anno.db.TableParam;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * 元数据管理
@@ -35,6 +32,8 @@ public class MetadataManager {
 
     @Inject
     private EntityMetadataLoader entityMetadataLoader;
+    @Inject
+    DbTableContext dbTableContext;
 
     /**
      * 从实体类中加载元数据，已存在的实体不会重复加载
@@ -81,32 +80,6 @@ public class MetadataManager {
 
     protected void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
-        TableParam<?> tableParam = new TableParam<>();
-
-        tableParam.setClazz(entity.getClazz());
-        tableParam.setTableName(entity.getTableName());
-        List<String> columns = entity.getDbAnFields().stream().map(AnField::getTableFieldName).collect(Collectors.toList());
-        tableParam.setColumns(columns);
-        if (entity.getRemoveType() == 0) {
-            tableParam.setRemoveParam(new RemoveParam());
-        } else {
-            tableParam.setRemoveParam(new RemoveParam(true, entity.getRemoveField(), entity.getRemoveValue(), entity.getNotRemoveValue()));
-        }
-        // 设置是否虚拟表
-        tableParam.setVirtualTable(entity.isVirtualTable());
-        // 设置连表信息
-        if (entity.getJoinTable() != null){
-            String mainTableName = entity.getJoinTable().getMainTable();
-            if (StrUtil.isNotBlank(entity.getJoinTable().getMainAlias())){
-                mainTableName = entity.getJoinTable().getMainTable() + " as " + entity.getJoinTable().getMainAlias();
-            }
-            tableParam.setTableName(mainTableName);
-            List<TableParam.JoinTable> joinTables = entity.getJoinTable().getJoinTables().stream()
-                .map(joinTable -> new TableParam.JoinTable(joinTable.getTable(), joinTable.getAlias(), joinTable.getJoinType(), joinTable.getJoinCondition()))
-                .toList();
-            tableParam.setJoinTables(joinTables);
-        }
-        AnnoTableParamCache.put(entity.getEntityName(), tableParam);
     }
 
     /**
@@ -116,7 +89,7 @@ public class MetadataManager {
      * @return {@link TableParam}
      */
     public TableParam getTableParam(String entityName) {
-        return AnnoTableParamCache.get(entityName);
+        return dbTableContext.getTableParam(entityName);
     }
 
     /**
@@ -127,7 +100,7 @@ public class MetadataManager {
      */
     public TableParam getTableParam(Class<?> clazz) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
-        return AnnoTableParamCache.get(entityName);
+        return dbTableContext.getTableParam(entityName);
     }
 
     /**
@@ -137,7 +110,7 @@ public class MetadataManager {
      */
     public TableParam getTableParamImmutable(Class<?> clazz) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
-        return AnnoTableParamCache.getImmutable(entityName);
+        return dbTableContext.getTableParamImmutable(entityName);
     }
 
     /**

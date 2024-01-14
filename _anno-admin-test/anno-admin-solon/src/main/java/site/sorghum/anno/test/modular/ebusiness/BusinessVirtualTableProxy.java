@@ -7,8 +7,7 @@ import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbCriteria;
 
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     }
 
     @Override
-    public void beforeUpdate(List<DbCondition> dbConditions, BusinessVirtualTable data) {
+    public void beforeUpdate(BusinessVirtualTable data, DbCriteria criteria) {
         log.info("beforeUpdate: {}", data);
     }
 
@@ -52,23 +51,23 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     }
 
     @Override
-    public void beforeDelete(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions) {
-        log.info("beforeDelete: {}", dbConditions);
+    public void beforeDelete(DbCriteria criteria) {
+        log.info("beforeDelete: {}", criteria);
     }
 
     @Override
-    public void afterDelete(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions) {
-        log.info("afterDelete: {}", dbConditions);
+    public void afterDelete(DbCriteria criteria) {
+        log.info("afterDelete: {}", criteria);
     }
 
     @Override
-    public void beforeFetch(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
-        log.info("beforeFetch: {}", dbConditions);
+    public void beforeFetch(DbCriteria criteria) {
+        log.info("beforeFetch: {}", criteria);
     }
 
     @SneakyThrows
     @Override
-    public void afterFetch(Class<BusinessVirtualTable> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<BusinessVirtualTable> page) {
+    public void afterFetch(DbCriteria criteria, AnnoPage<BusinessVirtualTable> page) {
         log.info("afterFetch: {}", page);
         // 自定义复杂SQL查询
         List<BusinessVirtualTable> businessProduct = dbContext.table("business_product").selectList("*", BusinessVirtualTable.class);

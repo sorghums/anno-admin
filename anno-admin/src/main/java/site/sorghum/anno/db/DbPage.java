@@ -1,4 +1,4 @@
-package site.sorghum.anno.db.param;
+package site.sorghum.anno.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageParam {
+public class DbPage {
     /**
      * 页码，从 1 开始
      */
@@ -27,8 +27,8 @@ public class PageParam {
         return (page - 1) * pageSize;
     }
 
-    public static PageParam of(int page, int limit) {
-        return new PageParam(page, limit);
+    public static DbPage of(int page, int pageSize) {
+        return new DbPage(page, pageSize);
     }
 
 }

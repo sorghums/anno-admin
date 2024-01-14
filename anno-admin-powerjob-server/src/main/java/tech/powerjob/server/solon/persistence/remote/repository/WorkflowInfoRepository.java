@@ -2,7 +2,7 @@ package tech.powerjob.server.solon.persistence.remote.repository;
 
 import org.noear.wood.IPage;
 import org.noear.wood.xml.Namespace;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 import tech.powerjob.server.solon.persistence.remote.model.WorkflowInfoDO;
 
@@ -38,17 +38,17 @@ public interface WorkflowInfoRepository extends AnnoBaseMapper<WorkflowInfoDO> {
     /**
      * 对外查询（list）三兄弟
      */
-    default IPage<WorkflowInfoDO> findByAppIdAndStatusNot(Long appId, int nStatus, PageParam page) {
+    default IPage<WorkflowInfoDO> findByAppIdAndStatusNot(Long appId, int nStatus, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(),
             m -> m.whereEq("app_id", appId).andNeq("status", nStatus));
     }
 
-    default IPage<WorkflowInfoDO> findByIdAndStatusNot(String id, int nStatus, PageParam page) {
+    default IPage<WorkflowInfoDO> findByIdAndStatusNot(String id, int nStatus, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(),
             m -> m.whereEq("id", id).andNeq("status", nStatus));
     }
 
-    default IPage<WorkflowInfoDO> findByAppIdAndStatusNotAndWfNameLike(String appId, int nStatus, String condition, PageParam page) {
+    default IPage<WorkflowInfoDO> findByAppIdAndStatusNotAndWfNameLike(String appId, int nStatus, String condition, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(),
             m -> m.whereEq("app_id", appId).andNeq("status", nStatus).andLk("wf_name", condition));
     }

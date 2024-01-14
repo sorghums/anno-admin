@@ -1,4 +1,4 @@
-package site.sorghum.anno.db.param;
+package site.sorghum.anno.db;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RemoveParam {
+public class DbRemove {
     /**
      * 是否逻辑删除
      */

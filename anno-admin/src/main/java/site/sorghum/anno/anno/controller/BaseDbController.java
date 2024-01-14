@@ -1,33 +1,43 @@
 package site.sorghum.anno.anno.controller;
 
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.wood.IPage;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._metadata.*;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.AnOrder;
+import site.sorghum.anno._metadata.AnnoJavaCmd;
+import site.sorghum.anno._metadata.AnnoMtm;
+import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
-import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
-import site.sorghum.anno.anno.util.*;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
-import site.sorghum.anno.db.param.TableParam;
-import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.anno.util.QuerySqlCache;
+import site.sorghum.anno.anno.util.Utils;
+import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.DbTableContext;
+import site.sorghum.anno.db.QueryType;
+import site.sorghum.anno.db.TableParam;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -40,21 +50,22 @@ import java.util.stream.Collectors;
 public class BaseDbController {
 
     @Inject
-    @Named("dbServiceWithProxy")
-    DbService dbService;
+    AnnoBaseService baseService;
 
     @Inject
     MetadataManager metadataManager;
 
     @Inject
     PermissionProxy permissionProxy;
+    @Inject
+    DbTableContext dbTableContext;
 
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql){
+    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
         if (StrUtil.isEmpty(actualSql)) {
             return AnnoResult.failure("sql 不存在,请检查相关配置项");
         }
-        List<Map<String, Object>> mapList = dbService.sql2MapList(actualSql);
+        List<Map<String, Object>> mapList = baseService.sql2MapList(actualSql);
         List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
             mapList, "label", "id", "pid"
         );
@@ -64,12 +75,10 @@ public class BaseDbController {
 
     /**
      * 分页查询
-     *
-     * @return {@link AnnoResult}<{@link IPage}<{@link T}>>
      */
-    public <T> AnnoResult<IPage<T>> page(String clazz,
-                                         AnnoPageRequestAnno pageRequest,
-                                         Map<String, Object> param) {
+    public <T> AnnoResult<AnnoPage<T>> page(String clazz,
+                                            AnnoPageRequestAnno pageRequest,
+                                            Map<String, Object> param) {
         List<String> nullKeys = pageRequest.getNullKeys();
         List<AnOrder> anOrderList = pageRequest.getAnOrderList();
         AnEntity entity = metadataManager.getEntity(clazz);
@@ -86,30 +95,28 @@ public class BaseDbController {
             String joinThisClazzFieldSql = annoMtm.getM2mJoinThisClazzFieldSql();
             andSql = joinThisClazzFieldSql + inPrefix + m2mSql + ")";
         }
-        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, entity.getClazz());
+        DbCriteria criteria = AnnoUtil.simpleEntity2conditions(entity, param);
         if (andSql != null) {
-            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
+            criteria.condition().create(andSql, QueryType.CUSTOM);
         }
         for (AnOrder anOrder : anOrderList) {
-            dbConditions.add(new DbCondition(DbCondition.QueryType.ORDER_BY,null,entity.getField(anOrder.getOrderValue()).getTableFieldName(),anOrder.getOrderType()));
+            criteria.order().orderBy(anOrder.getOrderType(), entity.getField(anOrder.getOrderValue()).getTableFieldName());
         }
         for (String nullKey : nullKeys) {
-            dbConditions.add(
-                DbCondition.builder().
-                    field(AnnoFieldCache.getSqlColumnByJavaName(entity.getClazz(),nullKey)).
-                    andOr(DbCondition.AndOr.AND).build());
+            criteria.condition().create(entity.getField(nullKey).getTableFieldName(), QueryType.IS_NULL);
         }
-        IPage<T> pageRes = (IPage<T>) dbService.page(entity.getClazz(), dbConditions, new PageParam(pageRequest.getPage(), pageRequest.getPageSize()));
+        criteria.page(pageRequest.getPage(), pageRequest.getPageSize());
+        AnnoPage<T> pageRes = baseService.page(criteria);
         return AnnoResult.succeed(pageRes);
     }
 
     public <T> AnnoResult<T> save(String clazz, Map<String, Object> param) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
 
-        TableParam<T> tableParam = (TableParam<T>) AnnoTableParamCache.get(clazz);
+        TableParam<T> tableParam = (TableParam<T>) dbTableContext.getTableParam(clazz);
 
         T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
-        dbService.insert(t);
+        baseService.insert(t);
         return AnnoResult.succeed();
     }
 
@@ -125,7 +132,7 @@ public class BaseDbController {
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
         }
-        T queryOne = (T) dbService.queryOne(anEntity.getClazz(), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
+        T queryOne = baseService.queryOne(DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), id));
         return AnnoResult.succeed(queryOne);
     }
 
@@ -141,7 +148,7 @@ public class BaseDbController {
         permissionProxy.checkPermission(anEntity, PermissionProxy.DELETE);
 
         AnField pkField = anEntity.getPkField();
-        dbService.delete(anEntity.getClazz(), CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(id).build()));
+        baseService.delete(DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), id));
         return AnnoResult.succeed("删除成功");
     }
 
@@ -154,7 +161,7 @@ public class BaseDbController {
 
         AnField pkField = anEntity.getPkField();
         T bean = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
-        dbService.update(CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()), bean);
+        baseService.update(bean, DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
         return AnnoResult.succeed();
     }
 
@@ -167,72 +174,49 @@ public class BaseDbController {
         }
         if (ReflectUtil.getFieldValue(data, pkField.getFieldName()) == null) {
             permissionProxy.checkPermission(anEntity, PermissionProxy.ADD);
-            dbService.insert(data);
+            baseService.insert(data);
         } else {
             permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
-            dbService.update(CollUtil.newArrayList(DbCondition.builder().field(pkField.getTableFieldName()).value(param.get(pkField.getFieldName())).build()), data);
+            baseService.update(data, DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
         }
         return AnnoResult.succeed(data);
     }
 
     public <T> AnnoResult<T> removeRelation(String clazz, Map<String, Object> param) throws SQLException {
-        permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.DELETE);
+        AnEntity entity = metadataManager.getEntity(clazz);
+        permissionProxy.checkPermission(entity, PermissionProxy.DELETE);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
         AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
         String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
-        List<String> targetValue = MapUtil.get(param,"targetJoinValue",List.class);
-        String thisValue = MapUtil.getStr(param,"thisJoinValue");
+        List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
+        String thisValue = MapUtil.getStr(param, "thisJoinValue");
         String mediumThisField = annoMtm.getM2mMediumThisFieldSql();
-        ArrayList<DbCondition> dbConditions = CollUtil.newArrayList(
-            DbCondition.builder().field(mediumOtherFieldSql).value(targetValue).type(DbCondition.QueryType.IN).build(),
-            DbCondition.builder().field(mediumThisField).value(thisValue).build()
-        );
-        dbService.delete(mediumEntity.getClazz(), dbConditions);
+        DbCriteria criteria = DbCriteria.of(mediumEntity)
+            .in(mediumOtherFieldSql, targetValue)
+            .eq(mediumThisField, thisValue);
+        baseService.delete(criteria);
         return AnnoResult.succeed();
     }
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
                                                                AnnoTreesRequestAnno annoTreesRequest,
                                                                AnnoTreeListRequestAnno treeListRequestAnno,
-                                                               Map<String, String> param) {
+                                                               Map<String, Object> param) {
         List<T> list = queryTreeList(clazz, treeListRequestAnno, param);
         List<AnnoTreeDTO<String>> annoTreeDTOList = null;
         if (annoTreesRequest.hasFrontSetKey()) {
             annoTreeDTOList = Utils.toTrees(list, annoTreesRequest.getIdKey(), annoTreesRequest.getLabelKey());
-        }else {
+        } else {
             annoTreeDTOList = Utils.toTrees(list);
         }
         annoTreeDTOList.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
         return AnnoResult.succeed(annoTreeDTOList);
     }
 
-    private <T> List<T> queryTreeList(String clazz, boolean ignoreM2m, boolean reverseM2m, Map<String, String> param) {
-        permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.VIEW);
-
-        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
-        String annoM2mId = MapUtil.getStr(param, "annoM2mId");
-        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        String m2mSql = Utils.m2mSql(annoMtm, param.get("joinValue"));
-        String andSql = null;
-        String inPrefix = " in (";
-        if (reverseM2m) {
-            inPrefix = " not in (";
-        }
-        if (StrUtil.isNotEmpty(m2mSql) && !ignoreM2m) {
-            String joinThisClazzField = annoMtm.getM2mJoinThisClazzFieldSql();
-            andSql = joinThisClazzField + inPrefix + m2mSql + ")";
-        }
-        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
-        if (andSql != null) {
-            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
-        }
-        return dbService.list(tableParam.getClazz(), dbConditions);
-    }
-
-    private <T> List<T> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, String> param) {
-        permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.VIEW);
-        TableParam<T> tableParam = (TableParam<T>) metadataManager.getTableParam(clazz);
+    private <T> List<T> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, Object> param) {
+        AnEntity anEntity = metadataManager.getEntity(clazz);
+        permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
         AnnoMtm annoMtm = annoTreeListRequestAnno.getAnnoMtm();
         String m2mSql = Utils.m2mSql(annoMtm, annoTreeListRequestAnno.getJoinValue());
         String andSql = null;
@@ -244,18 +228,16 @@ public class BaseDbController {
             String joinThisClazzField = annoMtm.getM2mJoinThisClazzFieldSql();
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
-        List<DbCondition> dbConditions = AnnoUtil.simpleEntity2conditions(param, tableParam.getClazz());
-        if (andSql != null) {
-            dbConditions.add(DbCondition.builder().type(DbCondition.QueryType.CUSTOM).field(andSql).build());
-        }
-        return dbService.list(tableParam.getClazz(), dbConditions);
+        DbCriteria criteria = AnnoUtil.simpleEntity2conditions(anEntity, param);
+        criteria.addCondition(andSql, QueryType.CUSTOM);
+        return baseService.list(criteria);
     }
 
 
     public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
                                                            AnnoTreesRequestAnno annoTreesRequest,
                                                            AnnoTreeListRequestAnno treeListRequestAnno,
-                                                           Map<String, String> param) {
+                                                           Map<String, Object> param) {
         List<Object> list = queryTreeList(clazz, treeListRequestAnno, param);
         if (list == null || list.isEmpty()) {
             return AnnoResult.succeed(Collections.emptyList());
@@ -269,11 +251,11 @@ public class BaseDbController {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        if(Objects.isNull(annoMtm)){
+        if (Objects.isNull(annoMtm)) {
             throw new BizException("未找到对应的多对多数据!");
         }
         // 中间表
-        Class<?> mediumTableClazz = metadataManager.getEntity(annoMtm.getM2mMediumTableClass()).getClazz();
+        AnEntity entity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
         String[] split;
         Object ids = param.get("targetJoinValue");
         // 字段一
@@ -292,16 +274,14 @@ public class BaseDbController {
         }
         if (clearAll) {
             // 物理删除
-            dbService.delete(mediumTableClazz, CollUtil.newArrayList(
-                DbCondition.builder().field(mediumThisFieldSql).value(mediumThisValue).build()
-            ));
+            baseService.delete(DbCriteria.of(entity).eq(mediumThisFieldSql, mediumThisValue));
         }
         for (String mediumTargetValue : split) {
             Map<String, Object> addValue = new HashMap<>() {{
                 put(annoMtm.getM2mMediumThisField(), mediumThisValue);
                 put(annoMtm.getM2mMediumTargetField(), mediumTargetValue);
             }};
-            dbService.insert(JSONUtil.toBean(addValue, mediumTableClazz));
+            baseService.insert(JSONUtil.toBean(addValue, entity.getClazz()));
         }
         return AnnoResult.succeed();
     }
@@ -311,10 +291,10 @@ public class BaseDbController {
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
         AnnoJavaCmd annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
-        if (annoJavaCmd == null){
+        if (annoJavaCmd == null) {
             return AnnoResult.failure("未找到对应的JavaCmd数据!");
         }
-        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())){
+        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())) {
             permissionProxy.checkPermission(entity, annoJavaCmd.getPermissionCode());
         }
 

@@ -3,7 +3,6 @@ package site.sorghum.anno;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ReflectUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.dami.Dami;
@@ -11,12 +10,10 @@ import org.noear.wood.WoodConfig;
 import org.noear.wood.wrap.NamingStrategy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;
-import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.anno.proxy.DbServiceWithProxy;
+import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
-import site.sorghum.anno.db.interfaces.AnnoAdminCoreFunctions;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
 import java.lang.reflect.Field;
@@ -43,12 +40,6 @@ public class AnnoCorePlugin extends AnnoPlugin {
 
     @Override
     public void run() {
-        AnnoAdminCoreFunctions.tableParamFetchFunction = AnnoBeanUtils.metadataManager()::getTableParam;
-        AnnoAdminCoreFunctions.sqlFieldCanClearFunction = (clazz, sqlFieldName) -> {
-            AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(clazz);
-            return entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(clazz, sqlFieldName)).isEditCanClear();
-        };
-        AnnoAdminCoreFunctions.sqlFieldToJavaFieldFunction = (clazz, sqlFieldName) -> ReflectUtil.getField(clazz, AnnoFieldCache.getFieldNameBySqlColumn(clazz, sqlFieldName));
         WoodConfig.onExecuteBef((cmd) -> {
             if (AnnoContextUtil.hasContext()) {
                 ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
@@ -93,7 +84,7 @@ public class AnnoCorePlugin extends AnnoPlugin {
                 continue;
             }
             for (String entityName : proxy.supportEntities()) {
-                Dami.api().registerListener(DbServiceWithProxy.BASE_ENTITY_TOPIC + entityName + "**", proxy.index(), proxy);
+                Dami.api().registerListener(AnnoBaseService.BASE_ENTITY_TOPIC + entityName + "**", proxy.index(), proxy);
             }
         }
     }

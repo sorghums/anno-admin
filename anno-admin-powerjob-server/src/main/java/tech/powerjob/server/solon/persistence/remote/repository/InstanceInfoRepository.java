@@ -4,7 +4,7 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import org.noear.wood.IPage;
 import org.noear.wood.xml.Namespace;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.server.solon.persistence.remote.model.InstanceInfoDO;
@@ -126,13 +126,13 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
         return update(instanceInfo, m -> m.whereEq("instance_id", instanceId));
     }
 
-    default List<InstanceInfoDO> findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(List<String> appIds, int status, long time, PageParam page) {
+    default List<InstanceInfoDO> findAllByAppIdInAndStatusAndExpectedTriggerTimeLessThan(List<String> appIds, int status, long time, DbPage page) {
         IPage<InstanceInfoDO> selectedPage = selectPage(page.getPage(), page.getPageSize(),
             m -> m.whereIn("app_id", appIds).andEq("status", status).andLt("expected_trigger_time", time));
         return selectedPage.getList();
     }
 
-    default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(List<String> appIds, int status, long time, PageParam page) {
+    default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndActualTriggerTimeLessThan(List<String> appIds, int status, long time, DbPage page) {
         try {
             return db().table("pj_instance_info")
                 .whereIn("app_id", appIds)
@@ -145,7 +145,7 @@ public interface InstanceInfoRepository extends AnnoBaseMapper<InstanceInfoDO> {
         }
     }
 
-    default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(List<String> appIds, int status, Date time, PageParam page) {
+    default List<BriefInstanceInfo> selectBriefInfoByAppIdInAndStatusAndGmtModifiedBefore(List<String> appIds, int status, Date time, DbPage page) {
         try {
             return db().table("pj_instance_info")
                 .whereIn("app_id", appIds)

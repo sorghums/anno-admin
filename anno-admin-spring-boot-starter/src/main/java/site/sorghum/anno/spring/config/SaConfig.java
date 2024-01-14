@@ -45,8 +45,10 @@ public class SaConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
         registry.addInterceptor(new SaInterceptor(handle -> AnnoStpUtil.checkLogin()))
-            .addPathPatterns("/**")
+            .addPathPatterns(AnnoConstants.BASE_URL + "/**")
             .excludePathPatterns(AnnoConstants.BASE_URL + "/favicon.ico")
+            .excludePathPatterns(AnnoConstants.BASE_URL + "/_app.config.js")
+            .excludePathPatterns(AnnoConstants.BASE_URL + "/logo.png")
             .excludePathPatterns(AnnoConstants.BASE_URL + "/assets/**")
             .excludePathPatterns(AnnoConstants.BASE_URL + "/index.html");
     }

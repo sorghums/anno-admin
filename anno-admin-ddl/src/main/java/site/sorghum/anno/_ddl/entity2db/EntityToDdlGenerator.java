@@ -123,8 +123,8 @@ public class EntityToDdlGenerator<T> {
         List<String> tableAddedColumnDDL = getTableAddedColumnDDL(entity);
         try {
             for (String ddl : tableAddedColumnDDL) {
-                dbContext.exe(ddl);
                 log.info("exe column ddl ==> {}", ddl);
+                dbContext.exe(ddl);
             }
         } catch (Exception e) {
             throw new DdlException(e);

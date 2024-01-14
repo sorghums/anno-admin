@@ -4,8 +4,9 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.DbPage;
 
 import java.util.List;
 
@@ -36,8 +37,8 @@ public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public void beforeUpdate(List<DbCondition> dbConditions, T data) {
-        AnnoBaseProxy.super.beforeUpdate(dbConditions, data);
+    public void beforeUpdate(T data, DbCriteria criteria) {
+        AnnoBaseProxy.super.beforeUpdate(data, criteria);
     }
 
     @Override
@@ -46,22 +47,22 @@ public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
     }
 
     @Override
-    public void beforeDelete(Class<T> tClass, List<DbCondition> dbConditions) {
-        AnnoBaseProxy.super.beforeDelete(tClass, dbConditions);
+    public void beforeDelete(DbCriteria criteria) {
+        AnnoBaseProxy.super.beforeDelete(criteria);
     }
 
     @Override
-    public void afterDelete(Class<T> tClass, List<DbCondition> dbConditions) {
-        AnnoBaseProxy.super.afterDelete(tClass, dbConditions);
+    public void afterDelete(DbCriteria criteria) {
+        AnnoBaseProxy.super.afterDelete(criteria);
     }
 
     @Override
-    public void beforeFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam) {
-        AnnoBaseProxy.super.beforeFetch(tClass, dbConditions, pageParam);
+    public void beforeFetch(DbCriteria criteria) {
+        AnnoBaseProxy.super.beforeFetch(criteria);
     }
 
     @Override
-    public void afterFetch(Class<T> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<T> page) {
-        AnnoBaseProxy.super.afterFetch(tClass, dbConditions, pageParam, page);
+    public void afterFetch(DbCriteria criteria, AnnoPage<T> page) {
+        AnnoBaseProxy.super.afterFetch(criteria, page);
     }
 }

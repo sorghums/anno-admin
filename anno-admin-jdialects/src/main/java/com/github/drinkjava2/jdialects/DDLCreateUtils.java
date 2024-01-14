@@ -269,7 +269,7 @@ public class DDLCreateUtils {// NOSONAR
         			.throwEX("Type not set on column \"" + c.getColumnName() + "\" at table \"" + tableName + "\"");
 
         // column definition
-        buf.append(c.getColumnName()).append(" ");
+        buf.append(dialect.checkNotEmptyReservedWords(c.getColumnName(), "Column name", tableName)).append(" ");
 
         // Identity
         if (GenerationType.IDENTITY.equals(c.getIdGenerationType()) && !features.supportsIdentityColumns)

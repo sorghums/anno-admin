@@ -3,7 +3,7 @@ package tech.powerjob.server.solon.persistence.remote.repository;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Sql;
 import org.noear.wood.xml.Namespace;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
 
@@ -23,7 +23,7 @@ public interface AppInfoRepository extends AnnoBaseMapper<AppInfoDO> {
         return Optional.ofNullable(selectItem(m -> m.whereEq("app_name", appName)));
     }
 
-    default IPage<AppInfoDO> findByAppNameLike(String condition, PageParam page) {
+    default IPage<AppInfoDO> findByAppNameLike(String condition, DbPage page) {
         return selectPage(page.getOffset(), page.getPageSize(), m -> m.whereLk("app_name", condition));
     }
 

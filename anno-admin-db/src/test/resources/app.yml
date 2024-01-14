@@ -1,6 +1,0 @@
-db.main:
-  schema: anno_admin
-  jdbcUrl: jdbc:mysql://127.0.0.1:3306/anno_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-  driverClassName: com.mysql.cj.jdbc.Driver
-  username: root
-  password: 123456

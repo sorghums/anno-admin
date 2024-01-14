@@ -7,8 +7,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.param.DbCondition;
-import site.sorghum.anno.db.param.PageParam;
+import site.sorghum.anno.db.DbCriteria;
 import tech.powerjob.common.enums.DispatchStrategy;
 import tech.powerjob.common.enums.TimeExpressionType;
 import tech.powerjob.common.model.LifeCycle;
@@ -19,7 +18,6 @@ import tech.powerjob.server.solon.core.service.impl.job.JobServiceImpl;
 import tech.powerjob.server.solon.persistence.remote.model.JobInfoDO;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author songyinyin
@@ -48,14 +46,14 @@ public class JobInfoProxy implements AnnoBaseProxy<JobInfoDO> {
     }
 
     @Override
-    public void beforeUpdate(List<DbCondition> dbConditions, JobInfoDO data) {
+    public void beforeUpdate(JobInfoDO data, DbCriteria criteria) {
         fillDefaultValue(data);
         processVirtualColumn(data);
         validAndCalculate(data);
     }
 
     @Override
-    public void afterFetch(Class<JobInfoDO> tClass, List<DbCondition> dbConditions, PageParam pageParam, AnnoPage<JobInfoDO> page) {
+    public void afterFetch(DbCriteria criteria, AnnoPage<JobInfoDO> page) {
         for (JobInfoDO data : page.getList()) {
             String logConfig = data.getLogConfig();
             if (StrUtil.isNotBlank(logConfig)) {
