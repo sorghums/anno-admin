@@ -33,20 +33,20 @@ public class DbCriteria {
      */
     private DbPage page;
 
-    public static DbCriteria of(AnEntity entity) {
+    public static DbCriteria from(AnEntity entity) {
         DbCriteria criteria = new DbCriteria();
         criteria.setEntityName(entity.getEntityName());
         criteria.setTableName(entity.getTableName());
         return criteria;
     }
 
-    public static DbCriteria ofObject(Object entityData) {
+    public static DbCriteria fromObject(Object entityData) {
         DbCriteria criteria = new DbCriteria();
         criteria.setEntityName(AnnoBeanUtils.getBean(EntityMetadataLoader.class).getEntityName(entityData.getClass()));
         return criteria;
     }
 
-    public static DbCriteria ofClass(Class<?> entityClass) {
+    public static DbCriteria fromClass(Class<?> entityClass) {
         DbCriteria criteria = new DbCriteria();
         criteria.setEntityName(AnnoBeanUtils.getBean(EntityMetadataLoader.class).getEntityName(entityClass));
         return criteria;

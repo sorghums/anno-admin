@@ -52,7 +52,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 权限初始化
         List<AnPermission> anPermissions = getAnPermissions();
         for (AnPermission anPermission : anPermissions) {
-            DbCriteria criteria = DbCriteria.ofClass(AnPermission.class).eq("id", anPermission.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnPermission.class).eq("id", anPermission.getId());
             AnPermission one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anPermission);
@@ -63,7 +63,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 菜单初始化
         List<AnAnnoMenu> anMenus = getAnMenus();
         for (AnAnnoMenu anMenu : anMenus) {
-            DbCriteria criteria = DbCriteria.ofClass(AnAnnoMenu.class).eq("id", anMenu.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnAnnoMenu.class).eq("id", anMenu.getId());
             AnAnnoMenu one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anMenu);
@@ -74,7 +74,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 组织初始化
         List<AnOrg> anOrgs = getAnOrgs();
         for (AnOrg anOrg : anOrgs) {
-            DbCriteria criteria = DbCriteria.ofClass(AnOrg.class).eq("id", anOrg.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnOrg.class).eq("id", anOrg.getId());
             AnOrg one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anOrg);
@@ -85,7 +85,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 角色初始化
         List<AnRole> anRoles = getAnRoles();
         for (AnRole anRole : anRoles) {
-            DbCriteria criteria = DbCriteria.ofClass(AnRole.class).eq("id", anRole.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnRole.class).eq("id", anRole.getId());
             AnRole one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anRole);
@@ -96,7 +96,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 管理用户初始化
         List<AnUser> anUsers = getAnUsers();
         for (AnUser anUser : anUsers) {
-            DbCriteria criteria = DbCriteria.ofClass(AnUser.class).eq("id", anUser.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnUser.class).eq("id", anUser.getId());
             AnUser one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anUser);
@@ -105,7 +105,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         // 用户角色初始化
         List<AnUserRole> anUserRoles = getAnUserRoles();
         for (AnUserRole anUserRole : anUserRoles) {
-            DbCriteria criteria = DbCriteria.ofClass(AnUserRole.class).eq("id", anUserRole.getId());
+            DbCriteria criteria = DbCriteria.fromClass(AnUserRole.class).eq("id", anUserRole.getId());
             AnUserRole one = dbService.queryOne(criteria);
             if (one == null) {
                 dbService.insert(anUserRole);

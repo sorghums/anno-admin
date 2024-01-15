@@ -27,10 +27,7 @@ import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbTableContext;
-import site.sorghum.anno.db.QueryType;
-import site.sorghum.anno.db.TableParam;
+import site.sorghum.anno.db.*;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -113,7 +110,7 @@ public class BaseDbController {
     public <T> AnnoResult<T> save(String clazz, Map<String, Object> param) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
 
-        TableParam<T> tableParam = (TableParam<T>) dbTableContext.getTableParam(clazz);
+        TableParam<T> tableParam = dbTableContext.getTableParam(clazz);
 
         T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
         baseService.insert(t);
@@ -132,7 +129,7 @@ public class BaseDbController {
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
         }
-        T queryOne = baseService.queryOne(DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), id));
+        T queryOne = baseService.queryOne(DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), id));
         return AnnoResult.succeed(queryOne);
     }
 
@@ -148,7 +145,7 @@ public class BaseDbController {
         permissionProxy.checkPermission(anEntity, PermissionProxy.DELETE);
 
         AnField pkField = anEntity.getPkField();
-        baseService.delete(DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), id));
+        baseService.delete(DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), id));
         return AnnoResult.succeed("删除成功");
     }
 
@@ -161,7 +158,7 @@ public class BaseDbController {
 
         AnField pkField = anEntity.getPkField();
         T bean = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
-        baseService.update(bean, DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
+        baseService.update(bean, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
         return AnnoResult.succeed();
     }
 
@@ -177,7 +174,7 @@ public class BaseDbController {
             baseService.insert(data);
         } else {
             permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
-            baseService.update(data, DbCriteria.of(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
+            baseService.update(data, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
         }
         return AnnoResult.succeed(data);
     }
@@ -192,7 +189,7 @@ public class BaseDbController {
         List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
         String thisValue = MapUtil.getStr(param, "thisJoinValue");
         String mediumThisField = annoMtm.getM2mMediumThisFieldSql();
-        DbCriteria criteria = DbCriteria.of(mediumEntity)
+        DbCriteria criteria = DbCriteria.from(mediumEntity)
             .in(mediumOtherFieldSql, targetValue)
             .eq(mediumThisField, thisValue);
         baseService.delete(criteria);
@@ -274,7 +271,7 @@ public class BaseDbController {
         }
         if (clearAll) {
             // 物理删除
-            baseService.delete(DbCriteria.of(entity).eq(mediumThisFieldSql, mediumThisValue));
+            baseService.delete(DbCriteria.from(entity).eq(mediumThisFieldSql, mediumThisValue));
         }
         for (String mediumTargetValue : split) {
             Map<String, Object> addValue = new HashMap<>() {{
@@ -304,7 +301,7 @@ public class BaseDbController {
     }
 
     private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
-        Map<String, Object> nParam = new HashMap<>();
+        Map<String, Object> nParam = new HashMap<>(param.size());
         for (String key : param.keySet()) {
             Object item = param.get(key);
             if (item instanceof String sItem) {

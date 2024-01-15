@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -15,7 +14,6 @@ import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnPluginMenu;
@@ -28,7 +26,6 @@ import site.sorghum.anno.plugin.dao.SysUserDao;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -332,7 +329,7 @@ public class AuthServiceImpl implements AuthService {
                         }
                     }
                     if (update == 1) {
-                        dbService.update(updateAnnoMenu, DbCriteria.of(metadataManager.getEntity(AnAnnoMenu.class)).eq("id", anAnnoMenu.getId()));
+                        dbService.update(updateAnnoMenu, DbCriteria.from(metadataManager.getEntity(AnAnnoMenu.class)).eq("id", anAnnoMenu.getId()));
                     }
                 }
 

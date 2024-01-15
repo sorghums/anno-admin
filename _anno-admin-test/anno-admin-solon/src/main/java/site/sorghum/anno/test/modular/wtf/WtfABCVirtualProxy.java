@@ -64,11 +64,11 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
         TableParam<BaseMetaModel> wtfCParam = metadataManager.getTableParam(WtfC.class);
 
 
-        dbService.update(new WtfA(data.name, data.age, null), DbCriteria.ofClass(WtfA.class).eq("id", data.getT3id()));
+        dbService.update(new WtfA(data.name, data.age, null), DbCriteria.fromClass(WtfA.class).eq("id", data.getT3id()));
 
-        dbService.update(new WtfB(data.attr, null, null), DbCriteria.ofClass(WtfB.class).eq("id", data.getT2id()));
+        dbService.update(new WtfB(data.attr, null, null), DbCriteria.fromClass(WtfB.class).eq("id", data.getT2id()));
 
-        dbService.update(new WtfC(data.location, null), DbCriteria.ofClass(WtfC.class).eq("id", data.getId()));
+        dbService.update(new WtfC(data.location, null), DbCriteria.fromClass(WtfC.class).eq("id", data.getId()));
 
     }
 

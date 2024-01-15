@@ -106,7 +106,7 @@ public class AnnoBaseService {
     }
 
     public <T> long insert(T t) {
-        DbCriteria criteria = DbCriteria.ofObject(t);
+        DbCriteria criteria = DbCriteria.fromObject(t);
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
