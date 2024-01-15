@@ -1,7 +1,9 @@
 package site.sorghum.anno.db;
 
 import lombok.Data;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.EntityMetadataLoader;
 
 import java.util.List;
 
@@ -40,13 +42,13 @@ public class DbCriteria {
 
     public static DbCriteria ofObject(Object entityData) {
         DbCriteria criteria = new DbCriteria();
-        criteria.setEntityName(entityData.getClass().getSimpleName());
+        criteria.setEntityName(AnnoBeanUtils.getBean(EntityMetadataLoader.class).getEntityName(entityData.getClass()));
         return criteria;
     }
 
     public static DbCriteria ofClass(Class<?> entityClass) {
         DbCriteria criteria = new DbCriteria();
-        criteria.setEntityName(entityClass.getSimpleName());
+        criteria.setEntityName(AnnoBeanUtils.getBean(EntityMetadataLoader.class).getEntityName(entityClass));
         return criteria;
     }
 
