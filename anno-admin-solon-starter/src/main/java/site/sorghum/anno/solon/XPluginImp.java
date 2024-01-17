@@ -38,6 +38,7 @@ import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
+import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
@@ -92,6 +93,11 @@ public class XPluginImp implements Plugin {
 
         // 加载 anno 元数据
         loadMetadata(context, packages);
+
+        // 方法模版初始化
+        for (String annoPackage :packages){
+            MethodTemplateManager.parse(annoPackage);
+        }
 
         // 前端静态文件
         StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
