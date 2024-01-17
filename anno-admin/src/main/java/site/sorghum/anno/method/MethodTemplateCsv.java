@@ -24,6 +24,11 @@ public class MethodTemplateCsv {
      */
     private boolean exclude;
 
+    /**
+     * 执行的条件表达式(Aviator)，方法的参数可以用p0,p1...表示，比如 mt.instanceofBaseMetaModel(p0)
+     */
+    private String condition;
+
     public String getBeanMethodName() {
         if (StrUtil.isBlank(methodName)) {
             return beanName;

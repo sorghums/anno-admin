@@ -24,13 +24,6 @@ public class BusinessVirtualTableProxy implements AnnoBaseProxy<BusinessVirtualT
     DbContext dbContext;
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(BusinessVirtualTable.class)
-        };
-    }
-
-    @Override
     public void beforeAdd(BusinessVirtualTable data) {
         log.info("beforeAdd: {}", data);
     }

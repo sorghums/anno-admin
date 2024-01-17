@@ -1,0 +1,3 @@
+index,beanName,methodName,exclude
+1,AllEntityProxy,,false
+10000,AnnoTransProxy,,false

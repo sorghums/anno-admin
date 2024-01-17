@@ -5,6 +5,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.googlecode.aviator.AviatorEvaluator;
+import com.googlecode.aviator.AviatorEvaluatorInstance;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
@@ -13,7 +15,12 @@ import org.noear.dami.DamiConfig;
 import org.noear.dami.bus.impl.RoutingPath;
 import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.solon.Solon;
-import org.noear.solon.core.*;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanBuilder;
+import org.noear.solon.core.BeanInjector;
+import org.noear.solon.core.BeanWrap;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.core.VarHolder;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
@@ -42,10 +49,16 @@ import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
+import site.sorghum.anno.utils.MTUtils;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Solon Anno-Admin 插件
@@ -56,6 +69,7 @@ import java.util.*;
 public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
     private static final String PLUGIN_BASE_PACKAGE = "site.sorghum.plugin";
+
     @Override
     public void start(AppContext context) throws Throwable {
 
@@ -95,9 +109,14 @@ public class XPluginImp implements Plugin {
         loadMetadata(context, packages);
 
         // 方法模版初始化
-        for (String annoPackage :packages){
+        for (String annoPackage : packages) {
             MethodTemplateManager.parse(annoPackage);
         }
+        // Aviator脚本
+        AviatorEvaluatorInstance instance = AviatorEvaluator.getInstance();
+        instance.useLRUExpressionCache(1000);
+        instance.addStaticFunctions("mt", MTUtils.class);
+        instance.addInstanceFunctions("s", String.class);
 
         // 前端静态文件
         StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
@@ -198,6 +217,9 @@ public class XPluginImp implements Plugin {
         public void doBuild(Class<?> clz, BeanWrap bw, Named anno) throws Throwable {
             if (StrUtil.isNotBlank(anno.value())) {
                 ReflectUtil.setFieldValue(bw, "name", anno.value());
+            } else {
+                // 默认给个名字
+                ReflectUtil.setFieldValue(bw, "name", StrUtil.lowerFirst(clz.getSimpleName()));
             }
 
             // 是否是typed

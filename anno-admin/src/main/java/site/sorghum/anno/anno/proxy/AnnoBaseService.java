@@ -13,6 +13,7 @@ import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.method.MethodTemplateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +153,6 @@ public class AnnoBaseService {
     }
 
     private <T> AnnoBaseProxy<T> getDamiProxy(String entityName) {
-        String damiEntityName = AnnoBaseProxy.clazzToDamiEntityName(metadataManager.getEntity(entityName).getClazz());
-        return Dami.api().createSender(BASE_ENTITY_TOPIC + damiEntityName, AnnoBaseProxy.class);
+        return (AnnoBaseProxy<T>) MethodTemplateManager.create(AnnoBaseProxy.class);
     }
 }

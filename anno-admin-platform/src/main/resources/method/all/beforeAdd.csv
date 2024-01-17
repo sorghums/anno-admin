@@ -1,0 +1,3 @@
+index,beanName,methodName,exclude,condition
+10,BaseAnnoPreProxy,,false,mt.instanceofBaseMetaModel(p0)
+20,BaseOrgAnnoPreProxy,,false,mt.instanceofBaseOrgMetaModel(p0)

@@ -30,13 +30,6 @@ public class BaseOrgAnnoPreProxy implements AnnoBaseProxy<BaseOrgMetaModel> {
     AnnoOrgManager annoOrgManager;
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(BaseOrgMetaModel.class)
-        };
-    }
-
-    @Override
     public void beforeAdd(BaseOrgMetaModel data) {
         if (!annoOrgManager.isIgnoreFilter(data.getClass())) {
             if (!annoOrgManager.getLoginOrg().equals(data.getOrgId())) {

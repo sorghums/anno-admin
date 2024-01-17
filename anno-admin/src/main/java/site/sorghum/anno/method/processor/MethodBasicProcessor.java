@@ -5,6 +5,7 @@ import lombok.Getter;
 import site.sorghum.anno.method.MTContext;
 import site.sorghum.anno.method.MTException;
 import site.sorghum.anno.method.MTProcessResult;
+import site.sorghum.anno.method.MTProcessorInfo;
 import site.sorghum.anno.method.MethodTemplateCsv;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,16 +27,16 @@ public class MethodBasicProcessor implements MTBasicProcessor{
     @Getter
     private Method method;
 
-    private final MethodTemplateCsv methodTemplateCsv;
+    private final MTProcessorInfo processorInfo;
 
-    public MethodBasicProcessor(Object bean, String methodName, MethodTemplateCsv methodTemplateCsv) {
+    public MethodBasicProcessor(Object bean, String methodName, MTProcessorInfo processorInfo) {
         this.bean = bean;
-        this.methodTemplateCsv = methodTemplateCsv;
+        this.processorInfo = processorInfo;
 
         Method[] methods = ClassUtil.getPublicMethods(bean.getClass());
         List<Method> methodList = new ArrayList<>();
         for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
+            if (method.getName().equals(methodName) && !method.isBridge()) {
                 methodList.add(method);
             }
         }
@@ -64,7 +65,7 @@ public class MethodBasicProcessor implements MTBasicProcessor{
     }
 
     @Override
-    public MethodTemplateCsv getMethodTemplateCsv() {
-        return methodTemplateCsv;
+    public MTProcessorInfo getProcessorInfo() {
+        return processorInfo;
     }
 }

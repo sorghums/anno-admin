@@ -19,13 +19,6 @@ import java.util.List;
 public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(AnAnnoMenu.class)
-        };
-    }
-
-    @Override
     public void beforeAdd(AnAnnoMenu data) {
         String parseData = null;
         // ------ 解析菜单解析 ------

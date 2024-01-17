@@ -1,16 +1,19 @@
 package site.sorghum.anno.method;
 
+import cn.hutool.core.util.StrUtil;
+import com.googlecode.aviator.AviatorEvaluator;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
-import site.sorghum.anno.method.processor.MTBasicProcessor;
 import site.sorghum.anno.method.processor.MethodBasicProcessor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,21 +41,30 @@ public class MethodTemplateInvocationHandler implements InvocationHandler {
         }
 
         MTContext mtContext = MTContext.of(method, args);
-        List<MTBasicProcessor> processors = MethodTemplateManager.getMethodProcessors(mtContext);
+        List<MethodBasicProcessor> processors = MethodTemplateManager.getMethodProcessors(mtContext);
         Object result = null;
-        for (MTBasicProcessor processor : processors) {
-            String taskName;
-            if (processor.getMethodTemplateCsv() == null) {
-                taskName = processor.getClass().getSimpleName();
-            } else {
-                if (processor instanceof MethodBasicProcessor methodBasicProcessor) {
-                    taskName = getMethodName(methodBasicProcessor.getMethod());
-                } else {
-                    taskName = processor.getMethodTemplateCsv().getBeanMethodName();
+        for (MethodBasicProcessor processor : processors) {
+            MTProcessorInfo processorInfo = processor.getProcessorInfo();
+            if (processorInfo != null && StrUtil.isNotBlank(processorInfo.getCondition())) {
+                Map<String, Object> env = new HashMap<>();
+                for (int i = 0; i < args.length; i++) {
+                    env.put("p" + i, args[i]);
+                }
+                Object execute = AviatorEvaluator.getInstance().execute(processorInfo.getCondition(), env);
+                // 如果不满足条件，不执行该部件
+                if (!Boolean.TRUE.equals(execute)) {
+                    continue;
                 }
             }
 
-            stopWatch.start(taskName);
+            String taskName;
+            if (processorInfo == null) {
+                taskName = processor.getClass().getSimpleName();
+            } else {
+                taskName = getMethodName(processor.getMethod());
+            }
+
+            stopWatch.start("MT :: " + taskName);
 
             MTProcessResult processResult = processor.process(mtContext);
             if (!processResult.isSuccess()) {

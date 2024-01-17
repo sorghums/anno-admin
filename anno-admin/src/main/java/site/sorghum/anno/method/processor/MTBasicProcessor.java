@@ -2,7 +2,7 @@ package site.sorghum.anno.method.processor;
 
 import site.sorghum.anno.method.MTContext;
 import site.sorghum.anno.method.MTProcessResult;
-import site.sorghum.anno.method.MethodTemplateCsv;
+import site.sorghum.anno.method.MTProcessorInfo;
 
 /**
  * 方法模版基类 处理器
@@ -14,7 +14,7 @@ public interface MTBasicProcessor {
 
     MTProcessResult process(MTContext context) throws Exception;
 
-    default MethodTemplateCsv getMethodTemplateCsv() {
+    default MTProcessorInfo getProcessorInfo() {
         return null;
     }
 }

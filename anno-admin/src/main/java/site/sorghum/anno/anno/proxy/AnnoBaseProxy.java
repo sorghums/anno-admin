@@ -2,6 +2,8 @@ package site.sorghum.anno.anno.proxy;
 
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.method.MethodTemplate;
+import site.sorghum.anno.method.route.EntityMethodRoute;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.List;
  * @author sorghum
  * @since 2023/05/20
  */
+@MethodTemplate(route = EntityMethodRoute.class)
 public interface AnnoBaseProxy<T> {
 
     /**
@@ -23,7 +26,7 @@ public interface AnnoBaseProxy<T> {
         return null;
     }
 
-    public static String clazzToDamiEntityName(Class<?> clazz) {
+    static String clazzToDamiEntityName(Class<?> clazz) {
         // 比如 AnAnnoMenuProxy 则返回 PrimaryKeyModel.BaseMetaModel.AnAnnoMenu 由最顶层的类名开始
         Class<?> clazzTemp = clazz;
         List<String> list = new ArrayList<>();

@@ -23,14 +23,6 @@ import java.time.LocalDateTime;
 public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(BaseMetaModel.class)
-        };
-    }
-
-
-    @Override
     public void beforeFetch(DbCriteria criteria) {
         log.debug("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
     }

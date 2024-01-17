@@ -23,13 +23,6 @@ public class AnnoTransProxy implements AnnoBaseProxy<Object> {
     AnnoTransService transService;
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(Object.class)
-        };
-    }
-
-    @Override
     public int index() {
         return Integer.MAX_VALUE;
     }

@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
 public @interface MethodTemplate {
 
     /**
-     * 定义组件执行的文件名，在 resources:method/ 目录下，需要唯一
+     * 定义组件执行的文件名，在 resources:method/ 目录下，需要唯一，可以为空
      */
     String fileNamePrefix() default "";
 

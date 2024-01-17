@@ -1,5 +1,6 @@
 package anno.method;
 
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +30,6 @@ public class MethodBasicProcessorTest {
             mocked.when(() -> AnnoBeanUtils.getBean(AnnoProperty.class)).thenReturn(annoProperty);
 
             MethodTemplateManager.parse("anno.method");
-            MethodTemplateManager.parse("site.sorghum");
             TestMethodService testMethodService = MethodTemplateManager.create(TestMethodService.class);
             DbCriteria criteria = new DbCriteria();
             criteria.setEntityName(TestUser.class.getSimpleName());

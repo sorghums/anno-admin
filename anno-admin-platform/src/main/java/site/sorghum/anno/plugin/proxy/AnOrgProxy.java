@@ -4,13 +4,9 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.plugin.ao.AnOrg;
 import site.sorghum.anno.plugin.manager.AnnoOrgManager;
-
-import java.util.List;
 
 @Named
 public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
@@ -19,15 +15,8 @@ public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
     AnnoOrgManager annoOrgManager;
 
     @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(AnOrg.class)
-        };
-    }
-    
-    @Override
     public void beforeFetch(DbCriteria criteria) {
-        if (annoOrgManager.isIgnoreFilter(criteria.getEntityName())){
+        if (annoOrgManager.isIgnoreFilter(criteria.getEntityName())) {
             return;
         }
 //        String orgId = annoOrgManager.getLoginOrg();

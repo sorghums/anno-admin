@@ -4,11 +4,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbPage;
-
-import java.util.List;
 
 /**
  * 一个示例：所有实体代理的空实现
@@ -19,12 +15,6 @@ import java.util.List;
 @Named
 @Slf4j
 public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
-    @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(Object.class)
-        };
-    }
 
     @Override
     public void beforeAdd(T data) {

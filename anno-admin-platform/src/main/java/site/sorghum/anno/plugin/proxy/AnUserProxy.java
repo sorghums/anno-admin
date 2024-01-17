@@ -7,13 +7,9 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.dao.SysUserDao;
-
-import java.util.List;
 
 /**
  * 系统用户代理
@@ -26,12 +22,7 @@ public class AnUserProxy implements AnnoBaseProxy<AnUser> {
 
     @Db
     SysUserDao sysUserDao;
-    @Override
-    public String[] supportEntities() {
-        return new String[]{
-            AnnoBaseProxy.clazzToDamiEntityName(AnUser.class)
-        };
-    }
+
     @Override
     public void beforeAdd(AnUser data) {
         if (StrUtil.isBlank(data.getMobile())) {
@@ -57,9 +48,9 @@ public class AnUserProxy implements AnnoBaseProxy<AnUser> {
     @Override
     public void afterFetch(DbCriteria criteria, AnnoPage<AnUser> page) {
         page.getList().forEach(
-                anUser -> {
-                    anUser.setPassword("");
-                }
+            anUser -> {
+                anUser.setPassword("");
+            }
         );
     }
 }
