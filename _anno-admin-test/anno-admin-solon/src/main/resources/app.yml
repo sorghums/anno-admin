@@ -60,7 +60,7 @@ db.main:
 anno-admin:
   apiServerUrl: http://114.55.168.135:9001
   redis:
-    server: "sorghum-ubuntu:6379"
+    server: "localhost:6379"
     db: 8
     maxTotal: '200'
     password: ''

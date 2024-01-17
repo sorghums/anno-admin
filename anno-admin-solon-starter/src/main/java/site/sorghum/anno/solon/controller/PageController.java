@@ -19,9 +19,8 @@ import java.util.HashMap;
 public class PageController {
     @Mapping(value = "/goAnnoSinglePage/{clazz}")
     public void goAnnoSinglePage(Context ctx, @Path String clazz,
-                                 @Param(value = "tokenKey", required = true) String tokenKey,
                                  @Param(value = "tokenValue", required = true) String tokenValue) {
-        ctx.redirect(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + clazz + "?tokenKey=" + tokenKey + "&tokenValue=" + tokenValue);
+        ctx.redirect(AnnoConstants.BASE_URL + "/index.html#/anView/anViewList/" + clazz + "?&__tokenValue__=" + tokenValue + "&__full__=true");
     }
 
     @Mapping(value = "/annoTpl")
