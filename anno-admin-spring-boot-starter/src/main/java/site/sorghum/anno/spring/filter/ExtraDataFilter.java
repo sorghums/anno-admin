@@ -5,14 +5,17 @@ import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.text.AntPathMatcher;
-import jakarta.inject.Inject;
-import jakarta.servlet.*;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.RequestFacade;
-import org.noear.dami.exception.DamiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import site.sorghum.anno._common.AnnoConstants;
@@ -62,8 +65,6 @@ public class ExtraDataFilter implements Filter {
                     context.setPrintDetailLog(annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, requestUri)));
                 }
                 filterChain.doFilter(servletRequest, servletResponse);
-            } catch (DamiException exception) {
-                throw exception.getCause();
             } catch (InvocationTargetRuntimeException exception) {
                 throw exception.getCause().getCause();
             } catch (ServletException servletException) {
@@ -92,6 +93,7 @@ public class ExtraDataFilter implements Filter {
             log.error("未知异常 ==>", e);
             writeResponse(servletResponse, AnnoResult.failure("系统异常，请联系管理员"));
         } finally {
+            AnnoContextUtil.printLog(log, annoProperty.getDetailLogThreshold());
             // 清除请求上下文
             AnnoContextUtil.clearContext();
         }
