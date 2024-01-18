@@ -1,5 +1,6 @@
 package site.sorghum.anno.solon.init;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
@@ -10,6 +11,7 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
+import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
@@ -18,6 +20,8 @@ import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.plugin.PluginRunner;
+import site.sorghum.anno.plugin.ao.AnSql;
+import site.sorghum.anno.plugin.dao.AnSqlDao;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.net.URL;
@@ -37,6 +41,8 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
     AnnoEntityToTableGetter annoEntityToTableGetter;
     @Inject
     InitDataService initDataService;
+    @Db
+    AnSqlDao anSqlDao;
     @Db
     DbContext dbContext;
     @Inject
@@ -62,14 +68,31 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
             .map(ResourceUtil::getResource)
             .toList();
         for (URL resource : resources) {
-            try {
-                initDataService.init(resource);
-            } catch (Exception e) {
-                log.error("parse or execute sql error, resource: {}", resource);
-                throw e;
+            String fileName = resource.getFile().split("/")[resource.getFile().split("/").length - 1];
+            WoodConfig.isSelectItemEmptyAsNull = false;
+            AnSql anSql = anSqlDao.queryByVersion(fileName);
+            if (anSql == null || anSql.getId() == null) {
+                anSql = new AnSql(){{
+                    setVersion(fileName);
+                    setState(0);
+                }};
+            }
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
+                try {
+                    initDataService.init(resource);
+                    anSql.setState(1);
+                } catch (Exception e) {
+                    anSql.setState(2);
+                    log.error("parse or execute sql error, resource: {}", resource);
+                    throw e;
+                } finally {
+                    anSql.setRunTime(DateUtil.date());
+                    anSqlDao.saveOrUpdate(anSql);
+                }
+            }else {
+                anSqlDao.saveOrUpdate(anSql);
             }
         }
-
     }
 
     /**

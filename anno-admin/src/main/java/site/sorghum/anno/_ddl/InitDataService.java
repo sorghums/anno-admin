@@ -47,11 +47,7 @@ public class InitDataService {
         WoodConfig.isUsingValueNull = true;
 
         // 初始化 init.sql
-        if (annoProperty.getIsAutoMaintainInitData()) {
-            initSql(resource);
-        }
-
-
+        initSql(resource);
     }
 
     /**

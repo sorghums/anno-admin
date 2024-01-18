@@ -1,5 +1,7 @@
 package site.sorghum.anno.spring.init;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
@@ -18,6 +20,8 @@ import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.plugin.PluginRunner;
+import site.sorghum.anno.plugin.ao.AnSql;
+import site.sorghum.anno.plugin.dao.AnSqlDao;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
 import java.io.FileNotFoundException;
@@ -37,6 +41,8 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
     AnnoEntityToTableGetter annoEntityToTableGetter;
     @Inject
     InitDataService initDataService;
+    @Db
+    AnSqlDao anSqlDao;
     @Db
     DbContext dbContext;
     @Inject
@@ -79,11 +85,29 @@ public class InitDdlAndDataService implements ApplicationListener<ApplicationSta
         }
 
         for (Resource resource : resources) {
-            try {
-                initDataService.init(resource.getURL());
-            } catch (Exception e) {
-                log.error("parse or execute sql error, resource: {}", resource);
-                throw e;
+            String fileName = resource.getFile().getName().split("/")[resource.getFile().getName().split("/").length - 1];
+            AnSql anSql = anSqlDao.queryByVersion(fileName);
+            if (anSql == null || anSql.getId() == null){
+                anSql = new AnSql(){{
+                    setId(IdUtil.getSnowflakeNextIdStr());
+                    setVersion(fileName);
+                    setState(0);
+                }};
+            }
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
+                try {
+                    initDataService.init(resource.getURL());
+                    anSql.setState(1);
+                } catch (Exception e) {
+                    anSql.setState(2);
+                    log.error("parse or execute sql error, resource: {}", resource);
+                    throw e;
+                } finally {
+                    anSql.setRunTime(DateUtil.date());
+                    anSqlDao.saveOrUpdate(anSql);
+                }
+            }else {
+                anSqlDao.saveOrUpdate(anSql);
             }
         }
 

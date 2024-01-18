@@ -130,7 +130,7 @@ public class AuthBaseController {
 
         loginLog.setId(IdUtil.getSnowflakeNextIdStr());
         // ip
-        loginLog.setLatestIp(info.getIp().equals("[0:0:0:0:0:0:0:1]") ? "127.0.0.1" : info.getIp());
+        loginLog.setLatestIp(info.getIp().contains("0:0:0:0:0:0:0:1") ? "127.0.0.1" : info.getIp());
         loginLog.setLatestTime(DateUtil.date());
         // userAgent
         UserAgent ua = UserAgentUtil.parse(info.getUserAgent());
