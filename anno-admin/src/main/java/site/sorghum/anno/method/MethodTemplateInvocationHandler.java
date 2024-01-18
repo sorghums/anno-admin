@@ -1,5 +1,6 @@
 package site.sorghum.anno.method;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.googlecode.aviator.AviatorEvaluator;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ public class MethodTemplateInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (log.isDebugEnabled()) {
-            log.debug("{}#{}() is invoke, args: {}", method.getDeclaringClass().getName(), method.getName(), args);
+            log.debug("{}#{}() is invoke, args size: {}", method.getDeclaringClass().getName(), method.getName(), args.length);
         }
         if (!MethodTemplateManager.isSupportMethod(method)) {
             throw new MTException("is not a support MethodTemplate method" + method.getName());
@@ -42,6 +43,10 @@ public class MethodTemplateInvocationHandler implements InvocationHandler {
 
         MTContext mtContext = MTContext.of(method, args);
         List<MethodBasicProcessor> processors = MethodTemplateManager.getMethodProcessors(mtContext);
+        if (CollUtil.isEmpty(processors)) {
+            log.info("no processor found for method: {}#{}()", method.getDeclaringClass().getName(), method.getName());
+            return null;
+        }
         Object result = null;
         for (MethodBasicProcessor processor : processors) {
             MTProcessorInfo processorInfo = processor.getProcessorInfo();

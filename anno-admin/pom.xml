@@ -97,12 +97,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>dami</artifactId>
-            <version>${dami.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.googlecode.aviator</groupId>
             <artifactId>aviator</artifactId>
             <version>${aviator.version}</version>

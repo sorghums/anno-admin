@@ -2,16 +2,19 @@ package site.sorghum.anno._metadata;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.dami.Dami;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
+import site.sorghum.anno.method.MethodTemplateManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -25,6 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MetadataManager {
 
     private final Map<String, AnEntity> entityMap = new ConcurrentHashMap<>();
+
+    @Setter
+    @Getter
+    private Set<String> scanPackages;
 
     public static final String METADATA_TOPIC = "anno.metadata";
     public static final String METADATA_TOPIC_REFRESH = "anno.metadata.refresh";
@@ -74,7 +81,7 @@ public class MetadataManager {
      * 当所有anno实体加载完成后，刷新元数据
      */
     public void refresh() {
-        MetadataContext sender = Dami.api().createSender(METADATA_TOPIC, MetadataContext.class);
+        MetadataContext sender = MethodTemplateManager.create(MetadataContext.class);
         sender.refresh(getAllEntity());
     }
 

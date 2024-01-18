@@ -2,9 +2,11 @@ package site.sorghum.anno.method;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.FileResource;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
+import cn.hutool.core.lang.Pair;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -32,6 +34,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -72,11 +75,51 @@ public class MethodTemplateManager {
                 methodRouteBeanMap.put(routeClass, methodRoute);
             }
         }
-        parse(packageName, METHOD_PATH + "/*.csv", METHOD_PATH + "/**/*.csv");
+        Set<Class<?>> classes = ClassUtil.scanPackageByAnnotation(packageName, MethodTemplate.class);
 
+        // 解析决策表
+        parse(classes, METHOD_PATH + "/*.csv", METHOD_PATH + "/**/*.csv");
+
+        // 兼容 AnnoBaseProxy#supportEntities
         supportOld();
 
+        // 兼容无决策表的情况
+        supportNoRuleCsv(classes);
+
         infoToMtMap();
+    }
+
+    /**
+     * 没有定义决策表，或者决策表中的部件不完整时，把所有方法模版接口的实现都追加进来
+     */
+    private static void supportNoRuleCsv(Set<Class<?>> classes) {
+        for (Class<?> clazz : classes) {
+            MethodTemplate methodTemplate = AnnotationUtil.getAnnotation(clazz, MethodTemplate.class);
+            Method[] methods = findMethods(clazz);
+            for (Method method : methods) {
+                if (method.getName().equals("supportEntities")) {
+                    continue;
+                }
+                if (StrUtil.isBlank(methodTemplate.ruleDir())) {
+                    continue;
+                }
+                String key = "%s/%s/%s.csv".formatted(METHOD_PATH, methodTemplate.ruleDir(), method.getName());
+                Set<MTProcessorInfo> mtProcessorInfos = processorInfoMap.computeIfAbsent(key, k -> new LinkedHashSet<>());
+                Optional<MTProcessorInfo> max = mtProcessorInfos.stream().max(Comparator.comparing(MTProcessorInfo::getIndex));
+                int index = max.map(mtProcessorInfo -> (int) mtProcessorInfo.getIndex() + 1).orElse(10000);
+                List<?> beans = AnnoBeanUtils.getBeansOfType(clazz);
+                for (Object bean : beans) {
+                    MTProcessorInfo info = new MTProcessorInfo();
+                    info.setBeanName(StrUtil.lowerFirst(bean.getClass().getSimpleName()));
+                    info.setBean(bean);
+                    info.setMethodName(method.getName());
+                    info.setExclude(false);
+                    info.setFullPath(key);
+                    info.setIndex(index++);
+                    mtProcessorInfos.add(info);
+                }
+            }
+        }
     }
 
     private static void supportOld() {
@@ -130,8 +173,8 @@ public class MethodTemplateManager {
     }
 
 
-    public static void parse(String packageName, String... locationPatterns) throws IOException {
-        Set<Class<?>> classes = ClassUtil.scanPackageByAnnotation(packageName, MethodTemplate.class);
+    public static void parse(Set<Class<?>> classes, String... locationPatterns) throws IOException {
+
         MultiResource multiResource = new MultiResource();
         for (String locationPattern : locationPatterns) {
             MultiResource resources = ResourceFinder.of().find(locationPattern);
@@ -141,14 +184,12 @@ public class MethodTemplateManager {
         }
         Map<String, List<MTProcessorInfo>> infoMap = new HashMap<>();
         for (Class<?> methodTemplateClass : classes) {
-            Method[] publicMethods = ClassUtil.getDeclaredMethods(methodTemplateClass);
+            Method[] publicMethods = findMethods(methodTemplateClass);
             for (Method publicMethod : publicMethods) {
-                if (isSupportMethod(publicMethod)) {
 
-                    Map<String, List<MTProcessorInfo>> map = parseMethodTemplates(publicMethod, multiResource);
-                    if (CollUtil.isNotEmpty(map)) {
-                        infoMap.putAll(map);
-                    }
+                Map<String, List<MTProcessorInfo>> map = parseMethodTemplates(publicMethod, multiResource);
+                if (CollUtil.isNotEmpty(map)) {
+                    infoMap.putAll(map);
                 }
             }
         }
@@ -201,12 +242,12 @@ public class MethodTemplateManager {
     }
 
     private static Map<String, List<MTProcessorInfo>> parseMethodTemplates(Method publicMethod, MultiResource resources) throws IOException {
-        String methodFileName = getMethodFileName(publicMethod);
+        Pair<String, String> pair = getMethodFileName(publicMethod);
         String methodName = publicMethod.getName();
         Map<String, List<MTProcessorInfo>> infoMap = new HashMap<>();
         for (Resource resource : resources) {
             String file = resource.getName();
-            if (!StrUtil.equals(file, methodFileName)) {
+            if (!StrUtil.equals(file, pair.getValue())) {
                 continue;
             }
             if (!(resource instanceof FileResource fileResource)) {
@@ -215,7 +256,8 @@ public class MethodTemplateManager {
             List<String> parentPathList = new ArrayList<>();
             getParentPath(parentPathList, fileResource.getFile());
             // method/test_sayHello.csv
-            String fullPath = parentPathList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.joining("/")) + "/" + methodFileName;
+            String fullPath = parentPathList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.joining("/")) + "/" + pair.getValue();
+            fullPath = FileUtil.normalize(fullPath);
             if (methodTemplateMap.containsKey(fullPath)) {
                 if (log.isDebugEnabled()) {
                     log.debug("MethodTemplate is parsed, ignore: {}#{}()", publicMethod.getDeclaringClass().getName(), publicMethod.getName());
@@ -279,13 +321,14 @@ public class MethodTemplateManager {
         }
     }
 
-    public static String getMethodFileName(Method method) {
+    /**
+     * 获取方法文件名
+     *
+     * @return key: 文件夹, value: 文件名
+     */
+    public static Pair<String, String> getMethodFileName(Method method) {
         MethodTemplate annotation = getMethodTemplateAnnotation(method);
-        String fileNamePrefix = annotation.fileNamePrefix();
-        if (StrUtil.isBlank(fileNamePrefix)) {
-            return method.getName() + ".csv";
-        }
-        return fileNamePrefix + "_" + method.getName() + ".csv";
+        return Pair.of(annotation.ruleDir(), method.getName() + ".csv");
     }
 
     private static MethodTemplate getMethodTemplateAnnotation(Method method) {
@@ -304,14 +347,15 @@ public class MethodTemplateManager {
         Class<? extends MethodRoute> routeClass = methodTemplate.route();
         MethodRoute methodRoute = methodRouteBeanMap.get(routeClass);
         String[] route = methodRoute.route(context);
-        List<String> routeList = Arrays.stream(route).filter(StrUtil::isNotBlank).toList();
-        String methodFileName = getMethodFileName(context.getMethod());
-        if (routeList.isEmpty()) {
-            return getMethodProcessors(METHOD_PATH + "/" + methodFileName);
+        List<String> routeList = route == null ? null : Arrays.stream(route).filter(StrUtil::isNotBlank).toList();
+        Pair<String, String> pair = getMethodFileName(context.getMethod());
+        String methodFileName = METHOD_PATH + "/" + pair.getKey() + "/" + pair.getValue();
+        if (CollUtil.isEmpty(routeList)) {
+            return getMethodProcessors(methodFileName);
         }
         List<MethodBasicProcessor> processors = new ArrayList<>();
         for (String subPath : routeList) {
-            List<MethodBasicProcessor> subProcessors = getMethodProcessors("%s/%s/%s".formatted(METHOD_PATH, subPath, methodFileName));
+            List<MethodBasicProcessor> subProcessors = getMethodProcessors("%s/%s/%s".formatted(METHOD_PATH, subPath, pair.getValue()));
             if (CollUtil.isNotEmpty(subProcessors)) {
                 processors.addAll(subProcessors);
             }
@@ -321,7 +365,7 @@ public class MethodTemplateManager {
     }
 
     public static List<MethodBasicProcessor> getMethodProcessors(String methodFileName) {
-        return methodTemplateMap.get(methodFileName);
+        return methodTemplateMap.get(FileUtil.normalize(methodFileName));
     }
 
 

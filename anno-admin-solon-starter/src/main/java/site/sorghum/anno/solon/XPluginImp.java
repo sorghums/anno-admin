@@ -10,10 +10,6 @@ import com.googlecode.aviator.AviatorEvaluatorInstance;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
-import org.noear.dami.Dami;
-import org.noear.dami.DamiConfig;
-import org.noear.dami.bus.impl.RoutingPath;
-import org.noear.dami.bus.impl.TopicRouterPatterned;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanBuilder;
@@ -35,12 +31,9 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataContext;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
-import site.sorghum.anno.anno.dami.DamiApiCached;
-import site.sorghum.anno.anno.dami.TopicDispatcherMonitor;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -55,7 +48,6 @@ import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -95,19 +87,6 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        // dami 配置项
-        DamiConfig.configure(new TopicRouterPatterned<>(RoutingPath::new));
-        DamiConfig.configure(new DamiApiCached(Dami::bus));
-        DamiConfig.configure(new TopicDispatcherMonitor<>());
-
-        List<MetadataContext> metadataContextList = context.getBeansOfType(MetadataContext.class);
-        for (MetadataContext metadataContext : metadataContextList) {
-            Dami.api().registerListener(MetadataManager.METADATA_TOPIC, metadataContext);
-        }
-
-        // 加载 anno 元数据
-        loadMetadata(context, packages);
-
         // 方法模版初始化
         for (String annoPackage : packages) {
             MethodTemplateManager.parse(annoPackage);
@@ -117,6 +96,9 @@ public class XPluginImp implements Plugin {
         instance.useLRUExpressionCache(1000);
         instance.addStaticFunctions("mt", MTUtils.class);
         instance.addInstanceFunctions("s", String.class);
+
+        // 加载 anno 元数据
+        loadMetadata(context, packages);
 
         // 前端静态文件
         StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
@@ -155,6 +137,7 @@ public class XPluginImp implements Plugin {
      */
     private void loadMetadata(AppContext context, Set<String> packages) {
         MetadataManager metadataManager = context.getBean(MetadataManager.class);
+        metadataManager.setScanPackages(packages);
         HashSet<Class<?>> classSet = new HashSet<>();
         // 所有类
         for (String scanPackage : packages) {

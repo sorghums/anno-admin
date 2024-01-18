@@ -1,11 +1,14 @@
 package site.sorghum.anno._metadata;
 
+import site.sorghum.anno.method.MethodTemplate;
+
 import java.util.List;
 
 /**
  * @author songyinyin
  * @since 2023/9/15 14:01
  */
+@MethodTemplate(ruleDir = "metadata")
 public interface MetadataContext {
 
     /**

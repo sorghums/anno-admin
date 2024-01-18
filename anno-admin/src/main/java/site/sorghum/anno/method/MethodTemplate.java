@@ -19,13 +19,13 @@ import java.lang.annotation.Target;
 public @interface MethodTemplate {
 
     /**
-     * 定义组件执行的文件名，在 resources:method/ 目录下，需要唯一，可以为空
+     * 定义组件执行的子文件夹，在 resources:method/ 目录下
      */
-    String fileNamePrefix() default "";
+    String ruleDir() default "";
 
 
     /**
-     * 定义组件执行的路由
+     * 需要加载多个文件夹时，可以使用此属性。与 ruleDir 互斥
      */
     Class<? extends MethodRoute> route() default DefaultMethodRoute.class;
 }

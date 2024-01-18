@@ -6,7 +6,6 @@ import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.dami.exception.DamiException;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Init;
@@ -63,8 +62,6 @@ public class FailureFilter implements Filter {
         try {
             try {
                 chain.doFilter(ctx);
-            }catch (DamiException exception){
-                throw exception.getCause();
             }catch (InvocationTargetRuntimeException exception){
                 throw exception.getCause().getCause();
             }

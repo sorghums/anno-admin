@@ -8,7 +8,7 @@ import site.sorghum.anno.method.route.EntityMethodRoute;
  * @author songyinyin
  * @since 2024/1/16 12:24
  */
-@MethodTemplate(fileNamePrefix = "test", route = EntityMethodRoute.class)
+@MethodTemplate(route = EntityMethodRoute.class)
 public interface TestMethodService {
 
     void delete(DbCriteria criteria);
