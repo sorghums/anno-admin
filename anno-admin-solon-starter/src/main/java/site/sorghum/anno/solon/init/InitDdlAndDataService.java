@@ -11,7 +11,6 @@ import org.noear.solon.core.util.ClassUtil;
 import org.noear.solon.core.util.ResourceUtil;
 import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
-import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
@@ -69,7 +68,6 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
             .toList();
         for (URL resource : resources) {
             String fileName = resource.getFile().split("/")[resource.getFile().split("/").length - 1];
-            WoodConfig.isSelectItemEmptyAsNull = false;
             AnSql anSql = anSqlDao.queryByVersion(fileName);
             if (anSql == null || anSql.getId() == null) {
                 anSql = new AnSql(){{
