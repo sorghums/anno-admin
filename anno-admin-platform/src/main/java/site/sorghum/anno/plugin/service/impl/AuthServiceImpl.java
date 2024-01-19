@@ -284,7 +284,7 @@ public class AuthServiceImpl implements AuthService {
                 continue;
             }
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
-                AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
+                AnAnnoMenu anAnnoMenu = dbService.queryOne(DbCriteria.fromClass(AnPluginMenu.class).eq("id", anPluginMenu.getId()));
                 AnAnnoMenu updateAnnoMenu = null;
                 if (anAnnoMenu == null) {
                     anAnnoMenu = new AnAnnoMenu();
