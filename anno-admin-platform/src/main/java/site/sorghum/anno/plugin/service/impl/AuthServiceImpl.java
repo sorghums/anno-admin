@@ -323,13 +323,17 @@ public class AuthServiceImpl implements AuthService {
                         update = 1;
                     }
                     if (anPluginMenu.getEntity() != null){
-                        if (!StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
+                        if (anPluginMenu.getEntity().isEnablePermission() && !StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
                             updateAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
+                            update = 1;
+                        }
+                        if (!StrUtil.equals(anPluginMenu.getEntity().getEntityName(), anAnnoMenu.getParseData())){
+                            updateAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
                             update = 1;
                         }
                     }
                     if (update == 1) {
-                        dbService.update(updateAnnoMenu, DbCriteria.from(metadataManager.getEntity(AnAnnoMenu.class)).eq("id", anAnnoMenu.getId()));
+                        dbService.update(updateAnnoMenu, DbCriteria.fromClass(AnAnnoMenu.class).eq("id", anAnnoMenu.getId()));
                     }
                 }
 
