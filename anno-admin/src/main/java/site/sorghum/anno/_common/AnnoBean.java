@@ -1,5 +1,7 @@
 package site.sorghum.anno._common;
 
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
+
 import java.util.List;
 
 /**
@@ -37,4 +39,11 @@ public interface AnnoBean {
      */
     <T> List<T> getBeansOfType(Class<T> baseType);
 
+    /**
+     * 获取bean名称
+     *
+     * @param aClass 一个班
+     * @return {@link String}
+     */
+    String getBeanName(Class aClass);
 }
