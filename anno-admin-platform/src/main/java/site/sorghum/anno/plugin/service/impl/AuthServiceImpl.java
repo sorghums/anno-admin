@@ -50,14 +50,12 @@ public class AuthServiceImpl implements AuthService {
     @Db
     AnPermissionDao anPermissionDao;
 
-    @Db
-    AnAnnoMenuDao anAnnoMenuDao;
+    @Inject
+    DbService dbService;
 
     @Inject
-    @Named("dbServiceWood")
-    DbService dbService;
-    @Inject
     MetadataManager metadataManager;
+
     @Inject
     PermissionContext permissionContext;
 
@@ -78,11 +76,12 @@ public class AuthServiceImpl implements AuthService {
                             continue;
                         }
                         AnPermission buttonPermission = new AnPermission();
+                        buttonPermission.setId(buttonCode);
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anColumnButton.getName());
                         buttonPermission.setDelFlag(0);
-                        anPermissionDao.insert(buttonPermission, true);
+                        dbService.insert(buttonPermission);
                     }
                 }
 
@@ -95,11 +94,12 @@ public class AuthServiceImpl implements AuthService {
                             continue;
                         }
                         AnPermission buttonPermission = new AnPermission();
+                        buttonPermission.setId(buttonCode);
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anButton.getName());
                         buttonPermission.setDelFlag(0);
-                        anPermissionDao.insert(buttonPermission, true);
+                        dbService.insert(buttonPermission);
                     }
                 }
                 AnPermission anPermission = anPermissionDao.selectByCode(baseCode);
@@ -112,7 +112,7 @@ public class AuthServiceImpl implements AuthService {
                 basePermission.setCode(baseCode);
                 basePermission.setName(baseName);
                 basePermission.setDelFlag(0);
-                anPermissionDao.insert(basePermission, true);
+                dbService.insert(basePermission);
 
                 // 查看
                 String viewCode = baseCode + ":" + PermissionProxy.VIEW;
@@ -124,7 +124,7 @@ public class AuthServiceImpl implements AuthService {
                 viewPermission.setName(viewName);
                 viewPermission.setDelFlag(0);
 
-                anPermissionDao.insert(viewPermission, true);
+                dbService.insert(viewPermission);
 
                 // 新增
                 String addCode = baseCode + ":" + PermissionProxy.ADD;
@@ -137,7 +137,7 @@ public class AuthServiceImpl implements AuthService {
                 addPermission.setName(addName);
                 addPermission.setDelFlag(0);
 
-                anPermissionDao.insert(addPermission, true);
+                dbService.insert(addPermission);
 
                 // 修改
                 String updateCode = baseCode + ":" + PermissionProxy.UPDATE;
@@ -150,7 +150,7 @@ public class AuthServiceImpl implements AuthService {
                 updatePermission.setName(updateName);
                 updatePermission.setDelFlag(0);
 
-                anPermissionDao.insert(updatePermission, true);
+                dbService.insert(updatePermission);
 
                 // 删除
                 String deleteCode = baseCode + ":" + PermissionProxy.DELETE;
@@ -163,10 +163,7 @@ public class AuthServiceImpl implements AuthService {
                 deletePermission.setName(deleteName);
                 deletePermission.setDelFlag(0);
 
-                anPermissionDao.insert(deletePermission, true);
-
-                // 按钮权限
-
+                dbService.insert(deletePermission);
             }
         }
 
