@@ -284,9 +284,9 @@ public class AuthServiceImpl implements AuthService {
                 continue;
             }
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
-                AnAnnoMenu anAnnoMenu = dbService.queryOne(DbCriteria.fromClass(AnPluginMenu.class).eq("id", anPluginMenu.getId()));
+                AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
                 AnAnnoMenu updateAnnoMenu = null;
-                if (anAnnoMenu == null) {
+                if (anAnnoMenu == null || anAnnoMenu.getId() ==  null) {
                     anAnnoMenu = new AnAnnoMenu();
                     anAnnoMenu.setId(anPluginMenu.getId());
                     anAnnoMenu.setTitle(anPluginMenu.getTitle());
@@ -302,7 +302,7 @@ public class AuthServiceImpl implements AuthService {
                     anAnnoMenu.setParseType(AnAnnoMenu.ParseTypeConstant.ANNO_MAIN);
                     anAnnoMenu.setParentId(anPluginMenu.getParentId());
                     anAnnoMenu.setDelFlag(0);
-                    dbService.insert(anAnnoMenu);
+                    anAnnoMenuDao.insert(anAnnoMenu);
                 } else {
                     int update = 0;
                     updateAnnoMenu = new AnAnnoMenu();
@@ -333,7 +333,7 @@ public class AuthServiceImpl implements AuthService {
                         }
                     }
                     if (update == 1) {
-                        dbService.update(updateAnnoMenu, DbCriteria.fromClass(AnAnnoMenu.class).eq("id", anAnnoMenu.getId()));
+                        anAnnoMenuDao.updateById(updateAnnoMenu);
                     }
                 }
 
