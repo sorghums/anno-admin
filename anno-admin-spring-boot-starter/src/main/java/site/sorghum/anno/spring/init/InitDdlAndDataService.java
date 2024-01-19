@@ -1,18 +1,19 @@
-package site.sorghum.anno.solon.init;
+package site.sorghum.anno.spring.init;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
+import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.Solon;
-import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.event.AppLoadEndEvent;
-import org.noear.solon.core.event.EventListener;
-import org.noear.solon.core.util.ClassUtil;
-import org.noear.solon.core.util.ResourceUtil;
-import org.noear.solon.core.util.ScanUtil;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.stereotype.Component;
 import site.sorghum.anno._common.config.AnnoProperty;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno._ddl.InitDataService;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
@@ -23,7 +24,7 @@ import site.sorghum.anno.plugin.ao.AnSql;
 import site.sorghum.anno.plugin.dao.AnSqlDao;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 
-import java.net.URL;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
+public class InitDdlAndDataService implements ApplicationListener<ApplicationStartedEvent> {
 
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
@@ -48,11 +49,24 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
     AnnoProperty annoProperty;
     @Inject
     MetadataManager metadataManager;
+    @Inject
+    AuthServiceImpl authService;
+    @Inject
+    PluginRunner pluginRunner;
 
-    public void initDdl() throws Throwable {
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
+        try {
+            init();
+        } catch (Exception e) {
+            throw new BizException(e);
+        }
+    }
+
+    private void init() throws Exception {
         // 维护 entity 对应的表结构
         if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<AnEntity>(dbContext, annoEntityToTableGetter);
+            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
                 if (anEntity.isAutoMaintainTable()) {
@@ -62,22 +76,27 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
         }
 
         // 初始化数据
-        List<URL> resources = ScanUtil.scan("init-data", n -> n.endsWith(".sql"))
-            .stream()
-            .map(ResourceUtil::getResource)
-            .toList();
-        for (URL resource : resources) {
-            String fileName = resource.getFile().split("/")[resource.getFile().split("/").length - 1];
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = {};
+        try {
+            resources = resolver.getResources("classpath:init-data/*.sql");
+        }catch (FileNotFoundException e){
+            log.info("init-data/*.sql not found, please check if the file exists, resource: classpath:init-data/*.sql");
+        }
+
+        for (Resource resource : resources) {
+            String fileName = resource.getFile().getName().split("/")[resource.getFile().getName().split("/").length - 1];
             AnSql anSql = anSqlDao.queryByVersion(fileName);
-            if (anSql == null || anSql.getId() == null) {
+            if (anSql == null || anSql.getId() == null){
                 anSql = new AnSql(){{
+                    setId(IdUtil.getSnowflakeNextIdStr());
                     setVersion(fileName);
                     setState(0);
                 }};
             }
             if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
                 try {
-                    initDataService.init(resource);
+                    initDataService.init(resource.getURL());
                     anSql.setState(1);
                 } catch (Exception e) {
                     anSql.setState(2);
@@ -91,19 +110,14 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
                 anSqlDao.saveOrUpdate(anSql);
             }
         }
+
+        // 初始化anno插件
+        pluginRunner.init();
+
+        authService.initPermissions();
+        authService.initMenus();
+
+        metadataManager.refresh();
     }
 
-    /**
-     * 应用启动成功后，再初始化权限和菜单（可以获取到其他插件生成的 bean）
-     */
-    @Override
-    public void onEvent(AppLoadEndEvent appLoadEndEvent) throws Throwable {
-        // 初始化插件信息
-        Solon.context().getBean(PluginRunner.class).init();
-        if (ClassUtil.loadClass("site.sorghum.anno.plugin.service.impl.AuthServiceImpl") != null) {
-            Solon.context().getBean(AuthServiceImpl.class).initPermissions();
-            Solon.context().getBean(AuthServiceImpl.class).initMenus();
-        }
-
-    }
 }
