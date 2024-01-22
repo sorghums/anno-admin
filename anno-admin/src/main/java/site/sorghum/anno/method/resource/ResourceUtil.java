@@ -54,7 +54,7 @@ public class ResourceUtil {
         if(URLUtil.isJarURL(url)){
             return new JarResource(url);
         } else if(URLUtil.isFileURL(url)){
-            return new FileResource(url.getFile());
+            return new FileResource(URLUtil.decode(url.getFile()));
         }
         return new UrlResource(url);
     }
