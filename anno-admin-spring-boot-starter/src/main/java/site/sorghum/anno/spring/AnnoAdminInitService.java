@@ -2,6 +2,7 @@ package site.sorghum.anno.spring;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.googlecode.aviator.AviatorEvaluator;
@@ -35,8 +36,9 @@ import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.plugin.PluginRunner;
+import site.sorghum.anno.plugin.ao.AnSql;
+import site.sorghum.anno.plugin.dao.AnSqlDao;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
-import site.sorghum.anno.spring.SpringBeanImpl;
 import site.sorghum.anno.spring.config.AnnoConfig;
 import site.sorghum.anno.spring.config.AnnoScanConfig;
 import site.sorghum.anno.utils.MTUtils;
@@ -62,6 +64,8 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
     InitDataService initDataService;
     @Db
     DbContext dbContext;
+    @Db
+    AnSqlDao anSqlDao;
     @Inject
     AnnoProperty annoProperty;
     @Inject
@@ -168,11 +172,28 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         }
 
         for (Resource resource : resources) {
-            try {
-                initDataService.init(resource.getURL());
-            } catch (Exception e) {
-                log.error("parse or execute sql error, resource: {}", resource);
-                throw e;
+            String fileName = resource.getFile().getName().split("/")[resource.getFile().getName().split("/").length - 1];
+            AnSql anSql = anSqlDao.queryByVersion(fileName);
+            if (anSql == null || anSql.getId() == null){
+                anSql = new AnSql(){{
+                    setVersion(fileName);
+                    setState(0);
+                }};
+            }
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
+                try {
+                    initDataService.init(resource.getURL());
+                    anSql.setState(1);
+                } catch (Exception e) {
+                    anSql.setState(2);
+                    log.error("parse or execute sql error, resource: {}", resource);
+                    throw e;
+                } finally {
+                    anSql.setRunTime(DateUtil.date());
+                    anSqlDao.saveOrUpdate(anSql);
+                }
+            }else {
+                anSqlDao.saveOrUpdate(anSql);
             }
         }
 

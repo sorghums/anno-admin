@@ -3,12 +3,8 @@ package site.sorghum.anno.anno.proxy;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.trans.AnnoTransService;
-
-import java.util.List;
 
 /**
  * 翻译代理
