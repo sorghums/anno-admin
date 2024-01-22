@@ -189,6 +189,17 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6.setParseType("annoMain");
         menu6.setParseData("AnOrg");
 
+        AnAnnoMenu menu6_1 = new AnAnnoMenu();
+        menu6_1.setId("15_1");
+        menu6_1.setParentId("10");
+        menu6_1.setTitle("脚本管理");
+        menu6_1.setType(1);
+        menu6_1.setSort(100010);
+        menu6_1.setIcon("ant-design:bars-outlined");
+        menu6_1.setPermissionId("an_sql");
+        menu6_1.setParseType("annoMain");
+        menu6_1.setParseData("AnSql");
+
         AnAnnoMenu menu7 = new AnAnnoMenu();
         menu7.setId("16");
         menu7.setParentId("10");
@@ -240,6 +251,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu4,
             menu5,
             menu6,
+            menu6_1,
             menu7,
             menu8,
             menu9,
