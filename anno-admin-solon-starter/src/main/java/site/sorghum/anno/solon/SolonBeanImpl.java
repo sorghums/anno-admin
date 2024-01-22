@@ -1,7 +1,11 @@
 package site.sorghum.anno.solon;
 
+import cn.hutool.core.util.StrUtil;
 import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
 import site.sorghum.anno._common.AnnoBean;
+import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 
 import java.util.List;
 
@@ -30,5 +34,20 @@ public class SolonBeanImpl implements AnnoBean {
     @Override
     public <T> List<T> getBeansOfType(Class<T> baseType) {
         return context.getBeansOfType(baseType);
+    }
+
+    @Override
+    public String getBeanName(Class aClass) {
+        List<BeanWrap> wrapsOfType = context.getWrapsOfType(aClass);
+        if (wrapsOfType == null || wrapsOfType.isEmpty()) {
+            throw new BizException(
+                "未找到" + aClass.getSimpleName() + "的代理bean，" +
+                "请检查是否在solon容器中注册了该bean。");
+        }
+        String name = wrapsOfType.get(0).name();
+        if (StrUtil.isBlank(name)){
+            name = StrUtil.lowerFirst(aClass.getSimpleName());
+        }
+        return name;
     }
 }

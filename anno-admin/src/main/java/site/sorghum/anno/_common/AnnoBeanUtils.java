@@ -1,6 +1,7 @@
 package site.sorghum.anno._common;
 
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +38,9 @@ public class AnnoBeanUtils {
 
     public static MetadataManager metadataManager() {
         return annoBean.getBean(MetadataManager.class);
+    }
+
+    public static String getBeanName(Class aClass) {
+        return annoBean.getBeanName(aClass);
     }
 }

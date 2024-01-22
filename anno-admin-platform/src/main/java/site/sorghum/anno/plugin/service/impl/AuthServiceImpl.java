@@ -286,7 +286,7 @@ public class AuthServiceImpl implements AuthService {
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
                 AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
                 AnAnnoMenu updateAnnoMenu = null;
-                if (anAnnoMenu == null) {
+                if (anAnnoMenu == null || anAnnoMenu.getId() ==  null) {
                     anAnnoMenu = new AnAnnoMenu();
                     anAnnoMenu.setId(anPluginMenu.getId());
                     anAnnoMenu.setTitle(anPluginMenu.getTitle());
@@ -302,7 +302,7 @@ public class AuthServiceImpl implements AuthService {
                     anAnnoMenu.setParseType(AnAnnoMenu.ParseTypeConstant.ANNO_MAIN);
                     anAnnoMenu.setParentId(anPluginMenu.getParentId());
                     anAnnoMenu.setDelFlag(0);
-                    dbService.insert(anAnnoMenu);
+                    anAnnoMenuDao.insert(anAnnoMenu);
                 } else {
                     int update = 0;
                     updateAnnoMenu = new AnAnnoMenu();
@@ -323,13 +323,17 @@ public class AuthServiceImpl implements AuthService {
                         update = 1;
                     }
                     if (anPluginMenu.getEntity() != null){
-                        if (!StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
+                        if (anPluginMenu.getEntity().isEnablePermission() && !StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
                             updateAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
+                            update = 1;
+                        }
+                        if (!StrUtil.equals(anPluginMenu.getEntity().getEntityName(), anAnnoMenu.getParseData())){
+                            updateAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
                             update = 1;
                         }
                     }
                     if (update == 1) {
-                        dbService.update(updateAnnoMenu, DbCriteria.from(metadataManager.getEntity(AnAnnoMenu.class)).eq("id", anAnnoMenu.getId()));
+                        anAnnoMenuDao.updateById(updateAnnoMenu);
                     }
                 }
 

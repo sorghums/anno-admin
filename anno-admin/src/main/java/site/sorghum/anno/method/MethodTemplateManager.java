@@ -97,7 +97,7 @@ public class MethodTemplateManager {
             MethodTemplate methodTemplate = AnnotationUtil.getAnnotation(clazz, MethodTemplate.class);
             Method[] methods = findMethods(clazz);
             for (Method method : methods) {
-                if (method.getName().equals("supportEntities")) {
+                if ("supportEntities".equals(method.getName())) {
                     continue;
                 }
                 if (StrUtil.isBlank(methodTemplate.ruleDir())) {
@@ -140,7 +140,7 @@ public class MethodTemplateManager {
                     String key = "method/base/" + method.getName() + ".csv";
 
                     MTProcessorInfo info = new MTProcessorInfo();
-                    info.setBeanName(StrUtil.lowerFirst(proxy.getClass().getSimpleName()));
+                    info.setBeanName(AnnoBeanUtils.getBeanName(proxy.getClass()));
                     info.setBean(proxy);
                     info.setMethodName(method.getName());
                     info.setExclude(false);
