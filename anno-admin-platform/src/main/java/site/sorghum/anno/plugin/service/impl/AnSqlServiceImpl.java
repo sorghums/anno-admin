@@ -1,6 +1,7 @@
 package site.sorghum.anno.plugin.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.ResourceUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -29,6 +30,9 @@ public class AnSqlServiceImpl implements AnSqlService {
 
         String fileName = (String) data.get("version");
         URL resource = ResourceUtil.getResource("init-data/" + fileName);
+        if (FileUtil.file(resource).length() <= 0) {
+            throw new RuntimeException(fileName + "内容为空！");
+        }
         try {
             initDataService.init(resource);
             anSql.setState(1);

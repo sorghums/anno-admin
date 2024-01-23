@@ -14,12 +14,11 @@ import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.common.LoginInfo;
+import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
 import site.sorghum.anno.plugin.service.AuthService;
-
-import java.util.Map;
 
 /**
  * Auth控制器
@@ -36,19 +35,14 @@ public class AuthBaseController {
     @Inject
     CaptchaManager captchaManager;
 
-    public AnnoResult<String> login(Map<String, String> user, LoginInfo loginInfo) {
-        // 获得系列参数
-        String username = user.get("username");
-        String password = user.get("password");
-        String codeKey = user.get("codeKey");
-        String code = user.get("code");
+    public AnnoResult<String> login(LoginReq req, LoginInfo loginInfo) {
         // 校验验证码
-        captchaManager.verifyCaptcha(codeKey, code);
-        if (username == null || password == null) {
+        captchaManager.verifyCaptcha(req.getCodeKey(), req.getCode());
+        if (req.getUsername() == null || req.getPassword() == null) {
             return AnnoResult.failure("用户名或密码不能为空");
         }
         // 校验用户名密码
-        AnUser anUser = AuthFunctions.verifyLogin.apply(user);
+        AnUser anUser = AuthFunctions.verifyLogin.apply(req);
         if ("0".equals(anUser.getEnable())) {
             throw new BizException("账号已被禁用");
         }

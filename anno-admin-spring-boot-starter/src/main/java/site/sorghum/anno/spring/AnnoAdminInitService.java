@@ -3,6 +3,7 @@ package site.sorghum.anno.spring;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.googlecode.aviator.AviatorEvaluator;
@@ -172,7 +173,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         }
 
         for (Resource resource : resources) {
-            String fileName = resource.getFile().getName().split("/")[resource.getFile().getName().split("/").length - 1];
+            String fileName = FileNameUtil.getName(resource.getFile());
             AnSql anSql = anSqlDao.queryByVersion(fileName);
             if (anSql == null || anSql.getId() == null){
                 anSql = new AnSql(){{
@@ -180,7 +181,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
                     setState(0);
                 }};
             }
-            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1 && resource.getFile().length() > 0){
                 try {
                     initDataService.init(resource.getURL());
                     anSql.setState(1);

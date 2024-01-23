@@ -3,19 +3,17 @@ package site.sorghum.anno.plugin.interfaces;
 
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class AuthFunctions {
 
-    public static Function<Map<String, String>, AnUser> verifyLogin = (map) -> {
-        String username = map.get("username");
-        String password = map.get("password");
-        return AnnoBeanUtils.getBean(AuthService.class).verifyLogin(username, password);
+    public static Function<LoginReq, AnUser> verifyLogin = (req) -> {
+        return AnnoBeanUtils.getBean(AuthService.class).verifyLogin(req.getUsername(), req.getPassword());
     };
 
     public static Function<String, AnUser> getUserById = (id) -> {

@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.init;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
@@ -76,7 +77,7 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
                     setState(0);
                 }};
             }
-            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1 && FileUtil.file(resource).length() > 0){
                 try {
                     initDataService.init(resource);
                     anSql.setState(1);
