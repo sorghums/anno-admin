@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.init;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.file.FileNameUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
@@ -67,7 +68,7 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
             .map(ResourceUtil::getResource)
             .toList();
         for (URL resource : resources) {
-            String fileName = resource.getFile().split("/")[resource.getFile().split("/").length - 1];
+            String fileName =FileNameUtil.getName(resource.getFile());
             AnSql anSql = anSqlDao.queryByVersion(fileName);
             if (anSql == null || anSql.getId() == null) {
                 anSql = new AnSql(){{
