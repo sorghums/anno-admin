@@ -3,9 +3,12 @@ package site.sorghum.anno.method;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.io.resource.FileResource;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
+import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
@@ -15,6 +18,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.method.processor.MTBasicProcessor;
 import site.sorghum.anno.method.processor.MethodBasicProcessor;
+import site.sorghum.anno.method.resource.JarResource;
 import site.sorghum.anno.method.resource.ResourceFinder;
 import site.sorghum.anno.method.route.MethodRoute;
 
@@ -34,7 +38,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.jar.JarFile;
 import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * 方法模版工厂类
@@ -247,7 +254,15 @@ public class MethodTemplateManager {
             if (!StrUtil.equals(file, pair.getValue())) {
                 continue;
             }
-            if (!(resource instanceof FileResource fileResource)) {
+            FileResource fileResource = null;
+            if (resource instanceof FileResource variableFileResource){
+                fileResource = variableFileResource;
+            }
+            if (resource instanceof JarResource variableJarResource) {
+                // 伪装为文件资源
+                fileResource = new FileResource(variableJarResource.getFile());
+            }
+            if (fileResource == null) {
                 continue;
             }
             List<String> parentPathList = new ArrayList<>();

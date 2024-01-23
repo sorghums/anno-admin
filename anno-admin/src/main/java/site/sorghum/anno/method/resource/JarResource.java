@@ -18,6 +18,7 @@ import cn.hutool.core.io.resource.UrlResource;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.URLUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URI;
@@ -125,6 +126,53 @@ public class JarResource extends UrlResource {
             return new JarFile(jarFileUrl);
         } catch (final IOException e) {
             throw new IORuntimeException(e);
+        }
+    }
+
+    @Override
+    public File getFile() {
+        return new JarEntryFile(this);
+    }
+
+    public static class JarEntryFile extends File{
+        JarResource jarResource;
+        public JarEntryFile(JarResource jarResource){
+            super(jarResource.getUrl().getFile());
+            this.jarResource = jarResource;
+        }
+        public JarEntryFile(String pathname) {
+            super(pathname);
+            throw new UnsupportedOperationException("JarEntryFile not support URI");
+        }
+
+        public JarEntryFile(String parent, String child) {
+            super(parent, child);
+            throw new UnsupportedOperationException("JarEntryFile not support URI");
+        }
+
+        public JarEntryFile(File parent, String child) {
+            super(parent, child);
+            throw new UnsupportedOperationException("JarEntryFile not support URI");
+        }
+
+        public JarEntryFile(URI uri) {
+            super(uri);
+            throw new UnsupportedOperationException("JarEntryFile not support URI");
+        }
+
+        @Override
+        public boolean canRead() {
+            return true;
+        }
+
+        @Override
+        public boolean canWrite() {
+            return false;
+        }
+
+        @Override
+        public boolean exists() {
+            return true;
         }
     }
 }
