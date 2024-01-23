@@ -141,7 +141,7 @@ public class MethodTemplateManager {
                 }
                 for (String supportEntity : supportEntities) {
 
-                    String key = "method/base/" + method.getName() + ".csv";
+                    String key = "method/all/" + method.getName() + ".csv";
 
                     MTProcessorInfo info = new MTProcessorInfo();
                     info.setBeanName(AnnoBeanUtils.getBeanName(proxy.getClass()));
