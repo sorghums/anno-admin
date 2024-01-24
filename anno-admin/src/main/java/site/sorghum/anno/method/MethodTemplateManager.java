@@ -270,12 +270,6 @@ public class MethodTemplateManager {
             // method/test_sayHello.csv
             String fullPath = parentPathList.stream().sorted(Comparator.reverseOrder()).collect(Collectors.joining("/")) + "/" + pair.getValue();
             fullPath = FileUtil.normalize(fullPath);
-            if (methodTemplateMap.containsKey(fullPath)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("MethodTemplate is parsed, ignore: {}#{}()", publicMethod.getDeclaringClass().getName(), publicMethod.getName());
-                }
-                continue;
-            }
             try (BufferedReader bufferedReader = resource.getReader(StandardCharsets.UTF_8)) {
                 CsvReader reader = CsvUtil.getReader();
                 List<MethodTemplateCsv> list = reader.read(bufferedReader, MethodTemplateCsv.class);
