@@ -130,7 +130,8 @@ public class AnOnlineUser extends PrimaryKeyModel implements Serializable {
         javaCmd = @AnnoButton.JavaCmd(
             beanClass = AuthService.class,
             methodName = "forceLogout"
-        )
+        ),
+        permissionCode = "forceLogout"
     )
     private String offlineButton;
 
