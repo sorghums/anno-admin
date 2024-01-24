@@ -11,6 +11,7 @@ import com.googlecode.aviator.AviatorEvaluatorInstance;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
+import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
@@ -109,7 +110,9 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         MessageSource messageSource = SpringUtil.getBean(MessageSource.class);
         I18nUtil.setI18nService(key -> messageSource.getMessage(key, null, Locale.getDefault()));
 
-
+        // wood 设置
+        WoodConfig.isSelectItemEmptyAsNull = true;
+        WoodConfig.isUsingValueNull = true;
     }
 
 

@@ -36,16 +36,9 @@ public class InitDataService {
     @Db
     DbContext dbContext;
 
-    @Inject
-    AnnoProperty annoProperty;
-
     public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
 
     public void init(URL resource) throws Exception {
-        // wood 设置
-        WoodConfig.isSelectItemEmptyAsNull = true;
-        WoodConfig.isUsingValueNull = true;
-
         // 初始化 init.sql
         initSql(resource);
     }

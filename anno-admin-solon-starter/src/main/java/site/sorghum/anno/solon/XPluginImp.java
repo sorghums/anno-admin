@@ -122,7 +122,9 @@ public class XPluginImp implements Plugin {
         // 扫描翻译插件
         context.beanScan(PLUGIN_BASE_PACKAGE);
 
-        // WOOD
+        // wood 设置
+        WoodConfig.isSelectItemEmptyAsNull = true;
+        WoodConfig.isUsingValueNull = true;
         WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
 
      }
