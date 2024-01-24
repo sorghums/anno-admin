@@ -15,6 +15,7 @@
 </p>
 
 <p align="center">
+    <a href="http://anno-admin-demo.sorghum.site/">演示地址</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin-demo">Demo项目</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin-ant-design-ui">前端仓库(ant-design)</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin">码云仓库</a> &nbsp; | &nbsp; 
@@ -40,6 +41,9 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 
 > 完美取代 **代码生成器**，开发后台管理系统更优解！
 
+演示环境：[Anno Admin Demo](http://anno-admin-demo.sorghum.site/)
+
+测试账号：16666666666/16666666666
 
 ## 🌈 特性 | Features
 
