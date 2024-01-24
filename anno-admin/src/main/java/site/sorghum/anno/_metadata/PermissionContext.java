@@ -5,9 +5,11 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author songyinyin
@@ -86,11 +88,7 @@ public class PermissionContext implements MetadataContext {
     }
 
     public String joinPermission(String... permissionList) {
-        StringBuilder sb = new StringBuilder();
-        for (String permissionCode : permissionList) {
-            sb.append(permissionCode).append(":");
-        }
-        return sb.toString();
+        return Arrays.stream(permissionList).collect(Collectors.joining(":"));
     }
 
     public String getPermissionKey(Class<?> javaCmdBeanClass, String javaCmdMethodName) {
