@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +34,7 @@ public class AnnoTransService {
     MetadataManager metadataManager;
 
     public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO);
+
     /**
      * 批量翻译
      *
@@ -43,15 +43,15 @@ public class AnnoTransService {
      */
     public <T> List<T> trans(List<T> t, Class<?> tClass) {
         StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
+        stopWatch.start("trans from db/cache");
         // 批量翻译
         List<JoinParam> joinParams = new ArrayList<>();
         AnEntity entity = metadataManager.getEntity(tClass);
         for (AnField field : entity.getFields()) {
             AnnoDataType dataType = field.getDataType();
             if (OPTIONS_TYPE.contains(dataType)) {
-                String sqlIdKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getIdKey());
-                String sqlLabelKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(),field.getOptionAnnoClass().getLabelKey());
+                String sqlIdKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(), field.getOptionAnnoClass().getIdKey());
+                String sqlLabelKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(), field.getOptionAnnoClass().getLabelKey());
                 if (!Objects.equals(field.getOptionAnnoClass().getAnnoClass(), Object.class)) {
                     AnEntity optionClass = metadataManager.getEntity(field.getOptionAnnoClass().getAnnoClass());
                     String tableName = optionClass.getTableName();
@@ -106,8 +106,8 @@ public class AnnoTransService {
                 }
             }
             if (dataType == AnnoDataType.TREE) {
-                String sqlIdKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(),field.getTreeOptionAnnoClass().getIdKey());
-                String sqlLabelKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(),field.getTreeOptionAnnoClass().getLabelKey());
+                String sqlIdKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(), field.getTreeOptionAnnoClass().getIdKey());
+                String sqlLabelKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(), field.getTreeOptionAnnoClass().getLabelKey());
                 if (!Objects.equals(field.getTreeOptionAnnoClass().getAnnoClass(), Object.class)) {
                     AnEntity optionClass = metadataManager.getEntity(field.getTreeOptionAnnoClass().getAnnoClass());
                     String tableName = optionClass.getTableName();
@@ -165,6 +165,10 @@ public class AnnoTransService {
         for (JoinParam joinParam : joinParams) {
             joinOperator.batchJoinOne(joinParam, t);
         }
+        // 所有列的JoinResMap的Key全部变成小写 to 兼容部分大小写不敏感的数据库
+        stopWatch.stop();
+        stopWatch.start("fixedDictToLowerCase");
+        fixedDictToLowerCase(t);
         stopWatch.stop();
         log.info(
             "转换耗时：{} ms",
@@ -182,13 +186,32 @@ public class AnnoTransService {
         }
     }
 
+    private <T> void fixedDictToLowerCase(List<T> t) {
+        t.forEach(
+            tItem -> {
+                Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
+                if (tansMap == null || tansMap.isEmpty()) {
+                    return;
+                }
+                HashMap<Object, Object> newMap = new HashMap<>();
+                tansMap.keySet().forEach(
+                    (k) -> {
+                        // 转换成小写
+                            newMap.put(k.toString().toLowerCase(), tansMap.get(k));
+                    }
+                );
+                tansMap.putAll(newMap);
+            }
+        );
+    }
+
     private String fileNameToTableName(Class<?> clazz, String fileName) {
-        if (clazz == Object.class || StrUtil.isBlank(fileName)){
+        if (clazz == Object.class || StrUtil.isBlank(fileName)) {
             return fileName;
         }
         try {
-            return AnnoFieldCache.getSqlColumnByJavaName(clazz,fileName);
-        }catch (NullPointerException e){
+            return AnnoFieldCache.getSqlColumnByJavaName(clazz, fileName);
+        } catch (NullPointerException e) {
             log.error("从Java字段名映射Sql字段名出错,类：{}，字段：{}，错误信息：{}", clazz, fileName, e.getMessage());
             return fileName;
         }

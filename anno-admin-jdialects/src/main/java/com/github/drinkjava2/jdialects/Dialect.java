@@ -292,7 +292,7 @@ public class Dialect {
             } else if (this.name.toLowerCase().contains("sqlserver")) {
                 return "[%s]".formatted(word);
             } else if (this.name.toLowerCase().contains("h2")) {
-                return "\"%s\"".formatted(word);
+                return "`%s`".formatted(word);
             } else if (this.name.toLowerCase().contains("db2")) {
                 return "[%s]".formatted(word);
             }
