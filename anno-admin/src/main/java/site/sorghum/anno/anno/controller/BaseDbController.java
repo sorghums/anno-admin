@@ -226,7 +226,9 @@ public class BaseDbController {
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         DbCriteria criteria = AnnoUtil.simpleEntity2conditions(anEntity, param);
-        criteria.addCondition(andSql, QueryType.CUSTOM);
+        if (StrUtil.isNotBlank(andSql)){
+            criteria.addCondition(andSql, QueryType.CUSTOM);
+        }
         return baseService.list(criteria);
     }
 
