@@ -3,10 +3,7 @@ package site.sorghum.anno.spring.config;
 import org.noear.wood.DbContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.spring.auth.StpInterfaceImpl;
@@ -18,6 +15,7 @@ import javax.sql.DataSource;
  * @since 2023/7/30 12:16
  */
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = {AnnoConfig.ANNO_BASE_PACKAGE, AnnoConfig.PLUGIN_BASE_PACKAGE})
 public class AnnoConfig {
     public static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";

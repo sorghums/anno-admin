@@ -17,6 +17,7 @@ import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
+import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
@@ -41,6 +42,7 @@ import java.util.Map;
 @Slf4j
 @SaIgnore
 @Api(tags = "数据控制器")
+@AnnoSerialization
 public class DbController extends BaseDbController {
 
     @Mapping("/sql2tree")

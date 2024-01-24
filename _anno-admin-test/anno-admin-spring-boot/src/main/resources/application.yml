@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: sorghum2021
-    url: jdbc:mysql://sorghum-ubuntu:3306/anno_admin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/anno_admin_demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   mvc:
     static-path-pattern: /anno-admin-api/**
   web:

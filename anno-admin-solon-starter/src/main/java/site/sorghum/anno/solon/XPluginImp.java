@@ -24,6 +24,7 @@ import org.noear.solon.data.tran.TranExecutorDefault;
 import org.noear.solon.web.staticfiles.StaticMappings;
 import org.noear.solon.web.staticfiles.repository.ClassPathStaticRepository;
 import org.noear.wood.WoodConfig;
+import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -39,6 +40,7 @@ import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
+import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
@@ -68,6 +70,9 @@ public class XPluginImp implements Plugin {
         AnnoBeanUtils.setBean(new SolonBeanImpl(context));
 
         i18nSupport();
+
+        // 注册序列化拦截器
+        context.beanInterceptorAdd(AnnoSerialization.class, new AnnoSerializationInterceptor());
 
         context.beanInjectorAdd(Inject.class, new InjectBeanInjector(context));
 
@@ -119,7 +124,8 @@ public class XPluginImp implements Plugin {
 
         // WOOD
         WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
-    }
+
+     }
 
     /**
      * 缓存和事务支持
