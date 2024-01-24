@@ -73,7 +73,8 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
         javaCmd = @AnnoButton.JavaCmd(
             beanClass = AnSqlService.class,
             methodName = "runSql"
-        )
+        ),
+        permissionCode = "runSql"
     )
     private Object runButton;
 }
