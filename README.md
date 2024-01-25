@@ -4,7 +4,7 @@
 <h3 align="center">零前端代码，注解驱动，轻松拓展实现界面化CRUD</h3>
 <h4 align="center">Solon / SpringBoot 3.x</h4>
 <h3 align="center"><a href="https://www.yuque.com/sorghums/anno-admin" target="_blank">Anno Admin</a></h3>
----
+<br>
 
 <p align="center">
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
