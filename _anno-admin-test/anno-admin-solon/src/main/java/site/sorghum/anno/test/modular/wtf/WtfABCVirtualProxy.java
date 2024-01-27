@@ -8,6 +8,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 import site.sorghum.anno.suppose.proxy.BaseAnnoPreProxy;
@@ -20,7 +21,7 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
     BaseAnnoPreProxy baseAnnoPreProxy;
 
     @Inject
-    MetadataManager metadataManager;
+    DbTableContext dbTableContext;
 
     @Override
     public String[] supportEntities() {
@@ -59,9 +60,9 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
 
     @Override
     public void beforeUpdate(WtfABCVirtual data, DbCriteria criteria) {
-        TableParam<BaseMetaModel> wtfAParam = metadataManager.getTableParam(WtfA.class);
-        TableParam<BaseMetaModel> wtfBParam = metadataManager.getTableParam(WtfB.class);
-        TableParam<BaseMetaModel> wtfCParam = metadataManager.getTableParam(WtfC.class);
+        TableParam<BaseMetaModel> wtfAParam = dbTableContext.getTableParam(WtfA.class);
+        TableParam<BaseMetaModel> wtfBParam = dbTableContext.getTableParam(WtfB.class);
+        TableParam<BaseMetaModel> wtfCParam = dbTableContext.getTableParam(WtfC.class);
 
 
         dbService.update(new WtfA(data.name, data.age, null), DbCriteria.fromClass(WtfA.class).eq("id", data.getT3id()));

@@ -8,6 +8,7 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Objects;
  */
 public class Utils {
     private static MetadataManager metadataManager;
+    private static final DbTableContext dbTableContext = AnnoBeanUtils.getBean(DbTableContext.class);
 
     public static <T> List<AnnoTreeDTO<String>> toTrees(List<T> dataList) {
         init();
@@ -73,7 +75,7 @@ public class Utils {
     private static <T> String sql(Class<T> clazz, String sql) {
         init();
         // 如果有配置逻辑删除
-        TableParam<?> tableParam = metadataManager.getTableParam(clazz);
+        TableParam<?> tableParam = dbTableContext.getTableParam(clazz);
         if (tableParam.getDbRemove().getLogic()) {
             sql = sql + " and " + tableParam.getDbRemove().getRemoveColumn() + " = " + tableParam.getDbRemove().getNotRemoveValue();
         }

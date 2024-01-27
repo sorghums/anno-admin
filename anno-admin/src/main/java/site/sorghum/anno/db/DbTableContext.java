@@ -1,9 +1,11 @@
 package site.sorghum.anno.db;
 
 import cn.hutool.core.util.StrUtil;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.EntityMetadataLoader;
 import site.sorghum.anno._metadata.MetadataContext;
 
 import java.util.ArrayList;
@@ -20,6 +22,10 @@ import java.util.stream.Collectors;
  */
 @Named
 public class DbTableContext implements MetadataContext {
+
+    @Inject
+    private EntityMetadataLoader entityMetadataLoader;
+
     /**
      * Anno Clazz 缓存
      */
@@ -51,6 +57,16 @@ public class DbTableContext implements MetadataContext {
      */
     public <T> TableParam<T> getTableParamImmutable(String entityName) {
         return (TableParam<T>) tableParamCache.get(entityName);
+    }
+
+    /**
+     * 获取 entity db 数据
+     *
+     * @param clazz 实体类
+     */
+    public <T> TableParam<T> getTableParam(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        return getTableParam(entityName);
     }
 
     @Override

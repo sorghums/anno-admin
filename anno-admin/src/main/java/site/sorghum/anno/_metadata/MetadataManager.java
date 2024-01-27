@@ -7,8 +7,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.db.DbTableContext;
-import site.sorghum.anno.db.TableParam;
 import site.sorghum.anno.method.MethodTemplateManager;
 
 import java.util.ArrayList;
@@ -33,14 +31,8 @@ public class MetadataManager {
     @Getter
     private Set<String> scanPackages;
 
-    public static final String METADATA_TOPIC = "anno.metadata";
-    public static final String METADATA_TOPIC_REFRESH = "anno.metadata.refresh";
-
-
     @Inject
     private EntityMetadataLoader entityMetadataLoader;
-    @Inject
-    DbTableContext dbTableContext;
 
     /**
      * 从实体类中加载元数据，已存在的实体不会重复加载
@@ -87,37 +79,6 @@ public class MetadataManager {
 
     protected void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
-    }
-
-    /**
-     * 获取表数据
-     *
-     * @param entityName entityName
-     * @return {@link TableParam}
-     */
-    public TableParam getTableParam(String entityName) {
-        return dbTableContext.getTableParam(entityName);
-    }
-
-    /**
-     * 获取表数据
-     *
-     * @param clazz clazz
-     * @return {@link TableParam}
-     */
-    public TableParam getTableParam(Class<?> clazz) {
-        String entityName = entityMetadataLoader.getEntityName(clazz);
-        return dbTableContext.getTableParam(entityName);
-    }
-
-    /**
-     * 获取表数据（直接存缓存中获取的，不可以修改，修改后会影响缓存的内容）
-     *
-     * @param clazz clazz
-     */
-    public TableParam getTableParamImmutable(Class<?> clazz) {
-        String entityName = entityMetadataLoader.getEntityName(clazz);
-        return dbTableContext.getTableParamImmutable(entityName);
     }
 
     /**

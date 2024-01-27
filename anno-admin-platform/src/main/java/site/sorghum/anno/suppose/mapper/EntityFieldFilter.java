@@ -2,6 +2,7 @@ package site.sorghum.anno.suppose.mapper;
 
 import org.noear.wood.ext.Fun2;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
 
 /**
@@ -29,7 +30,8 @@ public class EntityFieldFilter implements Fun2<Boolean, String, Object> {
         if (excludeNull && fieldValue == null) {
             return false;
         }
-        TableParam tableParam = AnnoBeanUtils.metadataManager().getTableParamImmutable(entityClz);
+        DbTableContext dbTableContext = AnnoBeanUtils.getBean(DbTableContext.class);
+        TableParam<?> tableParam = dbTableContext.getTableParam(entityClz);
         if (tableParam != null) {
             return tableParam.getColumns().contains(tableFieldName);
         }
