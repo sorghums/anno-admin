@@ -4,12 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>site.sorghum.anno</groupId>
-        <artifactId>anno-admin-parent</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <groupId>org.noear</groupId>
+        <artifactId>solon-parent</artifactId>
+        <version>2.6.3</version>
+        <relativePath/>
     </parent>
-
+    <groupId>site.sorghum.anno</groupId>
     <artifactId>_anno-admin-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>anno-admin-solon</module>
@@ -17,6 +19,14 @@
     </modules>
 
     <properties>
+        <spring-boot.version>3.1.1</spring-boot.version>
+        <mysql.ver>8.0.32</mysql.ver>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <anno.admin.version>1.1.1-SNAPSHOT</anno.admin.version>
     </properties>
 
     <build>
@@ -31,5 +41,24 @@
             </plugin>
         </plugins>
     </build>
+    <repositories>
+        <repository>
+            <id>apache_snapshot</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>tencent</id>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
 
+    </repositories>
 </project>

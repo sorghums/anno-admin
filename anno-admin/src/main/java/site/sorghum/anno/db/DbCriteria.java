@@ -117,6 +117,11 @@ public class DbCriteria {
         return this;
     }
 
+    public DbCriteria like(String column, Object value) {
+        condition().like(column, String.valueOf(value));
+        return this;
+    }
+
     public DbCriteria ne(String column, Object value) {
         condition().ne(column, value);
         return this;

@@ -9,6 +9,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.dao.SysUserDao;
 
@@ -30,17 +31,16 @@ public class BaseDaoTest {
 
     @Test
     public void testInsert() {
-        userDao.delete(m -> m.whereLk("name", "testUser_%"));
+        userDao.delete(DbCriteria.fromClass(AnUser.class).like("name", "testUser_%"));
         List<AnUser> uerList = getUerList(1);
-        userDao.insert(uerList.get(0), true);
-        Long count = userDao.selectCount(m -> m.whereLk("name", "testUser_%"));
+        userDao.insert(uerList.get(0));
+        Long count = userDao.count(DbCriteria.fromClass(AnUser.class).like("name", "testUser_%"));
         Assert.assertEquals(1L, count.longValue());
     }
 
     @Test
     public void testInsertList() {
-        userDao.delete(m -> m.whereLk("name", "testUser_%"));
-
+        userDao.delete(DbCriteria.fromClass(AnUser.class).eq("name", "testUser_%"));
         List<AnUser> uerList = getUerList(1000);
         StopWatch stopWatch = new StopWatch("add");
         stopWatch.start("batchAdd 1000");
@@ -48,7 +48,7 @@ public class BaseDaoTest {
         stopWatch.stop();
         log.info("{}", stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
 
-        Long count = userDao.selectCount(m -> m.whereLk("name", "testUser_%"));
+        Long count = userDao.count(DbCriteria.fromClass(AnUser.class).like("name", "testUser_%"));
         Assert.assertEquals(1000L, count.longValue());
     }
 

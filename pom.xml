@@ -38,8 +38,6 @@
         <module>anno-admin-spring-boot-starter</module>
         <!-- 任务调度：PowerJob -->
         <module>anno-admin-powerjob-server</module>
-        <!-- 测试类 -->
-        <module>_anno-admin-test</module>
     </modules>
 
     <properties>
@@ -109,12 +107,6 @@
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-jdialects</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>site.sorghum.anno</groupId>
-                <artifactId>_anno-admin-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -106,4 +106,12 @@ public interface DbService {
      * @return {@link List}<{@link Map}<{@link String}, {@link Object}>>
      */
     List<Map<String, Object>> executeSql2MapList(String sql, Object... params);
+
+    /**
+     * 计数
+     *
+     * @param criteria db标准
+     * @return long
+     */
+    <T> long count(DbCriteria criteria);
 }

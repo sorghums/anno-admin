@@ -3,7 +3,6 @@ package site.sorghum.anno.db.dao;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import org.noear.wood.utils.StringUtils;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.DbCriteria;
@@ -11,11 +10,9 @@ import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.service.DbService;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Anno基准dao
@@ -75,7 +72,7 @@ public interface AnnoBaseDao<T> {
      * @param ids ids
      * @return {@link List}<{@link T}>
      */
-    default List<T> findByIds(List<? extends Serializable> ids){
+    default List<T> findByIds(List<? extends Serializable> ids) {
         if (CollUtil.isEmpty(ids)) {
             return new LinkedList<>();
         }
@@ -93,6 +90,16 @@ public interface AnnoBaseDao<T> {
         return dbService().delete(
             DbCriteria.fromClass(entityClass()).eq(getPkDbFieldName(), id)
         );
+    }
+
+    /**
+     * 删去
+     *
+     * @param dbCriteria db标准
+     * @return int
+     */
+    default int delete(DbCriteria dbCriteria) {
+        return dbService().delete(dbCriteria);
     }
 
     /**
@@ -225,6 +232,16 @@ public interface AnnoBaseDao<T> {
      */
     default long saveOrUpdate(T t) {
         return insertOrUpdate(t);
+    }
+
+    /**
+     * 计数
+     *
+     * @param dbCriteria db标准
+     * @return long
+     */
+    default long count(DbCriteria dbCriteria) {
+        return dbService().count(dbCriteria);
     }
 
     /**
