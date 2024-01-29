@@ -1,6 +1,7 @@
 package site.sorghum.anno.solon.init;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +84,9 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
                     anSql.setState(1);
                 } catch (Exception e) {
                     anSql.setState(2);
+                    anSql.setErrorLog(
+                        ExceptionUtil.stacktraceToString(e)
+                    );
                     log.error("parse or execute sql error, resource: {}", resource);
                     throw e;
                 } finally {

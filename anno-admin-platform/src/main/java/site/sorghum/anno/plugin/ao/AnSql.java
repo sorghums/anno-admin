@@ -5,11 +5,13 @@ import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.service.AnSqlService;
+import site.sorghum.anno.plugin.tpl.AnnoSqlDetailTplRender;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
 
 import java.io.Serial;
@@ -68,6 +70,16 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
     )
     private Date runTime;
 
+    /**
+     * 错误日志
+     */
+    @AnnoField(
+        title = "错误日志",
+        tableFieldName = "error_log",
+        dataType = AnnoDataType.TEXT_AREA
+    )
+    private String errorLog;
+
     @AnnoButton(
         name = "手动执行",
         javaCmd = @AnnoButton.JavaCmd(
@@ -77,4 +89,14 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
         permissionCode = "runSql"
     )
     private Object runButton;
+
+    @AnnoButton(
+        name = "查看SQL内容",
+        annoTpl = @AnnoTpl(
+            tplClazz = AnnoSqlDetailTplRender.class
+        ),
+        permissionCode = "sqlContent"
+    )
+    private Object sqlContentButton;
+
 }

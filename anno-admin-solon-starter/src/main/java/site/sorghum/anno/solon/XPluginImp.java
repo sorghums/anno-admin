@@ -10,6 +10,7 @@ import com.googlecode.aviator.AviatorEvaluatorInstance;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanBuilder;
@@ -61,6 +62,7 @@ import java.util.Set;
  * @author sorghum
  * @since 2023/05/20
  */
+@Slf4j
 public class XPluginImp implements Plugin {
     private static final String ANNO_BASE_PACKAGE = "site.sorghum.anno";
     private static final String PLUGIN_BASE_PACKAGE = "site.sorghum.plugin";
@@ -124,7 +126,7 @@ public class XPluginImp implements Plugin {
                 try {
                     initDdlAndDataService.initDdl();
                 } catch (Throwable e) {
-                    throw new BizException(e);
+                    log.warn("初始化数据库表结构和预置数据错误:", e);
                 }
             });
         });

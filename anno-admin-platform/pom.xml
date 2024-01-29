@@ -22,9 +22,5 @@
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
-        </dependency>
     </dependencies>
 </project>

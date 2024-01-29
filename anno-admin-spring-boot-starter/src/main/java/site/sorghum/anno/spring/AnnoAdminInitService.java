@@ -3,6 +3,7 @@ package site.sorghum.anno.spring;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -190,6 +191,9 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
                     anSql.setState(1);
                 } catch (Exception e) {
                     anSql.setState(2);
+                    anSql.setErrorLog(
+                        ExceptionUtil.stacktraceToString(e)
+                    );
                     log.error("parse or execute sql error, resource: {}", resource);
                     throw e;
                 } finally {

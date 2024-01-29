@@ -2,6 +2,7 @@ package site.sorghum.anno._ddl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -11,10 +12,9 @@ import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.insert.Insert;
 import org.noear.wood.DbContext;
-import org.noear.wood.WoodConfig;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.util.ScriptUtils;
+import site.sorghum.anno.db.service.DbService;
 
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -36,6 +36,9 @@ public class InitDataService {
     @Db
     DbContext dbContext;
 
+    @Inject
+    DbService dbService;
+
     public static Set<String> systemFields = Set.of("create_time", "create_by", "update_time", "update_by", "del_flag");
 
     public void init(URL resource) throws Exception {
@@ -51,46 +54,11 @@ public class InitDataService {
     private void initSql(URL resource) throws Exception {
         StopWatch stopWatch = new StopWatch("init sql");
         stopWatch.start("read sql");
-        List<String> statements = ScriptUtils.getStatements(new InputStreamReader(resource.openStream(), StandardCharsets.UTF_8));
+        String content = IoUtil.read(resource.openStream(), StandardCharsets.UTF_8);
         stopWatch.stop();
 
         stopWatch.start("parse & execute sql");
-        for (String statement : statements) {
-
-            Statement parse = CCJSqlParserUtil.parse(statement);
-            // 先只处理
-            if (parse instanceof Insert) {
-                List<Map<String, Object>> list = new ArrayList<>();
-                Map<Integer, String> indexToColumn = new HashMap<>();
-                for (int index = 0; index < ((Insert) parse).getColumns().size(); index++) {
-                    indexToColumn.put(index, ((Insert) parse).getColumns().get(index).getColumnName());
-                }
-                ItemsList itemsList = ((Insert) parse).getItemsList();
-                itemsList.accept(new ExpressionListVisitor(list, indexToColumn));
-
-                for (Map<String, Object> map : list) {
-                    String id = (String) map.get("id");
-                    if (StrUtil.isBlank(id)) {
-                        continue;
-                    }
-                    String tableName = ((Insert) parse).getTable().getName();
-
-                    Set<String> keys = map.keySet().stream().filter(k -> !systemFields.contains(k)).collect(Collectors.toSet());
-                    Map<String, Object> existMap = dbContext.table(tableName).whereEq("id", id).selectMap(String.join(",", keys));
-                    if (CollUtil.isEmpty(existMap)) {
-                        dbContext.table(tableName).setMap(map).insert();
-                    } else {
-                        systemFields.forEach(map::remove);
-                        for (String key : keys) {
-                            map.remove(key, existMap.get(key));
-                        }
-                        if (!map.isEmpty()) {
-                            dbContext.table(tableName).setMap(map).whereEq("id", id).update();
-                        }
-                    }
-                }
-            }
-        }
+        dbService.executeSql(content);
         stopWatch.stop();
         log.info("init sql({}) finished, time: {}ms", resource.getPath(), stopWatch.getTotal(TimeUnit.MILLISECONDS));
         if (log.isDebugEnabled()) {
