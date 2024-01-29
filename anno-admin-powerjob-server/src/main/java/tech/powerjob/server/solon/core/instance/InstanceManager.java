@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.dao.SysUserDao;
 import tech.powerjob.common.enums.InstanceStatus;
@@ -246,7 +247,7 @@ public class InstanceManager implements TransportServiceAware {
         JobInstanceAlarm content = new JobInstanceAlarm();
         BeanUtil.copyProperties(jobInfo, content);
         BeanUtil.copyProperties(instanceInfo, content);
-        List<AnUser> userList = DbContextUtil.getMapper(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
+        List<AnUser> userList = AnnoBeanUtils.getBean(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
         if (!StringUtils.isEmpty(alertContent)) {
             content.setResult(alertContent);
         }

@@ -68,4 +68,42 @@ public interface DbService {
      * @return {@link List}<{@link Map}<{@link String}, {@link Object}>>
      */
     List<Map<String, Object>> sql2MapList(String actualSql);
+
+    /**
+     * 执行sql
+     *
+     * @param sql    sql
+     * @param params params
+     * @return {@link Long}
+     */
+    Object executeSql(String sql, Object... params);
+
+    /**
+     * sql查询一个
+     *
+     * @param clazz  拍手
+     * @param sql    sql
+     * @param params params
+     * @return {@link Object}
+     */
+    <T> T sqlQueryOne(Class<T> clazz, String sql, Object... params);
+
+    /**
+     * sql查询列表
+     *
+     * @param clazz  拍手
+     * @param sql    sql
+     * @param params params
+     * @return {@link List}<{@link T}>
+     */
+    <T> List<T> sqlQueryList(Class<T> clazz,String sql,Object... params);
+
+    /**
+     * 执行sql2映射列表
+     *
+     * @param sql    sql
+     * @param params params
+     * @return {@link List}<{@link Map}<{@link String}, {@link Object}>>
+     */
+    List<Map<String, Object>> executeSql2MapList(String sql, Object... params);
 }

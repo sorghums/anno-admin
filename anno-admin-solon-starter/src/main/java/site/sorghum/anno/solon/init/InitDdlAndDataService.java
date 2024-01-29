@@ -42,7 +42,7 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
     AnnoEntityToTableGetter annoEntityToTableGetter;
     @Inject
     InitDataService initDataService;
-    @Db
+    @Inject
     AnSqlDao anSqlDao;
     @Db
     DbContext dbContext;
@@ -87,10 +87,10 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
                     throw e;
                 } finally {
                     anSql.setRunTime(DateUtil.date());
-                    anSqlDao.saveOrUpdate(anSql);
+                    anSqlDao.insertOrUpdate(anSql);
                 }
             }else {
-                anSqlDao.saveOrUpdate(anSql);
+                anSqlDao.insertOrUpdate(anSql);
             }
         }
     }

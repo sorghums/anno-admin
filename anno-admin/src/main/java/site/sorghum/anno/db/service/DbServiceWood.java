@@ -131,13 +131,44 @@ public class DbServiceWood implements DbService {
             return dbTableQuery.delete();
         }
     }
-
     @Override
     public List<Map<String, Object>> sql2MapList(String actualSql) {
+        return executeSql2MapList(actualSql);
+    }
+
+    @Override
+    public List<Map<String, Object>> executeSql2MapList(String sql, Object... params) {
         try {
-            return dbContext.sql(actualSql).getDataList().getMapList();
+            return dbContext.sql(sql,params).getDataList().getMapList();
         } catch (SQLException e) {
-            throw new AnnoDbException(e.getMessage());
+            throw new AnnoDbException(e.getMessage()).withCause(e);
+        }
+    }
+
+    @Override
+    public Object executeSql(String sql, Object... params) {
+        try {
+            return dbContext.exe(sql,params);
+        } catch (Exception e) {
+            throw new AnnoDbException(e.getMessage()).withCause(e);
+        }
+    }
+
+    @Override
+    public <T> T sqlQueryOne(Class<T> clazz, String sql, Object... params) {
+        try {
+            return dbContext.sql(sql,params).getItem(clazz);
+        } catch (SQLException e) {
+            throw new AnnoDbException(e.getMessage()).withCause(e);
+        }
+    }
+
+    @Override
+    public <T> List<T> sqlQueryList(Class<T> clazz, String sql, Object... params) {
+        try {
+            return dbContext.sql(sql,params).getList(clazz);
+        } catch (SQLException e) {
+            throw new AnnoDbException(e.getMessage()).withCause(e);
         }
     }
 
@@ -145,6 +176,9 @@ public class DbServiceWood implements DbService {
      * entity 转数据库字段时，过滤掉不需要的字段
      */
     private boolean filterField(TableParam<?> tableParam, String tableFieldName, Object fieldValue) {
+        if (AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), tableFieldName) == null){
+            return false;
+        }
         if (tableFieldName == null) {
             return false;
         }

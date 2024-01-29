@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import org.noear.wood.annotation.Db;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 @RunWith(SolonJUnit4ClassRunner.class)
 public class BaseDaoTest {
 
-    @Db
+    @Inject
     SysUserDao userDao;
 
     @Test

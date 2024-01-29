@@ -10,4 +10,9 @@ public class AnnoDbException extends RuntimeException {
     public AnnoDbException(String message) {
         super(message);
     }
+
+    public AnnoDbException withCause(Throwable cause){
+        initCause(cause);
+        return this;
+    }
 }

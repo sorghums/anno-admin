@@ -38,6 +38,7 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
@@ -108,6 +109,15 @@ public class XPluginImp implements Plugin {
         // 前端静态文件
         StaticMappings.add(AnnoConstants.BASE_URL + "/", new ClassPathStaticRepository("/WEB-INF/anno-admin-ui/"));
 
+
+        // 扫描翻译插件
+        context.beanScan(PLUGIN_BASE_PACKAGE);
+
+        // wood 设置
+        WoodConfig.isSelectItemEmptyAsNull = true;
+        WoodConfig.isUsingValueNull = true;
+        WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
+
         // 优先 初始化数据库表结构和预置数据，其他模块在创建 bean 时，可能会查库
         context.getBeanAsync(InitDdlAndDataService.class, initDdlAndDataService -> {
             context.getBeanAsync(DataSource.class, dataSource -> {
@@ -118,14 +128,6 @@ public class XPluginImp implements Plugin {
                 }
             });
         });
-
-        // 扫描翻译插件
-        context.beanScan(PLUGIN_BASE_PACKAGE);
-
-        // wood 设置
-        WoodConfig.isSelectItemEmptyAsNull = true;
-        WoodConfig.isUsingValueNull = true;
-        WoodConfig.onExecuteAft(new WoodSqlLogInterceptor());
 
      }
 

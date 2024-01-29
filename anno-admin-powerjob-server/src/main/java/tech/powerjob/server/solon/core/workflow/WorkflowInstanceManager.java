@@ -65,7 +65,7 @@ public class WorkflowInstanceManager {
     private IdGenerateService idGenerateService;
     @Db
     private JobInfoRepository jobInfoRepository;
-    @Db
+    @Inject
     private SysUserDao userDao;
     @Db
     private WorkflowInfoRepository workflowInfoRepository;

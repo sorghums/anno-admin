@@ -41,10 +41,10 @@ import java.util.stream.Collectors;
 @Proxy
 @Slf4j
 public class AuthServiceImpl implements AuthService {
-    @Db
+    @Inject
     SysUserDao sysUserDao;
 
-    @Db
+    @Inject
     AnRoleDao anRoleDao;
 
     @Db
@@ -188,7 +188,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AnUser getUserById(String id) {
-        return sysUserDao.selectById(id);
+        return sysUserDao.findById(id);
     }
 
     @Override
@@ -246,7 +246,7 @@ public class AuthServiceImpl implements AuthService {
         String id = props.get("id").toString();
         anUser.setId(id);
         anUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
-        sysUserDao.updateById(anUser, true);
+        sysUserDao.updateById(anUser);
     }
 
     @Override

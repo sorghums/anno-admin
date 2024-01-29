@@ -12,6 +12,7 @@ import site.sorghum.anno.plugin.ao.AnSql;
 import site.sorghum.anno.plugin.dao.AnSqlDao;
 import site.sorghum.anno.plugin.service.AnSqlService;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Map;
 
@@ -19,14 +20,15 @@ import java.util.Map;
 @Slf4j
 public class AnSqlServiceImpl implements AnSqlService {
 
-    @Db
+    @Inject
     AnSqlDao anSqlDao;
+
     @Inject
     InitDataService initDataService;
 
     @Override
     public void runSql(Map<String, Object> data) {
-        AnSql anSql = anSqlDao.findById(data.get("id")).get();
+        AnSql anSql = anSqlDao.findById((Serializable) data.get("id"));
 
         String fileName = (String) data.get("version");
         URL resource = ResourceUtil.getResource("init-data/" + fileName);

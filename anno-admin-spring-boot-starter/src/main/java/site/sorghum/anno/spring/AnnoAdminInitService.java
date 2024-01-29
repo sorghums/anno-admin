@@ -66,7 +66,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
     InitDataService initDataService;
     @Db
     DbContext dbContext;
-    @Db
+    @Inject
     AnSqlDao anSqlDao;
     @Inject
     AnnoProperty annoProperty;
