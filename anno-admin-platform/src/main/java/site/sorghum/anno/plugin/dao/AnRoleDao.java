@@ -19,12 +19,6 @@ import java.util.List;
 @Named
 public class AnRoleDao implements AnnoBaseDao<AnRole> {
 
-    @Inject
-    DbService dbService;
-
-    @Inject
-    MetadataManager metadataManager;
-
     /**
      * 通过用户id查询系统角色
      *
@@ -36,21 +30,5 @@ public class AnRoleDao implements AnnoBaseDao<AnRole> {
             "select * from an_role where id in (select role_id from an_user_role where user_id = ? and del_flag = 0 ) and del_flag = 0",
             uid
         );
-    }
-
-
-    @Override
-    public DbService dbService() {
-        return dbService;
-    }
-
-    @Override
-    public MetadataManager metadataManager() {
-        return metadataManager;
-    }
-
-    @Override
-    public Class<AnRole> entityClass() {
-        return AnRole.class;
     }
 }

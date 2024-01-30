@@ -23,14 +23,6 @@ import java.util.stream.Collectors;
  */
 @Named
 public class SysUserDao implements AnnoBaseDao<AnUser> {
-
-    @Inject
-    DbService dbService;
-
-    @Inject
-    MetadataManager metadataManager;
-
-
     /**
      * 根据用户手机号查询用户
      *
@@ -53,22 +45,5 @@ public class SysUserDao implements AnnoBaseDao<AnUser> {
         }
         List<String> collect = Arrays.stream(userIds.split(",")).collect(Collectors.toList());
         return findByIds(collect);
-    }
-
-    @Override
-    public DbService dbService() {
-        return dbService;
-    }
-
-    ;
-
-    @Override
-    public MetadataManager metadataManager() {
-        return metadataManager;
-    }
-
-    @Override
-    public Class<AnUser> entityClass() {
-        return AnUser.class;
     }
 }

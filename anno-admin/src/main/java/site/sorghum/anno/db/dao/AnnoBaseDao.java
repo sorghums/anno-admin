@@ -1,8 +1,11 @@
 package site.sorghum.anno.db.dao;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.SafeConcurrentHashMap;
+import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.DbCriteria;
@@ -10,9 +13,10 @@ import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.service.DbService;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Anno基准dao
@@ -21,26 +25,12 @@ import java.util.Optional;
  * @since 2024/01/29
  */
 public interface AnnoBaseDao<T> {
-    /**
-     * 数据库服务
-     *
-     * @return {@link DbService}
-     */
-    DbService dbService();
 
-    /**
-     * 元数据管理器
-     *
-     * @return {@link MetadataManager}
-     */
-    MetadataManager metadataManager();
+    AtomicReference<DbService> DB_SERVICE = new AtomicReference<>();
 
-    /**
-     * 实体类
-     *
-     * @return {@link Class}<{@link T}>
-     */
-    Class<T> entityClass();
+    AtomicReference<MetadataManager> METADATA_MANAGER = new AtomicReference<>();
+
+    Map<Class<?>,Class<?>> ENTITY_CLASS_MAP = new SafeConcurrentHashMap<>();
 
     /**
      * 按id查找
@@ -288,4 +278,58 @@ public interface AnnoBaseDao<T> {
         return metadataManager().getEntity(entityClass()).getPkField().getFieldName();
     }
 
+
+
+    /**
+     * 数据库服务
+     *
+     * @return {@link DbService}
+     */
+    default DbService dbService(){
+        if (DB_SERVICE.get() == null){
+            DB_SERVICE.set(AnnoBeanUtils.getBean(DbService.class));
+        }
+        return DB_SERVICE.get();
+    };
+
+    /**
+     * 元数据管理器
+     *
+     * @return {@link MetadataManager}
+     */
+    default MetadataManager metadataManager(){
+        if (METADATA_MANAGER.get() == null){
+            METADATA_MANAGER.set(AnnoBeanUtils.getBean(MetadataManager.class));
+        }
+        return METADATA_MANAGER.get();
+    };
+
+    /**
+     * 实体类
+     *
+     * @return {@link Class}<{@link T}>
+     */
+    default Class<T> entityClass(){
+        Class<? extends AnnoBaseDao> nowClass = this.getClass();
+        if (ENTITY_CLASS_MAP.containsKey(nowClass)){
+            return (Class<T>) ENTITY_CLASS_MAP.get(nowClass);
+        }
+        Type[] interfaces = nowClass.getGenericInterfaces();
+        for (Type type : interfaces) {
+            if (type instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) type;
+                if (parameterizedType.getRawType() instanceof Class) {
+                    Class<?> clazz = (Class<?>) parameterizedType.getRawType();
+                    if (clazz.isAssignableFrom(AnnoBaseDao.class)) {
+                        Class<T> typeArgument = (Class<T>) parameterizedType.getActualTypeArguments()[0];
+                        ENTITY_CLASS_MAP.put(nowClass, typeArgument);
+                    }
+                }
+            }
+        }
+        if (!ENTITY_CLASS_MAP.containsKey(nowClass)){
+            throw new AnnoDbException("UnKnow %s's entity class.".formatted(nowClass));
+        }
+        return (Class<T>) ENTITY_CLASS_MAP.get(nowClass);
+    };
 }

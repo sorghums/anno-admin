@@ -14,11 +14,6 @@ import site.sorghum.anno.plugin.ao.AnSql;
  */
 @Named
 public class AnSqlDao implements AnnoBaseDao<AnSql> {
-    @Inject
-    DbService dbService;
-
-    @Inject
-    MetadataManager metadataManager;
     /**
      * 按版本查询
      *
@@ -29,22 +24,5 @@ public class AnSqlDao implements AnnoBaseDao<AnSql> {
         return sqlOne(
             "select * from an_sql where version = ?",
             version);
-    }
-
-    @Override
-    public DbService dbService() {
-        return dbService;
-    }
-
-    ;
-
-    @Override
-    public MetadataManager metadataManager() {
-        return metadataManager;
-    }
-
-    @Override
-    public Class<AnSql> entityClass() {
-        return AnSql.class;
     }
 }
