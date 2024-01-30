@@ -43,7 +43,7 @@ public interface WorkflowNodeInfoRepository extends AnnoBaseMapper<WorkflowNodeI
      * @return 删除记录条数
      */
     default int deleteAllByWorkflowIdIsNullAndGmtCreateBefore(Date crtTimeThreshold) {
-        return delete(m -> m.whereEq("workflowId", null).andLt("update_time", crtTimeThreshold));
+        return delete(m -> m.whereEq("workflow_id", null).andLt("update_time", crtTimeThreshold));
     }
 
 }
