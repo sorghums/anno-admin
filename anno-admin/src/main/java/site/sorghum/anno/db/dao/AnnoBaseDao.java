@@ -6,6 +6,7 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.util.GenericsUtil;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.DbCriteria;
@@ -311,25 +312,6 @@ public interface AnnoBaseDao<T> {
      */
     default Class<T> entityClass(){
         Class<? extends AnnoBaseDao> nowClass = this.getClass();
-        if (ENTITY_CLASS_MAP.containsKey(nowClass)){
-            return (Class<T>) ENTITY_CLASS_MAP.get(nowClass);
-        }
-        Type[] interfaces = nowClass.getGenericInterfaces();
-        for (Type type : interfaces) {
-            if (type instanceof ParameterizedType) {
-                ParameterizedType parameterizedType = (ParameterizedType) type;
-                if (parameterizedType.getRawType() instanceof Class) {
-                    Class<?> clazz = (Class<?>) parameterizedType.getRawType();
-                    if (clazz.isAssignableFrom(AnnoBaseDao.class)) {
-                        Class<T> typeArgument = (Class<T>) parameterizedType.getActualTypeArguments()[0];
-                        ENTITY_CLASS_MAP.put(nowClass, typeArgument);
-                    }
-                }
-            }
-        }
-        if (!ENTITY_CLASS_MAP.containsKey(nowClass)){
-            throw new AnnoDbException("UnKnow %s's entity class.".formatted(nowClass));
-        }
-        return (Class<T>) ENTITY_CLASS_MAP.get(nowClass);
+        return (Class<T>) GenericsUtil.getInterfaceGenericsType(nowClass, AnnoBaseDao.class, 0);
     };
 }
