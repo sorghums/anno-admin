@@ -1,5 +1,6 @@
 package site.sorghum.anno.plugin.service.impl;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
@@ -16,11 +17,11 @@ import java.util.List;
  */
 @Named
 public class SysAnnoMenuServiceImpl implements SysAnnoMenuService {
-    @Db
+    @Inject
     AnAnnoMenuDao anAnnoMenuDao;
 
     @Override
     public List<AnAnnoMenu> list() {
-        return anAnnoMenuDao.list();
+        return anAnnoMenuDao.bizList();
     }
 }

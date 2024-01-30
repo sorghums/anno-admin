@@ -1,20 +1,28 @@
 package site.sorghum.anno.plugin.dao;
 
-import org.noear.wood.annotation.Sql;
-import org.noear.wood.xml.Namespace;
+import jakarta.inject.Named;
+import site.sorghum.anno.db.dao.AnnoBaseDao;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 
-@Namespace("site.sorghum.anno.modular.system.dao")
-public interface AnAnnoMenuDao extends AnnoBaseMapper<AnAnnoMenu> {
+/**
+ * anno菜单dao
+ *
+ * @author Sorghum
+ * @since 2024/01/30
+ */
+@Named
+public class AnAnnoMenuDao implements AnnoBaseDao<AnAnnoMenu> {
 
     /**
      * 列表
      *
      * @return {@link List}<{@link AnAnnoMenu}>
      */
-    @Sql("select * from an_anno_menu where del_flag = 0 order by sort")
-    List<AnAnnoMenu> list();
+    public List<AnAnnoMenu> bizList(){
+        return this.sqlList(
+            "select * from an_anno_menu where del_flag = 0 order by sort"
+        );
+    }
 }

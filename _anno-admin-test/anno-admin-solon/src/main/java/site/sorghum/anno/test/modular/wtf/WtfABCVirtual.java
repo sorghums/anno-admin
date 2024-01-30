@@ -10,6 +10,10 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.plugin.join.aop.JoinResMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 复杂连表
@@ -85,4 +89,6 @@ public class WtfABCVirtual {
         edit = @AnnoEdit)
     String location;
 
+    @JoinResMap
+    Map<String,Object> joinResMap = new HashMap<>();
 }

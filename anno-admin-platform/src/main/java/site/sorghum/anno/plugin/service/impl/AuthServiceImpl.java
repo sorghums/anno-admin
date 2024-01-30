@@ -14,7 +14,6 @@ import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
-import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -47,10 +46,10 @@ public class AuthServiceImpl implements AuthService {
     @Inject
     AnRoleDao anRoleDao;
 
-    @Db
+    @Inject
     AnPermissionDao anPermissionDao;
 
-    @Db
+    @Inject
     AnAnnoMenuDao anAnnoMenuDao;
 
     @Inject
@@ -82,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anColumnButton.getName());
                         buttonPermission.setDelFlag(0);
-                        anPermissionDao.insert(buttonPermission, true);
+                        anPermissionDao.insert(buttonPermission);
                     }
                 }
 
@@ -99,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
                         buttonPermission.setCode(buttonCode);
                         buttonPermission.setName(baseName + ":" + anButton.getName());
                         buttonPermission.setDelFlag(0);
-                        anPermissionDao.insert(buttonPermission, true);
+                        anPermissionDao.insert(buttonPermission);
                     }
                 }
                 AnPermission anPermission = anPermissionDao.selectByCode(baseCode);
@@ -112,7 +111,7 @@ public class AuthServiceImpl implements AuthService {
                 basePermission.setCode(baseCode);
                 basePermission.setName(baseName);
                 basePermission.setDelFlag(0);
-                anPermissionDao.insert(basePermission, true);
+                anPermissionDao.insert(basePermission);
 
                 // 查看
                 String viewCode = baseCode + ":" + PermissionProxy.VIEW;
@@ -124,7 +123,7 @@ public class AuthServiceImpl implements AuthService {
                 viewPermission.setName(viewName);
                 viewPermission.setDelFlag(0);
 
-                anPermissionDao.insert(viewPermission, true);
+                anPermissionDao.insert(viewPermission);
 
                 // 新增
                 String addCode = baseCode + ":" + PermissionProxy.ADD;
@@ -137,7 +136,7 @@ public class AuthServiceImpl implements AuthService {
                 addPermission.setName(addName);
                 addPermission.setDelFlag(0);
 
-                anPermissionDao.insert(addPermission, true);
+                anPermissionDao.insert(addPermission);
 
                 // 修改
                 String updateCode = baseCode + ":" + PermissionProxy.UPDATE;
@@ -150,7 +149,7 @@ public class AuthServiceImpl implements AuthService {
                 updatePermission.setName(updateName);
                 updatePermission.setDelFlag(0);
 
-                anPermissionDao.insert(updatePermission, true);
+                anPermissionDao.insert(updatePermission);
 
                 // 删除
                 String deleteCode = baseCode + ":" + PermissionProxy.DELETE;
@@ -163,7 +162,7 @@ public class AuthServiceImpl implements AuthService {
                 deletePermission.setName(deleteName);
                 deletePermission.setDelFlag(0);
 
-                anPermissionDao.insert(deletePermission, true);
+                anPermissionDao.insert(deletePermission);
 
                 // 按钮权限
 
@@ -200,7 +199,7 @@ public class AuthServiceImpl implements AuthService {
         List<String> roleIds = AuthFunctions.roleList.apply(userId);
         List<String> permissionCodes;
         if (roleIds.contains("admin")) {
-            List<AnPermission> anPermissions = anPermissionDao.list();
+            List<AnPermission> anPermissions = anPermissionDao.bizList();
             permissionCodes =  anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
         }else {
             List<AnPermission> anPermissions = anPermissionDao.querySysPermissionByUserId(userId);
@@ -284,7 +283,7 @@ public class AuthServiceImpl implements AuthService {
                 continue;
             }
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
-                AnAnnoMenu anAnnoMenu = anAnnoMenuDao.selectById(anPluginMenu.getId());
+                AnAnnoMenu anAnnoMenu = anAnnoMenuDao.findById(anPluginMenu.getId());
                 AnAnnoMenu updateAnnoMenu = null;
                 if (anAnnoMenu == null || anAnnoMenu.getId() ==  null) {
                     anAnnoMenu = new AnAnnoMenu();

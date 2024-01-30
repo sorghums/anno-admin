@@ -2,7 +2,6 @@ package site.sorghum.anno._common.util;
 
 import cn.hutool.core.map.SafeConcurrentHashMap;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.db.dao.AnnoBaseDao;
 import site.sorghum.anno.db.exception.AnnoDbException;
 
 import java.lang.reflect.ParameterizedType;
@@ -22,7 +21,7 @@ public class GenericsUtil {
     private static final Map<String, Class<?>> ENTITY_CLASS_MAP = new SafeConcurrentHashMap<>();
 
     /**
-     * 获取泛型类型
+     * 获取接口泛型类型 [接口]
      *
      * @param nowClass       目标类
      * @param interfaceClass 接口类

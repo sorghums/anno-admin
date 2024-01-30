@@ -1,9 +1,9 @@
 package site.sorghum.anno.plugin.dao;
 
+import jakarta.inject.Named;
 import org.noear.wood.annotation.Sql;
-import org.noear.wood.xml.Namespace;
+import site.sorghum.anno.db.dao.AnnoBaseDao;
 import site.sorghum.anno.plugin.ao.AnPermission;
-import site.sorghum.anno.suppose.mapper.AnnoBaseMapper;
 
 import java.util.List;
 
@@ -13,25 +13,37 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/29
  */
-@Namespace("site.sorghum.anno.modular.system.dao")
-public interface AnPermissionDao extends AnnoBaseMapper<AnPermission> {
+@Named
+public class AnPermissionDao implements AnnoBaseDao<AnPermission> {
     /**
      * 根据用户id查询系统权限
      *
      * @param uid 用户id
      * @return {@link List}<{@link AnPermission}>
      */
-    @Sql("select * from an_permission where id in (select permission_id from an_role_permission where role_id in (select role_id from an_user_role where user_id = ?  and del_flag = 0 ) and del_flag = 0)")
-    List<AnPermission> querySysPermissionByUserId(String uid);
+    public List<AnPermission> querySysPermissionByUserId(String uid){
+        return this.sqlList(
+            "select * from an_permission where id in (select permission_id from an_role_permission where role_id in (select role_id from an_user_role where user_id = ?  and del_flag = 0 ) and del_flag = 0)",
+            uid
+        );
+    }
 
     /**
      * 列表
      *
      * @return {@link List}<{@link AnPermission}>
      */
-    @Sql("select * from an_permission where del_flag = 0")
-    List<AnPermission> list();
+    public List<AnPermission> bizList(){
+        return this.sqlList("select * from an_permission where del_flag = 0");
+    }
 
-    @Sql("select * from an_permission where code = ? and del_flag = 0")
-    AnPermission selectByCode(String code);
+    /**
+     * 按代码选择
+     *
+     * @param code 密码
+     * @return {@link AnPermission}
+     */
+    public AnPermission selectByCode(String code){
+        return this.sqlOne("select * from an_permission where code = ? and del_flag = 0", code);
+    }
 }

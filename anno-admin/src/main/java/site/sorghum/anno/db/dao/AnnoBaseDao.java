@@ -1,8 +1,6 @@
 package site.sorghum.anno.db.dao;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.SafeConcurrentHashMap;
-import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -14,8 +12,6 @@ import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.service.DbService;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -30,8 +26,6 @@ public interface AnnoBaseDao<T> {
     AtomicReference<DbService> DB_SERVICE = new AtomicReference<>();
 
     AtomicReference<MetadataManager> METADATA_MANAGER = new AtomicReference<>();
-
-    Map<Class<?>,Class<?>> ENTITY_CLASS_MAP = new SafeConcurrentHashMap<>();
 
     /**
      * 按id查找
@@ -262,6 +256,16 @@ public interface AnnoBaseDao<T> {
     }
 
     /**
+     * db标准
+     * 查询包装器
+     *
+     * @return {@link DbCriteria}
+     */
+    default DbCriteria dbCriteria(){
+        return DbCriteria.fromClass(entityClass());
+    }
+
+    /**
      * 获取pk-db字段名
      *
      * @return {@link String}
@@ -303,7 +307,7 @@ public interface AnnoBaseDao<T> {
             METADATA_MANAGER.set(AnnoBeanUtils.getBean(MetadataManager.class));
         }
         return METADATA_MANAGER.get();
-    };
+    }
 
     /**
      * 实体类
@@ -313,5 +317,5 @@ public interface AnnoBaseDao<T> {
     default Class<T> entityClass(){
         Class<? extends AnnoBaseDao> nowClass = this.getClass();
         return (Class<T>) GenericsUtil.getInterfaceGenericsType(nowClass, AnnoBaseDao.class, 0);
-    };
+    }
 }
