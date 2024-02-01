@@ -22,6 +22,12 @@ public @interface AnnoButton {
      */
     String name();
 
+    /**
+     * 图标
+     *
+     * @return {@link String}
+     */
+    String icon() default "ant-design:appstore-filled";
 
     /**
      * 按钮大小 	'xs' | 'sm' | 'md' | 'lg'

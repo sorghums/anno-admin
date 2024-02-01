@@ -22,6 +22,14 @@ public class AnButton {
     private String name;
 
     /**
+     * 标题
+     *
+     * @see AnnoTableButton#icon()
+     */
+    @ApiModelProperty(value = "图标", example = "ant-design:appstore-filled")
+    private String icon;
+
+    /**
      * 按钮大小 	'xs' | 'sm' | 'md' | 'lg'
      *
      * @see AnnoTableButton#size()

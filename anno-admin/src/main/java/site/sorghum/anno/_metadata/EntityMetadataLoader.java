@@ -281,6 +281,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             AnnoButton anno = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
             AnColumnButton anColumnButton = new AnColumnButton();
             anColumnButton.setName(anno.name());
+            anColumnButton.setIcon(anno.icon());
             anColumnButton.setPermissionCode(anno.permissionCode());
             anColumnButton.setSize(anno.size());
             anColumnButton.setJsCmd(anno.jsCmd());
@@ -342,6 +343,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             AnButton anButton = new AnButton();
             anButton.setName(anno.name());
+            anButton.setIcon(anno.icon());
             anButton.setPermissionCode(anno.permissionCode());
             anButton.setSize(anno.size());
             anButton.setJsCmd(anno.jsCmd());

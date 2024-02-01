@@ -22,6 +22,13 @@ public @interface AnnoTableButton {
 
 
     /**
+     * 图标
+     *
+     * @return {@link String}
+     */
+    String icon() default "ant-design:appstore-filled";
+
+    /**
      * 按钮大小 	'xs' | 'sm' | 'md' | 'lg'
      *
      * @return {@link String}
