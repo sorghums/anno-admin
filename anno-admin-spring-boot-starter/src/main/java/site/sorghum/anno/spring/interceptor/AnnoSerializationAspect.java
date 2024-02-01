@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +39,9 @@ public class AnnoSerializationAspect {
                 return annoResult;
             }
             if (annoResult.getData() instanceof List){
-                annoResult.setData(JSONUtil.toBeanList(annoResult.getData(), Map.class));
+                annoResult.setData(JSONUtil.toBeanList(annoResult.getData(), HashMap.class));
             }else {
-                annoResult.setData(JSONUtil.toBean(annoResult.getData(), Map.class));
+                annoResult.setData(JSONUtil.toBean(annoResult.getData(), HashMap.class));
             }
         }
         return object;

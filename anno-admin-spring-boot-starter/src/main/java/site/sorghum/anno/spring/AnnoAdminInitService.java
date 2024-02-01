@@ -4,7 +4,11 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.file.FileNameUtil;
+import cn.hutool.core.io.resource.FileResource;
+import cn.hutool.core.io.resource.MultiResource;
+import cn.hutool.core.io.resource.Resource;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.googlecode.aviator.AviatorEvaluator;
@@ -18,7 +22,6 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
@@ -38,6 +41,7 @@ import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
+import site.sorghum.anno.method.resource.ResourceFinder;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.ao.AnSql;
 import site.sorghum.anno.plugin.dao.AnSqlDao;
@@ -47,6 +51,7 @@ import site.sorghum.anno.spring.config.AnnoScanConfig;
 import site.sorghum.anno.utils.MTUtils;
 
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -168,26 +173,21 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         }
 
         // 初始化数据
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = {};
-        try {
-            resources = resolver.getResources("classpath:init-data/*.sql");
-        }catch (FileNotFoundException e){
-            log.info("init-data/*.sql not found, please check if the file exists, resource: classpath:init-data/*.sql");
-        }
-
+        MultiResource resources = ResourceFinder.of().find("init-data/**.sql");
         for (Resource resource : resources) {
-            String fileName = FileNameUtil.getName(resource.getFile());
-            AnSql anSql = anSqlDao.queryByVersion(fileName);
+            String version = resource.getName();
+            AnSql anSql = anSqlDao.queryByVersion(version);
             if (anSql == null || anSql.getId() == null){
                 anSql = new AnSql(){{
-                    setVersion(fileName);
+                    setVersion(version);
+                    setSqlContent(IoUtil.read(resource.getUrl().openStream(), Charset.defaultCharset()));
                     setState(0);
                 }};
             }
-            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1 && resource.getFile().length() > 0){
+            anSql.setSqlContent(IoUtil.read(resource.getUrl().openStream(), Charset.defaultCharset()));
+            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
                 try {
-                    initDataService.init(resource.getURL());
+                    initDataService.init(resource.getUrl());
                     anSql.setState(1);
                 } catch (Exception e) {
                     anSql.setState(2);
@@ -195,7 +195,6 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
                         ExceptionUtil.stacktraceToString(e)
                     );
                     log.error("parse or execute sql error, resource: {}", resource);
-                    throw e;
                 } finally {
                     anSql.setRunTime(DateUtil.date());
                     anSqlDao.saveOrUpdate(anSql);

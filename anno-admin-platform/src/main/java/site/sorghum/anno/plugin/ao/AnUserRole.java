@@ -2,7 +2,6 @@ package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
@@ -20,8 +19,8 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色用户关联管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_user_role", baseCodeTranslate = "角色用户关联管理"))
-@Table("an_user_role")
+    tableName = "an_user_role",
+    annoPermission = @AnnoPermission(enable = true, baseCode = "an_user_role", baseCodeTranslate = "角色用户关联管理"))
 @AnnoRemove(removeType = 0)
 public class AnUserRole extends BaseMetaModel implements Serializable {
 

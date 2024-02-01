@@ -19,8 +19,14 @@ public @interface AnnoMain {
      *
      * @return {@link String}
      */
-    String name() default "" ;
+    String name();
 
+    /**
+     * 表名称
+     *
+     * @return {@link String}
+     */
+    String tableName() default "";
     /**
      * 增加连表相关参数
      * 仅虚拟表时可用

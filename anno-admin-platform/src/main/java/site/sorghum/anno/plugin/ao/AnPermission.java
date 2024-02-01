@@ -24,10 +24,10 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "权限管理",
+    tableName = "an_permission",
     annoTree = @AnnoTree(label = "name", parentKey = "parentId", key = "id", displayAsTree = true),
     annoPermission = @AnnoPermission(enable = true, baseCode = "an_permission", baseCodeTranslate = "权限管理")
 )
-@Table("an_permission")
 public class AnPermission extends BaseMetaModel implements Serializable {
 
     /**

@@ -2,9 +2,16 @@ package site.sorghum.anno.anno.dami;
 
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
+import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.plugin.join.util.InvokeUtil;
 
 /**
  * 一个示例：所有实体代理的空实现

@@ -36,10 +36,9 @@ public class AnnoSqlDetailTplRender extends BaseTplRender {
                 return;
             }
         }
-        String urlVersion = MapUtil.getStr(existProps, "version");
-        String sql = ResourceUtil.readStr("init-data/" + urlVersion, Charset.defaultCharset());
+        String sqlContent = MapUtil.getStr(existProps, "sqlContent");
         Map<String, Object> mp = new LinkedHashMap<>();
-        mp.put("sqlContent", sql);
+        mp.put("sqlContent", sqlContent);
         addProps(mp);
     }
 }

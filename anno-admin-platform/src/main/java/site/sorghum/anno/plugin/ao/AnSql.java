@@ -22,14 +22,14 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(
     name = "数据库脚本管理",
+    tableName = "an_sql",
     annoPermission = @AnnoPermission(
         enable = true,
         baseCode = "an_sql",
         baseCodeTranslate = "数据库脚本管理"
     ),
-    canRemove = false
+    canRemove = true
 )
-@Table("an_sql")
 public class AnSql extends PrimaryKeyModel implements Serializable {
 
     @Serial
@@ -79,6 +79,16 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
         dataType = AnnoDataType.TEXT_AREA
     )
     private String errorLog;
+
+    /**
+     * SQL内容
+     */
+    @AnnoField(
+        title = "SQL内容",
+        tableFieldName = "sql_content",
+        dataType = AnnoDataType.TEXT_AREA
+    )
+    private String sqlContent;
 
     @AnnoButton(
         name = "手动执行",

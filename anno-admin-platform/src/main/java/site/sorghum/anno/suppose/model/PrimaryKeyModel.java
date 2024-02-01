@@ -3,6 +3,7 @@ package site.sorghum.anno.suppose.model;
 import lombok.Data;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.Map;
 @Data
 public class PrimaryKeyModel implements Serializable {
 
-    @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32)
+    @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32, insertWhenNullSet = SnowIdSupplier.class)
     @PrimaryKey
     protected String id;
 

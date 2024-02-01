@@ -12,9 +12,10 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.DbCondition;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.db.QueryType;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -30,6 +31,12 @@ public class AnField {
      */
     @ApiModelProperty(value = "字段名",example = "userName")
     private String fieldName;
+
+    /**
+     * 反射的Field对象
+     */
+    @ApiModelProperty(value = "反射的Field对象",example = "site.sorghum.anno.suppose.model.BaseMetaModel#userName")
+    private Field reflectField;
 
     /**
      * 字段所在的类。父类上的字段，为父类的类
@@ -381,6 +388,20 @@ public class AnField {
      */
     @ApiModelProperty(value = "排序",example = "1")
     private int sort;
+
+
+    /**
+     * 更新为null时设置值
+     *
+     */
+    Class<? extends FieldBaseSupplier> updateWhenNullSet;
+
+    /**
+     * 插入为null时设置值
+     *
+     */
+    Class<? extends FieldBaseSupplier> insertWhenNullSet;
+
     @Data
     @AllArgsConstructor
     public static class TreeData {

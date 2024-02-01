@@ -51,15 +51,6 @@ public class DbTableContext implements MetadataContext {
     }
 
     /**
-     * 获取缓存（不可修改）
-     *
-     * @param entityName 实体名称
-     */
-    public <T> TableParam<T> getTableParamImmutable(String entityName) {
-        return (TableParam<T>) tableParamCache.get(entityName);
-    }
-
-    /**
      * 获取 entity db 数据
      *
      * @param clazz 实体类

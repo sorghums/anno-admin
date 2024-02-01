@@ -5,6 +5,8 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 
 import java.lang.annotation.*;
 
@@ -116,4 +118,18 @@ public @interface AnnoField {
      * @return long
      */
     int sort() default 0;
+
+    /**
+     * 更新为null时设置值
+     *
+     * @return {@link Class}<{@link ?}>
+     */
+    Class<? extends FieldBaseSupplier> updateWhenNullSet() default EmptyFieldBaseSupplier.class;
+
+    /**
+     * 插入为null时设置值
+     *
+     * @return {@link Class}<{@link ?}>
+     */
+    Class<? extends FieldBaseSupplier> insertWhenNullSet() default EmptyFieldBaseSupplier.class;
 }

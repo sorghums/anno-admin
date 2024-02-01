@@ -21,12 +21,12 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "用户管理",
+    tableName = "an_user",
     annoLeftTree = @AnnoLeftTree(leftTreeName = "组织", catKey = "orgId", treeClass = AnOrg.class),
     annoTree = @AnnoTree(label = "name", parentKey = "", key = "id", displayAsTree = false),
     annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"),
     annoOrder = {@AnnoOrder(orderType = "desc",orderValue = "id")}
 )
-@Table("an_user")
 public class AnUser extends BaseOrgMetaModel implements Serializable {
 
     /**

@@ -19,16 +19,16 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "角色管理",
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_role", baseCodeTranslate = "角色管理"),
-        annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
-@Table("an_role")
+    tableName = "an_role",
+    annoPermission = @AnnoPermission(enable = true, baseCode = "an_role", baseCodeTranslate = "角色管理"),
+    annoOrder = @AnnoOrder(orderType = "asc", orderValue = "sort"))
 public class AnRole extends BaseMetaModel implements Serializable {
 
     /**
      * 角色名称
      */
     @AnnoField(title = "角色名称", tableFieldName = "role_name", search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入角色名称", notNull = true))
+        edit = @AnnoEdit(placeHolder = "请输入角色名称", notNull = true))
     String roleName;
 
 
@@ -43,30 +43,30 @@ public class AnRole extends BaseMetaModel implements Serializable {
      * 排序
      */
     @AnnoField(title = "排序", tableFieldName = "sort",
-            edit = @AnnoEdit(placeHolder = "请输入排序", notNull = true))
+        edit = @AnnoEdit(placeHolder = "请输入排序", notNull = true))
     Integer sort;
 
     /**
      * 状态 1 正常 0 封禁
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(value = {
-                    @AnnoOptionType.OptionData(label = "正常", value = "1"),
-                    @AnnoOptionType.OptionData(label = "封禁", value = "0")
-            }),
-            edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "正常", value = "1"),
+            @AnnoOptionType.OptionData(label = "封禁", value = "0")
+        }),
+        edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     Integer enable;
 
     /**
      * 用户按钮
      */
     @AnnoButton(name = "用户", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinTargetClazz = AnUser.class,
-            mediumTableClass = AnUserRole.class,
-            mediumTargetField = "userId",
-            mediumThisField = "roleId",
-            joinThisClazzField = "id"
+        joinTargetClazz = AnUser.class,
+        mediumTableClass = AnUserRole.class,
+        mediumTargetField = "userId",
+        mediumThisField = "roleId",
+        joinThisClazzField = "id"
     ))
     private Object userButton;
 
@@ -75,12 +75,12 @@ public class AnRole extends BaseMetaModel implements Serializable {
      * 权限按钮
      */
     @AnnoButton(name = "权限", m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinTargetClazz = AnPermission.class,
-            mediumTableClass = AnRolePermission.class,
-            mediumTargetField = "permissionId",
-            mediumThisField = "roleId",
-            joinThisClazzField = "id",
-            windowSize = "sm"
+        joinTargetClazz = AnPermission.class,
+        mediumTableClass = AnRolePermission.class,
+        mediumTargetField = "permissionId",
+        mediumThisField = "roleId",
+        joinThisClazzField = "id",
+        windowSize = "sm"
     ))
     private Object roleButton;
 }

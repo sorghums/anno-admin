@@ -4,13 +4,9 @@ package site.sorghum.anno.spring.filter;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
 import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
+import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.text.AntPathMatcher;
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +22,7 @@ import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.time.format.DateTimeParseException;
 
@@ -65,10 +62,8 @@ public class ExtraDataFilter implements Filter {
                     context.setPrintDetailLog(annoProperty.getSkipPathPattern().stream().noneMatch(pattern -> antPathMatcher.match(pattern, requestUri)));
                 }
                 filterChain.doFilter(servletRequest, servletResponse);
-            } catch (InvocationTargetRuntimeException exception) {
-                throw exception.getCause().getCause();
-            } catch (ServletException servletException) {
-                throw servletException.getRootCause();
+            } catch (UtilException | ServletException exception) {
+                throw processThrowable(exception, null);
             }
         } catch (BizException e) {
             log.error(e.getMessage(), e);
@@ -107,6 +102,24 @@ public class ExtraDataFilter implements Filter {
             httpServletResponse.setContentType("application/json");
             httpServletResponse.setCharacterEncoding("UTF-8");
             httpServletResponse.getWriter().print(JSONUtil.toJsonString(result));
+        }
+    }
+
+    private Throwable processThrowable(Throwable t, Throwable parent) {
+        if (t == null) {
+            return parent;
+        }
+        if (t == parent) {
+            return t;
+        }
+        if (t instanceof UtilException utilException) {
+            return processThrowable(utilException.getCause(), utilException);
+        } else if (t instanceof ServletException servletException) {
+            return processThrowable(servletException.getRootCause(), servletException);
+        } else if (t instanceof InvocationTargetException invocationTargetException) {
+            return processThrowable(invocationTargetException.getCause(), invocationTargetException);
+        } else {
+            return t;
         }
     }
 

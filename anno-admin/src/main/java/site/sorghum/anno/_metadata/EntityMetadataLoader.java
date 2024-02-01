@@ -43,6 +43,10 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     @Override
     public String getEntityName(Class<?> entity) {
+        // 如果是匿名类,取实际类
+        while (entity.isAnonymousClass()) {
+            entity = entity.getSuperclass();
+        }
         return entity.getSimpleName();
     }
 
@@ -54,7 +58,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setTitle(annoMain.name());
         entity.setCanRemove(annoMain.canRemove());
         if (table == null || StrUtil.isBlank(table.value())) {
-            entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
+            if (StrUtil.isNotBlank(annoMain.tableName())){
+                entity.setTableName(annoMain.tableName());
+            }else {
+                entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
+            }
         } else {
             entity.setTableName(table.value());
         }
@@ -135,6 +143,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             Field field = fieldAnnoField.getField();
             AnField anField = new AnField();
             anField.setFieldName(field.getName());
+            anField.setReflectField(field);
             anField.setDeclaringClass(field.getDeclaringClass());
             anField.setVirtualColumn(anno.virtualColumn());
             anField.setTitle(anno.title());
@@ -230,6 +239,14 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // 排序
             anField.setSort(anno.sort());
+
+            // 字段设置
+            anField.setInsertWhenNullSet(
+                anno.insertWhenNullSet()
+            );
+            anField.setUpdateWhenNullSet(
+                anno.updateWhenNullSet()
+            );
 
             anFields.add(anField);
         }

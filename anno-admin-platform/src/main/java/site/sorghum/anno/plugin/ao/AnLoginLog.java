@@ -22,6 +22,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(
     name = "登录日志",
+    tableName = "an_login_log",
     annoPermission = @AnnoPermission(
         enable = true,
         baseCode = "an_login_log",
@@ -33,7 +34,6 @@ import java.util.Date;
     ),
     canRemove = false
 )
-@Table("an_login_log")
 public class AnLoginLog extends PrimaryKeyModel implements Serializable {
 
     @Serial

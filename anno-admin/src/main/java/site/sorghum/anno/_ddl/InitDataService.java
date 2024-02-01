@@ -46,23 +46,33 @@ public class InitDataService {
         initSql(resource);
     }
 
+    public void init(String sqlContent) throws Exception {
+        // 初始化 init.sql
+        initSql(sqlContent);
+    }
+
     /**
      * 对比数据库中已有的数据，初始化数据或者升级历史数据
      *
      * @param resource 预置数据文件
      */
     private void initSql(URL resource) throws Exception {
+        String content = IoUtil.read(resource.openStream(), StandardCharsets.UTF_8);
+        initSql(content);
+    }
+
+    private void initSql(String sqlContent) throws Exception {
         StopWatch stopWatch = new StopWatch("init sql");
         stopWatch.start("read sql");
-        String content = IoUtil.read(resource.openStream(), StandardCharsets.UTF_8);
         stopWatch.stop();
 
         stopWatch.start("parse & execute sql");
-        dbService.executeSql(content);
+        dbService.executeSql(sqlContent);
         stopWatch.stop();
-        log.info("init sql({}) finished, time: {}ms", resource.getPath(), stopWatch.getTotal(TimeUnit.MILLISECONDS));
+        log.info("init sql(\n{}\n) finished, time: {}ms", sqlContent, stopWatch.getTotal(TimeUnit.MILLISECONDS));
         if (log.isDebugEnabled()) {
             log.debug(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
         }
     }
+
 }

@@ -13,6 +13,11 @@ spring:
       static-locations: classpath:/WEB-INF/anno-admin-ui/
   messages:
     basename: i18n/messages
+  freemarker:
+    template-loader-path:
+      - classpath:/WEB-INF/templates/
+      - classpath:/templates/
+    suffix: .ftl
 anno-admin:
   redis:
     server: "127.0.0.1:6379"

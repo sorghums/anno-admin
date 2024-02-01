@@ -1,6 +1,7 @@
 package site.sorghum.anno.spring.controller;
 
 
+import cn.hutool.core.map.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.IPage;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +51,11 @@ public class DbController extends BaseDbController {
         return super.save(clazz, param);
     }
 
-    @Override
     @PostMapping("/{clazz}/queryById")
-    public <T> AnnoResult<T> queryById(@PathVariable String clazz, @RequestParam(required = false) String pkValue, @RequestParam(required = false) String _cat) {
+    public <T> AnnoResult<T> queryById(@PathVariable String clazz,
+                                       @RequestBody Map<String, Object> params) {
+        String pkValue = MapUtil.getStr(params, "pkValue");
+        String _cat = MapUtil.getStr(params, "_cat");
         return super.queryById(clazz, pkValue, _cat);
     }
 
@@ -62,10 +65,9 @@ public class DbController extends BaseDbController {
      * @param id id
      * @return {@link AnnoResult}
      */
-    @Override
     @PostMapping("/{clazz}/removeById")
-    public AnnoResult<String> removeById(@PathVariable String clazz, @RequestParam("id") String id) {
-        return super.removeById(clazz, id);
+    public AnnoResult<String> removeById(@PathVariable String clazz, @RequestBody Map<String, Object> params) {
+        return super.removeById(clazz, MapUtil.getStr(params, "id"));
     }
 
     /**
@@ -97,24 +99,24 @@ public class DbController extends BaseDbController {
 
     @RequestMapping("/{clazz}/annoTreeSelectData")
     public <T> AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
-                                                        @RequestBody(required = false) Map<String, Object> param) {
+                                                           @RequestBody(required = false) Map<String, Object> param) {
         if (param == null) {
             param = new HashMap<>(0);
         }
         return super.annoTreeSelectData(clazz, JSONUtil.toBean(param, AnnoTreesRequestAnno.class), JSONUtil.toBean(param, AnnoTreeListRequestAnno.class), param);
     }
 
-    @Override
     @PostMapping("/{clazz}/addM2m")
-    public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param, @RequestParam(defaultValue = "false") boolean clearAll) {
+    public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param) {
         if (param == null) {
             param = new HashMap<>();
         }
+        boolean clearAll = MapUtil.getBool(param, "clearAll", false);
         return super.addM2m(clazz, param, clearAll);
     }
 
-    @PostMapping(value = "/{clazz}/runJavaCmd",consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@PathVariable String clazz,@RequestBody HashMap map) throws ClassNotFoundException {
+    @PostMapping(value = "/{clazz}/runJavaCmd", consumes = "application/json")
+    public AnnoResult<String> runJavaCmd(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
         if (map == null) {
             map = new HashMap<>();
         }

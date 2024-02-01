@@ -11,20 +11,18 @@ import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
+import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
-import site.sorghum.anno.db.DbCondition;
-import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbOrderBy;
-import site.sorghum.anno.db.DbPage;
-import site.sorghum.anno.db.DbRemove;
-import site.sorghum.anno.db.DbTableContext;
-import site.sorghum.anno.db.QueryType;
-import site.sorghum.anno.db.TableParam;
+import site.sorghum.anno.db.*;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.i18n.I18nUtil;
+import site.sorghum.plugin.join.util.InvokeUtil;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;
@@ -55,7 +53,7 @@ public class DbServiceWood implements DbService {
     @SneakyThrows
     public <T> AnnoPage<T> page(DbCriteria criteria) {
 
-        TableParam<T> tableParam = dbTableContext.getTableParamImmutable(criteria.getEntityName());
+        TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         if (criteria.getPage() == null) {
             criteria.page(1, 10);
         }
@@ -67,7 +65,7 @@ public class DbServiceWood implements DbService {
     @SneakyThrows
     @Override
     public <T> List<T> list(DbCriteria criteria) {
-        TableParam<T> tableParam = dbTableContext.getTableParamImmutable(criteria.getEntityName());
+        TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
         return dbTableQuery.selectList(tableParam.getColumnStr(), tableParam.getClazz());
     }
@@ -87,20 +85,24 @@ public class DbServiceWood implements DbService {
     @SneakyThrows
     @Override
     public <T> int update(T t, DbCriteria criteria) {
-        TableParam<T> tableParam = dbTableContext.getTableParamImmutable(criteria.getEntityName());
+        TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
         // 执行值
-        dbTableQuery.setEntityIf(t, (k, v) -> filterField(tableParam, k, v));
+        AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
+        preProcess(t, entity, false);
+        dbTableQuery.setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
         return dbTableQuery.update();
     }
 
     @SneakyThrows
     @Override
     public <T> long insert(T t) {
-        TableParam<T> tableParam = dbTableContext.getTableParamImmutable(t.getClass().getSimpleName());
+        TableParam<T> tableParam = dbTableContext.getTableParam(t.getClass());
         DbRemove dbRemove = tableParam.getDbRemove();
+        AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
+        preProcess(t, entity, true);
         DbTableQuery dbTableQuery = dbContext.table(tableParam.getTableName())
-            .setEntityIf(t, (k, v) -> filterField(tableParam, k, v));
+            .setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
         if (dbRemove.getLogic()) {
             // 查询当前字段的类型
             Field field = ReflectUtil.getField(tableParam.getClazz(), AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), dbRemove.getRemoveColumn()));
@@ -116,7 +118,7 @@ public class DbServiceWood implements DbService {
     @SneakyThrows
     @Override
     public <T> int delete(DbCriteria criteria) {
-        TableParam<T> tableParam = dbTableContext.getTableParamImmutable(criteria.getEntityName());
+        TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
         DbRemove dbRemove = tableParam.getDbRemove();
         if (dbRemove.getLogic()) {
@@ -186,16 +188,16 @@ public class DbServiceWood implements DbService {
     /**
      * entity 转数据库字段时，过滤掉不需要的字段
      */
-    private boolean filterField(TableParam<?> tableParam, String tableFieldName, Object fieldValue) {
-        if (AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), tableFieldName) == null) {
+    private boolean filterField(AnEntity entity, TableParam<?> tableParam, String tableFieldName, Object fieldValue) {
+        if (!tableParam.getColumns().contains(tableFieldName)) {
             return false;
         }
         if (tableFieldName == null) {
             return false;
         }
         if (fieldValue == null) {
-            AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
-            return entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), tableFieldName)).isEditCanClear();
+            AnField anField = entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), tableFieldName));
+            return anField.isEditCanClear();
         }
         return tableParam.getColumns().contains(tableFieldName);
     }
@@ -345,6 +347,19 @@ public class DbServiceWood implements DbService {
                 }
             }
             return dbTableQuery;
+        }
+    }
+
+    private void preProcess(Object data, AnEntity entity, boolean insert) {
+        List<AnField> anFields = entity.getFields();
+        for (AnField field : anFields) {
+            Class<? extends FieldBaseSupplier> fieldWhenNullSet = insert ? field.getInsertWhenNullSet() : field.getUpdateWhenNullSet();
+            if (fieldWhenNullSet != EmptyFieldBaseSupplier.class) {
+                FieldBaseSupplier<?> fieldBaseSupplier = AnnoBeanUtils.getBean(fieldWhenNullSet);
+                if (fieldBaseSupplier != null && InvokeUtil.invokeGetter(data, field.getReflectField()) == null) {
+                    InvokeUtil.invokeSetter(data, field.getReflectField(), fieldBaseSupplier.get());
+                }
+            }
         }
     }
 }

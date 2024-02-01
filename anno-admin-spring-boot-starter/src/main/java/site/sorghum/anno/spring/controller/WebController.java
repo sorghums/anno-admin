@@ -30,9 +30,4 @@ public class WebController {
         response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/login");
     }
 
-    @GetMapping(value = AnnoConstants.BASE_URL + "/goAnnoSinglePage/{clazz}")
-    public void goAnnoSinglePage(HttpServletResponse response,@PathVariable String clazz) throws IOException {
-        response.sendRedirect(AnnoConstants.BASE_URL + "/index.html#/amisSingle/index/" + clazz);
-    }
-
 }

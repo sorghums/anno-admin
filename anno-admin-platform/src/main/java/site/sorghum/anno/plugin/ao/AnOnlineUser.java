@@ -21,6 +21,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(
         name = "在线用户",
+        tableName = "an_online_user",
         virtualTable = true,
         annoPermission = @AnnoPermission(
                 enable = true,

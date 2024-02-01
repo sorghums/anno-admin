@@ -24,9 +24,9 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "菜单管理",
+        tableName = "an_anno_menu",
         annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"))
-@Table("an_anno_menu")
 public class AnAnnoMenu extends BaseMetaModel {
     public static class ParseTypeConstant {
         /**

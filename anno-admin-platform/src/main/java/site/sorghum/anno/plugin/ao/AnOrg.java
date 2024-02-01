@@ -24,10 +24,10 @@ import site.sorghum.anno.suppose.model.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "组织管理",
-        orgFilter = true,
+    tableName = "an_org",
+    orgFilter = true,
         annoTree = @AnnoTree(label = "orgName", parentKey = "parentOrgId", key = "id", displayAsTree = true),
         annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
-@Table("an_org")
 public class AnOrg extends BaseMetaModel {
 
     /**
