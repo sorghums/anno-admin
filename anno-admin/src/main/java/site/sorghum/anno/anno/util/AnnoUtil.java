@@ -10,7 +10,6 @@ import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -42,16 +41,6 @@ public class AnnoUtil {
      */
     public static AnnoMain getAnnoMain(Class<?> clazz) {
         return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoMain.class);
-    }
-
-    /**
-     * 得到AnnoChart注解
-     *
-     * @param clazz clazz
-     * @return {@link AnnoChart}
-     */
-    public static AnnoChart getAnnoChart(Class<?> clazz) {
-        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoChart.class);
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {

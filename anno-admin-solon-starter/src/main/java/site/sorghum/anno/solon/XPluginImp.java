@@ -167,7 +167,7 @@ public class XPluginImp implements Plugin {
                     }
                 }
             }
-            AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+            AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
             if (annoChart != null) {
                 // 加载anChart
                 AnChart anChart = loadChart(clazz);
@@ -179,7 +179,7 @@ public class XPluginImp implements Plugin {
     }
 
     private AnChart loadChart(Class<?> clazz) {
-        AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+        AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
 
         if (AnChart.chartMap.containsKey(clazz.getSimpleName())){
             return AnChart.chartMap.get(clazz.getSimpleName());

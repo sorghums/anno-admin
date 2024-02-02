@@ -36,7 +36,6 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoChartCache;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
-import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
@@ -145,7 +144,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
                         }
                     }
                 }
-                AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+                AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
                 if (annoChart != null) {
                     // 加载anChart
                     AnChart anChart = loadChart(clazz);
@@ -165,7 +164,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
     }
 
     private AnChart loadChart(Class<?> clazz) {
-        AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+        AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
 
         if (AnChart.chartMap.containsKey(clazz.getSimpleName())){
             return AnChart.chartMap.get(clazz.getSimpleName());
