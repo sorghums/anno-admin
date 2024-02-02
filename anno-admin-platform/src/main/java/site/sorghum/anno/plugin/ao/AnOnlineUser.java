@@ -128,6 +128,7 @@ public class AnOnlineUser extends PrimaryKeyModel implements Serializable {
      */
     @AnnoButton(
         name = "强制退出",
+        icon = "ant-design:login-outlined",
         javaCmd = @AnnoButton.JavaCmd(
             beanClass = AuthService.class,
             methodName = "forceLogout"
