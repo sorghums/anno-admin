@@ -6,14 +6,11 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.SneakyThrows;
 import org.noear.wood.annotation.PrimaryKey;
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -21,7 +18,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
 
 import java.lang.annotation.Annotation;
@@ -46,6 +42,16 @@ public class AnnoUtil {
      */
     public static AnnoMain getAnnoMain(Class<?> clazz) {
         return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoMain.class);
+    }
+
+    /**
+     * 得到AnnoChart注解
+     *
+     * @param clazz clazz
+     * @return {@link AnnoChart}
+     */
+    public static AnnoChart getAnnoChart(Class<?> clazz) {
+        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoChart.class);
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {

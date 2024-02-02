@@ -5,8 +5,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.io.resource.FileResource;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
 import cn.hutool.core.util.ClassUtil;
@@ -22,8 +20,6 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Component;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -32,13 +28,15 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno._ddl.InitDataService;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.*;
+import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.util.AnnoChartCache;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
+import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
@@ -50,10 +48,11 @@ import site.sorghum.anno.spring.config.AnnoConfig;
 import site.sorghum.anno.spring.config.AnnoScanConfig;
 import site.sorghum.anno.utils.MTUtils;
 
-import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -146,6 +145,13 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
                         }
                     }
                 }
+                AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+                if (annoChart != null) {
+                    // 加载anChart
+                    AnChart anChart = loadChart(clazz);
+                    // 缓存
+                    AnnoChartCache.put(clazz.getSimpleName(),clazz);
+                }
             }
         }
     }
@@ -156,6 +162,28 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
             return new String[]{};
         }
         return attributes.getStringArray("scanPackage");
+    }
+
+    private AnChart loadChart(Class<?> clazz) {
+        AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+
+        if (AnChart.chartMap.containsKey(clazz.getSimpleName())){
+            return AnChart.chartMap.get(clazz.getSimpleName());
+        }
+
+        AnChart anChart = new AnChart(annoChart);
+        List<AnChartField> fields = CollUtil.newArrayList();
+        for (Field field : clazz.getDeclaredFields()) {
+            AnnoChartField annoChartField = AnnotationUtil.getAnnotation(field, AnnoChartField.class);
+            if (Objects.nonNull(annoChartField)){
+                AnChartField anChartField = new AnChartField(annoChartField);
+                fields.add(anChartField);
+            }
+        }
+        anChart.setFields(fields);
+
+        AnChart.chartMap.put(clazz.getSimpleName(), anChart);
+        return anChart;
     }
 
     private void init() throws Exception {

@@ -2,7 +2,6 @@ package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;
@@ -37,6 +36,10 @@ public class AnAnnoMenu extends BaseMetaModel {
          * iframe
          */
         public static final String IFRAME = "iframe";
+        /**
+         * chart
+         */
+        public static final String CHART = "chart";
         /**
          * 外链
          */
@@ -84,6 +87,7 @@ public class AnAnnoMenu extends BaseMetaModel {
         optionType = @AnnoOptionType(value = {
             @AnnoOptionType.OptionData(label = "Anno组件", value = ParseTypeConstant.ANNO_MAIN),
             @AnnoOptionType.OptionData(label = "IFrame页面", value = ParseTypeConstant.IFRAME),
+            @AnnoOptionType.OptionData(label = "Anno图表", value = ParseTypeConstant.CHART),
             @AnnoOptionType.OptionData(label = "外链", value = ParseTypeConstant.LINK),
             @AnnoOptionType.OptionData(label = "TPL模板", value = ParseTypeConstant.TPL)
         }))

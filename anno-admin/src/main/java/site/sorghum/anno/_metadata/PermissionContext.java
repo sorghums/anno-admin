@@ -37,12 +37,14 @@ public class PermissionContext implements MetadataContext {
             if (StrUtil.isBlank(anEntity.getPermissionCode())) {
                 continue;
             }
+
             // 默认权限
             permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.VIEW), joinPermission(anEntity.getTitle(), PermissionProxy.VIEW_TRANSLATE));
             permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.ADD), joinPermission(anEntity.getTitle(), PermissionProxy.ADD_TRANSLATE));
             permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.UPDATE), joinPermission(anEntity.getTitle(), PermissionProxy.UPDATE_TRANSLATE));
             permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.DELETE), joinPermission(anEntity.getTitle(), PermissionProxy.DELETE_TRANSLATE));
 
+            // 表级按钮
             List<AnButton> tableButtons = anEntity.getTableButtons();
             if (CollectionUtil.isNotEmpty(tableButtons)) {
                 for (AnButton tableButton : tableButtons) {
@@ -52,6 +54,8 @@ public class PermissionContext implements MetadataContext {
                     dealButton(anEntity, tableButton);
                 }
             }
+
+            // 行级按钮
             List<AnColumnButton> columnButtons = anEntity.getColumnButtons();
             if (CollectionUtil.isNotEmpty(columnButtons)) {
                 for (AnColumnButton columnButton : columnButtons) {
@@ -60,6 +64,25 @@ public class PermissionContext implements MetadataContext {
                     }
                     dealButton(anEntity, columnButton);
                 }
+            }
+        }
+
+        // 图表权限
+        for (String key : AnChart.chartMap.keySet()) {
+            AnChart anChart = AnChart.chartMap.get(key);
+            permissionCodeAndNameMap.put(
+                joinPermission(anChart.getPermissionCode(), PermissionProxy.VIEW),
+                joinPermission(anChart.getName(), PermissionProxy.VIEW_TRANSLATE)
+            );
+            // 字段权限
+            for (AnChartField field : anChart.getFields()) {
+                if (StrUtil.isBlank(field.getPermissionCode())) {
+                    continue;
+                }
+                permissionCodeAndNameMap.put(
+                    joinPermission(anChart.getPermissionCode(), field.getPermissionCode()),
+                    joinPermission(anChart.getName(),field.getName())
+                );
             }
         }
     }

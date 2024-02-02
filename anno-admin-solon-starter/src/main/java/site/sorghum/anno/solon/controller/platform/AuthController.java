@@ -71,4 +71,12 @@ public class AuthController {
     public AnnoResult<UserInfo> me() {
         return authBaseController.me();
     }
+
+    @Mapping(value = "/chart/{clazz}")
+    @Get
+    @SaIgnore
+    @ApiOperation(value = "获取图表数据", notes = "获取图表数据")
+    public AnnoResult<Object> getChart(@Path String clazz){
+        return authBaseController.getChart(clazz);
+    }
 }

@@ -46,8 +46,8 @@ public class MetadataManager {
         }
 
         AnEntity entity = entityMetadataLoader.load(clazz);
-
         postProcess(entity);
+
         return entity;
     }
 

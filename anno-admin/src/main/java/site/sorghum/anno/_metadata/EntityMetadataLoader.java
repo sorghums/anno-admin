@@ -87,6 +87,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
 
+        // 排序
         AnOrder[] anOrders = new AnOrder[annoMain.annoOrder().length];
         IntStream.range(0, annoMain.annoOrder().length)
             .forEach(i -> {
@@ -96,15 +97,18 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             });
         entity.setAnOrder(anOrders);
 
+        // 权限
         entity.setEnablePermission(annoMain.annoPermission().enable());
         entity.setPermissionCode(annoMain.annoPermission().baseCode());
         entity.setPermissionCodeTranslate(annoMain.annoPermission().baseCodeTranslate());
 
+        // 树
         entity.setEnableLeftTree(annoMain.annoLeftTree().enable());
         entity.setLeftTreeName(annoMain.annoLeftTree().leftTreeName());
         entity.setLeftTreeCatKey(annoMain.annoLeftTree().catKey());
         entity.setLeftTreeClass(annoMain.annoLeftTree().treeClass());
 
+        // Anno树
         entity.setEnableTree(annoMain.annoTree().enable());
         entity.setTreeLabel(annoMain.annoTree().label());
         entity.setTreeParentKey(annoMain.annoTree().parentKey());
@@ -118,13 +122,17 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setRemoveValue(annoRemove.removeValue());
         entity.setNotRemoveValue(annoRemove.notRemoveValue());
 
+        // 类字段
         setAnFields(entity, clazz);
 
+        // 多对多字段
         setAnMany2ManyFields(entity, clazz);
 
+        // 行级按钮
         List<AnColumnButton> anColumnButtons = getAnButton(clazz);
         entity.setColumnButtons(anColumnButtons);
 
+        // 表级按钮
         List<AnButton> anTableButtons = getAnTableButton(clazz);
         entity.setTableButtons(anTableButtons);
 
@@ -276,6 +284,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     private List<AnColumnButton> getAnButton(Class<?> clazz) {
         ArrayList<AnColumnButton> anColumnButtons = new ArrayList<>();
+
         List<Field> annoButtonFields = AnnoUtil.getAnnoButtonFields(clazz);
         for (Field buttonField : annoButtonFields) {
             AnnoButton anno = AnnotationUtil.getAnnotation(buttonField, AnnoButton.class);
@@ -337,6 +346,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     private List<AnButton> getAnTableButton(Class<?> clazz) {
         ArrayList<AnButton> anButtons = new ArrayList<>();
+
         AnnoMain main = AnnoUtil.getAnnoMain(clazz);
         AnnoTableButton[] annoTableButtons = main.annoTableButton();
         for (AnnoTableButton anno : annoTableButtons) {

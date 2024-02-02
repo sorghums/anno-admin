@@ -2,7 +2,9 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
+import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,5 +48,11 @@ public class AuthController extends AuthBaseController {
     @RequestMapping(value = "/me")
     public AnnoResult<UserInfo> me() {
         return super.me();
+    }
+
+    @RequestMapping(value = "/chart/{clazz}")
+    @ApiOperation(value = "获取图表数据", notes = "获取图表数据")
+    public AnnoResult<Object> getChart(@PathVariable String clazz){
+        return super.getChart(clazz);
     }
 }

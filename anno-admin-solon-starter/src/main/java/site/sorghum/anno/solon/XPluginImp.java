@@ -12,12 +12,7 @@ import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AppContext;
-import org.noear.solon.core.BeanBuilder;
-import org.noear.solon.core.BeanInjector;
-import org.noear.solon.core.BeanWrap;
-import org.noear.solon.core.Plugin;
-import org.noear.solon.core.VarHolder;
+import org.noear.solon.core.*;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
@@ -30,31 +25,27 @@ import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.*;
+import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.util.AnnoChartCache;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
-import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
+import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
 import site.sorghum.anno.solon.interceptor.WoodSqlLogInterceptor;
 import site.sorghum.anno.utils.MTUtils;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Solon Anno-Admin 插件
@@ -176,9 +167,37 @@ public class XPluginImp implements Plugin {
                     }
                 }
             }
-
+            AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+            if (annoChart != null) {
+                // 加载anChart
+                AnChart anChart = loadChart(clazz);
+                // 缓存
+                AnnoChartCache.put(clazz.getSimpleName(),clazz);
+            }
         }
         metadataManager.refresh();
+    }
+
+    private AnChart loadChart(Class<?> clazz) {
+        AnnoChart annoChart = AnnoUtil.getAnnoChart(clazz);
+
+        if (AnChart.chartMap.containsKey(clazz.getSimpleName())){
+            return AnChart.chartMap.get(clazz.getSimpleName());
+        }
+
+        AnChart anChart = new AnChart(annoChart);
+        List<AnChartField> fields = CollUtil.newArrayList();
+        for (Field field : clazz.getDeclaredFields()) {
+            AnnoChartField annoChartField = AnnotationUtil.getAnnotation(field, AnnoChartField.class);
+            if (Objects.nonNull(annoChartField)){
+                AnChartField anChartField = new AnChartField(annoChartField);
+                fields.add(anChartField);
+            }
+        }
+        anChart.setFields(fields);
+
+        AnChart.chartMap.put(clazz.getSimpleName(), anChart);
+        return anChart;
     }
 
     static class InjectBeanInjector implements BeanInjector<Inject> {

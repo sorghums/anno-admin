@@ -10,12 +10,7 @@ import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnnoPlugin;
-import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-import site.sorghum.anno.plugin.ao.AnOrg;
-import site.sorghum.anno.plugin.ao.AnPermission;
-import site.sorghum.anno.plugin.ao.AnRole;
-import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.ao.AnUserRole;
+import site.sorghum.anno.plugin.ao.*;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.time.LocalDateTime;
@@ -194,7 +189,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_1.setParentId("10");
         menu6_1.setTitle("脚本管理");
         menu6_1.setType(1);
-        menu6_1.setSort(100010);
+        menu6_1.setSort(10010);
         menu6_1.setIcon("ant-design:bars-outlined");
         menu6_1.setPermissionId("an_sql");
         menu6_1.setParseType("annoMain");
@@ -205,11 +200,22 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu7.setParentId("10");
         menu7.setTitle("接口文档");
         menu7.setType(1);
-        menu7.setSort(10010);
+        menu7.setSort(10011);
         menu7.setIcon("ant-design:bars-outlined");
         menu7.setPermissionId("an_api_doc");
         menu7.setParseType("iframe");
         menu7.setParseData("[[[apiServerUrl]]]/doc.html");
+
+        AnAnnoMenu menu7_1 = new AnAnnoMenu();
+        menu7.setId("16_1");
+        menu7.setParentId("10");
+        menu7.setTitle("登录图表");
+        menu7.setType(1);
+        menu7.setSort(10012);
+        menu7.setIcon("ant-design:bars-outlined");
+        menu7.setPermissionId("an_login_chart");
+        menu7.setParseType("annoMain");
+        menu7.setParseData("AnOnlineUser");
 
         AnAnnoMenu menu8 = new AnAnnoMenu();
         menu8.setId("20");
