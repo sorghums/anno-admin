@@ -23,6 +23,7 @@ public enum AnnoDataType {
     RADIO("单选矿"),
     PICKER("下拉框[弹出]"),
     TREE("树形下拉框"),
+    CLASS_OPTIONS("类下拉框[高级]"),
     RICH_TEXT("富文本"),
     CODE_EDITOR("代码编辑器"),
     TEXT_AREA("长文本"),

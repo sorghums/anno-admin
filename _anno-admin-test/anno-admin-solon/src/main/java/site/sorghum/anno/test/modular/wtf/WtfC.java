@@ -36,7 +36,7 @@ public class WtfC extends BaseMetaModel {
 
     @AnnoField(title = "沃特发B",
         tableFieldName = "wtf_b", edit = @AnnoEdit(notNull = true),
-        dataType = AnnoDataType.OPTIONS,
+        dataType = AnnoDataType.CLASS_OPTIONS,
         search = @AnnoSearch(),
         optionType = @AnnoOptionType(
             optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = WtfB.class,labelKey = "attr")
