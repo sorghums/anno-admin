@@ -148,12 +148,6 @@ public class MethodTemplateManager {
                 if (methodName.equals("supportEntities")) {
                     continue;
                 }
-                if (methodName.startsWith("before")) {
-                    methodName = StrUtil.lowerFirst(methodName.substring(6));
-                }
-                if (methodName.startsWith("after")) {
-                    methodName = StrUtil.lowerFirst(methodName.substring(5));
-                }
                 MethodUnit methodUnit = AnnotationUtil.getAnnotation(method, MethodUnit.class);
                 for (String supportEntity : supportEntities) {
 
@@ -180,13 +174,7 @@ public class MethodTemplateManager {
                         info.setPhase(methodUnit.phase());
                         info.setIndex(methodUnit.index());
                     } else {
-                        if (method.getName().startsWith("before")) {
-                            info.setPhase(ExecutePhase.BEFORE);
-                        } else if (method.getName().startsWith("after")) {
-                            info.setPhase(ExecutePhase.AFTER);
-                        } else {
-                            info.setPhase(ExecutePhase.EXECUTE);
-                        }
+                        info.setPhase(ExecutePhase.EXECUTE);
                         info.setIndex(proxy.index());
                     }
 
@@ -283,7 +271,7 @@ public class MethodTemplateManager {
                 continue;
             }
             FileResource fileResource = null;
-            if (resource instanceof FileResource variableFileResource){
+            if (resource instanceof FileResource variableFileResource) {
                 fileResource = variableFileResource;
             }
             if (resource instanceof JarResource variableJarResource) {
