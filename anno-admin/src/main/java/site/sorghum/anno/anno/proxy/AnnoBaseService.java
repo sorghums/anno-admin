@@ -29,8 +29,6 @@ import java.util.function.Supplier;
 @Named
 public class AnnoBaseService {
 
-    public static final String BASE_ENTITY_TOPIC = "anno.entity.";
-
     @Inject
     DbService dbService;
 
@@ -43,15 +41,15 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeFetch(criteria);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeFetch(criteria);
 
         AnnoPage<T> page = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.page(criteria),
             () -> new AnnoPage<>(true, new ArrayList<>(), 0, 0, 0)
         );
         // 后置处理
-        damiProxy.afterFetch(criteria, page);
+        mtProxy.afterFetch(criteria, page);
         return page;
     }
 
@@ -59,14 +57,14 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeFetch(criteria);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeFetch(criteria);
         List<T> list = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.list(criteria),
             ArrayList::new
         );
         // 后置处理
-        damiProxy.afterFetch(criteria, new AnnoPage<>(false, list, list.size(), 0, 1));
+        mtProxy.afterFetch(criteria, new AnnoPage<>(false, list, list.size(), 0, 1));
         return list;
     }
 
@@ -74,8 +72,8 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeFetch(criteria);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeFetch(criteria);
 
         T item = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.queryOne(criteria),
@@ -84,7 +82,7 @@ public class AnnoBaseService {
         // 后置处理
         ArrayList<T> list = item == null ? new ArrayList<>() : CollUtil.newArrayList(item);
         AnnoPage<T> annoPage = new AnnoPage<>(false, list, list.size(), 0, 0);
-        damiProxy.afterFetch(criteria, annoPage);
+        mtProxy.afterFetch(criteria, annoPage);
         return !annoPage.getList().isEmpty() ? annoPage.getList().get(0) : null;
     }
 
@@ -93,15 +91,15 @@ public class AnnoBaseService {
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
         // 前置处理
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeUpdate(t, criteria);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeUpdate(t, criteria);
 
         int update = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.update(t, criteria),
             () -> 0
         );
         // 后置处理
-        damiProxy.afterUpdate(t);
+        mtProxy.afterUpdate(t);
         return update;
     }
 
@@ -111,15 +109,15 @@ public class AnnoBaseService {
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
         // 前置处理
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeAdd(t);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeAdd(t);
 
         long insert = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.insert(t),
             () -> 0L
         );
         // 后置处理
-        damiProxy.afterAdd(t);
+        mtProxy.afterAdd(t);
         return insert;
     }
 
@@ -128,15 +126,15 @@ public class AnnoBaseService {
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
         // 前置处理
-        AnnoBaseProxy<T> damiProxy = getDamiProxy(managerEntity.getEntityName());
-        damiProxy.beforeDelete(criteria);
+        AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
+        mtProxy.beforeDelete(criteria);
 
         int delete = virtualProcess(tableParam.isVirtualTable(),
             () -> dbService.delete(criteria),
             () -> 0
         );
         // 后置处理
-        damiProxy.afterDelete(criteria);
+        mtProxy.afterDelete(criteria);
         return delete;
     }
 
@@ -151,7 +149,7 @@ public class AnnoBaseService {
         return supplier.get();
     }
 
-    private <T> AnnoBaseProxy<T> getDamiProxy(String entityName) {
+    private <T> AnnoBaseProxy<T> getMTProxy(String entityName) {
         return (AnnoBaseProxy<T>) MethodTemplateManager.create(AnnoBaseProxy.class);
     }
 }

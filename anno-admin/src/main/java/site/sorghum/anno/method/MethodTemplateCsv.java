@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class MethodTemplateCsv {
 
+    private ExecutePhase phase;
+
     /**
      * 顺序位，越小越先执行
      */
