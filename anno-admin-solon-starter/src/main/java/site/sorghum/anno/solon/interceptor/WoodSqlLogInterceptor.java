@@ -12,6 +12,7 @@ import org.noear.wood.ext.Act1;
 import site.sorghum.anno._common.config.AnnoProperty;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author songyinyin
@@ -43,7 +44,13 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
         if (CollUtil.isNotEmpty(skipTableList)) {
             try {
                 Statement parse = CCJSqlParserUtil.parse(sql);
-                List<String> tableList = tablesNamesFinder.getTableList(parse);
+                List<String> tableList = null;
+                try {
+                    tableList = tablesNamesFinder.getTableList(parse);
+                } catch (UnsupportedOperationException e) {
+                    printSql(cmd);
+                    return;
+                }
                 if (tableList.stream().anyMatch(skipTableList::contains)) {
                     return;
                 }
@@ -59,7 +66,10 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
 
     private void printSql(Command cmd) {
         log.info("sql: {}, cost: {}ms", cmd.text, cmd.timespan());
-        log.info("var: {}", cmd.paramMap());
+        Map<String, Object> map = cmd.paramMap();
+        if (map != null && !map.isEmpty()) {
+            log.info("var: {}", map);
+        }
     }
 
 

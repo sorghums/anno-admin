@@ -2,11 +2,6 @@ package site.sorghum.anno.spring;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.file.FileNameUtil;
-import cn.hutool.core.io.resource.FileResource;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
 import cn.hutool.core.util.ClassUtil;
@@ -22,15 +17,12 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.core.annotation.AnnotationAttributes;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Component;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
-import site.sorghum.anno._ddl.InitDataService;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
@@ -43,15 +35,12 @@ import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
 import site.sorghum.anno.plugin.PluginRunner;
-import site.sorghum.anno.plugin.ao.AnSql;
-import site.sorghum.anno.plugin.dao.AnSqlDao;
+import site.sorghum.anno.plugin.service.AnSqlService;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 import site.sorghum.anno.spring.config.AnnoConfig;
 import site.sorghum.anno.spring.config.AnnoScanConfig;
 import site.sorghum.anno.utils.MTUtils;
 
-import java.io.FileNotFoundException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -69,11 +58,9 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
     @Inject
     AnnoEntityToTableGetter annoEntityToTableGetter;
     @Inject
-    InitDataService initDataService;
+    AnSqlService sqlService;
     @Db
     DbContext dbContext;
-    @Inject
-    AnSqlDao anSqlDao;
     @Inject
     AnnoProperty annoProperty;
     @Inject
@@ -175,33 +162,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         // 初始化数据
         MultiResource resources = ResourceFinder.of().find("init-data/**.sql");
         for (Resource resource : resources) {
-            String version = resource.getName();
-            AnSql anSql = anSqlDao.queryByVersion(version);
-            if (anSql == null || anSql.getId() == null){
-                anSql = new AnSql(){{
-                    setVersion(version);
-                    setSqlContent(IoUtil.read(resource.getUrl().openStream(), Charset.defaultCharset()));
-                    setState(0);
-                }};
-            }
-            anSql.setSqlContent(IoUtil.read(resource.getUrl().openStream(), Charset.defaultCharset()));
-            if (annoProperty.getIsAutoMaintainInitData() && anSql.getState() != 1){
-                try {
-                    initDataService.init(resource.getUrl());
-                    anSql.setState(1);
-                } catch (Exception e) {
-                    anSql.setState(2);
-                    anSql.setErrorLog(
-                        ExceptionUtil.stacktraceToString(e)
-                    );
-                    log.error("parse or execute sql error, resource: {}", resource);
-                } finally {
-                    anSql.setRunTime(DateUtil.date());
-                    anSqlDao.saveOrUpdate(anSql);
-                }
-            }else {
-                anSqlDao.saveOrUpdate(anSql);
-            }
+            sqlService.runResourceSql(resource);
         }
 
         // 初始化anno插件
