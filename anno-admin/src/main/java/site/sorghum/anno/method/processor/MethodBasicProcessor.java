@@ -68,4 +68,12 @@ public class MethodBasicProcessor implements MTBasicProcessor{
     public MTProcessorInfo getProcessorInfo() {
         return processorInfo;
     }
+
+    public double getIndex() {
+        return processorInfo.getIndex();
+    }
+
+    public double getPhaseOrdinal() {
+        return processorInfo.getPhase().ordinal();
+    }
 }

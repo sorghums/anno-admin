@@ -246,6 +246,7 @@ public class MethodTemplateManager {
             List<MethodBasicProcessor> process = value.stream()
                 .map(MethodTemplateManager::createProcessor)
                 .toList();
+            sortProcessors(process);
             methodTemplateMap.put(key, process);
         }
     }
@@ -383,12 +384,21 @@ public class MethodTemplateManager {
                 processors.addAll(subProcessors);
             }
         }
-        processors.sort(Comparator.comparing(e -> e.getProcessorInfo().getIndex()));
+
+        sortProcessors(processors);
         return processors;
     }
 
     public static List<MethodBasicProcessor> getMethodProcessors(String methodFileName) {
         return methodTemplateMap.get(FileUtil.normalize(methodFileName));
+    }
+
+    /**
+     * 方法部件排序
+     */
+    private static void sortProcessors(List<MethodBasicProcessor> list) {
+        list.sort(Comparator.comparing(MethodBasicProcessor::getPhaseOrdinal)
+            .thenComparing(MethodBasicProcessor::getIndex));
     }
 
 
