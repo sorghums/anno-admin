@@ -245,7 +245,7 @@ public class MethodTemplateManager {
             Set<MTProcessorInfo> value = entry.getValue();
             List<MethodBasicProcessor> process = value.stream()
                 .map(MethodTemplateManager::createProcessor)
-                .toList();
+                .collect(Collectors.toList());
             sortProcessors(process);
             methodTemplateMap.put(key, process);
         }
