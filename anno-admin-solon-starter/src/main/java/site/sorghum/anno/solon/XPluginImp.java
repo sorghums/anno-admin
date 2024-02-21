@@ -30,7 +30,6 @@ import site.sorghum.anno._annotations.Primary;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -39,9 +38,9 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
+import site.sorghum.anno.solon.init.MethodTemplateInitService;
 import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
@@ -55,6 +54,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Solon Anno-Admin 插件
@@ -95,10 +95,14 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        // 方法模版初始化
-        for (String annoPackage : packages) {
-            MethodTemplateManager.parse(annoPackage);
-        }
+        // 初始化自带的
+        MethodTemplateManager.parse(ANNO_BASE_PACKAGE);
+        // 其余后续初始化
+        MethodTemplateInitService.packages = packages.stream().filter(
+            s -> !s.equals(ANNO_BASE_PACKAGE)
+        ).collect(Collectors.toSet());
+
+
         // Aviator脚本
         AviatorEvaluatorInstance instance = AviatorEvaluator.getInstance();
         instance.useLRUExpressionCache(1000);
