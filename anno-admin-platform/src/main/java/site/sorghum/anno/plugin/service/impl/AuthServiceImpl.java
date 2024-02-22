@@ -305,6 +305,7 @@ public class AuthServiceImpl implements AuthService {
                 } else {
                     int update = 0;
                     updateAnnoMenu = new AnAnnoMenu();
+                    updateAnnoMenu.setId(anAnnoMenu.getId());
                     if (!StrUtil.equals(anPluginMenu.getTitle(), anAnnoMenu.getTitle())) {
                         updateAnnoMenu.setTitle(anPluginMenu.getTitle());
                         update = 1;

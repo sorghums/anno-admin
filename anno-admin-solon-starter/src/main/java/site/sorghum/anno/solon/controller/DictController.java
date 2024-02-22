@@ -26,7 +26,6 @@ public class DictController extends BaseDictController {
     @Override
     @Mapping("/loadDict")
     @Post
-    @Consumes("application/json")
     @ApiOperation("加载字典")
     @ApiImplicitParams(
         value = {
@@ -36,7 +35,30 @@ public class DictController extends BaseDictController {
             @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
         }
     )
-    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param String sqlKey, @Param String annoClazz, @Param String idKey, @Param String labelKey) {
+    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param String sqlKey,
+                                                          @Param String annoClazz,
+                                                          @Param String idKey,
+                                                          @Param String labelKey) {
         return super.loadDict(sqlKey, annoClazz, idKey, labelKey);
     }
+
+
+    @Mapping("/transOne")
+    @Post
+    @ApiOperation("翻译单个")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "idValue", value = "[模式二]查询值", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "annoClazz", value = "[模式二]字典值的加载类", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "idKey", value = "[模式二]值的key", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
+        }
+    )
+    @Override
+    public AnnoResult<String> transOne(@Param String annoClazz, @Param String idKey, @Param String labelKey, @Param String idValue) {
+        return super.transOne(annoClazz, idKey, labelKey, idValue);
+    }
+
+
+
 }

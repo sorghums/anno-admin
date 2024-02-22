@@ -1,9 +1,7 @@
 package site.sorghum.anno.plugin.ao;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.*;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -72,7 +70,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "角色", m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined",m2mJoinButton = @AnnoButton.M2MJoinButton(
             joinTargetClazz = AnRole.class,
             mediumTableClass = AnUserRole.class,
             mediumTargetField = "roleId",
@@ -83,7 +81,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 重置密码按钮
      */
-    @AnnoButton(permissionCode = "resetPwd",name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
+    @AnnoButton(permissionCode = "resetPwd",icon = "fluent:key-reset-20-filled",name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
     private Object resetPwdButton;
 
     @Serial

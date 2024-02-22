@@ -27,6 +27,9 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
@@ -36,6 +39,8 @@ import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
+import site.sorghum.anno.solon.init.MethodTemplateInitService;
+import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
 import site.sorghum.anno.solon.interceptor.TransactionalInterceptor;
@@ -44,6 +49,12 @@ import site.sorghum.anno.utils.MTUtils;
 
 import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -86,10 +97,14 @@ public class XPluginImp implements Plugin {
             }
         }
 
-        // 方法模版初始化
-        for (String annoPackage : packages) {
-            MethodTemplateManager.parse(annoPackage);
-        }
+        // 初始化自带的
+        MethodTemplateManager.parse(ANNO_BASE_PACKAGE);
+        // 其余后续初始化
+        MethodTemplateInitService.packages = packages.stream().filter(
+            s -> !s.equals(ANNO_BASE_PACKAGE)
+        ).collect(Collectors.toSet());
+
+
         // Aviator脚本
         AviatorEvaluatorInstance instance = AviatorEvaluator.getInstance();
         instance.useLRUExpressionCache(1000);

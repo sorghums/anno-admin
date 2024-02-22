@@ -6,6 +6,7 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
@@ -45,7 +46,7 @@ public class AnLoginLog extends PrimaryKeyModel implements Serializable {
     @AnnoField(
         title = "用户",
         tableFieldName = "user_id",
-        dataType = AnnoDataType.OPTIONS,
+        dataType = AnnoDataType.CLASS_OPTIONS,
         search = @AnnoSearch(queryType = QueryType.EQ),
         optionType = @AnnoOptionType(
             optionAnno = @AnnoOptionType.OptionAnnoClass(
@@ -101,8 +102,8 @@ public class AnLoginLog extends PrimaryKeyModel implements Serializable {
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(
             value = {
-                @AnnoOptionType.OptionData(label = "Computer", value = "computer"),
-                @AnnoOptionType.OptionData(label = "Mobile", value = "mobile")
+                @AnnoOptionType.OptionData(label = "桌面端", value = "computer"),
+                @AnnoOptionType.OptionData(label = "移动端", value = "mobile")
             }
         )
     )

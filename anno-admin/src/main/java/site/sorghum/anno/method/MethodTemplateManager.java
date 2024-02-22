@@ -3,16 +3,16 @@ package site.sorghum.anno.method;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.io.resource.FileResource;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
-import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.text.csv.CsvReader;
 import cn.hutool.core.text.csv.CsvUtil;
-import cn.hutool.core.util.*;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
@@ -38,10 +38,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * 方法模版工厂类
@@ -53,6 +50,7 @@ import java.util.zip.ZipFile;
 public class MethodTemplateManager {
 
     public static final String METHOD_PATH = "method";
+    public static final double MT_DEFAULT_INDEX = 1000;
 
     private static final Map<String, List<MethodBasicProcessor>> methodTemplateMap = new HashMap<>();
     private static final Map<String, Set<MTProcessorInfo>> processorInfoMap = new HashMap<>();
@@ -107,10 +105,11 @@ public class MethodTemplateManager {
                 if (StrUtil.isBlank(methodTemplate.ruleDir())) {
                     continue;
                 }
+                MethodUnit methodUnit = AnnotationUtil.getAnnotation(method, MethodUnit.class);
                 String key = "%s/%s/%s.csv".formatted(METHOD_PATH, methodTemplate.ruleDir(), method.getName());
                 Set<MTProcessorInfo> mtProcessorInfos = processorInfoMap.computeIfAbsent(key, k -> new LinkedHashSet<>());
                 Optional<MTProcessorInfo> max = mtProcessorInfos.stream().max(Comparator.comparing(MTProcessorInfo::getIndex));
-                int index = max.map(mtProcessorInfo -> (int) mtProcessorInfo.getIndex() + 1).orElse(10000);
+                double index = max.map(mtProcessorInfo -> mtProcessorInfo.getIndex() + 1).orElse(10000D);
                 List<?> beans = AnnoBeanUtils.getBeansOfType(clazz);
                 for (Object bean : beans) {
                     MTProcessorInfo info = new MTProcessorInfo();
@@ -119,13 +118,22 @@ public class MethodTemplateManager {
                     info.setMethodName(method.getName());
                     info.setExclude(false);
                     info.setFullPath(key);
-                    info.setIndex(index++);
+                    if (methodUnit != null) {
+                        info.setPhase(methodUnit.phase());
+                        info.setIndex(methodUnit.index());
+                    } else {
+                        info.setPhase(ExecutePhase.EXECUTE);
+                        info.setIndex(index++);
+                    }
                     mtProcessorInfos.add(info);
                 }
             }
         }
     }
 
+    /**
+     * 兼容 AnnoBaseProxy#supportEntities
+     */
     private static void supportOld() {
 
         List<AnnoBaseProxy> proxies = AnnoBeanUtils.getBeansOfType(AnnoBaseProxy.class);
@@ -136,18 +144,20 @@ public class MethodTemplateManager {
             String[] supportEntities = proxy.supportEntities();
             Method[] methods = findMethods(proxy.getClass());
             for (Method method : methods) {
-                if (method.getName().equals("supportEntities")) {
+                String methodName = method.getName();
+                if (methodName.equals("supportEntities")) {
                     continue;
                 }
+                MethodUnit methodUnit = AnnotationUtil.getAnnotation(method, MethodUnit.class);
                 for (String supportEntity : supportEntities) {
-
-                    String key = "method/all/" + method.getName() + ".csv";
 
                     MTProcessorInfo info = new MTProcessorInfo();
                     info.setBeanName(AnnoBeanUtils.getBeanName(proxy.getClass()));
                     info.setBean(proxy);
-                    info.setMethodName(method.getName());
+                    info.setMethodName(methodName);
                     info.setExclude(false);
+
+                    String key = "method/all/" + methodName + ".csv";
                     if (StrUtil.equals(supportEntity, "PrimaryKeyModel")) {
                         info.setCondition("mt.instanceofPrimaryKeyModel(p0)");
                     } else if (StrUtil.equals(supportEntity, "PrimaryKeyModel.BaseMetaModel")) {
@@ -157,10 +167,16 @@ public class MethodTemplateManager {
                     } else {
                         String[] split = supportEntity.split("\\.");
                         String entityName = split[split.length - 1];
-                        key = "method/" + entityName + "/" + method.getName() + ".csv";
+                        key = "method/" + entityName + "/" + methodName + ".csv";
                     }
                     info.setFullPath(key);
-                    info.setIndex(proxy.index());
+                    if (methodUnit != null) {
+                        info.setPhase(methodUnit.phase());
+                        info.setIndex(methodUnit.index());
+                    } else {
+                        info.setPhase(ExecutePhase.EXECUTE);
+                        info.setIndex(proxy.index());
+                    }
 
                     Set<MTProcessorInfo> mtProcessorInfos = processorInfoMap.computeIfAbsent(key, k -> new LinkedHashSet<>());
                     mtProcessorInfos.add(info);
@@ -229,7 +245,8 @@ public class MethodTemplateManager {
             Set<MTProcessorInfo> value = entry.getValue();
             List<MethodBasicProcessor> process = value.stream()
                 .map(MethodTemplateManager::createProcessor)
-                .toList();
+                .collect(Collectors.toList());
+            sortProcessors(process);
             methodTemplateMap.put(key, process);
         }
     }
@@ -255,7 +272,7 @@ public class MethodTemplateManager {
                 continue;
             }
             FileResource fileResource = null;
-            if (resource instanceof FileResource variableFileResource){
+            if (resource instanceof FileResource variableFileResource) {
                 fileResource = variableFileResource;
             }
             if (resource instanceof JarResource variableJarResource) {
@@ -279,6 +296,7 @@ public class MethodTemplateManager {
                 List<MTProcessorInfo> processorInfos = infoMap.computeIfAbsent(fullPath, k -> new ArrayList<>());
                 for (MethodTemplateCsv templateCsv : list) {
                     MTProcessorInfo info = new MTProcessorInfo();
+                    info.setPhase(templateCsv.getPhase());
                     info.setIndex(templateCsv.getIndex());
                     // 小写首字母
                     info.setBeanName(StrUtil.lowerFirst(templateCsv.getBeanName()));
@@ -366,12 +384,21 @@ public class MethodTemplateManager {
                 processors.addAll(subProcessors);
             }
         }
-        processors.sort(Comparator.comparing(e -> e.getProcessorInfo().getIndex()));
+
+        sortProcessors(processors);
         return processors;
     }
 
     public static List<MethodBasicProcessor> getMethodProcessors(String methodFileName) {
         return methodTemplateMap.get(FileUtil.normalize(methodFileName));
+    }
+
+    /**
+     * 方法部件排序
+     */
+    private static void sortProcessors(List<MethodBasicProcessor> list) {
+        list.sort(Comparator.comparing(MethodBasicProcessor::getPhaseOrdinal)
+            .thenComparing(MethodBasicProcessor::getIndex));
     }
 
 

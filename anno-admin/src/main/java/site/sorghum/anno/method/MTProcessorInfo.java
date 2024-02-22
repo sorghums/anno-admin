@@ -15,6 +15,11 @@ import java.util.Objects;
 public class MTProcessorInfo {
 
     /**
+     * 执行阶段
+     */
+    private ExecutePhase phase;
+
+    /**
      * 顺序位，越小越先执行
      */
     private double index;

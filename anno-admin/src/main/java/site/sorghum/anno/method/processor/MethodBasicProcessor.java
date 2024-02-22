@@ -2,11 +2,11 @@ package site.sorghum.anno.method.processor;
 
 import cn.hutool.core.util.ClassUtil;
 import lombok.Getter;
+import site.sorghum.anno.method.ExecutePhase;
 import site.sorghum.anno.method.MTContext;
 import site.sorghum.anno.method.MTException;
 import site.sorghum.anno.method.MTProcessResult;
 import site.sorghum.anno.method.MTProcessorInfo;
-import site.sorghum.anno.method.MethodTemplateCsv;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2024/1/16 17:21
  */
-public class MethodBasicProcessor implements MTBasicProcessor{
+public class MethodBasicProcessor implements MTBasicProcessor {
 
     private final Object bean;
 
@@ -67,5 +67,16 @@ public class MethodBasicProcessor implements MTBasicProcessor{
     @Override
     public MTProcessorInfo getProcessorInfo() {
         return processorInfo;
+    }
+
+    public double getIndex() {
+        return processorInfo.getIndex();
+    }
+
+    public double getPhaseOrdinal() {
+        if (processorInfo.getPhase() == null) {
+            return ExecutePhase.EXECUTE.ordinal();
+        }
+        return processorInfo.getPhase().ordinal();
     }
 }

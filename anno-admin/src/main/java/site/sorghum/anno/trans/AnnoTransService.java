@@ -33,7 +33,7 @@ public class AnnoTransService {
     @Inject
     MetadataManager metadataManager;
 
-    public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO);
+    public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO, AnnoDataType.CLASS_OPTIONS);
 
     /**
      * 批量翻译

@@ -5,6 +5,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +40,23 @@ public class DictController extends BaseDictController {
     )
     public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@RequestBody Map<String, Object> dictParam) {
         return super.loadDict(MapUtil.getStr(dictParam, "sqlKey"), MapUtil.getStr(dictParam, "annoClazz"), MapUtil.getStr(dictParam, "idKey"), MapUtil.getStr(dictParam, "labelKey"));
+    }
+
+
+
+
+    @RequestMapping("/transOne")
+    @ApiOperation("翻译单个")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "idValue", value = "[模式二]值", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "annoClazz", value = "[模式二]字典值的加载类", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "idKey", value = "[模式二]值的key", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
+        }
+    )
+    public AnnoResult<String> transOne(@RequestBody Map<String, Object> dictParam) {
+        return super.transOne(MapUtil.getStr(dictParam, "annoClazz"), MapUtil.getStr(dictParam, "idKey"), MapUtil.getStr(dictParam, "labelKey")
+            , MapUtil.getStr(dictParam, "idValue"));
     }
 }

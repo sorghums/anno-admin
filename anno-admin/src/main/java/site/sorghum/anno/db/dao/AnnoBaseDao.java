@@ -1,6 +1,7 @@
 package site.sorghum.anno.db.dao;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
@@ -201,8 +202,10 @@ public interface AnnoBaseDao<T> {
      * @return int
      */
     default long insertOrUpdate(T t) {
-        Object id = ReflectUtil.getFieldValue(t, getPkJavaFieldName());
+        String pkJavaFieldName = getPkJavaFieldName();
+        Object id = ReflectUtil.getFieldValue(t, pkJavaFieldName);
         if (id == null || StrUtil.isBlankIfStr(id)) {
+            ReflectUtil.setFieldValue(t, pkJavaFieldName, IdUtil.getSnowflakeNextIdStr());
             return insert(t);
         } else {
             return updateById(t);
