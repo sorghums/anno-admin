@@ -18,7 +18,7 @@ public @interface AnnoPermission {
      *
      * @return boolean
      */
-    boolean enable() default false;
+    boolean enable() default true;
 
     /**
      * 基础权限名称(即查看权限)

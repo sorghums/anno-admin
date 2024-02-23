@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.controller;
 
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -10,31 +11,27 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
-import site.sorghum.anno._metadata.AnOrder;
-import site.sorghum.anno._metadata.AnnoJavaCmd;
-import site.sorghum.anno._metadata.AnnoMtm;
-import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
+import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.db.*;
+import site.sorghum.anno.chart.AnChartService;
+import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.DbTableContext;
+import site.sorghum.anno.db.QueryType;
+import site.sorghum.anno.db.TableParam;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +53,8 @@ public class BaseDbController {
     PermissionProxy permissionProxy;
     @Inject
     DbTableContext dbTableContext;
+    @Inject
+    AnChartService anChartService;
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
@@ -226,7 +225,7 @@ public class BaseDbController {
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         DbCriteria criteria = AnnoUtil.simpleEntity2conditions(anEntity, param);
-        if (StrUtil.isNotBlank(andSql)){
+        if (StrUtil.isNotBlank(andSql)) {
             criteria.addCondition(andSql, QueryType.CUSTOM);
         }
         return baseService.list(criteria);
@@ -300,6 +299,32 @@ public class BaseDbController {
         Object bean = AnnoBeanUtils.getBean(annoJavaCmd.getJavaCmdBeanClass());
         ReflectUtil.invoke(bean, annoJavaCmd.getJavaCmdMethodName(), map);
         return AnnoResult.succeed("执行成功");
+    }
+
+
+    private List<AnChartResponse<Object>> chartData(String clazz, String fieldId, Map<String, Object> params) {
+        CheckPermissionFunction.loginCheckFunction.run();
+        AnEntity entity = metadataManager.getEntity(clazz);
+        if (StrUtil.isNotBlank(entity.getPermissionCode())) {
+            CheckPermissionFunction.permissionCheckFunction.accept(entity.getPermissionCode());
+        }
+        if (!entity.getAnChart().getEnable()) {
+            throw new BizException("实体类非图表类型或未加载!");
+        }
+        return anChartService.getChart(clazz, fieldId, params);
+    }
+
+    public AnnoResult<List<AnChartResponse<Object>>> getChart(String clazz, String fieldId, Map<String, Object> params) {
+        List<AnChartResponse<Object>> chart =chartData(clazz, fieldId, params);
+        return AnnoResult.succeed(chart);
+    }
+
+    public AnnoResult<AnChartResponse<Object>> getOneChart(String clazz, String fieldId, Map<String, Object> params) {
+        List<AnChartResponse<Object>> chart = chartData(clazz, fieldId, params);
+        if (CollUtil.isEmpty(chart)) {
+            return AnnoResult.succeed();
+        }
+        return AnnoResult.succeed(chart.get(0));
     }
 
     private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {

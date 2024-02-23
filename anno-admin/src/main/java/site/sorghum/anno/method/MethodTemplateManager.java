@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -142,7 +143,7 @@ public class MethodTemplateManager {
                 continue;
             }
             String[] supportEntities = proxy.supportEntities();
-            Method[] methods = findMethods(proxy.getClass());
+            Method[] methods = findMethods(AnnoBaseProxy.class);
             for (Method method : methods) {
                 String methodName = method.getName();
                 if (methodName.equals("supportEntities")) {
@@ -187,8 +188,8 @@ public class MethodTemplateManager {
 
     private static Method[] findMethods(Class<?> clazz) {
         Method[] methods = clazz.getDeclaredMethods();
-        // 过滤掉桥接方法
-        List<Method> resultMethods = Arrays.stream(methods).filter(e -> !e.isBridge()).toList();
+        // 过滤掉桥接方法 静态方法
+        List<Method> resultMethods = Arrays.stream(methods).filter(e -> !e.isBridge() && !Modifier.isStatic(e.getModifiers())).toList();
         return resultMethods.toArray(new Method[0]);
     }
 

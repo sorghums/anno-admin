@@ -58,9 +58,9 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setTitle(annoMain.name());
         entity.setCanRemove(annoMain.canRemove());
         if (table == null || StrUtil.isBlank(table.value())) {
-            if (StrUtil.isNotBlank(annoMain.tableName())){
+            if (StrUtil.isNotBlank(annoMain.tableName())) {
                 entity.setTableName(annoMain.tableName());
-            }else {
+            } else {
                 entity.setTableName(StrUtil.toUnderlineCase(getEntityName(clazz)));
             }
         } else {
@@ -136,8 +136,17 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         List<AnButton> anTableButtons = getAnTableButton(clazz);
         entity.setTableButtons(anTableButtons);
 
+        //!!! 加载图表 !!!
+        loadChart(annoMain, entity);
         return entity;
     }
+
+    private void loadChart(AnnoMain annoMain, AnEntity entity) {
+        entity.setAnChart(
+            new AnChart(annoMain.annoChart())
+        );
+    }
+
 
     /**
      * 设置字段信息和主键字段
@@ -192,7 +201,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setDataType(anno.dataType());
 
             anField.setOptionIsMultiple(anno.optionType().isMultiple());
-            if (StrUtil.isNotBlank(anno.optionType().sql())){
+            if (StrUtil.isNotBlank(anno.optionType().sql())) {
                 String optionQuerySqlCacheKey = QuerySqlCache.generateKey(anField.getFieldName(), anno.optionType().sql());
                 QuerySqlCache.put(optionQuerySqlCacheKey, anno.optionType().sql());
                 anField.setOptionTypeSql(optionQuerySqlCacheKey);
@@ -216,14 +225,14 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setImageHeight(anno.imageType().height());
 
             // 选择类型-树
-            if (StrUtil.isNotBlank(anno.treeType().sql())){
+            if (StrUtil.isNotBlank(anno.treeType().sql())) {
                 String treeQuerySqlCacheKey = QuerySqlCache.generateKey(anField.getFieldName(), anno.treeType().sql());
                 QuerySqlCache.put(treeQuerySqlCacheKey, anno.treeType().sql());
                 anField.setTreeTypeSql(treeQuerySqlCacheKey);
             }
             AnnoTreeType.TreeAnnoClass treeAnnoClass = anno.treeType().treeAnno();
             anField.setTreeOptionAnnoClass(
-                new AnField.TreeAnnoClass(treeAnnoClass.annoClass(),treeAnnoClass.idKey(),treeAnnoClass.labelKey(),treeAnnoClass.pidKey())
+                new AnField.TreeAnnoClass(treeAnnoClass.annoClass(), treeAnnoClass.idKey(), treeAnnoClass.labelKey(), treeAnnoClass.pidKey())
             );
             AnnoTreeType.TreeData[] treeData = anno.treeType().value();
             List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
@@ -304,7 +313,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             // 多对多
             anColumnButton.setM2mEnable(anno.m2mJoinButton().enable());
-            if (anColumnButton.getM2mEnable()){
+            if (anColumnButton.getM2mEnable()) {
                 AnnoMtm annoMtm = new AnnoMtm();
                 annoMtm.setM2mJoinTargetClazz(getEntityName(anno.m2mJoinButton().joinTargetClazz()));
                 annoMtm.setM2mJoinThisClazz(getEntityName(clazz));
@@ -314,19 +323,19 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 annoMtm.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());
                 annoMtm.setM2mJoinTargetClazzField(anno.m2mJoinButton().joinTargetClazzField());
                 annoMtm.setId(annoMtm.getM2mJoinThisClazz() + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoMtm)));
-                AnnoMtm.annoMtmMap.put(annoMtm.getId(),annoMtm);
+                AnnoMtm.annoMtmMap.put(annoMtm.getId(), annoMtm);
                 anColumnButton.setM2mData(annoMtm);
             }
 
             // java cmd
             anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());
-            if (anColumnButton.getJavaCmdEnable()){
+            if (anColumnButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
-                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(),annoJavaCmd);
+                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(), annoJavaCmd);
                 anColumnButton.setJavaCmdData(annoJavaCmd);
             }
 
@@ -363,13 +372,13 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             // java cmd
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
-            if (anButton.getJavaCmdEnable()){
+            if (anButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
-                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(),annoJavaCmd);
+                AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(), annoJavaCmd);
                 anButton.setJavaCmdData(annoJavaCmd);
             }
             anButtons.add(anButton);

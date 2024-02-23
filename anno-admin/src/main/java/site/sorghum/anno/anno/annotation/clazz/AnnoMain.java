@@ -15,11 +15,18 @@ import java.lang.annotation.*;
 public @interface AnnoMain {
 
     /**
-     * 服务名称
+     * 名称
      *
      * @return {@link String}
      */
     String name();
+
+    /**
+     * anno图表
+     *
+     * @return {@link AnnoChart}
+     */
+    AnnoChart annoChart() default @AnnoChart(enable = false);
 
     /**
      * 表名称

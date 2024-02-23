@@ -182,37 +182,8 @@ public class XPluginImp implements Plugin {
                     }
                 }
             }
-            AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
-            if (annoChart != null) {
-                // 加载anChart
-                AnChart anChart = loadChart(clazz);
-                // 缓存
-                AnnoChartCache.put(clazz.getSimpleName(),clazz);
-            }
         }
         metadataManager.refresh();
-    }
-
-    private AnChart loadChart(Class<?> clazz) {
-        AnnoChart annoChart = AnnotationUtil.getAnnotation(clazz, AnnoChart.class);
-
-        if (AnChart.chartMap.containsKey(clazz.getSimpleName())){
-            return AnChart.chartMap.get(clazz.getSimpleName());
-        }
-
-        AnChart anChart = new AnChart(annoChart);
-        List<AnChartField> fields = CollUtil.newArrayList();
-        for (Field field : clazz.getDeclaredFields()) {
-            AnnoChartField annoChartField = AnnotationUtil.getAnnotation(field, AnnoChartField.class);
-            if (Objects.nonNull(annoChartField)){
-                AnChartField anChartField = new AnChartField(annoChartField);
-                fields.add(anChartField);
-            }
-        }
-        anChart.setFields(fields);
-
-        AnChart.chartMap.put(clazz.getSimpleName(), anChart);
-        return anChart;
     }
 
     static class InjectBeanInjector implements BeanInjector<Inject> {

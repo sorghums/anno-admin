@@ -49,10 +49,4 @@ public class AuthController extends AuthBaseController {
     public AnnoResult<UserInfo> me() {
         return super.me();
     }
-
-    @RequestMapping(value = "/chart/{clazz}")
-    @ApiOperation(value = "获取图表数据", notes = "获取图表数据")
-    public AnnoResult<Object> getChart(@PathVariable String clazz){
-        return super.getChart(clazz);
-    }
 }

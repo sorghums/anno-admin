@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import site.sorghum.anno.anno.annotation.field.AnnoChartField;
+
 import java.lang.annotation.*;
 
 /**
@@ -12,12 +14,24 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Documented
 public @interface AnnoChart {
-
-    String name();
-
+    /**
+     * 启用
+     *
+     * @return boolean
+     */
     boolean enable() default true;
 
-    String permissionCode();
-
+    /**
+     * 布局
+     *
+     * @return {@link int[]}
+     */
     int[] layout() default {1,2,3};
+
+    /**
+     * 图表字段
+     *
+     * @return {@link AnnoChartField[]}
+     */
+    AnnoChartField[] chartFields() default {};
 }

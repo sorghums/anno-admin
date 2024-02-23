@@ -289,4 +289,14 @@ public class AnEntity {
     @ApiModelProperty(value = "Anno 树是否展示为树",example = "false")
     private boolean treeDisplayAsTree = false;
 
+
+
+    // ---------- 图表 ----------
+
+    /**
+     * 图表
+     */
+    @ApiModelProperty(value = "Anno 是否为图标组件",example = "false")
+    AnChart anChart;
+
 }

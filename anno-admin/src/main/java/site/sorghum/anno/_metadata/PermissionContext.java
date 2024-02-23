@@ -65,24 +65,16 @@ public class PermissionContext implements MetadataContext {
                     dealButton(anEntity, columnButton);
                 }
             }
-        }
 
-        // 图表权限
-        for (String key : AnChart.chartMap.keySet()) {
-            AnChart anChart = AnChart.chartMap.get(key);
-            permissionCodeAndNameMap.put(
-                joinPermission(anChart.getPermissionCode(), PermissionProxy.VIEW),
-                joinPermission(anChart.getName(), PermissionProxy.VIEW_TRANSLATE)
-            );
-            // 字段权限
-            for (AnChartField field : anChart.getFields()) {
-                if (StrUtil.isBlank(field.getPermissionCode())) {
-                    continue;
+            // 图表权限
+            List<AnChartField> chartFields = anEntity.getAnChart().getFields();
+            if (CollectionUtil.isNotEmpty(chartFields)) {
+                for (AnChartField chartField : chartFields) {
+                    if (StrUtil.isBlank(chartField.getPermissionCode())) {
+                        continue;
+                    }
+                    dealButton(anEntity, chartField);
                 }
-                permissionCodeAndNameMap.put(
-                    joinPermission(anChart.getPermissionCode(), field.getPermissionCode()),
-                    joinPermission(anChart.getName(),field.getName())
-                );
             }
         }
     }
@@ -94,6 +86,12 @@ public class PermissionContext implements MetadataContext {
         if (tableButton.getJavaCmdEnable()) {
             javaCmdPermissionMap.put(getPermissionKey(tableButton.getJavaCmdData().getJavaCmdBeanClass(), tableButton.getJavaCmdData().getJavaCmdMethodName()), tableButton.getPermissionCode());
         }
+    }
+
+    private void dealButton(AnEntity anEntity, AnChartField anChartField) {
+        String joinPermissionCode = joinPermission(anEntity.getPermissionCode(), anChartField.getPermissionCode());
+        String joinPermissionName = joinPermission(anEntity.getTitle(), anChartField.getName());
+        permissionCodeAndNameMap.put(joinPermissionCode, joinPermissionName);
     }
 
     /**

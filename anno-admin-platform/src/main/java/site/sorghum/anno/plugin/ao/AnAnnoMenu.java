@@ -39,7 +39,7 @@ public class AnAnnoMenu extends BaseMetaModel {
         /**
          * chart
          */
-        public static final String CHART = "chart";
+        public static final String CHART = "anChart";
         /**
          * 外链
          */

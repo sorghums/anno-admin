@@ -2,23 +2,19 @@ package site.sorghum.anno.solon.controller;
 
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.core.map.MapUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Body;
-import org.noear.solon.annotation.Consumes;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Param;
-import org.noear.solon.annotation.Path;
-import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.MethodType;
 import org.noear.solon.core.handle.Result;
 import org.noear.wood.IPage;
 import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDbController;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -26,8 +22,10 @@ import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
+import site.sorghum.anno.anno.entity.response.AnChartResponse;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -230,6 +228,43 @@ public class DbController extends BaseDbController {
     )
     public AnnoResult<String> runJavaCmd(@Path String clazz, @Body Map<String, String> map) throws ClassNotFoundException {
         return super.runJavaCmd(clazz, map);
+    }
+
+
+    @Mapping(value = "/{clazz}/chartData", method = MethodType.POST, consumes = "application/json")
+    @Post
+    @Consumes("application/json")
+    @Produces("application/json")
+    @ApiOperation(value = "获取图表数据", notes = "获取图表数据")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "annoChartFieldId", value = "anno运行的某个图表的ID，为空则所有", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
+        }
+    )
+    public AnnoResult<List<AnChartResponse<Object>>> chartData(@Path String clazz, @Body HashMap map) throws ClassNotFoundException {
+        if (map == null) {
+            throw new BizException("body参数不能为空");
+        }
+        return super.getChart(clazz, MapUtil.getStr(map, "annoChartFieldId"), map);
+    }
+
+    @Mapping(value = "/{clazz}/oneChartData", method = MethodType.POST, consumes = "application/json")
+    @Post
+    @Consumes("application/json")
+    @Produces("application/json")
+    @ApiOperation(value = "获取图表数据", notes = "获取图表数据")
+    @ApiImplicitParams(
+        value = {
+            @ApiImplicitParam(name = "annoChartFieldId", value = "anno运行的某个图表的ID，为空则所有", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
+        }
+    )
+    public AnnoResult<AnChartResponse<Object>> oneChartData(@Path String clazz, @Body HashMap map) throws ClassNotFoundException {
+        if (map == null) {
+            throw new BizException("body参数不能为空");
+        }
+        return super.getOneChart(clazz, MapUtil.getStr(map, "annoChartFieldId"), map);
     }
 
 }

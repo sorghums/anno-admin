@@ -10,7 +10,6 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
-import site.sorghum.anno._metadata.AnChart;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
@@ -21,10 +20,8 @@ import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
-import site.sorghum.anno.plugin.service.AnChartService;
+import site.sorghum.anno.chart.AnChartService;
 import site.sorghum.anno.plugin.service.AuthService;
-
-import java.util.Objects;
 
 /**
  * Auth控制器
@@ -127,17 +124,6 @@ public class AuthBaseController {
         userInfo.setPerms(AnnoStpUtil.getPermissionList());
         userInfo.setRoles(AnnoStpUtil.getRoleList());
         return AnnoResult.succeed(userInfo);
-    }
-
-    public AnnoResult<Object> getChart(String clazz) {
-        // CheckPermissionFunction.loginCheckFunction.run();
-
-        AnChart anChart = AnChart.chartMap.get(clazz);
-        if (Objects.isNull(anChart)){
-            return AnnoResult.failure("图表不存在或未加载！");
-        }
-
-        return AnnoResult.succeed(anChartService.getChart(clazz));
     }
 
     private static AnLoginLog buildLoginLog(LoginInfo info) {

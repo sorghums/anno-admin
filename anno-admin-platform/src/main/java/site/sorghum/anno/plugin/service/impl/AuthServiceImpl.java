@@ -101,6 +101,25 @@ public class AuthServiceImpl implements AuthService {
                         anPermissionDao.insert(buttonPermission);
                     }
                 }
+
+                // TODO 图表权限每次必查
+                List<AnChartField> anChartFields = anEntity.getAnChart().getFields();
+                for (AnChartField anChartField : anChartFields) {
+                    if (StrUtil.isNotBlank(anChartField.getPermissionCode())) {
+                        String chartFieldCode = baseCode + ":" + anChartField.getPermissionCode();
+                        AnPermission anPermission = anPermissionDao.selectByCode(chartFieldCode);
+                        if (anPermission != null && anPermission.getId() != null) {
+                            continue;
+                        }
+                        AnPermission buttonPermission = new AnPermission();
+                        buttonPermission.setParentId(baseCode);
+                        buttonPermission.setCode(chartFieldCode);
+                        buttonPermission.setName(baseName + ":" + anChartField.getName());
+                        buttonPermission.setDelFlag(0);
+                        anPermissionDao.insert(buttonPermission);
+                    }
+                }
+
                 AnPermission anPermission = anPermissionDao.selectByCode(baseCode);
                 if (anPermission != null && anPermission.getId() != null) {
                     continue;

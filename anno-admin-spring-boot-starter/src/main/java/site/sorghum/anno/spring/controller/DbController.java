@@ -7,6 +7,7 @@ import org.noear.wood.IPage;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.controller.BaseDbController;
@@ -15,6 +16,7 @@ import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
+import site.sorghum.anno.anno.entity.response.AnChartResponse;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -121,6 +123,22 @@ public class DbController extends BaseDbController {
             map = new HashMap<>();
         }
         return super.runJavaCmd(clazz, map);
+    }
+
+    @PostMapping(value = "/{clazz}/chartData", consumes = "application/json")
+    public AnnoResult<List<AnChartResponse<Object>>> chartData(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
+        if (map == null) {
+            throw new BizException("body参数不能为空");
+        }
+        return super.getChart(clazz, MapUtil.getStr(map,"annoChartFieldId"),map);
+    }
+
+    @PostMapping(value = "/{clazz}/oneChartData", consumes = "application/json")
+    public AnnoResult<AnChartResponse<Object>> oneChartData(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
+        if (map == null) {
+            throw new BizException("body参数不能为空");
+        }
+        return super.getOneChart(clazz, MapUtil.getStr(map,"annoChartFieldId"),map);
     }
 
 }
