@@ -66,7 +66,7 @@ public class VbenMenu {
             }
         } else if (AnAnnoMenu.ParseTypeConstant.CHART.equals(anAnnoMenu.getParseType())) {
             if (StrUtil.isNotBlank(anAnnoMenu.getParseData())) {
-                vbenMenu.setName(MD5Util.digestHex(anAnnoMenu.getParseData()));
+                vbenMenu.setName(anAnnoMenu.getParseData());
                 vbenMenu.setComponent("/anno/chart/index");
                 vbenMenu.setPath("/anView/anViewList/" + anAnnoMenu.getParseData());
             }
