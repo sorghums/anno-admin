@@ -127,7 +127,7 @@ public class DbServiceWood implements DbService {
             if (field == null) {
                 throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(dbRemove.getRemoveColumn()));
             }
-            Object converted = Convert.convert(field.getType(), dbRemove.getNotRemoveValue());
+            Object converted = Convert.convert(field.getType(), dbRemove.getRemoveValue());
             return dbTableQuery.set(dbRemove.getRemoveColumn(), converted).update();
         } else {
             return dbTableQuery.delete();
