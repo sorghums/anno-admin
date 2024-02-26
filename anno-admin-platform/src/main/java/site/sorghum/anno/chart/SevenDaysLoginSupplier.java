@@ -1,11 +1,13 @@
 package site.sorghum.anno.chart;
 
+import cn.hutool.core.date.DateUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.chart.supplier.base.IntegerSupplier;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -24,7 +26,8 @@ public class SevenDaysLoginSupplier implements IntegerSupplier {
     @Override
     public Integer get(Map<String,Object> param) {
         try {
-            return (int) dbContext.table("an_login_log").where("latest_time >= date_sub(curdate(), interval 7 day)").selectCount();
+            Date date = DateUtil.offsetDay(DateUtil.date(),-7);
+            return (int) dbContext.table("an_login_log").where("1=1").andLte("latest_time", date).selectCount();
         } catch (Exception e) {
             log.error("图表sevenDaysLogin数据查询异常！" + e.getMessage());
             return null;

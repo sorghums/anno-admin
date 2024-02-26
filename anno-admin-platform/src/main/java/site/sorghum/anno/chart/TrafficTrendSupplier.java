@@ -1,16 +1,17 @@
 package site.sorghum.anno.chart;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.StopWatch;
+import cn.hutool.core.map.MapUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.chart.supplier.base.MapListSupplier;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,38 +31,41 @@ public class TrafficTrendSupplier implements MapListSupplier {
     public List<Map<String, Object>> get(Map<String, Object> param) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-
-        List<Map<String, Object>> list;
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> returnMapData = new HashMap<>();
+        DateTime now = DateUtil.date();
+        int nowHour = DateUtil.hour(now, true);
         try {
-            list = dbContext.sql("select hour(latest_time) as item, count(*) as itemCount from an_login_log where date(latest_time) = curdate() group by date_format(latest_time, '%Y-%m-%d'),item").getMapList();
+            Date date = DateUtil.beginOfDay(now);
+            List<Map<String, Object>> selectMap = dbContext.table("an_login_log").where("1=1").andLte("latest_time", date).selectMapList("id,latest_time");
+            // 计算最近24小时，每个小时的登陆次数
+            for (Map<String, Object> stringObjectMap : selectMap) {
+                Date latestTime = MapUtil.getDate(stringObjectMap, "latest_time");
+                int hour = DateUtil.hour(latestTime, true);
+                String hourStr = String.valueOf(hour);
+                // 有就+1
+                if (returnMapData.containsKey(hourStr)) {
+                    returnMapData.put(hourStr, MapUtil.getInt(returnMapData, hourStr) + 1);
+                } else {
+                    returnMapData.put(hourStr, 1);
+                }
+            }
         } catch (Exception e) {
             log.error("图表trafficTrend数据查询异常！" + e.getMessage());
             return null;
         }
+        for (int i = 0; i < nowHour; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("item", i + "时");
+            map.put("itemCount",
+                MapUtil.getInt(returnMapData, String.valueOf(i),0));
+            list.add(map);
+        }
         if (CollUtil.isEmpty(list)) {
             return null;
         }
-
-        Map<Integer, Map<String, Object>> resultMap = new HashMap<>();
-        for (Map<String, Object> entry : list) {
-            int hour = Integer.parseInt(entry.get("item").toString());
-            resultMap.put(hour, entry);
-        }
-
-        for (int i = 0; i <= 23; i++) {
-            if (!resultMap.containsKey(i)) {
-                int finalI = i;
-                resultMap.put(i, new HashMap<>() {{
-                    put("item", finalI);
-                    put("itemCount", 0);
-                }});
-            }
-        }
-
-        List<Map<String, Object>> result = resultMap.values().stream().toList();
-
         stopWatch.stop();
         log.info(stopWatch.prettyPrint(TimeUnit.MILLISECONDS));
-        return result;
+        return list;
     }
 }

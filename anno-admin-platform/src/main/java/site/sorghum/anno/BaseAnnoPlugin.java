@@ -206,17 +206,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu7.setParseType("iframe");
         menu7.setParseData("[[[apiServerUrl]]]/doc.html");
 
-        AnAnnoMenu menu7_1 = new AnAnnoMenu();
-        menu7_1.setId("16_1");
-        menu7_1.setParentId("10");
-        menu7_1.setTitle("登录图表");
-        menu7_1.setType(1);
-        menu7_1.setSort(10012);
-        menu7_1.setIcon("ant-design:bars-outlined");
-        menu7_1.setPermissionId("an_login_chart");
-        menu7_1.setParseType("annoMain");
-        menu7_1.setParseData("AnLoginChart");
-
         AnAnnoMenu menu8 = new AnAnnoMenu();
         menu8.setId("20");
         menu8.setParentId("");
@@ -259,7 +248,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu6,
             menu6_1,
             menu7,
-            menu7_1,
             menu8,
             menu9,
             menu10

@@ -41,7 +41,7 @@ import site.sorghum.anno.chart.*;
                 action = "日"),
             @AnnoChartField(
                 name = "登陆趋势",
-                type = AnnoChartType.LINE,
+                type = AnnoChartType.BAR,
                 runSupplier = TrafficTrendSupplier.class,
                 order = 3,
                 permissionCode = "trafficTrend",
