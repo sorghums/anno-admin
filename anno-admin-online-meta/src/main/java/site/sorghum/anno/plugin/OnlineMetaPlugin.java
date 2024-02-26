@@ -1,0 +1,30 @@
+package site.sorghum.anno.plugin;
+
+
+import jakarta.inject.Named;
+import site.sorghum.anno.plugin.ao.AnEntityAo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 在线元插件
+ *
+ * @author Sorghum
+ * @since 2024/02/26
+ */
+@Named
+public class OnlineMetaPlugin extends AnnoPlugin {
+
+    public OnlineMetaPlugin() {
+        super("Online元数据插件", "在线管理元数据");
+    }
+
+    @Override
+    public List<AnPluginMenu> initEntityMenus() {
+        List<AnPluginMenu> list  = new ArrayList<>();
+        list.add(createRootMenu("online_meta", "在线元数据", "layui-icon layui-icon-diamond", 10));
+        list.add(createEntityMenu(AnEntityAo.class, list.get(0).getId(), "layui-icon layui-icon-cart", 100));
+        return list;
+    }
+}

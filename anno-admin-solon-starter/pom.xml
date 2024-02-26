@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-online-meta</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
 
