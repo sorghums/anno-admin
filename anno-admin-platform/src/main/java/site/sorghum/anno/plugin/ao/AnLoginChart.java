@@ -24,7 +24,7 @@ import site.sorghum.anno.chart.*;
         layout = {2, 1, 3},
         chartFields = {
             @AnnoChartField(
-                name = "今日访客",
+                name = "今日登陆",
                 type = AnnoChartType.NUMBER,
                 runSupplier = TodayLoginSupplier.class,
                 order = 1,
@@ -33,14 +33,14 @@ import site.sorghum.anno.chart.*;
                 actionColor = "red"
             ),
             @AnnoChartField(
-                name = "近7日访客",
+                name = "近7日登陆",
                 type = AnnoChartType.NUMBER,
                 runSupplier = SevenDaysLoginSupplier.class,
                 order = 2,
                 permissionCode = "sevenDaysLogin",
                 action = "日"),
             @AnnoChartField(
-                name = "流量趋势",
+                name = "登陆趋势",
                 type = AnnoChartType.LINE,
                 runSupplier = TrafficTrendSupplier.class,
                 order = 3,
