@@ -34,10 +34,10 @@ public class TrafficTrendSupplier implements MapListSupplier {
         List<Map<String, Object>> list = new ArrayList<>();
         Map<String, Object> returnMapData = new HashMap<>();
         DateTime now = DateUtil.date();
-        int nowHour = DateUtil.hour(now, true);
+        int nowHour = DateUtil.hour(now, true) + 1;
         try {
             Date date = DateUtil.beginOfDay(now);
-            List<Map<String, Object>> selectMap = dbContext.table("an_login_log").where("1=1").andLte("latest_time", date).selectMapList("id,latest_time");
+            List<Map<String, Object>> selectMap = dbContext.table("an_login_log").where("1=1").andGte("latest_time", date).selectMapList("id,latest_time");
             // 计算最近24小时，每个小时的登陆次数
             for (Map<String, Object> stringObjectMap : selectMap) {
                 Date latestTime = MapUtil.getDate(stringObjectMap, "latest_time");
