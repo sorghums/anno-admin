@@ -17,7 +17,7 @@ import site.sorghum.anno.chart.*;
     name = "登陆图表",
     annoPermission = @AnnoPermission(
         enable = true,
-        baseCode = "login_chart",
+        baseCode = "an_login_chart",
         baseCodeTranslate = "登陆图表"
     ),
     annoChart = @AnnoChart(
