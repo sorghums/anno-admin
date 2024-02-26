@@ -21,29 +21,45 @@ import java.util.Map;
  * @author Sorghum
  * @since 2024/02/26
  */
-@AnnoMain(name = "元数据管理", tableName = "an_entity_ao")
+@AnnoMain(name = "主体管理", tableName = "an_entity_ao")
 public class AnEntityAo extends AnEntity {
 
-    @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32, insertWhenNullSet = SnowIdSupplier.class)
+    @AnnoField(title = "主键", tableFieldName = "id",
+        show = false,
+        fieldSize = 32,
+        insertWhenNullSet = SnowIdSupplier.class)
     @PrimaryKey
     String id;
 
     @Override
     @AnnoField(
         title = "实体名称",
-        tableFieldName = "entity_name",
+        tableFieldName = "entity_title",
         search = @AnnoSearch(queryType = QueryType.LIKE),
-        edit = @AnnoEdit(placeHolder = "请输入实体名称"))
+        edit = @AnnoEdit(placeHolder = "请输入实体名称,如：元数据管理"),
+        sort = 1000)
     public String getTitle() {
         return super.getTitle();
     }
 
+    @Override
+    @AnnoField(
+        title = "实体代码",
+        tableFieldName = "entity_name",
+        search = @AnnoSearch(queryType = QueryType.LIKE),
+        edit = @AnnoEdit(placeHolder = "请输入实体代码,如：AnEntityAo"),
+        sort = 800)
+    public String getEntityName() {
+        return super.getEntityName();
+    }
+
     @AnnoField(title = "虚拟表", tableFieldName = "virtual_table", edit = @AnnoEdit,
-        dataType = AnnoDataType.OPTIONS,
+        dataType = AnnoDataType.RADIO,
         optionType = @AnnoOptionType(value = {
             @AnnoOptionType.OptionData(label = "是", value = "1"),
             @AnnoOptionType.OptionData(label = "否", value = "0"),
-        }))
+        }),
+        sort = 700)
     public Integer virtualTableField;
 
     @Override
@@ -51,35 +67,32 @@ public class AnEntityAo extends AnEntity {
         title = "请输入实体数据表名称",
         tableFieldName = "entity_table_name",
         search = @AnnoSearch(queryType = QueryType.LIKE),
-        edit = @AnnoEdit(placeHolder = "请输入实体数据表名称",showBy = @AnnoEdit.ShowBy(expr = "annoDataForm.virtualTable == 1")))
+        edit = @AnnoEdit(placeHolder = "请输入实体数据表名称", showBy = @AnnoEdit.ShowBy(expr = "annoDataForm.virtualTableField == 0")),
+        sort = 600)
     public String getTableName() {
         return super.getTableName();
     }
 
-    @Override
-    public boolean isOrgFilter() {
-        return super.isOrgFilter();
-    }
-
-    @Override
-    public boolean isCanRemove() {
-        return super.isCanRemove();
-    }
-
+    @AnnoField(title = "可删除", tableFieldName = "can_remove", edit = @AnnoEdit,
+        dataType = AnnoDataType.RADIO,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "是", value = "1"),
+            @AnnoOptionType.OptionData(label = "否", value = "0"),
+        }),
+        sort = 500)
+    public Integer canRemoveField;
 
 
-    @Override
-    public boolean isAutoMaintainTable() {
-        return super.isAutoMaintainTable();
-    }
-
-    @Override
-    public Class<?> getClazz() {
-        return super.getClazz();
-    }
-
+    @AnnoField(title = "自动建表", tableFieldName = "auto_maintain_table", edit = @AnnoEdit,
+        dataType = AnnoDataType.RADIO,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "是", value = "1"),
+            @AnnoOptionType.OptionData(label = "否", value = "0"),
+        }),
+        sort = 400)
+    public Integer autoMaintainTableField;
 
 
     @JoinResMap
-    Map<String,Object> joinResMap = new HashMap<>();
+    Map<String, Object> joinResMap = new HashMap<>();
 }
