@@ -41,7 +41,7 @@ public class AnnoOrgManager {
     public boolean isIgnoreFilter(String entityName) {
         try {
             String loginId = AnnoStpUtil.getLoginId("-1");
-            List<String> roleIds = dbContext.table("an_user_role").where("user_id=?", loginId).selectArray("role_id");
+            List<String> roleIds = AnnoStpUtil.getRoleList();
             boolean isAdmin = roleIds.stream().anyMatch("admin"::equals);
             AnEntity entity = metadataManager.getEntity(entityName);
             boolean orgFilter = entity.isOrgFilter();
