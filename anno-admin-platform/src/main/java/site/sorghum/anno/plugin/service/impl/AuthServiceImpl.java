@@ -5,7 +5,6 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno._annotations.Proxy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
@@ -219,8 +218,8 @@ public class AuthServiceImpl implements AuthService {
         List<String> permissionCodes;
         if (roleIds.contains("admin")) {
             List<AnPermission> anPermissions = anPermissionDao.bizList();
-            permissionCodes =  anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
-        }else {
+            permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
+        } else {
             List<AnPermission> anPermissions = anPermissionDao.querySysPermissionByUserId(userId);
             permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
         }
@@ -287,8 +286,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void forceLogout(Map<String, Object> data) {
+        String token = data.get("token").toString();
         String userId = data.get("userId").toString();
-        AnnoStpUtil.logout(userId);
+        List<String> tokenValues = AnnoStpUtil.searchTokenValue(token, 0, 20, false).stream().map(
+            s -> s.split(":")[s.split(":").length - 1]
+        ).toList();
+        for (String tokenValue : tokenValues) {
+            Object id = AnnoStpUtil.getLoginIdByToken(tokenValue);
+            if( Objects.equals(userId,id)){
+                AnnoStpUtil.logoutByTokenValue(tokenValue);
+            }
+        }
     }
 
     /**
@@ -304,7 +312,7 @@ public class AuthServiceImpl implements AuthService {
             for (AnPluginMenu anPluginMenu : anPluginMenus) {
                 AnAnnoMenu anAnnoMenu = anAnnoMenuDao.findById(anPluginMenu.getId());
                 AnAnnoMenu updateAnnoMenu = null;
-                if (anAnnoMenu == null || anAnnoMenu.getId() ==  null) {
+                if (anAnnoMenu == null || anAnnoMenu.getId() == null) {
                     anAnnoMenu = new AnAnnoMenu();
                     anAnnoMenu.setId(anPluginMenu.getId());
                     anAnnoMenu.setTitle(anPluginMenu.getTitle());
@@ -341,12 +349,12 @@ public class AuthServiceImpl implements AuthService {
                         updateAnnoMenu.setParentId(anPluginMenu.getParentId());
                         update = 1;
                     }
-                    if (anPluginMenu.getEntity() != null){
-                        if (anPluginMenu.getEntity().isEnablePermission() && !StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())){
+                    if (anPluginMenu.getEntity() != null) {
+                        if (anPluginMenu.getEntity().isEnablePermission() && !StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())) {
                             updateAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
                             update = 1;
                         }
-                        if (!StrUtil.equals(anPluginMenu.getEntity().getEntityName(), anAnnoMenu.getParseData())){
+                        if (!StrUtil.equals(anPluginMenu.getEntity().getEntityName(), anAnnoMenu.getParseData())) {
                             updateAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
                             update = 1;
                         }

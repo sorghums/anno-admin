@@ -23,6 +23,8 @@ import site.sorghum.anno.plugin.manager.CaptchaManager;
 import site.sorghum.anno.chart.AnChartService;
 import site.sorghum.anno.plugin.service.AuthService;
 
+import java.util.Objects;
+
 /**
  * Auth控制器
  *
@@ -61,7 +63,6 @@ public class AuthBaseController {
         authService.saveLoginLog(anLoginLog);
         // 缓存用户信息
         AnnoStpUtil.setAuthUser(
-            anUser.getId(),
             AnnoAuthUser.builder().
                 userId(anUser.getId()).
                 userName(anUser.getName()).
@@ -76,9 +77,6 @@ public class AuthBaseController {
                 device(anLoginLog.getDevice()).
                 build()
         );
-
-        SaSession session = AnnoStpUtil.getSession(true);
-        session.set("user", anUser);
         return AnnoResult.succeed(AnnoStpUtil.getTokenValue());
     }
 
@@ -95,15 +93,15 @@ public class AuthBaseController {
         // 登录用户
         AnUser anUser = AuthFunctions.getUserById.apply(loginId);
         // 现有session
-        AnnoAuthUser authUser = (AnnoAuthUser) AnnoStpUtil.getSessionByLoginId(loginId).get("authUser");
+        AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
         AnnoStpUtil.setAuthUser(
-            anUser.getId(),
             AnnoAuthUser.builder().
                 userId(anUser.getId()).
                 userName(anUser.getName()).
                 userAccount(anUser.getMobile()).
                 userMobile(anUser.getMobile()).
                 userStatus(anUser.getEnable()).
+                avatar(anUser.getAvatar()).
                 orgId(anUser.getOrgId()).
                 ip(authUser.getIp()).
                 loginTime(authUser.getLoginTime()).
@@ -118,8 +116,11 @@ public class AuthBaseController {
 
     public AnnoResult<UserInfo> me() {
         UserInfo userInfo = new UserInfo();
-        AnUser anUser = (AnUser) AnnoStpUtil.getSession().get("user");
-        userInfo.setName(anUser.getName());
+        AnnoAuthUser anUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
+        if (Objects.isNull(anUser)){
+            return AnnoResult.failure("请先登录");
+        }
+        userInfo.setName(anUser.getUserName());
         userInfo.setAvatar(anUser.getAvatar());
         userInfo.setPerms(AnnoStpUtil.getPermissionList());
         userInfo.setRoles(AnnoStpUtil.getRoleList());

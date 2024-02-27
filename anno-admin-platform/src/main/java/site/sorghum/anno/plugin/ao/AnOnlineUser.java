@@ -38,6 +38,10 @@ public class AnOnlineUser extends PrimaryKeyModel implements Serializable {
     /**
      * 用户id
      */
+    @AnnoField(
+        title = "用户ID",
+        show = false
+    )
     private String userId;
 
     /**
@@ -98,6 +102,22 @@ public class AnOnlineUser extends PrimaryKeyModel implements Serializable {
             title = "登录时间"
     )
     private Date loginTime;
+
+    /**
+     * 过期时间
+     */
+    @AnnoField(
+        title = "过期时间"
+    )
+    private Date expireTime;
+
+    /**
+     * 令牌
+     */
+    @AnnoField(
+        title = "令牌"
+    )
+    private String token;
 
     /**
      * 浏览器

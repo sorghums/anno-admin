@@ -38,6 +38,11 @@ public class AnnoAuthUser implements Serializable {
     String userAccount;
 
     /**
+     * 头像
+     */
+    String avatar;
+
+    /**
      * 用户手机
      */
     String userMobile;

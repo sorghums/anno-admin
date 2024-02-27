@@ -46,7 +46,7 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     private String getLoginName() {
         try {
-            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getLoginId());
+            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
             if (authUser == null || authUser.getUserName() == null) {
                 return null;
             }

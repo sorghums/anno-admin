@@ -1,6 +1,7 @@
 package site.sorghum.anno.auth;
 
 import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.fun.SaFunction;
 import cn.dev33.satoken.listener.SaTokenEventCenter;
 import cn.dev33.satoken.session.SaSession;
@@ -38,26 +39,30 @@ public class AnnoStpUtil {
      * 底层使用的 StpLogic 对象
      */
     public static StpLogic stpLogic = new StpLogic(TYPE){
-        @Override
-        public String splicingKeyTokenName() {
-            return TOKEN_NAME;
+        {
+            SaTokenConfig saTokenConfig = new SaTokenConfig();
+            saTokenConfig.setTimeout(60 * 60);
+            saTokenConfig.setActiveTimeout(15 * 60);
+            saTokenConfig.setIsShare(false);
+            saTokenConfig.setTokenName(TOKEN_NAME);
+            setConfig(saTokenConfig);
         }
     };
 
     // --------------------------------------------------- 自定义方法 ---------------------------------------------------
 
-    public static AnnoAuthUser getAuthUser(Object loginId) {
-        SaSession sessionByLoginId = AnnoStpUtil.getSessionByLoginId(loginId);
-        Object authUser = sessionByLoginId.get("authUser");
+    public static AnnoAuthUser getAuthUser(String token) {
+        SaSession tokenSessionByToken = AnnoStpUtil.getTokenSessionByToken(token);
+        Object authUser = tokenSessionByToken.get("authUser");
         if (authUser == null){
             return null;
         }
         return (AnnoAuthUser) authUser;
     }
 
-    public static AnnoAuthUser setAuthUser(Object loginId, AnnoAuthUser authUser) {
-        SaSession sessionByLoginId = AnnoStpUtil.getSessionByLoginId(loginId);
-        sessionByLoginId.set("authUser", authUser);
+    public static AnnoAuthUser setAuthUser(AnnoAuthUser authUser) {
+        SaSession sessionByToken = AnnoStpUtil.getTokenSessionByToken(getTokenValue());
+        sessionByToken.set("authUser", authUser);
         return authUser;
     }
     /**

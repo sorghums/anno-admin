@@ -24,7 +24,7 @@ public class AnnoOrgManager {
 
     public String getLoginOrg() {
         try {
-            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getLoginId());
+            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
             if (authUser == null || authUser.getOrgId() == null){
                 throw new BizException("获取用户组织失败,请先绑定组织或者点击右上角清除缓存。");
             }
