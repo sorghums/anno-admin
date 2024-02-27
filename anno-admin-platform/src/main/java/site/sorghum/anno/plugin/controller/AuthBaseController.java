@@ -69,6 +69,7 @@ public class AuthBaseController {
                 userAccount(anUser.getMobile()).
                 userMobile(anUser.getMobile()).
                 userStatus(anUser.getEnable()).
+                avatar(anUser.getAvatar()).
                 orgId(anUser.getOrgId()).
                 ip(anLoginLog.getLatestIp()).
                 loginTime(anLoginLog.getLatestTime()).
