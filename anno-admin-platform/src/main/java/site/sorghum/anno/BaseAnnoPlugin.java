@@ -11,6 +11,7 @@ import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnnoPlugin;
 import site.sorghum.anno.plugin.ao.*;
+import site.sorghum.anno.plugin.dao.AnPlatformDao;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,9 @@ public class BaseAnnoPlugin extends AnnoPlugin {
     @Inject
     @Named("dbServiceWood")
     DbService dbService;
+
+    @Inject
+    AnPlatformDao anPlatformDao;
 
     public BaseAnnoPlugin() {
         super("管理端插件", "包含B端用户，角色，组织，权限等。");
@@ -105,6 +109,17 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             if (one == null) {
                 dbService.insert(anUserRole);
             }
+        }
+
+        // 基础平台信息初始化
+        List<AnPlatform> list = anPlatformDao.list();
+        if (list.isEmpty()){
+            AnPlatform platform = new AnPlatform();
+            platform.setId("1");
+            platform.setName("AnnoAdmin快速开发");
+            platform.setPlatformLogo("");
+            platform.setDescription("零前端代码，注解驱动");
+            anPlatformDao.insert(platform);
         }
     }
 
@@ -195,6 +210,18 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_1.setParseType("annoMain");
         menu6_1.setParseData("AnSql");
 
+        AnAnnoMenu menu6_2 = new AnAnnoMenu();
+        menu6_1.setId("15_2");
+        menu6_1.setParentId("10");
+        menu6_1.setTitle("平台信息");
+        menu6_1.setType(1);
+        menu6_1.setSort(10011);
+        menu6_1.setIcon("ant-design:bars-outlined");
+        menu6_1.setPermissionId("an_platform");
+        menu6_1.setParseType("annoMain");
+        menu6_1.setParseData("AnPlatform");
+
+
         AnAnnoMenu menu7 = new AnAnnoMenu();
         menu7.setId("16");
         menu7.setParentId("10");
@@ -247,6 +274,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu5,
             menu6,
             menu6_1,
+            menu6_2,
             menu7,
             menu8,
             menu9,

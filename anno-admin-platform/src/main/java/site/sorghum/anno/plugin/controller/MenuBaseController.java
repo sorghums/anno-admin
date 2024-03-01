@@ -141,6 +141,9 @@ public class MenuBaseController {
             map.put(node.getId(), node);
         }
         for (VbenMenu node : list) {
+            if (node.getSort() == null){
+                node.setSort(0);
+            }
             if (isRootNode(node.getParentId())) {
                 roots.add(node);
             } else {

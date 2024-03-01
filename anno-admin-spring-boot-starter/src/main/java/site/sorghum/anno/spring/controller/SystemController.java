@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.plugin.ao.AnPlatform;
 import site.sorghum.anno.plugin.controller.SystemBaseController;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 
@@ -44,7 +45,7 @@ public class SystemController extends SystemBaseController {
 
     @GetMapping(value = "/api/global/config")
     @SaIgnore
-    public AnnoResult<Map<String ,Object>> getGlobalConfig(){
+    public AnnoResult<AnPlatform> getGlobalConfig(){
         return super.getGlobalConfig();
     }
 }

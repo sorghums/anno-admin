@@ -6,10 +6,13 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
+import site.sorghum.anno.plugin.ao.AnPlatform;
+import site.sorghum.anno.plugin.dao.AnPlatformDao;
 import site.sorghum.anno.plugin.entity.common.FileInfo;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
 import site.sorghum.anno.plugin.service.AnFileService;
+import site.sorghum.anno.plugin.service.AnPlatformService;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -29,6 +32,9 @@ public class SystemBaseController {
 
     @Inject
     AnFileService anFileService;
+
+    @Inject
+    AnPlatformService anPlatformService;
 
     // 验证码
     public AnnoResult<CaptchaResponse> captcha() {
@@ -51,10 +57,9 @@ public class SystemBaseController {
         return AnnoResult.succeed(fileInfo.getFileUrl());
     }
 
-    public AnnoResult<Map<String ,Object>> getGlobalConfig(){
-        URL resource = ResourceUtil.getResource("WEB-INF/anno-admin-ui/config.json");
-        Map bean = JSONUtil.toBean(resource, Map.class);
-        return AnnoResult.succeed(bean);
+    public AnnoResult<AnPlatform> getGlobalConfig(){
+        AnPlatform globalAnPlatform = anPlatformService.queryGlobalAnPlatform();
+        return AnnoResult.succeed(globalAnPlatform);
     }
 
 }

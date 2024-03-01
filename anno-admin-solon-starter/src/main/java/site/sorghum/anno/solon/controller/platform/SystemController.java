@@ -10,6 +10,7 @@ import org.noear.solon.core.handle.UploadedFile;
 import site.sorghum.anno.AnnoPlatform;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.plugin.ao.AnPlatform;
 import site.sorghum.anno.plugin.controller.SystemBaseController;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 
@@ -67,7 +68,7 @@ public class SystemController {
 
     @Mapping(value = "/api/global/config")
     @SaIgnore
-    public AnnoResult<Map<String ,Object>> getGlobalConfig(){
+    public AnnoResult<AnPlatform> getGlobalConfig(){
         return systemBaseController.getGlobalConfig();
     }
 }
