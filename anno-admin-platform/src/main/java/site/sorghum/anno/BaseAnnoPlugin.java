@@ -211,15 +211,15 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_1.setParseData("AnSql");
 
         AnAnnoMenu menu6_2 = new AnAnnoMenu();
-        menu6_1.setId("15_2");
-        menu6_1.setParentId("10");
-        menu6_1.setTitle("平台信息");
-        menu6_1.setType(1);
-        menu6_1.setSort(10011);
-        menu6_1.setIcon("ant-design:bars-outlined");
-        menu6_1.setPermissionId("an_platform");
-        menu6_1.setParseType("annoMain");
-        menu6_1.setParseData("AnPlatform");
+        menu6_2.setId("15_2");
+        menu6_2.setParentId("10");
+        menu6_2.setTitle("平台信息");
+        menu6_2.setType(1);
+        menu6_2.setSort(10011);
+        menu6_2.setIcon("ant-design:bars-outlined");
+        menu6_2.setPermissionId("an_platform");
+        menu6_2.setParseType("annoMain");
+        menu6_2.setParseData("AnPlatform");
 
 
         AnAnnoMenu menu7 = new AnAnnoMenu();
