@@ -31,6 +31,7 @@ import java.lang.reflect.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -98,35 +99,47 @@ public class MethodTemplateManager {
     private static void supportNoRuleCsv(Set<Class<?>> classes) {
         for (Class<?> clazz : classes) {
             MethodTemplate methodTemplate = AnnotationUtil.getAnnotation(clazz, MethodTemplate.class);
-            Method[] methods = findMethods(clazz);
-            for (Method method : methods) {
-                if ("supportEntities".equals(method.getName())) {
-                    continue;
-                }
-                if (StrUtil.isBlank(methodTemplate.ruleDir())) {
-                    continue;
-                }
-                MethodUnit methodUnit = AnnotationUtil.getAnnotation(method, MethodUnit.class);
-                String key = "%s/%s/%s.csv".formatted(METHOD_PATH, methodTemplate.ruleDir(), method.getName());
-                Set<MTProcessorInfo> mtProcessorInfos = processorInfoMap.computeIfAbsent(key, k -> new LinkedHashSet<>());
-                Optional<MTProcessorInfo> max = mtProcessorInfos.stream().max(Comparator.comparing(MTProcessorInfo::getIndex));
-                double index = max.map(mtProcessorInfo -> mtProcessorInfo.getIndex() + 1).orElse(10000D);
-                List<?> beans = AnnoBeanUtils.getBeansOfType(clazz);
-                for (Object bean : beans) {
+            if (methodTemplate == null) {
+                continue;
+            }
+            Set<String> mtMethods = Arrays.stream(findMethods(clazz)).map(Method::getName).collect(Collectors.toSet());
+
+            Collection<?> beans = AnnoBeanUtils.getBeansOfType(clazz);
+            for (Object bean : beans) {
+                Method[] methods = findMethods(bean.getClass());
+                for (Method method : methods) {
+                    if (!mtMethods.contains(method.getName())) {
+                        continue;
+                    }
+
+                    String subPath;
+                    if (StrUtil.isNotBlank(methodTemplate.ruleDir())) {
+                        subPath = methodTemplate.ruleDir();
+                    } else {
+                        continue;
+                    }
+                    String fullPath = "%s/%s/%s.csv".formatted(METHOD_PATH, subPath, method.getName());
+
+                    Set<MTProcessorInfo> processorInfos = processorInfoMap.computeIfAbsent(fullPath, k -> new LinkedHashSet<>());
+                    Optional<MTProcessorInfo> max = processorInfos.stream().max(Comparator.comparing(MTProcessorInfo::getIndex));
+                    double index = max.map(mtProcessorInfo -> mtProcessorInfo.getIndex() + 1).orElse(10000D);
+
+                    MethodUnit methodUnit = AnnotationUtil.getAnnotation(method, MethodUnit.class);
+
                     MTProcessorInfo info = new MTProcessorInfo();
                     info.setBeanName(StrUtil.lowerFirst(bean.getClass().getSimpleName()));
                     info.setBean(bean);
                     info.setMethodName(method.getName());
                     info.setExclude(false);
-                    info.setFullPath(key);
+                    info.setFullPath(fullPath);
                     if (methodUnit != null) {
                         info.setPhase(methodUnit.phase());
                         info.setIndex(methodUnit.index());
                     } else {
                         info.setPhase(ExecutePhase.EXECUTE);
-                        info.setIndex(index++);
+                        info.setIndex(index);
                     }
-                    mtProcessorInfos.add(info);
+                    processorInfos.add(info);
                 }
             }
         }
