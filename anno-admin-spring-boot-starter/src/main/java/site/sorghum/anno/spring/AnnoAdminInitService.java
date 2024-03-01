@@ -39,6 +39,7 @@ import site.sorghum.anno.plugin.service.AnSqlService;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
 import site.sorghum.anno.spring.config.AnnoConfig;
 import site.sorghum.anno.spring.config.AnnoScanConfig;
+import site.sorghum.anno.spring.config.SpringDbConnectionFactory;
 import site.sorghum.anno.utils.MTUtils;
 
 import java.util.List;
@@ -106,6 +107,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         // wood 设置
         WoodConfig.isSelectItemEmptyAsNull = true;
         WoodConfig.isUsingValueNull = true;
+        WoodConfig.connectionFactory = new SpringDbConnectionFactory();
     }
 
 
