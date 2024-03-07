@@ -26,7 +26,9 @@ anno-admin:
   # 主题：antd,cxd,ang
   theme: 'antd'
   # 忽略打印请求日志的路径
-  skipPathPattern: [ /anno-admin-api/asserts/**, /server/acquire ]
+  skipPathPattern:
+    - /anno-admin-api/assets/**
+    - /anno-admin-api/index.html
 server:
   port: 8855
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
