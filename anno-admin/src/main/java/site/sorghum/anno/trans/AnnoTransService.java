@@ -1,18 +1,19 @@
 package site.sorghum.anno.trans;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.QuerySqlCache;
+import site.sorghum.anno.anno.util.ReentrantStopWatch;
 import site.sorghum.plugin.join.aop.EasyJoin;
 import site.sorghum.plugin.join.entity.JoinParam;
 import site.sorghum.plugin.join.operator.JoinOperator;
@@ -42,7 +43,7 @@ public class AnnoTransService {
      * @return {@link List}<{@link T}>
      */
     public <T> List<T> trans(List<T> t, Class<?> tClass) {
-        StopWatch stopWatch = new StopWatch();
+        ReentrantStopWatch stopWatch = AnnoContextUtil.getContext().getStopWatch();
         stopWatch.start("trans from db/cache");
         // 批量翻译
         List<JoinParam> joinParams = new ArrayList<>();
@@ -170,10 +171,6 @@ public class AnnoTransService {
         stopWatch.start("fixedDictToLowerCase");
         fixedDictToLowerCase(t);
         stopWatch.stop();
-        log.info(
-            "转换耗时：{} ms",
-            stopWatch.getTotalTimeMillis()
-        );
         return t;
     }
 
