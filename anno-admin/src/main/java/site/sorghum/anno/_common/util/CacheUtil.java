@@ -55,6 +55,11 @@ public class CacheUtil {
         bucket.remove(key);
     }
 
+    public static void delKeyPattern(String key) {
+        key = getCacheKey(key);
+        bucket.removeByPattern(key);
+    }
+
     public static void removeKey(String key) {
         delKey(key);
     }

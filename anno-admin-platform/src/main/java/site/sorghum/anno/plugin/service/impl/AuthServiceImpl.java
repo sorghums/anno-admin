@@ -59,7 +59,11 @@ public class AuthServiceImpl implements AuthService {
     @Inject
     PermissionContext permissionContext;
 
+    private final static String permissionKey = "permissionList:";
+
     public void initPermissions() {
+        // 权限有变化时，需要清空缓存
+        boolean isClearCache = false;
         // 初始化的时候，进行Db的注入
         List<AnEntity> allEntity = metadataManager.getAllEntity();
         for (AnEntity anEntity : allEntity) {
@@ -75,6 +79,7 @@ public class AuthServiceImpl implements AuthService {
                         if (anPermission != null && anPermission.getId() != null) {
                             continue;
                         }
+                        isClearCache = true;
                         AnPermission buttonPermission = new AnPermission();
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
@@ -92,6 +97,7 @@ public class AuthServiceImpl implements AuthService {
                         if (anPermission != null && anPermission.getId() != null) {
                             continue;
                         }
+                        isClearCache = true;
                         AnPermission buttonPermission = new AnPermission();
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(buttonCode);
@@ -110,6 +116,7 @@ public class AuthServiceImpl implements AuthService {
                         if (anPermission != null && anPermission.getId() != null) {
                             continue;
                         }
+                        isClearCache = true;
                         AnPermission buttonPermission = new AnPermission();
                         buttonPermission.setParentId(baseCode);
                         buttonPermission.setCode(chartFieldCode);
@@ -123,6 +130,7 @@ public class AuthServiceImpl implements AuthService {
                 if (anPermission != null && anPermission.getId() != null) {
                     continue;
                 }
+                isClearCache = true;
 
                 AnPermission basePermission = new AnPermission();
                 basePermission.setId(baseCode);
@@ -187,6 +195,10 @@ public class AuthServiceImpl implements AuthService {
             }
         }
 
+        if (isClearCache) {
+            CacheUtil.delKeyPattern(permissionKey + "*");
+        }
+
     }
 
     @Override
@@ -210,7 +222,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public List<String> permissionList(String userId) {
-        String key = "permissionList:" + userId;
+        String key = permissionKey + userId;
         if (CacheUtil.containsCache(key)) {
             return CacheUtil.getCacheList(key, String.class);
         }
@@ -242,7 +254,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void removePermRoleCacheList(String userId) {
         String keyOne = "roleList:" + userId;
-        String keyTwo = "permissionList:" + userId;
+        String keyTwo = permissionKey + userId;
         CacheUtil.delKey(keyOne);
         CacheUtil.delKey(keyTwo);
     }
