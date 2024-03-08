@@ -189,7 +189,7 @@ public class BaseDbController {
         String thisValue = MapUtil.getStr(param, "thisJoinValue");
         String mediumThisField = annoMtm.getM2mMediumThisFieldSql();
         DbCriteria criteria = DbCriteria.from(mediumEntity)
-            .in(mediumOtherFieldSql, targetValue)
+            .in(mediumOtherFieldSql, targetValue.toArray())
             .eq(mediumThisField, thisValue);
         baseService.delete(criteria);
         return AnnoResult.succeed();
