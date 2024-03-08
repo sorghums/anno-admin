@@ -1,5 +1,6 @@
 package site.sorghum.anno.db;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
@@ -64,6 +65,17 @@ public class DbCriteria {
             return null;
         }
         return condition.findCondition(field);
+    }
+
+    public DbCondition findFirstCondition(String field) {
+        if (condition == null) {
+            return null;
+        }
+        List<DbCondition> conditions = condition.findCondition(field);
+        if (CollUtil.isEmpty(conditions)) {
+            return null;
+        }
+        return conditions.get(0);
     }
 
     public List<DbCondition> findConditionByType(QueryType type) {

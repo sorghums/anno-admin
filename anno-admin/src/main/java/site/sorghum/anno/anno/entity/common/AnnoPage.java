@@ -31,6 +31,6 @@ public class AnnoPage<T> {
     /**
      * 页码
      */
-    long page;
+    long currentPage;
 
 }
