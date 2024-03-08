@@ -139,7 +139,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu1.setTitle("系统管理");
         menu1.setType(0);
         menu1.setSort(10000);
-        menu1.setIcon("ant-design:bars-outlined");
+        menu1.setIcon("ant-design:code-filled");
         menu1.setPermissionId("");
         menu1.setParseType("");
         menu1.setParseData(null);
@@ -150,7 +150,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu2.setTitle("菜单管理");
         menu2.setType(1);
         menu2.setSort(10005);
-        menu2.setIcon("ant-design:bars-outlined");
+        menu2.setIcon("ant-design:menu-unfold-outlined");
         menu2.setPermissionId("an_anno_menu");
         menu2.setParseType("annoMain");
         menu2.setParseData("AnAnnoMenu");
@@ -161,7 +161,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu3.setTitle("权限管理");
         menu3.setType(1);
         menu3.setSort(10006);
-        menu3.setIcon("ant-design:bars-outlined");
+        menu3.setIcon("ant-design:unlock-outlined");
         menu3.setPermissionId("an_permission");
         menu3.setParseType("annoMain");
         menu3.setParseData("AnPermission");
@@ -172,7 +172,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu4.setTitle("用户管理");
         menu4.setType(1);
         menu4.setSort(10007);
-        menu4.setIcon("ant-design:bars-outlined");
+        menu4.setIcon("ant-design:user-outlined");
         menu4.setPermissionId("an_user");
         menu4.setParseType("annoMain");
         menu4.setParseData("AnUser");
@@ -183,7 +183,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu5.setTitle("角色管理");
         menu5.setType(1);
         menu5.setSort(10008);
-        menu5.setIcon("ant-design:bars-outlined");
+        menu5.setIcon("ant-design:apartment-outlined");
         menu5.setPermissionId("an_role");
         menu5.setParseType("annoMain");
         menu5.setParseData("AnRole");
@@ -194,7 +194,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6.setTitle("组织管理");
         menu6.setType(1);
         menu6.setSort(10009);
-        menu6.setIcon("ant-design:bars-outlined");
+        menu6.setIcon("ant-design:trophy-outlined");
         menu6.setPermissionId("an_org");
         menu6.setParseType("annoMain");
         menu6.setParseData("AnOrg");
@@ -205,7 +205,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_1.setTitle("脚本管理");
         menu6_1.setType(1);
         menu6_1.setSort(10010);
-        menu6_1.setIcon("ant-design:bars-outlined");
+        menu6_1.setIcon("ant-design:copy-outlined");
         menu6_1.setPermissionId("an_sql");
         menu6_1.setParseType("annoMain");
         menu6_1.setParseData("AnSql");
@@ -216,7 +216,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_2.setTitle("平台信息");
         menu6_2.setType(1);
         menu6_2.setSort(10011);
-        menu6_2.setIcon("ant-design:bars-outlined");
+        menu6_2.setIcon("ant-design:hdd-outlined");
         menu6_2.setPermissionId("an_platform");
         menu6_2.setParseType("annoMain");
         menu6_2.setParseData("AnPlatform");
@@ -228,7 +228,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu7.setTitle("接口文档");
         menu7.setType(1);
         menu7.setSort(10011);
-        menu7.setIcon("ant-design:bars-outlined");
+        menu7.setIcon("ant-design:read-outlined");
         menu7.setPermissionId("an_api_doc");
         menu7.setParseType("iframe");
         menu7.setParseData("[[[apiServerUrl]]]/doc.html");
@@ -239,7 +239,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu8.setTitle("会话管理");
         menu8.setType(0);
         menu8.setSort(9000);
-        menu8.setIcon("ant-design:bars-outlined");
+        menu8.setIcon("ant-design:wechat-filled");
         menu8.setPermissionId(null);
         menu8.setParseType("");
         menu8.setParseData(null);
@@ -250,7 +250,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu9.setTitle("在线用户");
         menu9.setType(1);
         menu9.setSort(9001);
-        menu9.setIcon("ant-design:bars-outlined");
+        menu9.setIcon("ant-design:user-switch-outlined");
         menu9.setPermissionId("an_online_user");
         menu9.setParseType("annoMain");
         menu9.setParseData("AnOnlineUser");
@@ -261,7 +261,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu10.setTitle("登录日志");
         menu10.setType(1);
         menu10.setSort(9002);
-        menu10.setIcon("ant-design:bars-outlined");
+        menu10.setIcon("ant-design:exception-outlined");
         menu10.setPermissionId("an_login_log");
         menu10.setParseType("annoMain");
         menu10.setParseData("AnLoginLog");
