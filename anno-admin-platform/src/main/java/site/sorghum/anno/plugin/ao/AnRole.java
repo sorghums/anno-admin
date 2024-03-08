@@ -67,7 +67,7 @@ public class AnRole extends BaseMetaModel implements Serializable {
         mediumTargetField = "userId",
         mediumThisField = "roleId",
         joinThisClazzField = "id"
-    ))
+    ), icon = "ant-design:user-outlined")
     private Object userButton;
 
 
@@ -81,6 +81,6 @@ public class AnRole extends BaseMetaModel implements Serializable {
         mediumThisField = "roleId",
         joinThisClazzField = "id",
         windowSize = "sm"
-    ))
+    ), icon = "ant-design:lock-twotone")
     private Object roleButton;
 }

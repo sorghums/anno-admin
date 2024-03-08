@@ -139,7 +139,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu1.setTitle("系统管理");
         menu1.setType(0);
         menu1.setSort(10000);
-        menu1.setIcon("ant-design:code-filled");
+        menu1.setIcon("ant-design:setting-filled");
         menu1.setPermissionId("");
         menu1.setParseType("");
         menu1.setParseData(null);
