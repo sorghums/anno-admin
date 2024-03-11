@@ -62,7 +62,7 @@ public interface AnnoBaseDao<T> {
         if (CollUtil.isEmpty(ids)) {
             return new LinkedList<>();
         }
-        return list(DbCriteria.fromClass(entityClass()).in("id", ids));
+        return list(DbCriteria.fromClass(entityClass()).in("id", ids.toArray()));
     }
 
 
