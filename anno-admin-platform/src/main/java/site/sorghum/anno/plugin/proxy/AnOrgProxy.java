@@ -16,11 +16,7 @@ public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
 
     @Override
     public void beforeFetch(DbCriteria criteria) {
-        if (annoOrgManager.isIgnoreFilter(criteria.getEntityName())) {
-            return;
-        }
-//        String orgId = annoOrgManager.getLoginOrg();
-//        dbConditions.add(new DbCondition(DbCondition.QueryType.EQ, DbCondition.AndOr.AND, "id", orgId));
+
     }
 
     @Override
@@ -30,4 +26,10 @@ public class AnOrgProxy implements AnnoBaseProxy<AnOrg> {
         }
     }
 
+    @Override
+    public void beforeUpdate(AnOrg data, DbCriteria criteria) {
+        if (!annoOrgManager.isIgnoreFilter(AnOrg.class)) {
+            throw new BizException("非管理员无法添加组织。");
+        }
+    }
 }

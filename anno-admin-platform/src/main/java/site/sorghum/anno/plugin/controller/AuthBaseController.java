@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnLoginLog;
@@ -117,14 +118,18 @@ public class AuthBaseController {
 
     public AnnoResult<UserInfo> me() {
         UserInfo userInfo = new UserInfo();
+        // 校验登录
+        CheckPermissionFunction.loginCheckFunction.run();
         AnnoAuthUser anUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
+        // 但是anno系统未登录，则返回外部用户
         if (Objects.isNull(anUser)){
-            return AnnoResult.failure("请先登录");
+            userInfo.setName("外部用户");
+        }else{
+            userInfo.setName(anUser.getUserName());
+            userInfo.setAvatar(anUser.getAvatar());
+            userInfo.setPerms(AnnoStpUtil.getPermissionList());
+            userInfo.setRoles(AnnoStpUtil.getRoleList());
         }
-        userInfo.setName(anUser.getUserName());
-        userInfo.setAvatar(anUser.getAvatar());
-        userInfo.setPerms(AnnoStpUtil.getPermissionList());
-        userInfo.setRoles(AnnoStpUtil.getRoleList());
         return AnnoResult.succeed(userInfo);
     }
 

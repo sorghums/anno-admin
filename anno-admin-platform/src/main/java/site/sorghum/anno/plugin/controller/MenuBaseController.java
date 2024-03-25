@@ -9,6 +9,7 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
+import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
@@ -189,14 +190,26 @@ public class MenuBaseController {
     }
 
     private List<AnAnnoMenu> getAnAnnoMenus() {
-        String uid = AnnoStpUtil.getLoginIdAsString();
+        // 登录校验
+        CheckPermissionFunction.loginCheckFunction.run();
+        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
+        String uid;
+        // 登录校验通过 但是anno系统未登录
+        if (AnnoStpUtil.isLogin()){
+            uid = AnnoStpUtil.getLoginIdAsString();
+        } else {
+            uid = null;
+        }
         String tokenValue = AnnoStpUtil.getTokenValue();
         String apiServerUrl = annoProperty.getApiServerUrl();
-        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         // 过滤需要权限的菜单
         List<AnAnnoMenu> nList = anAnnoMenus.stream().filter(
             sysAnnoMenu -> {
                 if (StrUtil.isNotBlank(sysAnnoMenu.getPermissionId())) {
+                    // uid为空返回全部
+                    if (uid == null){
+                        return true;
+                    }
                     return AuthFunctions.permissionList.apply(uid).contains(sysAnnoMenu.getPermissionId());
                 }
                 return true;
