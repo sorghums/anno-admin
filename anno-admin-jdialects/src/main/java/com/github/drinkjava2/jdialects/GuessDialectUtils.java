@@ -11,13 +11,12 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.sql.DataSource;
 
 /**
  * Guess Dialect Utils

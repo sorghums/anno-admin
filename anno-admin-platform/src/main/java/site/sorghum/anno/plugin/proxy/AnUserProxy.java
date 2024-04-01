@@ -3,7 +3,6 @@ package site.sorghum.anno.plugin.proxy;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.entity.common.AnnoPage;

@@ -11,23 +11,19 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
 import com.github.drinkjava2.jdialects.id.AutoIdGenerator;
 import com.github.drinkjava2.jdialects.id.IdGenerator;
 import com.github.drinkjava2.jdialects.id.SequenceIdGenerator;
 import com.github.drinkjava2.jdialects.id.TableIdGenerator;
-import com.github.drinkjava2.jdialects.model.ColumnModel;
-import com.github.drinkjava2.jdialects.model.FKeyModel;
-import com.github.drinkjava2.jdialects.model.IndexModel;
-import com.github.drinkjava2.jdialects.model.TableModel;
-import com.github.drinkjava2.jdialects.model.UniqueModel;
+import com.github.drinkjava2.jdialects.model.*;
 import com.github.drinkjava2.jlogs.Log;
 import com.github.drinkjava2.jlogs.LogFactory;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * To transfer platform-independent model to create DDL String array

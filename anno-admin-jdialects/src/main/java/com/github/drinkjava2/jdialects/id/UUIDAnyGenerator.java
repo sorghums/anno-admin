@@ -11,12 +11,12 @@
  */
 package com.github.drinkjava2.jdialects.id;
 
-import java.security.SecureRandom;
-import java.sql.Connection;
-
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.Type;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
+
+import java.security.SecureRandom;
+import java.sql.Connection;
 
 /**
  * Generate any length UUID String based on radix 36, use 0-9 a-z characters

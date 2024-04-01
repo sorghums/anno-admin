@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.annotation.field;
 
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.QueryType;
 
 import java.lang.annotation.*;

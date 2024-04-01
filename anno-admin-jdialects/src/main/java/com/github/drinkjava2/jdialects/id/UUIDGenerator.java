@@ -11,12 +11,12 @@
  */
 package com.github.drinkjava2.jdialects.id;
 
-import java.sql.Connection;
-import java.util.UUID;
-
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.Type;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
+
+import java.sql.Connection;
+import java.util.UUID;
 
 /**
  * Generate a JDK 32 letters random UUID based on Base16 encoding, example:

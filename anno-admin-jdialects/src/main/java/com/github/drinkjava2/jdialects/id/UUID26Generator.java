@@ -11,14 +11,14 @@
  */
 package com.github.drinkjava2.jdialects.id;
 
-import java.math.BigInteger;
-import java.sql.Connection;
-import java.util.UUID;
-
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.StrUtils;
 import com.github.drinkjava2.jdialects.Type;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
+
+import java.math.BigInteger;
+import java.sql.Connection;
+import java.util.UUID;
 
 /**
  * Compress JDK UUID to 26 letters based on radix 36, use 0-9 a-z characters,

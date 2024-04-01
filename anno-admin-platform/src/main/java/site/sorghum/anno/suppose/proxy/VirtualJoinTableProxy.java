@@ -3,15 +3,10 @@ package site.sorghum.anno.suppose.proxy;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
-import site.sorghum.plugin.join.aop.JoinResMap;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Getter
 @Named

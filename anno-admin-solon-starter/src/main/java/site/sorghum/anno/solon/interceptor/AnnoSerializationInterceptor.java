@@ -6,8 +6,6 @@ import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 
-import java.util.Map;
-
 /**
  * anno序列化拦截器
  *

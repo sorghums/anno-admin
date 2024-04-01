@@ -11,20 +11,15 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import com.github.drinkjava2.jdialects.model.TableModel;
+
+import javax.sql.DataSource;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.sql.DataSource;
-
-import com.github.drinkjava2.jdialects.model.TableModel;
+import java.util.*;
 
 /**
  * This utility tool to translate Entity class / Database metaData / Excel(will

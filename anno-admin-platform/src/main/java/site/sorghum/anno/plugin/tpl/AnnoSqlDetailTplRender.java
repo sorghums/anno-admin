@@ -1,13 +1,11 @@
 package site.sorghum.anno.plugin.tpl;
 
-import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.map.MapUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.auth.AnnoStpUtil;
 
-import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

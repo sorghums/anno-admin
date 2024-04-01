@@ -11,12 +11,12 @@
  */
 package com.github.drinkjava2.jdialects.id;
 
-import java.sql.Connection;
-
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.DialectException;
 import com.github.drinkjava2.jdialects.Type;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
+
+import java.sql.Connection;
 
 /**
  * Generate a Sorted UUID, total length = sortedLength + uuidLength, <br/>

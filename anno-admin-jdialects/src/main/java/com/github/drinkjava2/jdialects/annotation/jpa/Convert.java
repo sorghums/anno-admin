@@ -11,11 +11,11 @@
  */
 package com.github.drinkjava2.jdialects.annotation.jpa;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * The value of this Convert annotation point to a class, the implementation of

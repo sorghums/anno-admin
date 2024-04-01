@@ -1,10 +1,10 @@
 package com.github.drinkjava2.jdialects.converter;
 
+import com.github.drinkjava2.jdialects.Java8DateUtils;
+
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
-
-import com.github.drinkjava2.jdialects.Java8DateUtils;
 
 public class BasicJavaToJdbcConverter implements JavaToJdbcConverter {
 	public static final BasicJavaToJdbcConverter instance = new BasicJavaToJdbcConverter();

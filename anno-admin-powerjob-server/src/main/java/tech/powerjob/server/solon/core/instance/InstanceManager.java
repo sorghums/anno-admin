@@ -18,7 +18,6 @@ import tech.powerjob.common.request.ServerStopInstanceReq;
 import tech.powerjob.common.request.TaskTrackerReportInstanceStatusReq;
 import tech.powerjob.common.utils.CommonUtils;
 import tech.powerjob.remote.framework.base.URL;
-import tech.powerjob.server.solon.anno.utils.DbContextUtil;
 import tech.powerjob.server.solon.anno.utils.IdConvertUtil;
 import tech.powerjob.server.solon.common.module.WorkerInfo;
 import tech.powerjob.server.solon.common.timewheel.holder.HashedWheelTimerHolder;

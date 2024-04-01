@@ -11,21 +11,15 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import com.github.drinkjava2.jdialects.springsrc.utils.ReflectionUtils;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.github.drinkjava2.jdialects.springsrc.utils.ReflectionUtils;
 
 /**
  * ClassCacheUtils is utility class to cache some info of classes read and write

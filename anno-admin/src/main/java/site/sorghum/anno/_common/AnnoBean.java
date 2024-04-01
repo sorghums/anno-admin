@@ -1,7 +1,5 @@
 package site.sorghum.anno._common;
 
-import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-
 import java.util.List;
 
 /**

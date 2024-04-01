@@ -1,11 +1,7 @@
 package site.sorghum.anno.plugin.dao;
 
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.db.dao.AnnoBaseDao;
-import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.ao.AnRole;
 
 import java.util.List;

@@ -11,13 +11,13 @@
  */
 package com.github.drinkjava2.jdialects.annotation.jpa;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static com.github.drinkjava2.jdialects.annotation.jpa.GenerationType.AUTO;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
 /**
  * Provides for the specification of generation strategies for the

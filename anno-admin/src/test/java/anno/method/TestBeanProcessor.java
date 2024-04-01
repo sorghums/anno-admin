@@ -1,9 +1,9 @@
 package anno.method;
 
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.method.processor.MTBasicProcessor;
 import site.sorghum.anno.method.MTContext;
 import site.sorghum.anno.method.MTProcessResult;
+import site.sorghum.anno.method.processor.MTBasicProcessor;
 
 /**
  * @author songyinyin

@@ -11,15 +11,10 @@
  */
 package com.github.drinkjava2.jdialects.id;
 
-import java.sql.Connection;
-
-import com.github.drinkjava2.jdialects.DDLFeatures;
-import com.github.drinkjava2.jdialects.Dialect;
-import com.github.drinkjava2.jdialects.DialectException;
-import com.github.drinkjava2.jdialects.JdbcUtil;
-import com.github.drinkjava2.jdialects.StrUtils;
-import com.github.drinkjava2.jdialects.Type;
+import com.github.drinkjava2.jdialects.*;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
+
+import java.sql.Connection;
 
 /**
  * Define an Identity type generator, supported by MySQL, SQL Server, DB2,

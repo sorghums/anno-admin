@@ -11,11 +11,11 @@
  */
 package com.github.drinkjava2.jdialects.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.drinkjava2.jdialects.ArrayUtils;
 import com.github.drinkjava2.jdialects.DialectException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The platform-independent Foreign Key Constraint model

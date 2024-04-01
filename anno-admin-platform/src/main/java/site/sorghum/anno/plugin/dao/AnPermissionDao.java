@@ -1,7 +1,6 @@
 package site.sorghum.anno.plugin.dao;
 
 import jakarta.inject.Named;
-import org.noear.wood.annotation.Sql;
 import site.sorghum.anno.db.dao.AnnoBaseDao;
 import site.sorghum.anno.plugin.ao.AnPermission;
 

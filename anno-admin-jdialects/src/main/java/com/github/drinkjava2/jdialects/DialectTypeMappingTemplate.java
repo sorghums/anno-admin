@@ -11,35 +11,9 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import static com.github.drinkjava2.jdialects.Type.BIGINT;
-import static com.github.drinkjava2.jdialects.Type.BINARY;
-import static com.github.drinkjava2.jdialects.Type.BIT;
-import static com.github.drinkjava2.jdialects.Type.BLOB;
-import static com.github.drinkjava2.jdialects.Type.BOOLEAN;
-import static com.github.drinkjava2.jdialects.Type.CHAR;
-import static com.github.drinkjava2.jdialects.Type.CLOB;
-import static com.github.drinkjava2.jdialects.Type.DATE;
-import static com.github.drinkjava2.jdialects.Type.DECIMAL;
-import static com.github.drinkjava2.jdialects.Type.DOUBLE;
-import static com.github.drinkjava2.jdialects.Type.FLOAT;
-import static com.github.drinkjava2.jdialects.Type.INTEGER;
-import static com.github.drinkjava2.jdialects.Type.JAVA_OBJECT;
-import static com.github.drinkjava2.jdialects.Type.LONGNVARCHAR;
-import static com.github.drinkjava2.jdialects.Type.LONGVARBINARY;
-import static com.github.drinkjava2.jdialects.Type.LONGVARCHAR;
-import static com.github.drinkjava2.jdialects.Type.NCHAR;
-import static com.github.drinkjava2.jdialects.Type.NCLOB;
-import static com.github.drinkjava2.jdialects.Type.NUMERIC;
-import static com.github.drinkjava2.jdialects.Type.NVARCHAR;
-import static com.github.drinkjava2.jdialects.Type.REAL;
-import static com.github.drinkjava2.jdialects.Type.SMALLINT;
-import static com.github.drinkjava2.jdialects.Type.TIME;
-import static com.github.drinkjava2.jdialects.Type.TIMESTAMP;
-import static com.github.drinkjava2.jdialects.Type.TINYINT;
-import static com.github.drinkjava2.jdialects.Type.VARBINARY;
-import static com.github.drinkjava2.jdialects.Type.VARCHAR;
-
 import java.util.Map;
+
+import static com.github.drinkjava2.jdialects.Type.*;
 
 /**
  * Initialize type mapping template for all dialects

@@ -11,13 +11,13 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import com.github.drinkjava2.jdialects.model.FKeyModel;
 import com.github.drinkjava2.jdialects.model.TableModel;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * DialectDebugUtils only for debug purpose, to print detail info of dialects,

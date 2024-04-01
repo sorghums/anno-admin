@@ -11,6 +11,10 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import com.github.drinkjava2.jdialects.model.ColumnModel;
+import com.github.drinkjava2.jdialects.model.TableModel;
+import com.github.drinkjava2.jdialects.springsrc.utils.ReflectionUtils;
+
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -23,10 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.github.drinkjava2.jdialects.model.ColumnModel;
-import com.github.drinkjava2.jdialects.model.TableModel;
-import com.github.drinkjava2.jdialects.springsrc.utils.ReflectionUtils;
 
 /**
  * The tool to convert entity classes to TableModels

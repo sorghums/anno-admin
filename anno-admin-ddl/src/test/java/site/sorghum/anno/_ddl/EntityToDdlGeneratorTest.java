@@ -12,7 +12,6 @@ import org.noear.solon.test.SolonTest;
 import org.noear.wood.DbContext;
 import org.noear.wood.DbContextMetaData;
 import org.noear.wood.annotation.Db;
-import org.noear.wood.dialect.DbH2Dialect;
 import site.sorghum.anno._ddl.entity.TestEntity;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._ddl.entity2db.SampleEntityToTableGetter;

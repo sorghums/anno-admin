@@ -2,16 +2,13 @@ package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
-import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
 

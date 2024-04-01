@@ -11,14 +11,14 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import static com.github.drinkjava2.jdialects.StrUtils.clearQuote;
-
-import java.util.Map;
-
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import com.github.drinkjava2.jdialects.model.FKeyModel;
 import com.github.drinkjava2.jdialects.model.TableModel;
 import com.github.drinkjava2.jdialects.springsrc.utils.StringUtils;
+
+import java.util.Map;
+
+import static com.github.drinkjava2.jdialects.StrUtils.clearQuote;
 
 /**
  * The tool to convert TableModel to Java source code

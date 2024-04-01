@@ -11,8 +11,9 @@
  */
 package com.github.drinkjava2.jdialects.annotation.jpa;
 
-import java.lang.annotation.Target;
 import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**

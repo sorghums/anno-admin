@@ -11,6 +11,10 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import com.github.drinkjava2.jbeanbox.ClassScanner;
+import com.github.drinkjava2.jdialects.model.ColumnModel;
+import com.github.drinkjava2.jdialects.model.TableModel;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,10 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import com.github.drinkjava2.jbeanbox.ClassScanner;
-import com.github.drinkjava2.jdialects.model.ColumnModel;
-import com.github.drinkjava2.jdialects.model.TableModel;
 
 /**
  * The tool to convert entity classes to TableModels

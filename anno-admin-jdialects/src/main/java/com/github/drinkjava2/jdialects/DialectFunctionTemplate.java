@@ -11,7 +11,6 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

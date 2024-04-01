@@ -1,7 +1,6 @@
 package site.sorghum.anno._ddl.entity2db;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.github.drinkjava2.jdialects.Dialect;
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import lombok.Data;

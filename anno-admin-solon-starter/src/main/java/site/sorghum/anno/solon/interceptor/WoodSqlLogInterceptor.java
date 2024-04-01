@@ -1,7 +1,6 @@
 package site.sorghum.anno.solon.interceptor;
 
 import cn.hutool.core.collection.CollUtil;
-import com.github.drinkjava2.jdialects.Dialect;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;

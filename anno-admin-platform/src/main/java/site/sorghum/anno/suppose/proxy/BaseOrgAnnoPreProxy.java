@@ -5,13 +5,9 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.db.DbPage;
 import site.sorghum.anno.plugin.manager.AnnoOrgManager;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
-
-import java.util.List;
 
 /**
  * 基础前置代理

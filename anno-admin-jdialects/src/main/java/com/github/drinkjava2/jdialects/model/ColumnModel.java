@@ -11,9 +11,6 @@
  */
 package com.github.drinkjava2.jdialects.model;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.github.drinkjava2.jdialects.DebugUtils;
 import com.github.drinkjava2.jdialects.DialectException;
 import com.github.drinkjava2.jdialects.StrUtils;
@@ -21,6 +18,9 @@ import com.github.drinkjava2.jdialects.Type;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
 import com.github.drinkjava2.jdialects.id.IdGenerator;
 import com.github.drinkjava2.jdialects.id.UUIDAnyGenerator;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A ColumnModel definition represents a platform dependent column in a Database

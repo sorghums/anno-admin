@@ -3,7 +3,6 @@ package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTree;

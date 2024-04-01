@@ -1,13 +1,10 @@
 package site.sorghum.anno.solon.config;
 
-import cn.hutool.core.date.DateUtil;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.serialization.snack3.SnackActionExecutor;
 import org.noear.solon.serialization.snack3.SnackRenderFactory;
-
-import java.time.LocalDateTime;
 
 
 @Configuration

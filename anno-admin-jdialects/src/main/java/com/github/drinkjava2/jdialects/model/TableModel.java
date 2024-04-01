@@ -11,30 +11,13 @@
  */
 package com.github.drinkjava2.jdialects.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
 import com.github.drinkjava2.jdialects.DebugUtils;
 import com.github.drinkjava2.jdialects.DialectException;
 import com.github.drinkjava2.jdialects.StrUtils;
 import com.github.drinkjava2.jdialects.annotation.jpa.GenerationType;
-import com.github.drinkjava2.jdialects.id.AutoIdGenerator;
-import com.github.drinkjava2.jdialects.id.IdGenerator;
-import com.github.drinkjava2.jdialects.id.IdentityIdGenerator;
-import com.github.drinkjava2.jdialects.id.SequenceIdGenerator;
-import com.github.drinkjava2.jdialects.id.SnowflakeGenerator;
-import com.github.drinkjava2.jdialects.id.SortedUUIDGenerator;
-import com.github.drinkjava2.jdialects.id.TableIdGenerator;
-import com.github.drinkjava2.jdialects.id.TimeStampIdGenerator;
-import com.github.drinkjava2.jdialects.id.UUID25Generator;
-import com.github.drinkjava2.jdialects.id.UUID26Generator;
-import com.github.drinkjava2.jdialects.id.UUID32Generator;
-import com.github.drinkjava2.jdialects.id.UUID36Generator;
-import com.github.drinkjava2.jdialects.id.UUIDAnyGenerator;
-import com.github.drinkjava2.jdialects.id.UUIDGenerator;
+import com.github.drinkjava2.jdialects.id.*;
+
+import java.util.*;
 
 /**
  * A TableModel definition represents a platform dependent Database Table, from

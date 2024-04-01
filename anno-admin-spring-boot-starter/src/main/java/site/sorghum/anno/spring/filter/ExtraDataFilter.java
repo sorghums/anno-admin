@@ -3,7 +3,6 @@ package site.sorghum.anno.spring.filter;
 
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.SaTokenException;
-import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.exceptions.UtilException;
 import cn.hutool.core.text.AntPathMatcher;
 import jakarta.servlet.*;

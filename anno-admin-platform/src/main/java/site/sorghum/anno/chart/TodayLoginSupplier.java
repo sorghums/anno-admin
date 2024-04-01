@@ -7,7 +7,6 @@ import org.noear.wood.annotation.Db;
 import site.sorghum.anno.chart.supplier.base.IntegerSupplier;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
  * 今天登录供应商

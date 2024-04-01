@@ -1,6 +1,5 @@
 package site.sorghum.anno.plugin.controller;
 
-import cn.dev33.satoken.session.SaSession;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.http.useragent.UserAgent;
@@ -14,6 +13,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
+import site.sorghum.anno.chart.AnChartService;
 import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.common.LoginInfo;
@@ -21,7 +21,6 @@ import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
-import site.sorghum.anno.chart.AnChartService;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.Objects;

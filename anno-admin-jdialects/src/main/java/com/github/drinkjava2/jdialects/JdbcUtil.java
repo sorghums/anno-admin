@@ -15,12 +15,11 @@
  */
 package com.github.drinkjava2.jdialects;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.sql.DataSource;
 
 /**
  * A tiny pure JDBC tool to access database

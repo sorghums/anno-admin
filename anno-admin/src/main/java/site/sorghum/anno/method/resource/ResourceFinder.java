@@ -1,7 +1,6 @@
 package site.sorghum.anno.method.resource;
 
 import cn.hutool.core.collection.EnumerationIter;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.resource.FileResource;

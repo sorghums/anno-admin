@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.dao.SysUserDao;

@@ -11,17 +11,13 @@
  */
 package com.github.drinkjava2.jdialects;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.drinkjava2.jdialects.model.ColumnModel;
 import com.github.drinkjava2.jdialects.model.FKeyModel;
 import com.github.drinkjava2.jdialects.model.TableModel;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The tool to convert database structure(meta data) to TableModels

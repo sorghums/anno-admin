@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 
 import java.util.List;
 

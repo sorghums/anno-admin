@@ -5,7 +5,6 @@ import org.noear.solon.core.AppContext;
 import org.noear.solon.core.BeanWrap;
 import site.sorghum.anno._common.AnnoBean;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 
 import java.util.List;
 

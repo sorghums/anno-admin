@@ -13,8 +13,6 @@ import site.sorghum.anno.plugin.ao.AnPlatform;
 import site.sorghum.anno.plugin.controller.SystemBaseController;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 
-import java.util.Map;
-
 /**
  * 系统控制器
  *

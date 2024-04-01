@@ -3,11 +3,8 @@ package site.sorghum.anno.plugin.proxy;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
-
-import java.util.List;
 
 /**
  * 菜单代理

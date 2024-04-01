@@ -12,15 +12,9 @@
 package com.github.drinkjava2.jdialects;
 
 /*- JAVA8_BEGIN */
+
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime; 
+import java.time.*;
 import java.util.Date; 
  
 public abstract class Java8DateUtils {// NOSONAR 

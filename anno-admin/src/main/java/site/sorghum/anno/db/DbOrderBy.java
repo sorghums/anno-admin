@@ -3,8 +3,6 @@ package site.sorghum.anno.db;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.noear.wood.DbTableQuery;
-import site.sorghum.anno._metadata.AnOrder;
 
 import java.util.ArrayList;
 import java.util.List;
