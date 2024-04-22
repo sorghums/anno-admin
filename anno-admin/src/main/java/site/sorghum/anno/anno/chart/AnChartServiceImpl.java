@@ -1,4 +1,4 @@
-package site.sorghum.anno.chart;
+package site.sorghum.anno.anno.chart;
 
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;

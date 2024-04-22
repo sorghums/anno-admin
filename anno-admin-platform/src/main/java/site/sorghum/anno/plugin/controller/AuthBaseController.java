@@ -13,7 +13,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
-import site.sorghum.anno.chart.AnChartService;
+import site.sorghum.anno.anno.chart.AnChartService;
 import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.common.LoginInfo;

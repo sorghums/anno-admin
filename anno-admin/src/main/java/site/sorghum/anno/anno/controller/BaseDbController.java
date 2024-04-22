@@ -24,7 +24,7 @@ import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
-import site.sorghum.anno.chart.AnChartService;
+import site.sorghum.anno.anno.chart.AnChartService;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.QueryType;

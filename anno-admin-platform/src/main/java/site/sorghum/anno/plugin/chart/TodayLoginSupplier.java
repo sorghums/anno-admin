@@ -1,10 +1,10 @@
-package site.sorghum.anno.chart;
+package site.sorghum.anno.plugin.chart;
 
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.chart.supplier.base.IntegerSupplier;
+import site.sorghum.anno.anno.chart.supplier.base.IntegerSupplier;
 
 import java.util.Map;
 

@@ -136,15 +136,6 @@ public @interface AnnoButton {
         Class<?> joinTargetClazz() default Object.class;
 
         /**
-         * SQL语句：? 为 joinThisClazzField的值
-         * demo1: select user_id from an_user_role where role_id = ?
-         * demo2: select role_id from an_user_role where user_id = ?
-         *
-         * @return {@link String}
-         */
-        String joinSql() default "";
-
-        /**
          * 以哪个字段为条件【this】
          *
          * @return {@link String}
@@ -185,13 +176,6 @@ public @interface AnnoButton {
          * @return {@link String}
          */
         String windowSize() default "xl";
-
-        /**
-         * 弹出窗口高度
-         *
-         * @return {@link String}
-         */
-        String windowHeight() default "700px";
 
         /**
          * 启用

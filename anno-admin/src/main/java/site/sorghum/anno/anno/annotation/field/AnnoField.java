@@ -30,7 +30,7 @@ public @interface AnnoField {
 
     /**
      * 表字段名
-     * 如果不设置，则默认其为虚拟列，不会在数据库中生成与查询
+     * 如果不设置，则默认使用驼峰式转下划线
      *
      * @return {@link String}
      */

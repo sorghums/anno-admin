@@ -5,7 +5,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.enums.AnnoChartType;
-import site.sorghum.anno.chart.*;
+import site.sorghum.anno.plugin.chart.*;
 
 /**
  * 登录图表

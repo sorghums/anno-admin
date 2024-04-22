@@ -1,4 +1,4 @@
-package site.sorghum.anno.chart;
+package site.sorghum.anno.plugin.chart;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
@@ -9,7 +9,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.chart.supplier.base.MapListSupplier;
+import site.sorghum.anno.anno.chart.supplier.base.CommonChartSupplier;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -22,16 +22,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Named
 @Slf4j
-public class TrafficTrendSupplier implements MapListSupplier {
+public class TrafficTrendSupplier implements CommonChartSupplier {
 
     @Db
     DbContext dbContext;
 
     @Override
-    public List<Map<String, Object>> get(Map<String, Object> param) {
+    public List<PieChartResponse> get(Map<String, Object> param) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        List<Map<String, Object>> list = new ArrayList<>();
+        List<PieChartResponse> list = new ArrayList<>();
         Map<String, Object> returnMapData = new HashMap<>();
         DateTime now = DateUtil.date();
         int nowHour = DateUtil.hour(now, true) + 1;
@@ -55,11 +55,12 @@ public class TrafficTrendSupplier implements MapListSupplier {
             return null;
         }
         for (int i = 0; i < nowHour; i++) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("item", i + "时");
-            map.put("itemCount",
-                MapUtil.getInt(returnMapData, String.valueOf(i),0));
-            list.add(map);
+            PieChartResponse response = new PieChartResponse();
+            response.setItem(i + "时");
+            response.setItemCount(
+                MapUtil.getInt(returnMapData, String.valueOf(i),0)
+            );
+            list.add(response);
         }
         if (CollUtil.isEmpty(list)) {
             return null;

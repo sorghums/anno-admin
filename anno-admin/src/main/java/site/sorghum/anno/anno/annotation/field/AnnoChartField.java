@@ -1,7 +1,7 @@
 package site.sorghum.anno.anno.annotation.field;
 
 import site.sorghum.anno.anno.enums.AnnoChartType;
-import site.sorghum.anno.chart.supplier.base.ChartSupplier;
+import site.sorghum.anno.anno.chart.supplier.base.ChartSupplier;
 
 import java.lang.annotation.*;
 
@@ -31,7 +31,7 @@ public @interface AnnoChartField {
     AnnoChartType type() default AnnoChartType.NUMBER;
 
     /**
-     * 运行供应商
+     * 数据供应商
      *
      * @return {@link Class}<{@link ?} {@link extends} {@link ChartSupplier}<{@link ?}>>
      */

@@ -1,4 +1,4 @@
-package site.sorghum.anno.chart;
+package site.sorghum.anno.anno.chart;
 
 
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
@@ -16,7 +16,6 @@ public interface AnChartService {
 
 
     /**
-     * 获取图表
      * 获取图表数据
      *
      * @param clazz   实体类
