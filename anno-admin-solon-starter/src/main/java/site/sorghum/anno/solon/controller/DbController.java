@@ -226,7 +226,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body Map<String, String> map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body Map<String, Object> map) throws ClassNotFoundException {
         return super.runJavaCmd(clazz, map);
     }
 

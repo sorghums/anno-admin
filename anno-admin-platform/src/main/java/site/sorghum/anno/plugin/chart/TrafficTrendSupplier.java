@@ -9,7 +9,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.anno.chart.supplier.base.CommonChartSupplier;
+import site.sorghum.anno.anno.chart.supplier.CommonChartSupplier;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;

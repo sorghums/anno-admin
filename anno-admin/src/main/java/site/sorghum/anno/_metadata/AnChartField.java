@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.enums.AnnoChartType;
-import site.sorghum.anno.anno.chart.supplier.base.ChartSupplier;
+import site.sorghum.anno.anno.chart.supplier.ChartSupplier;
 
 @Data
 @AllArgsConstructor

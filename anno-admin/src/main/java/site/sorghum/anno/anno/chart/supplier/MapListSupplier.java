@@ -1,4 +1,4 @@
-package site.sorghum.anno.anno.chart.supplier.base;
+package site.sorghum.anno.anno.chart.supplier;
 
 import java.util.List;
 import java.util.Map;

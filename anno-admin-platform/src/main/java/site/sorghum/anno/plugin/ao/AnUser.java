@@ -10,7 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.plugin.service.AuthService;
+import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
 import java.io.Serial;
@@ -23,7 +23,7 @@ import java.io.Serializable;
     annoLeftTree = @AnnoLeftTree(leftTreeName = "组织", catKey = "orgId", treeClass = AnOrg.class),
     annoTree = @AnnoTree(label = "name", parentKey = "", key = "id", displayAsTree = false),
     annoPermission = @AnnoPermission(enable = true, baseCode = "an_user", baseCodeTranslate = "用户管理"),
-    annoOrder = {@AnnoOrder(orderType = "desc",orderValue = "id")}
+    annoOrder = {@AnnoOrder(orderType = "desc", orderValue = "id")}
 )
 public class AnUser extends BaseOrgMetaModel implements Serializable {
 
@@ -31,57 +31,58 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      * 用户头像
      */
     @AnnoField(title = "用户头像",
-            tableFieldName = "avatar",
-            dataType = AnnoDataType.AVATAR,
-            edit = @AnnoEdit(placeHolder = "请上传用户头像"),
-            imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE,width = 50,height = 50))
+        tableFieldName = "avatar",
+        dataType = AnnoDataType.AVATAR,
+        edit = @AnnoEdit(placeHolder = "请上传用户头像"),
+        imageType = @AnnoImageType(thumbMode = AnnoImageType.ThumbMode.COVER, thumbRatio = AnnoImageType.ThumbRatio.RATE_ONE, width = 50, height = 50))
     private String avatar;
     /**
      * 手机号
      */
     @AnnoField(title = "手机号", tableFieldName = "mobile", search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true, editEnable = false))
+        edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true, editEnable = false))
     private String mobile;
     /**
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
-            edit = @AnnoEdit(placeHolder = "请输入密码"), show = false)
+        edit = @AnnoEdit(placeHolder = "请输入密码"), show = false)
     private String password;
     /**
      * 用户名
      */
     @AnnoField(title = "用户名", tableFieldName = "name", search = @AnnoSearch(),
-            edit = @AnnoEdit(placeHolder = "请输入用户名", notNull = true))
+        edit = @AnnoEdit(placeHolder = "请输入用户名", notNull = true))
     private String name;
 
     /**
      * 状态 1 正常 0 封禁
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
-            dataType = AnnoDataType.RADIO,
-            optionType = @AnnoOptionType(value = {
-                    @AnnoOptionType.OptionData(label = "正常", value = "1"),
-                    @AnnoOptionType.OptionData(label = "封禁", value = "0")
-            }),
-            edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
+        dataType = AnnoDataType.RADIO,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "正常", value = "1"),
+            @AnnoOptionType.OptionData(label = "封禁", value = "0")
+        }),
+        edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     private String enable;
 
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined",m2mJoinButton = @AnnoButton.M2MJoinButton(
-            joinTargetClazz = AnRole.class,
-            mediumTableClass = AnUserRole.class,
-            mediumTargetField = "roleId",
-            mediumThisField = "userId"
+    @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined", m2mJoinButton = @AnnoButton.M2MJoinButton(
+        joinTargetClazz = AnRole.class,
+        mediumTableClass = AnUserRole.class,
+        mediumTargetField = "roleId",
+        mediumThisField = "userId"
     ))
     private Object roleButton;
 
     /**
      * 重置密码按钮
      */
-    @AnnoButton(permissionCode = "resetPwd",icon = "fluent:key-reset-20-filled",name = "重置密码", javaCmd = @AnnoButton.JavaCmd(beanClass = AuthService.class, methodName = "resetPwd"))
+    @AnnoButton(permissionCode = "resetPwd", icon = "fluent:key-reset-20-filled", name = "重置密码",
+        javaCmd = @AnnoButton.JavaCmd(runSupplier = ResetPwdJavaCmdSupplier.class))
     private Object resetPwdButton;
 
     @Serial

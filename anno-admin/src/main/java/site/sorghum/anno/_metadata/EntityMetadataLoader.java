@@ -331,6 +331,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anColumnButton.setJavaCmdEnable(anno.javaCmd().enable());
             if (anColumnButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
+                annoJavaCmd.setRunSupplier(anno.javaCmd().runSupplier());
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());
@@ -374,6 +375,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
             if (anButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
+                annoJavaCmd.setRunSupplier(anno.javaCmd().runSupplier());
                 annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
                 annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());

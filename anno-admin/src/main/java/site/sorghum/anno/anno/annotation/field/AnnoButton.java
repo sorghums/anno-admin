@@ -2,6 +2,7 @@ package site.sorghum.anno.anno.annotation.field;
 
 
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
+import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
 
 import java.lang.annotation.*;
 
@@ -186,19 +187,27 @@ public @interface AnnoButton {
     }
 
     @interface JavaCmd {
+
+        /**
+         * 运行供应商
+         *
+         * @return {@link Class}<{@link ?extends} {@link JavaCmdSupplier}>
+         */
+        Class<?extends JavaCmdSupplier> runSupplier() default JavaCmdSupplier.class;
+
         /**
          * bean类
          *
          * @return {@link Class}<{@link ?}>
          */
-        Class<?> beanClass();
+        Class<?> beanClass() default Object.class;
 
         /**
          * 方法名称 参数必须是: Map<String,Object> props
          *
          * @return {@link String}
          */
-        String methodName();
+        String methodName() default "";
 
         /**
          * 启用

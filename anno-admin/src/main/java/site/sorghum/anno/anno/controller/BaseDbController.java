@@ -19,6 +19,7 @@ import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -284,7 +285,7 @@ public class BaseDbController {
         return AnnoResult.succeed();
     }
 
-    public AnnoResult<String> runJavaCmd(String clazz, Map<String, String> map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(String clazz, Map<String, Object> map) throws ClassNotFoundException {
         CheckPermissionFunction.loginCheckFunction.run();
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
@@ -295,7 +296,10 @@ public class BaseDbController {
         if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())) {
             permissionProxy.checkPermission(entity, annoJavaCmd.getPermissionCode());
         }
-
+        if (!Objects.equals(annoJavaCmd.getRunSupplier(), JavaCmdSupplier.class)){
+            JavaCmdSupplier cmdSupplier = AnnoBeanUtils.getBean(annoJavaCmd.getRunSupplier());
+            return AnnoResult.succeed(cmdSupplier.run(map));
+        }
         Object bean = AnnoBeanUtils.getBean(annoJavaCmd.getJavaCmdBeanClass());
         ReflectUtil.invoke(bean, annoJavaCmd.getJavaCmdMethodName(), map);
         return AnnoResult.succeed("执行成功");

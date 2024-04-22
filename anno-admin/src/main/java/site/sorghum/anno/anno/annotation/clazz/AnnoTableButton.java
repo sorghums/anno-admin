@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
 
+import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
+
 import java.lang.annotation.*;
 
 /**
@@ -59,6 +61,14 @@ public @interface AnnoTableButton {
     JavaCmd javaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
 
     @interface JavaCmd {
+
+        /**
+         * 运行供应商
+         *
+         * @return {@link Class}<{@link ?extends} {@link JavaCmdSupplier}>
+         */
+        Class<?extends JavaCmdSupplier> runSupplier() default JavaCmdSupplier.class;
+
         /**
          * bean类
          *
