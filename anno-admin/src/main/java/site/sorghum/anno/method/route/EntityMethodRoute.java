@@ -22,10 +22,7 @@ public class EntityMethodRoute implements MethodRoute {
             List<String> route = new ArrayList<>();
             Class<?> argClass = arg.getClass();
             // 循环直到父类是Object
-            while (true) {
-                if (argClass.getSuperclass() == Object.class) {
-                    break;
-                }
+            while (argClass.getSuperclass() != Object.class) {
                 route.add(argClass.getSimpleName());
                 argClass = argClass.getSuperclass();
             }
