@@ -1,6 +1,8 @@
 package site.sorghum.anno.method.route;
 
 import cn.hutool.core.util.ClassUtil;
+import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.method.MTContext;
 
@@ -17,21 +19,23 @@ public class EntityMethodRoute implements MethodRoute {
         Object arg = context.getArgs()[0];
         String subPath = null;
         if (arg instanceof DbCriteria) {
-            subPath = ((DbCriteria) arg).getEntityName();
+            String entityName = ((DbCriteria) arg).getEntityName();
+            AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(entityName);
+            return argClass2Router(entity.getClazz());
         } else if (!ClassUtil.isJdkClass(arg.getClass())) {
-            List<String> route = new ArrayList<>();
-            Class<?> argClass = arg.getClass();
-            // 循环直到父类是Object
-            while (argClass.getSuperclass() != Object.class) {
-                route.add(argClass.getSimpleName());
-                argClass = argClass.getSuperclass();
-            }
-            route.add(0, "all");
-            return route.toArray(new String[0]);
+            return argClass2Router(arg.getClass());
         }
-        if (subPath == null) {
-            return new String[]{"all"};
+        return new String[]{"all"};
+    }
+
+    private static String[] argClass2Router(Class<?> argClass) {
+        List<String> route = new ArrayList<>();
+        // 循环直到父类是Object
+        while (argClass.getSuperclass() != Object.class) {
+            route.add(argClass.getSimpleName());
+            argClass = argClass.getSuperclass();
         }
-        return new String[]{"all", subPath};
+        route.add(0, "all");
+        return route.toArray(new String[0]);
     }
 }
