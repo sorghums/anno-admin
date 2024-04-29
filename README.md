@@ -112,3 +112,9 @@ mvn clean package -pl \!anno-admin-ui -Dmaven.test.skip=true
 
 ## 许可证
 Anno-Admin使用Apache 2.0许可证。详情请参阅LICENSE文件。
+
+## 特别感谢JetBrains对开源项目支持：
+
+<a href="https://jb.gg/OpenSourceSupport">
+  <img src="https://user-images.githubusercontent.com/8643542/160519107-199319dc-e1cf-4079-94b7-01b6b8d23aa6.png" align="left" height="100" width="100"  alt="JetBrains">
+</a>
