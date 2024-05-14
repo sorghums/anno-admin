@@ -13,13 +13,13 @@ public class MD5Util {
     /**
      * Md5实例
      */
-    private final static MD5 MD5_INSTANCE = MD5.create();
+    private final static ThreadLocal<MD5> MD5_INSTANCE = ThreadLocal.withInitial(MD5::create);
 
     public static String digestHex(String str) {
-        return MD5_INSTANCE.digestHex(str);
+        return MD5_INSTANCE.get().digestHex(str);
     }
 
     public static String digestHex(File file) {
-        return MD5_INSTANCE.digestHex(file);
+        return MD5_INSTANCE.get().digestHex(file);
     }
 }
