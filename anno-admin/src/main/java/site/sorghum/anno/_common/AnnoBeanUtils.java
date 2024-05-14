@@ -27,19 +27,18 @@ public class AnnoBeanUtils {
 
     public static <T> List<T> getBeansOfType(Class<T> type) {
         List<T> beans = annoBean.getBeansOfType(type);
-        // springboot 中，获取到的集合是不可更改的，转成 ArrayList，后续可以进行排序等操作
-        if (beans.getClass().getName().startsWith("java.util.ImmutableCollections")) {
-            return new ArrayList<>(beans);
-        } else {
-            return beans;
+        // 如果不是ArrayList 则改为ArrayList
+        if (!(beans instanceof ArrayList)){
+            beans = new ArrayList<>(beans);
         }
+        return beans;
     }
 
     public static MetadataManager metadataManager() {
         return annoBean.getBean(MetadataManager.class);
     }
 
-    public static String getBeanName(Class aClass) {
+    public static String getBeanName(Class<?> aClass) {
         return annoBean.getBeanName(aClass);
     }
 }
