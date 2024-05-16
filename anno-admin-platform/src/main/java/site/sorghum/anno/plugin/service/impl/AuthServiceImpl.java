@@ -21,6 +21,7 @@ import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
 import site.sorghum.anno.plugin.dao.AnPermissionDao;
 import site.sorghum.anno.plugin.dao.AnRoleDao;
 import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 
@@ -309,6 +310,29 @@ public class AuthServiceImpl implements AuthService {
                 AnnoStpUtil.logoutByTokenValue(tokenValue);
             }
         }
+    }
+
+    @Override
+    public void updatePwd(UpdatePwdReq req) {
+        AnUser anUser = sysUserDao.findById(req.getUserId());
+        if (anUser == null) {
+            throw new BizException("用户不存在");
+        }
+        // 清除缓存
+        if (!anUser.getPassword().equals(MD5Util.digestHex(anUser.getMobile() + ":" + req.getOldPwd()))) {
+            throw new BizException("密码错误");
+        }
+        // 校验新密码
+        if (!req.getNewPwd1().equals(req.getNewPwd2())){
+            throw new BizException("新密码不一致");
+        }
+        // 更新密码
+        AnUser updatePwdEntity = new AnUser();
+        updatePwdEntity.setId(req.getUserId());
+        updatePwdEntity.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + req.getNewPwd1()));
+        sysUserDao.updateById(updatePwdEntity);
+        // 清楚缓存
+        AuthFunctions.removePermRoleCacheList.accept(anUser.getId());
     }
 
     /**

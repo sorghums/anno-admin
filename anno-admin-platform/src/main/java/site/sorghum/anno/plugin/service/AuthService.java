@@ -2,6 +2,7 @@ package site.sorghum.anno.plugin.service;
 
 import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
+import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 
 import java.util.List;
 import java.util.Map;
@@ -54,4 +55,11 @@ public interface AuthService {
      * 强制注销
      */
     void forceLogout(Map<String, Object> data);
+
+    /**
+     * 更新pwd
+     *
+     * @param req 请求体
+     */
+    void updatePwd(UpdatePwdReq req);
 }

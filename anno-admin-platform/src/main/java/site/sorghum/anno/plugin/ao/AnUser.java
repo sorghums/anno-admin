@@ -46,7 +46,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
-        edit = @AnnoEdit(placeHolder = "请输入密码"), show = false)
+        edit = @AnnoEdit(editEnable = false), show = false)
     private String password;
     /**
      * 用户名

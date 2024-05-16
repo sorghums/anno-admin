@@ -58,7 +58,7 @@ db.main:
   username: root
   password: 123456
 anno-admin:
-  apiServerUrl: http://114.55.168.135:9001
+  apiServerUrl: http://localhost:8866
   redis:
     server: "localhost:6379"
     db: 8

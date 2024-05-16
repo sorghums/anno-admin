@@ -5,6 +5,7 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
 import site.sorghum.anno._ddl.entity2db.EntityToTableGetter;
@@ -26,6 +27,7 @@ import java.util.List;
  * @since 2023/7/4 22:44
  */
 @Named
+@Slf4j
 public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     @Setter
@@ -44,6 +46,9 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
         fields.add(0, idField);
 
         for (AnField field : fields) {
+            if (field == null) {
+                log.error("AnField is null,AnEntity is {}", anEntity);
+            }
             // 虚拟列，跳过
             if (field.isVirtualColumn()) {
                 continue;
@@ -166,11 +171,11 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     private boolean columnIsSupport(Class<?> fieldType) {
         return ClassUtil.isBasicType(fieldType)
-            || CharSequence.class.isAssignableFrom(fieldType)
-            || Number.class.isAssignableFrom(fieldType)
-            || Date.class.isAssignableFrom(fieldType)
-            || java.sql.Date.class.isAssignableFrom(fieldType)
-            || LocalDate.class.isAssignableFrom(fieldType)
-            || LocalDateTime.class.isAssignableFrom(fieldType);
+               || CharSequence.class.isAssignableFrom(fieldType)
+               || Number.class.isAssignableFrom(fieldType)
+               || Date.class.isAssignableFrom(fieldType)
+               || java.sql.Date.class.isAssignableFrom(fieldType)
+               || LocalDate.class.isAssignableFrom(fieldType)
+               || LocalDateTime.class.isAssignableFrom(fieldType);
     }
 }

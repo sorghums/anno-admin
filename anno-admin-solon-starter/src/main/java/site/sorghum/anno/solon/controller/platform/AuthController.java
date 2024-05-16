@@ -16,6 +16,7 @@ import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.controller.AuthBaseController;
 import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.request.LoginReq;
+import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 
 /**
@@ -66,10 +67,16 @@ public class AuthController {
     }
 
     @Mapping(value = "/me", method = MethodType.GET)
-    @Post
     @ApiOperation("我的信息")
     public AnnoResult<UserInfo> me() {
         return authBaseController.me();
+    }
+
+    @Mapping(value = "/updatePwd", method = MethodType.POST)
+    @ApiOperation("更新密码")
+    public AnnoResult<String> updatePwd(@Body UpdatePwdReq req) {
+        req.setUserId(AnnoStpUtil.getLoginIdAsString());
+        return authBaseController.updatePwd(req);
     }
 
 }

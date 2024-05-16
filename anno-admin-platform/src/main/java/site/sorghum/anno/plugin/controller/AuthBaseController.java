@@ -18,6 +18,7 @@ import site.sorghum.anno.plugin.ao.AnLoginLog;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.request.LoginReq;
+import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
@@ -132,6 +133,12 @@ public class AuthBaseController {
         return AnnoResult.succeed(userInfo);
     }
 
+    public AnnoResult<String> updatePwd(UpdatePwdReq req){
+        // 校验登录
+        CheckPermissionFunction.loginCheckFunction.run();
+        authService.updatePwd(req);
+        return AnnoResult.succeed();
+    }
     private static AnLoginLog buildLoginLog(LoginInfo info) {
         AnLoginLog loginLog = new AnLoginLog();
 

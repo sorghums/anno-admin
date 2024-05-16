@@ -30,12 +30,12 @@ public class AnnoResult<T> {
 
     public AnnoResult(){
         this.status = AnnoResult.SUCCEED_CODE;
-        this.msg = "";
+        this.msg = "操作成功";
     }
 
     public AnnoResult(T data) {
         this.status = AnnoResult.SUCCEED_CODE;
-        this.msg = "";
+        this.msg = "操作成功";
         this.data = data;
     }
 
@@ -55,7 +55,7 @@ public class AnnoResult<T> {
      */
     
     public static <T> AnnoResult<T> succeed() {
-        return new AnnoResult<>(AnnoResult.SUCCEED_CODE, "");
+        return new AnnoResult<>(AnnoResult.SUCCEED_CODE, "操作成功");
     }
 
     /**
@@ -73,7 +73,7 @@ public class AnnoResult<T> {
 
     
     public static <T> AnnoResult<T> succeed(T data, int status) {
-        return new AnnoResult<>(status, "", data);
+        return new AnnoResult<>(status, "操作成功", data);
     }
 
     /**
@@ -81,7 +81,7 @@ public class AnnoResult<T> {
      */
     
     public static <T> AnnoResult<T> failure() {
-        return new AnnoResult<>(AnnoResult.FAILURE_CODE, "");
+        return new AnnoResult<>(AnnoResult.FAILURE_CODE, "操作失败");
     }
 
     /**
@@ -89,7 +89,7 @@ public class AnnoResult<T> {
      */
     
     public static <T> AnnoResult<T> failure(int status) {
-        return failure(status, "");
+        return failure(status, "操作失败");
     }
 
     /**
