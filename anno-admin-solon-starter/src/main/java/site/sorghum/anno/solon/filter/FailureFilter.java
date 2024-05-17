@@ -32,7 +32,6 @@ import java.time.format.DateTimeParseException;
  */
 @Component(index = -10)
 @Slf4j
-@Condition(onProperty = "${anno-admin.class.FailureFilter:true} = true")
 public class FailureFilter implements Filter {
 
     @Inject
@@ -49,7 +48,7 @@ public class FailureFilter implements Filter {
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
         AnnoContextUtil.AnnoContext context = AnnoContextUtil.getContext();
         // 只处理anno-admin-api请求
-        if (!ctx.path().startsWith(AnnoConstants.BASE_URL)) {
+        if (!ctx.path().contains(AnnoConstants.BASE_URL)) {
             chain.doFilter(ctx);
             return;
         }

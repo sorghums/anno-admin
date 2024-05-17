@@ -22,7 +22,7 @@ public class AnnoContextClearFilter implements Filter {
 
     @Override
     public void doFilter(Context ctx, FilterChain chain) throws Throwable {
-        if (!ctx.path().startsWith(AnnoConstants.BASE_URL)) {
+        if (!ctx.path().contains(AnnoConstants.BASE_URL)) {
             chain.doFilter(ctx);
             return;
         }

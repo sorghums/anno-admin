@@ -10,6 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.auth.AnnoAuthUser;
+import site.sorghum.anno.plugin.javacmd.ForceLogOutJavaCmdSupplier;
 import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
 
@@ -150,8 +151,7 @@ public class AnOnlineUser extends PrimaryKeyModel implements Serializable {
         name = "强制退出",
         icon = "ant-design:login-outlined",
         javaCmd = @AnnoButton.JavaCmd(
-            beanClass = AuthService.class,
-            methodName = "forceLogout"
+            runSupplier = ForceLogOutJavaCmdSupplier.class
         ),
         permissionCode = "forceLogout"
     )
