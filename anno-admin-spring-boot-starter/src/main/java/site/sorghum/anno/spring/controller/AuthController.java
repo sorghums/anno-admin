@@ -45,7 +45,7 @@ public class AuthController extends AuthBaseController {
         return super.clearSysUserCache();
     }
 
-    @RequestMapping(value = "/me")
+    @PostMapping(value = "/me")
     public AnnoResult<UserInfo> me() {
         return super.me();
     }

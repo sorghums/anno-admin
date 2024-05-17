@@ -66,7 +66,7 @@ public class AuthController {
         return authBaseController.clearSysUserCache();
     }
 
-    @Mapping(value = "/me", method = MethodType.GET)
+    @Mapping(value = "/me", method = MethodType.POST)
     @ApiOperation("我的信息")
     public AnnoResult<UserInfo> me() {
         return authBaseController.me();
