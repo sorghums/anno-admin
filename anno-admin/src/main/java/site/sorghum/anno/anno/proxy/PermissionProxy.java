@@ -33,7 +33,7 @@ public class PermissionProxy {
     public static final String DELETE_TRANSLATE = "删除";
 
     public void checkPermission(AnEntity anEntity, String code) {
-        if (isSystemRun() || StrUtil.isBlank(code)) {
+        if (isSystemRun()) {
             return;
         }
         // 校验登录
@@ -44,7 +44,8 @@ public class PermissionProxy {
         }
         String baseCode = anEntity.getPermissionCode();
         // 校验权限
-        CheckPermissionFunction.permissionCheckFunction.accept(baseCode + ":" + code);
+        String permissionCode = StrUtil.isNotBlank(code) ? baseCode + ":" + code : baseCode;
+        CheckPermissionFunction.permissionCheckFunction.accept(permissionCode);
     }
 
     public void checkLogin() {

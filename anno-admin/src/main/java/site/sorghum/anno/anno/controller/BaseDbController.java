@@ -310,7 +310,7 @@ public class BaseDbController {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         if (StrUtil.isNotBlank(entity.getPermissionCode())) {
-            permissionProxy.checkPermission(entity, entity.getPermissionCode());
+            permissionProxy.checkPermission(entity, null);
         }
         if (!entity.getAnChart().getEnable()) {
             throw new BizException("实体类非图表类型或未加载!");
