@@ -40,7 +40,8 @@
         <module>anno-admin-spring-boot-starter</module>
         <!-- 任务调度：PowerJob -->
         <module>anno-admin-powerjob-server</module>
-        <module>anno-admin-new</module>
+        <!-- 实体类 -->
+        <module>anno-admin-db-entity</module>
     </modules>
 
     <properties>
@@ -82,6 +83,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-db-entity</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-javascript</artifactId>

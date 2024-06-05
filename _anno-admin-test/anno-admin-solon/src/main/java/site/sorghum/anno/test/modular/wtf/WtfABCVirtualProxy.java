@@ -9,7 +9,7 @@ import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
-import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.BaseMetaModel;
 import site.sorghum.anno.suppose.proxy.BaseAnnoPreProxy;
 import site.sorghum.anno.suppose.proxy.VirtualJoinTableProxy;
 

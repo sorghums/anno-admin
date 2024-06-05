@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.BaseMetaModel;
 
 /**
  * 服务器信息表（用于分配服务器唯一ID）

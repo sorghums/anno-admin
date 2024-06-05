@@ -3,9 +3,9 @@ package site.sorghum.anno.utils;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.db.DbCriteria;
-import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.BaseMetaModel;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
-import site.sorghum.anno.suppose.model.PrimaryKeyModel;
+import site.sorghum.anno.PrimaryKeyModel;
 
 /**
  * @author songyinyin

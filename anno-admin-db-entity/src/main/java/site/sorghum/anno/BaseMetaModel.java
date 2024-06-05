@@ -1,5 +1,9 @@
-package site.sorghum.anno.suppose.model;
+package site.sorghum.anno;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.mybatisflex.annotation.Column;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
@@ -22,25 +26,35 @@ import java.time.LocalDateTime;
 public class BaseMetaModel extends PrimaryKeyModel {
 
     @AnnoField(title = "创建人", tableFieldName = "create_by", show = false, fieldSize = 32)
+    @Column(value = "create_by")
+    @TableField(value = "create_by", fill = FieldFill.INSERT)
     private String createBy;
 
     @AnnoField(title = "创建时间", tableFieldName = "create_time", dataType = AnnoDataType.DATETIME, show = false)
+    @Column(value = "create_time")
+    @TableField(value = "create_time", fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     @AnnoField(title = "更新人", tableFieldName = "update_by", show = false, fieldSize = 32)
+    @Column(value = "update_by")
+    @TableField(value = "update_by", fill = FieldFill.UPDATE)
     private String updateBy;
 
     @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false)
+    @Column(value = "update_time")
+    @TableField(value = "update_time", fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
 
     /**
      * 状态 1 正常 0 封禁
      */
     @AnnoField(title = "删除标识", tableFieldName = "del_flag",
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(value = {
-                    @AnnoOptionType.OptionData(label = "已删除", value = "1"),
-                    @AnnoOptionType.OptionData(label = "正常", value = "0")
-            }),show = false, fieldSize = 1, insertWhenNullSet = ZeroFiledBaseSupplier.class)
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "已删除", value = "1"),
+            @AnnoOptionType.OptionData(label = "正常", value = "0")
+        }), show = false, fieldSize = 1, insertWhenNullSet = ZeroFiledBaseSupplier.class)
+    @Column(isLogicDelete = true)
+    @TableLogic(value = "0", delval = "1")
     private Integer delFlag;
 }

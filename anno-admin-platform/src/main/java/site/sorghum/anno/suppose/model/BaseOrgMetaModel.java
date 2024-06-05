@@ -2,6 +2,7 @@ package site.sorghum.anno.suppose.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import site.sorghum.anno.BaseMetaModel;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;

@@ -9,7 +9,7 @@
         <version>1.1.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>anno-admin-platform</artifactId>
+    <artifactId>anno-admin-db-entity</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,14 +17,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
+    <dependencies><dependency>
+        <groupId>site.sorghum.anno</groupId>
+        <artifactId>anno-admin-javascript</artifactId>
+        <version>${project.version}</version>
+    </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-db-entity</artifactId>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-core</artifactId>
+            <version>${mybatis-flex.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${mybatis-plus.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

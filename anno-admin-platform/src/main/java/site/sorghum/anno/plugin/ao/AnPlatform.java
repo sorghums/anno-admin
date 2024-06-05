@@ -7,7 +7,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.suppose.model.PrimaryKeyModel;
+import site.sorghum.anno.PrimaryKeyModel;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

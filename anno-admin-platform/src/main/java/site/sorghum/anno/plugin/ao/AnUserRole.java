@@ -6,7 +6,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
-import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.BaseMetaModel;
 
 import java.io.Serializable;
 

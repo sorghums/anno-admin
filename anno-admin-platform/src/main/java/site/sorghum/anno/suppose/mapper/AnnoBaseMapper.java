@@ -8,7 +8,7 @@ import org.noear.wood.DbTableQuery;
 import org.noear.wood.MapperWhereQ;
 import org.noear.wood.ext.Act1;
 import org.noear.wood.utils.RunUtils;
-import site.sorghum.anno.suppose.model.PrimaryKeyModel;
+import site.sorghum.anno.PrimaryKeyModel;
 
 import java.util.ArrayList;
 import java.util.List;

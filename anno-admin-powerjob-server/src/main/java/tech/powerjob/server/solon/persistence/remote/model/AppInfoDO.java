@@ -9,7 +9,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
-import site.sorghum.anno.suppose.model.BaseMetaModel;
+import site.sorghum.anno.BaseMetaModel;
 
 /**
  * 应用信息表

@@ -3,7 +3,7 @@ package site.sorghum.anno.suppose.proxy;
 import cn.hutool.core.util.IdUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
-import site.sorghum.anno.suppose.model.PrimaryKeyModel;
+import site.sorghum.anno.PrimaryKeyModel;
 
 /**
  * @author songyinyin
