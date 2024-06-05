@@ -2,7 +2,7 @@ package site.sorghum.anno.anno.annotation.field;
 
 
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
-import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
+import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 
 import java.lang.annotation.*;
 
@@ -77,7 +77,7 @@ public @interface AnnoButton {
      *
      * @return {@link String}
      */
-    JavaCmd javaCmd() default @JavaCmd(enable = false, beanClass = Object.class, methodName = "");
+    JavaCmd javaCmd() default @JavaCmd(enable = false);
 
     /**
      * 下钻按钮【未启用】
@@ -194,20 +194,6 @@ public @interface AnnoButton {
          * @return {@link Class}<{@link ?extends} {@link JavaCmdSupplier}>
          */
         Class<?extends JavaCmdSupplier> runSupplier() default JavaCmdSupplier.class;
-
-        /**
-         * bean类
-         *
-         * @return {@link Class}<{@link ?}>
-         */
-        Class<?> beanClass() default Object.class;
-
-        /**
-         * 方法名称 参数必须是: Map<String,Object> props
-         *
-         * @return {@link String}
-         */
-        String methodName() default "";
 
         /**
          * 启用

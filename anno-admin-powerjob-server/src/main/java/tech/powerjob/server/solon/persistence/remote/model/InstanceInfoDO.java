@@ -17,6 +17,7 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.suppose.model.BaseMetaModel;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.server.solon.anno.button.JobInstanceButtonService;
+import tech.powerjob.server.solon.anno.button.JobRetryInstanceButtonService;
 
 import java.time.LocalDateTime;
 
@@ -131,7 +132,7 @@ public class InstanceInfoDO extends BaseMetaModel {
     @AnnoButton(name = "日志", permissionCode = "fetchInstanceLog", annoTpl = @AnnoTpl())
     private Object fetchInstanceLogButton;
 
-    @AnnoButton(name = "重试", permissionCode = "instanceRetry", javaCmd = @AnnoButton.JavaCmd(beanClass = JobInstanceButtonService.class, methodName = "retryInstance"))
+    @AnnoButton(name = "重试", permissionCode = "instanceRetry", javaCmd = @AnnoButton.JavaCmd(runSupplier = JobRetryInstanceButtonService.class))
     private Object instanceRetryButton;
 
 }

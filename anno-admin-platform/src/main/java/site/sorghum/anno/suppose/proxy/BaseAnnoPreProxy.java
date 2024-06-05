@@ -29,7 +29,6 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     @Override
     public void beforeAdd(BaseMetaModel data) {
-
         data.setId(IdUtil.getSnowflakeNextIdStr());
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());

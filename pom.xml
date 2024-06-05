@@ -40,6 +40,7 @@
         <module>anno-admin-spring-boot-starter</module>
         <!-- 任务调度：PowerJob -->
         <module>anno-admin-powerjob-server</module>
+        <module>anno-admin-new</module>
     </modules>
 
     <properties>

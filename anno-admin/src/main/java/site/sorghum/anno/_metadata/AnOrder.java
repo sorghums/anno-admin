@@ -1,10 +1,12 @@
 package site.sorghum.anno._metadata;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 
 @Data
+@AllArgsConstructor
 public class AnOrder {
 
     /**
@@ -22,9 +24,4 @@ public class AnOrder {
      */
     @ApiModelProperty(value = "排序", example = "id")
     private String orderValue;
-
-    public AnOrder(String orderType, String orderValue) {
-        this.orderType = orderType;
-        this.orderValue = orderValue;
-    }
 }

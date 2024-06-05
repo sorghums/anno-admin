@@ -88,14 +88,6 @@ public class AnField {
     private int fieldSize;
 
     /**
-     * 字段默认值，比如 0
-     *
-     * @see AnnoField#defaultValue()
-     */
-    @ApiModelProperty(value = "定义数据库中的默认值，比如：DEFAULT 0",example = "DEFAULT 0")
-    private String defaultValue;
-
-    /**
      * 显示
      *
      * @see AnnoField#show()
@@ -134,14 +126,6 @@ public class AnField {
      */
     @ApiModelProperty(value = "搜索时的提示信息[前端的placeholder]",example = "请输入用户名")
     private String searchPlaceHolder;
-
-    /**
-     * 搜索框 大小
-     *
-     * @see AnnoSearch#size()
-     */
-    @ApiModelProperty(value = "搜索框大小",example = "default")
-    private String searchSize;
 
     /**
      * 编辑 是否开启
@@ -293,22 +277,6 @@ public class AnField {
     }
 
     /**
-     * 图像 预览图比率
-     *
-     * @see AnnoImageType#thumbRatio()
-     */
-    @ApiModelProperty(value = "[图片]预览图比率",example = "RATE_ONE",allowableValues = "RATE_ONE,RATE_TWO,RATE_THREE")
-    private AnnoImageType.ThumbRatio imageThumbRatio;
-
-    /**
-     * 图像 图片模式
-     *
-     * @see AnnoImageType#thumbMode()
-     */
-    @ApiModelProperty(value = "[图片]图片模式",example = "DEFAULT",allowableValues = "DEFAULT,COVER,W_FULL,H_FULL")
-    private AnnoImageType.ThumbMode imageThumbMode;
-
-    /**
      * 图像 点击可放大展示
      *
      * @see AnnoImageType#enlargeAble()
@@ -394,12 +362,14 @@ public class AnField {
      * 更新为null时设置值
      *
      */
+    @SuppressWarnings("rawtypes")
     Class<? extends FieldBaseSupplier> updateWhenNullSet;
 
     /**
      * 插入为null时设置值
      *
      */
+    @SuppressWarnings("rawtypes")
     Class<? extends FieldBaseSupplier> insertWhenNullSet;
 
     @Data

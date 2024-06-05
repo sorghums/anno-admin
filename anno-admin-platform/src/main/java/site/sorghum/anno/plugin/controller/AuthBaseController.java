@@ -11,6 +11,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoAuthUser;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.anno.chart.AnChartService;
@@ -41,7 +42,7 @@ public class AuthBaseController {
     @Inject
     MetadataManager manager;
     @Inject
-    AnChartService anChartService;
+    PermissionProxy permissionProxy;
     @Inject
     CaptchaManager captchaManager;
 
@@ -119,7 +120,7 @@ public class AuthBaseController {
     public AnnoResult<UserInfo> me() {
         UserInfo userInfo = new UserInfo();
         // 校验登录
-        CheckPermissionFunction.loginCheckFunction.run();
+        permissionProxy.checkLogin();
         AnnoAuthUser anUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
         // 但是anno系统未登录，则返回外部用户
         if (Objects.isNull(anUser)){
@@ -135,7 +136,7 @@ public class AuthBaseController {
 
     public AnnoResult<String> updatePwd(UpdatePwdReq req){
         // 校验登录
-        CheckPermissionFunction.loginCheckFunction.run();
+        permissionProxy.checkLogin();
         authService.updatePwd(req);
         return AnnoResult.succeed();
     }

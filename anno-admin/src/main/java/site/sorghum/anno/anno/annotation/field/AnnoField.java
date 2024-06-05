@@ -42,11 +42,6 @@ public @interface AnnoField {
     int fieldSize() default 0;
 
     /**
-     * 字段默认值，比如 0
-     */
-    String defaultValue() default "";
-
-    /**
      * 显示
      *
      * @return boolean

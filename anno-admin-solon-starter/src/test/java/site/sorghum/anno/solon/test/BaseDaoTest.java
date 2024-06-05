@@ -10,7 +10,7 @@ import org.noear.solon.test.SolonJUnit4ClassRunner;
 import org.noear.solon.test.SolonTest;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.dao.AnUserDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class BaseDaoTest {
 
     @Inject
-    SysUserDao userDao;
+    AnUserDao userDao;
 
     @Test
     public void testInsert() {

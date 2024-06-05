@@ -43,12 +43,4 @@ public @interface AnnoSearch {
      * @return {@link String}
      */
     String placeHolder() default "";
-
-    /**
-     * 搜索框大小
-     * 'xs' | 'sm' | 'md' | 'lg' | 'full'
-     *
-     * @return {@link String}
-     */
-    String size() default "sm";
 }

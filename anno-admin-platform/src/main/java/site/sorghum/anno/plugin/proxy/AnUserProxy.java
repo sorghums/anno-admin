@@ -9,7 +9,7 @@ import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.dao.AnUserDao;
 
 /**
  * 系统用户代理
@@ -21,7 +21,7 @@ import site.sorghum.anno.plugin.dao.SysUserDao;
 public class AnUserProxy implements AnnoBaseProxy<AnUser> {
 
     @Inject
-    SysUserDao sysUserDao;
+    AnUserDao anUserDao;
 
     @Override
     public void beforeAdd(AnUser data) {
@@ -38,7 +38,7 @@ public class AnUserProxy implements AnnoBaseProxy<AnUser> {
     @Override
     public void beforeUpdate(AnUser data, DbCriteria criteria) {
         // 根据ID查询用户
-        AnUser anUser = sysUserDao.findByIdOpt(data.getId()).orElseThrow(() -> new BizException("用户不存在"));
+        AnUser anUser = anUserDao.findByIdOpt(data.getId()).orElseThrow(() -> new BizException("用户不存在"));
         if (StrUtil.isNotBlank(data.getPassword())) {
             // 重新设置密码
             data.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + data.getPassword()));

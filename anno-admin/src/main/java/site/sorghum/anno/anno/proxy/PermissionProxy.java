@@ -37,7 +37,7 @@ public class PermissionProxy {
             return;
         }
         // 校验登录
-        CheckPermissionFunction.loginCheckFunction.run();
+        checkLogin();
         boolean enable = anEntity.isEnablePermission();
         if (!enable) {
             return;
@@ -47,8 +47,17 @@ public class PermissionProxy {
         CheckPermissionFunction.permissionCheckFunction.accept(baseCode + ":" + code);
     }
 
+    public void checkLogin() {
+        if (isSystemRun()) {
+            return;
+        }
+        CheckPermissionFunction.loginCheckFunction.run();
+    }
+
     private boolean isSystemRun() {
         SaRequest request = SaHolder.getRequest();
         return request == null || request.getSource() == null;
     }
+
+
 }

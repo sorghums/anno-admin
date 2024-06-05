@@ -6,6 +6,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.proxy.field.ZeroFiledBaseSupplier;
 
 import java.time.LocalDateTime;
 
@@ -40,6 +41,6 @@ public class BaseMetaModel extends PrimaryKeyModel {
             optionType = @AnnoOptionType(value = {
                     @AnnoOptionType.OptionData(label = "已删除", value = "1"),
                     @AnnoOptionType.OptionData(label = "正常", value = "0")
-            }),show = false, fieldSize = 1, defaultValue = "0")
+            }),show = false, fieldSize = 1, insertWhenNullSet = ZeroFiledBaseSupplier.class)
     private Integer delFlag;
 }

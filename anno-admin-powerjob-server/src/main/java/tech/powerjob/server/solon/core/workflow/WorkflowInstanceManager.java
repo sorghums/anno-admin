@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.dao.AnUserDao;
 import tech.powerjob.common.SystemInstanceResult;
 import tech.powerjob.common.WorkflowContextConstant;
 import tech.powerjob.common.enums.InstanceStatus;
@@ -66,7 +66,7 @@ public class WorkflowInstanceManager {
     @Db
     private JobInfoRepository jobInfoRepository;
     @Inject
-    private SysUserDao userDao;
+    private AnUserDao userDao;
     @Db
     private WorkflowInfoRepository workflowInfoRepository;
     @Db

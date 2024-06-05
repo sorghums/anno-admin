@@ -20,7 +20,7 @@ import site.sorghum.anno.plugin.ao.*;
 import site.sorghum.anno.plugin.dao.AnAnnoMenuDao;
 import site.sorghum.anno.plugin.dao.AnPermissionDao;
 import site.sorghum.anno.plugin.dao.AnRoleDao;
-import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.dao.AnUserDao;
 import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthServiceImpl implements AuthService {
     @Inject
-    SysUserDao sysUserDao;
+    AnUserDao anUserDao;
 
     @Inject
     AnRoleDao anRoleDao;
@@ -204,7 +204,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AnUser verifyLogin(String mobile, String pwd) {
-        AnUser anUser = sysUserDao.queryByMobile(mobile);
+        AnUser anUser = anUserDao.queryByMobile(mobile);
         if (anUser == null) {
             throw new BizException("用户不存在");
         }
@@ -218,7 +218,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AnUser getUserById(String id) {
-        return sysUserDao.findById(id);
+        return anUserDao.findById(id);
     }
 
     @Override
@@ -276,7 +276,7 @@ public class AuthServiceImpl implements AuthService {
         String id = props.get("id").toString();
         anUser.setId(id);
         anUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
-        sysUserDao.updateById(anUser);
+        anUserDao.updateById(anUser);
     }
 
     @Override
@@ -314,7 +314,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void updatePwd(UpdatePwdReq req) {
-        AnUser anUser = sysUserDao.findById(req.getUserId());
+        AnUser anUser = anUserDao.findById(req.getUserId());
         if (anUser == null) {
             throw new BizException("用户不存在");
         }
@@ -330,7 +330,7 @@ public class AuthServiceImpl implements AuthService {
         AnUser updatePwdEntity = new AnUser();
         updatePwdEntity.setId(req.getUserId());
         updatePwdEntity.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + req.getNewPwd1()));
-        sysUserDao.updateById(updatePwdEntity);
+        anUserDao.updateById(updatePwdEntity);
         // 清楚缓存
         AuthFunctions.removePermRoleCacheList.accept(anUser.getId());
     }

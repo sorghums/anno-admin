@@ -26,7 +26,7 @@ public class AnEntity {
      *
      * @see AnnoMain#name()
      */
-    @ApiModelProperty(value = "实体中文名称",example = "用户管理")
+    @ApiModelProperty(value = "实体中文名称", example = "用户管理")
     private String title;
 
     /**
@@ -34,19 +34,19 @@ public class AnEntity {
      *
      * @see Table#value()
      */
-    @ApiModelProperty(value = "表名",example = "an_user")
+    @ApiModelProperty(value = "表名", example = "an_user")
     private String tableName;
 
     /**
      * 是否需要组织过滤
      */
-    @ApiModelProperty(value = "是否需要组织过滤",example = "true")
+    @ApiModelProperty(value = "是否需要组织过滤", example = "true")
     boolean orgFilter;
 
     /**
      * 是否可以删除
      */
-    @ApiModelProperty(value = "是否可以删除",example = "true")
+    @ApiModelProperty(value = "是否可以删除", example = "true")
     boolean canRemove;
 
     /**
@@ -54,33 +54,34 @@ public class AnEntity {
      *
      * @see AnnoMain#virtualTable()
      */
-    @ApiModelProperty(value = "是否虚拟表",example = "false")
+    @ApiModelProperty(value = "是否虚拟表", example = "false")
     private boolean virtualTable = false;
 
     /**
      * 是否自动维护表结构
      */
-    @ApiModelProperty(value = "是否自动维护表结构",example = "true")
+    @ApiModelProperty(value = "是否自动维护表结构", example = "true")
     private boolean isAutoMaintainTable = true;
 
     /**
      * 对应的类
      */
-    @ApiModelProperty(value = "对应的类",example = "site.sorghum.anno.plugin.ao.AnUser")
+    @ApiModelProperty(value = "对应的类", example = "site.sorghum.anno.plugin.ao.AnUser")
     private Class<?> clazz;
 
     /**
-     * 一般是类名
+     * 实体名称，一般是类名
      */
-    @ApiModelProperty(value = "一般是类名",example = "AnUser")
+    @ApiModelProperty(value = "实体名称，一般是类名", example = "AnUser")
     private String entityName;
 
     /**
      * 排序
+     *
      * @see AnnoOrder
      */
     @ApiModelProperty(value = "排序数组")
-    AnOrder[] anOrder;
+    List<AnOrder> anOrder;
 
     /**
      * 主键字段
@@ -96,6 +97,7 @@ public class AnEntity {
 
     /**
      * 多对多按钮
+     *
      * @see AnnoMany2ManyField
      */
     @ApiModelProperty(hidden = true)
@@ -107,47 +109,7 @@ public class AnEntity {
      */
     @ApiModelProperty(hidden = true)
     @ONodeAttr(serialize = false)
-    private Map<String, AnField> fieldMap;
-
-    /**
-     * 连表信息
-     */
-    @ApiModelProperty(hidden = true)
-    @ONodeAttr(serialize = false)
-    AnJoinTable joinTable = null;
-
-    public void setFields(List<AnField> fields) {
-        this.fields = fields;
-        fieldMap = fields.stream().collect(Collectors.toMap(AnField::getFieldName, e -> e));
-    }
-
-    public void addField(AnField field) {
-        fields.add(field);
-        if (fieldMap == null) {
-            fieldMap = new HashMap<>();
-        }
-        fieldMap.put(field.getFieldName(), field);
-    }
-
-    /**
-     * 获取字段
-     *
-     * @param fieldName 字段名
-     */
-    public AnField getField(String fieldName) {
-        if (fieldMap == null) {
-            return null;
-        }
-        return fieldMap.get(fieldName);
-    }
-
-    /**
-     * 获取数据库字段
-     * [排除虚拟列字段]
-     */
-    public List<AnField> getDbAnFields() {
-        return fields.stream().filter(anField -> !anField.isVirtualColumn()).collect(Collectors.toList());
-    }
+    private Map<String, AnField> fieldMap = new HashMap<>();
 
     /**
      * 行级按钮
@@ -166,7 +128,7 @@ public class AnEntity {
      *
      * @see AnnoRemove#removeType()
      */
-    @ApiModelProperty(value = "逻辑删除类型： 0 物理删除 1 逻辑删除",example = "0")
+    @ApiModelProperty(value = "逻辑删除类型： 0 物理删除 1 逻辑删除", example = "0")
     private int removeType = 0;
 
     /**
@@ -174,7 +136,7 @@ public class AnEntity {
      *
      * @see AnnoRemove#removeValue()
      */
-    @ApiModelProperty(value = "逻辑删除值",example = "1")
+    @ApiModelProperty(value = "逻辑删除值", example = "1")
     private String removeValue;
 
     /**
@@ -182,7 +144,7 @@ public class AnEntity {
      *
      * @see AnnoRemove#notRemoveValue()
      */
-    @ApiModelProperty(value = "逻辑未删除值",example = "0")
+    @ApiModelProperty(value = "逻辑未删除值", example = "0")
     private String notRemoveValue;
 
     /**
@@ -190,7 +152,7 @@ public class AnEntity {
      *
      * @see AnnoRemove#removeField()
      */
-    @ApiModelProperty(value = "逻辑删除字段",example = "is_delete")
+    @ApiModelProperty(value = "逻辑删除字段", example = "is_delete")
     private String removeField;
 
     /**
@@ -198,7 +160,7 @@ public class AnEntity {
      *
      * @see AnnoPermission#enable()
      */
-    @ApiModelProperty(value = "是否启用权限",example = "true")
+    @ApiModelProperty(value = "是否启用权限", example = "true")
     private boolean enablePermission = false;
 
     /**
@@ -206,7 +168,7 @@ public class AnEntity {
      *
      * @see AnnoPermission#baseCode()
      */
-    @ApiModelProperty(value = "权限码",example = "anno_mine_permission_user")
+    @ApiModelProperty(value = "权限码", example = "anno_mine_permission_user")
     private String permissionCode;
 
     /**
@@ -214,7 +176,7 @@ public class AnEntity {
      *
      * @see AnnoPermission#baseCodeTranslate()
      */
-    @ApiModelProperty(value = "权限码翻译",example = "用户管理")
+    @ApiModelProperty(value = "权限码翻译", example = "用户管理")
     private String permissionCodeTranslate;
 
     /**
@@ -222,7 +184,7 @@ public class AnEntity {
      *
      * @see AnnoLeftTree#enable()
      */
-    @ApiModelProperty(value = "是否启用 左树",example = "true")
+    @ApiModelProperty(value = "是否启用 左树", example = "true")
     private boolean enableLeftTree = false;
 
     /**
@@ -230,7 +192,7 @@ public class AnEntity {
      *
      * @see AnnoLeftTree#leftTreeName()
      */
-    @ApiModelProperty(value = "左树的名称",example = "用户")
+    @ApiModelProperty(value = "左树的名称", example = "用户")
     private String leftTreeName;
 
     /**
@@ -238,7 +200,7 @@ public class AnEntity {
      *
      * @see AnnoLeftTree#catKey()
      */
-    @ApiModelProperty(value = "左树分类键[映射到queryForm后的值]",example = "user")
+    @ApiModelProperty(value = "左树分类键[映射到queryForm后的值]", example = "user")
     private String leftTreeCatKey;
 
     /**
@@ -246,7 +208,7 @@ public class AnEntity {
      *
      * @see AnnoLeftTree#treeClass()
      */
-    @ApiModelProperty(value = "左树类",example = "site.sorghum.anno.plugin.ao.AnUser")
+    @ApiModelProperty(value = "左树类", example = "site.sorghum.anno.plugin.ao.AnUser")
     private Class<?> leftTreeClass;
 
     /**
@@ -254,7 +216,7 @@ public class AnEntity {
      *
      * @see AnnoTree#enable()
      */
-    @ApiModelProperty(value = "是否启用 Anno 树",example = "true")
+    @ApiModelProperty(value = "是否启用 Anno 树", example = "true")
     private boolean enableTree = false;
 
     /**
@@ -262,7 +224,7 @@ public class AnEntity {
      *
      * @see AnnoTree#parentKey()
      */
-    @ApiModelProperty(value = "Anno 树父键",example = "parent_id")
+    @ApiModelProperty(value = "Anno 树父键", example = "parent_id")
     private String treeParentKey;
 
     /**
@@ -270,7 +232,7 @@ public class AnEntity {
      *
      * @see AnnoTree#key()
      */
-    @ApiModelProperty(value = "Anno 树键",example = "id")
+    @ApiModelProperty(value = "Anno 树键", example = "id")
     private String treeKey;
 
     /**
@@ -278,7 +240,7 @@ public class AnEntity {
      *
      * @see AnnoTree#label()
      */
-    @ApiModelProperty(value = "Anno 树标签",example = "name")
+    @ApiModelProperty(value = "Anno 树标签", example = "name")
     private String treeLabel;
 
     /**
@@ -286,17 +248,55 @@ public class AnEntity {
      *
      * @see AnnoTree#displayAsTree()
      */
-    @ApiModelProperty(value = "Anno 树是否展示为树",example = "false")
+    @ApiModelProperty(value = "Anno 树是否展示为树", example = "false")
     private boolean treeDisplayAsTree = false;
 
 
-
-    // ---------- 图表 ----------
-
     /**
      * 图表
+     *
+     * @see AnnoChart
      */
-    @ApiModelProperty(value = "Anno 是否为图标组件",example = "false")
+    @ApiModelProperty(value = "Anno图表", example = "false")
     AnChart anChart;
+
+    /**
+     * 设置字段列表
+     *
+     * @param fields 字段列表
+     */
+    public void setFields(List<AnField> fields) {
+        this.fields = fields;
+        fieldMap = fields.stream().collect(Collectors.toMap(AnField::getFieldName, e -> e));
+    }
+
+    /**
+     * 添加字段到字段列表和字段映射表中
+     *
+     * @param field 要添加的字段对象
+     */
+    public void addField(AnField field) {
+        fields.add(field);
+        fieldMap.put(field.getFieldName(), field);
+    }
+
+    /**
+     * 根据字段名获取字段对象
+     *
+     * @param fieldName 字段名
+     * @return 返回对应的字段对象，如果字段映射表为空或未找到对应的字段对象则返回null
+     */
+    public AnField getField(String fieldName) {
+        return fieldMap.get(fieldName);
+    }
+
+    /**
+     * 获取数据库字段（排除虚拟列字段）
+     *
+     * @return 返回一个包含所有非虚拟列字段的AnField对象列表
+     */
+    public List<AnField> getDbAnFields() {
+        return fields.stream().filter(anField -> !anField.isVirtualColumn()).collect(Collectors.toList());
+    }
 
 }

@@ -3,7 +3,7 @@ package site.sorghum.anno.plugin.javacmd;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
+import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.Map;

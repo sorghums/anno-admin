@@ -1,4 +1,4 @@
-package site.sorghum.anno.anno.javacmd.supplier;
+package site.sorghum.anno.anno.javacmd;
 
 import java.util.Map;
 

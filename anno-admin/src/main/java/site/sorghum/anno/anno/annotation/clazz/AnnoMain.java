@@ -34,11 +34,6 @@ public @interface AnnoMain {
      * @return {@link String}
      */
     String tableName() default "";
-    /**
-     * 增加连表相关参数
-     * 仅虚拟表时可用
-     */
-    AnnoJoinTable annoJoinTable() default @AnnoJoinTable(mainTable = "", mainAlias = "", joinTables = {}, enable = false);
 
     /**
      * 排序

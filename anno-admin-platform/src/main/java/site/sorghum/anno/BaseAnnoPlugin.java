@@ -44,6 +44,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
 
     @Override
     public void run() {
+        // 权限校验
         CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
             AuthService authService = AnnoBeanUtils.getBean(AuthService.class);
             authService.verifyPermission(permissionCode);

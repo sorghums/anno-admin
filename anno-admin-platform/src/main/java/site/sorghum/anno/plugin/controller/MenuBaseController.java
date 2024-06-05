@@ -10,6 +10,7 @@ import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
@@ -35,7 +36,7 @@ public class MenuBaseController {
     SysAnnoMenuService sysAnnoMenuService;
 
     @Inject
-    AuthService authService;
+    PermissionProxy permissionProxy;
 
     @Inject
     AnnoProperty annoProperty;
@@ -191,7 +192,7 @@ public class MenuBaseController {
 
     private List<AnAnnoMenu> getAnAnnoMenus() {
         // 登录校验
-        CheckPermissionFunction.loginCheckFunction.run();
+        permissionProxy.checkLogin();
         List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
         String uid;
         // 登录校验通过 但是anno系统未登录

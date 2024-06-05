@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Inject;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.plugin.ao.AnUser;
-import site.sorghum.anno.plugin.dao.SysUserDao;
+import site.sorghum.anno.plugin.dao.AnUserDao;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.common.enums.TimeExpressionType;
 import tech.powerjob.common.model.LifeCycle;
@@ -246,7 +246,7 @@ public class InstanceManager implements TransportServiceAware {
         JobInstanceAlarm content = new JobInstanceAlarm();
         BeanUtil.copyProperties(jobInfo, content);
         BeanUtil.copyProperties(instanceInfo, content);
-        List<AnUser> userList = AnnoBeanUtils.getBean(SysUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
+        List<AnUser> userList = AnnoBeanUtils.getBean(AnUserDao.class).selectUserList(jobInfo.getNotifyUserIds());
         if (!StringUtils.isEmpty(alertContent)) {
             content.setResult(alertContent);
         }

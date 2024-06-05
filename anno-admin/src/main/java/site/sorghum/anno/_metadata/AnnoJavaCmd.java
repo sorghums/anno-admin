@@ -2,8 +2,7 @@ package site.sorghum.anno._metadata;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
-import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
+import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,22 +32,6 @@ public class AnnoJavaCmd {
      */
     @ApiModelProperty(value = "JavaCmd：supplier类", example = "JavaCmdSupplier")
     private Class<? extends JavaCmdSupplier> runSupplier;
-
-    /**
-     * JavaCmd：bean类
-     *
-     * @see AnnoTableButton.JavaCmd#beanClass()
-     */
-    @ApiModelProperty(value = "JavaCmd：bean类", example = "b12345")
-    private Class<?> javaCmdBeanClass;
-
-    /**
-     * JavaCmd：方法名
-     *
-     * @see AnnoTableButton.JavaCmd#methodName()
-     */
-    @ApiModelProperty(value = "JavaCmd：方法名", example = "c12345")
-    private String javaCmdMethodName;
 
     /**
      * 权限码

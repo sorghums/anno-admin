@@ -19,6 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class AnChart {
+
     /**
      * 布局
      */

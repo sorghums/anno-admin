@@ -46,7 +46,7 @@ public class AnnoMtm {
      */
     String m2mJoinThisClazzField;
     /**
-     * 多对多本表的类
+     * 多对多目标的类【目标】
      */
     String m2mJoinTargetClazz;
     /**
@@ -54,6 +54,12 @@ public class AnnoMtm {
      */
     String m2mJoinTargetClazzField;
 
+    /**
+     * 获取多对多关联中间表本类字段对应的SQL列名
+     *
+     * @return 返回多对多关联中间表本类字段对应的SQL列名字符串
+     * @throws BizException 当获取中间表类或字段时发生业务异常时抛出该异常
+     */
     public String getM2mMediumThisFieldSql() {
         try {
             return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClass), m2mMediumThisField);
@@ -62,15 +68,26 @@ public class AnnoMtm {
         }
     }
 
+    /**
+     * 获取多对多关联中间表目标字段对应的SQL列名
+     *
+     * @return 返回多对多关联中间表目标字段对应的SQL列名字符串
+     * @throws BizException 当获取中间表类或字段时发生业务异常时抛出该异常
+     */
     public String getM2mMediumTargetFieldSql() {
         try {
             return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClass), m2mMediumTargetField);
-
         } catch (BizException exception) {
             return m2mMediumTargetField;
         }
     }
 
+    /**
+     * 获取多对多关联本类字段对应的SQL列名
+     *
+     * @return 返回多对多关联本类字段对应的SQL列名字符串
+     * @throws BizException 当获取本类或字段时发生业务异常时抛出该异常
+     */
     public String getM2mJoinThisClazzFieldSql() {
         try {
             return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mJoinThisClazz), m2mJoinThisClazzField);
@@ -80,6 +97,12 @@ public class AnnoMtm {
     }
 
 
+    /**
+     * 获取多对多关联目标类字段对应的SQL列名
+     *
+     * @return 返回多对多关联目标类字段对应的SQL列名字符串
+     * @throws BizException 当获取目标类或字段时发生业务异常时抛出该异常
+     */
     public String getM2mJoinTargetClazzFieldSql() {
         try {
             return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mJoinTargetClazz), m2mJoinTargetClazzField);

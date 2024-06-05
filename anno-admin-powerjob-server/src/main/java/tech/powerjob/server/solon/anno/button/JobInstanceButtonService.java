@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 2023/9/7 11:27
  */
 @Component
-public class JobInstanceButtonService {
+public class JobInstanceButtonService{
 
     @Inject
     InstanceLogService instanceLogService;

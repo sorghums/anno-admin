@@ -5,11 +5,9 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -30,7 +28,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * anno 实体 元数据加载
@@ -50,6 +47,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         return entity.getSimpleName();
     }
 
+    /**
+     * 加载AnEntity对象
+     *
+     * @param clazz 类对象
+     * @return AnEntity对象
+     */
     @Override
     public AnEntity load(Class<?> clazz) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
@@ -74,27 +77,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             entity.setAutoMaintainTable(false);
         }
 
-        if (annoMain.annoJoinTable().enable()) {
-            if (!entity.isVirtualTable()) {
-                throw new BizException("连表必须是虚拟表,且请自主实现代理类Proxy。");
-            }
-            List<AnJoinTable.JoinTable> joinTables = Arrays.stream(annoMain.annoJoinTable().joinTables())
-                .map(anJoinTable -> new AnJoinTable.JoinTable(anJoinTable.table(), anJoinTable.alias(), anJoinTable.joinCondition(), anJoinTable.joinType()))
-                .toList();
-            // 维护连表信息
-            entity.setJoinTable(new AnJoinTable(annoMain.annoJoinTable().mainTable(), annoMain.annoJoinTable().mainAlias(), joinTables));
-        }
         entity.setClazz(clazz);
         entity.setEntityName(getEntityName(clazz));
 
-        // 排序
-        AnOrder[] anOrders = new AnOrder[annoMain.annoOrder().length];
-        IntStream.range(0, annoMain.annoOrder().length)
-            .forEach(i -> {
-                AnnoOrder annoOrder = annoMain.annoOrder()[i];
-                AnOrder anOrder = new AnOrder(annoOrder.orderType(), annoOrder.orderValue());
-                anOrders[i] = anOrder;
-            });
+        List<AnOrder> anOrders = Arrays.stream(annoMain.annoOrder()).map(
+            annoOrder -> new AnOrder(annoOrder.orderType(), annoOrder.orderValue())
+        ).toList();
         entity.setAnOrder(anOrders);
 
         // 权限
@@ -136,11 +124,17 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         List<AnButton> anTableButtons = getAnTableButton(clazz);
         entity.setTableButtons(anTableButtons);
 
-        //!!! 加载图表 !!!
+        // 加载图表
         loadChart(annoMain, entity);
         return entity;
     }
 
+    /**
+     * 加载图表
+     *
+     * @param annoMain AnnoMain对象
+     * @param entity AnEntity对象
+     */
     private void loadChart(AnnoMain annoMain, AnEntity entity) {
         entity.setAnChart(
             new AnChart(annoMain.annoChart())
@@ -150,6 +144,9 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
     /**
      * 设置字段信息和主键字段
+     *
+     * @param entity AnEntity对象
+     * @param clazz  需要设置字段信息的类
      */
     private void setAnFields(AnEntity entity, Class<?> clazz) {
         List<FieldAnnoField> fields = AnnoUtil.getAnnoFields(clazz);
@@ -177,14 +174,12 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
             anField.setFieldType(field.getType());
             anField.setFieldSize(anno.fieldSize());
-            anField.setDefaultValue(anno.defaultValue());
             anField.setShow(anno.show());
 
             anField.setSearchEnable(anno.search().enable());
             anField.setSearchNotNull(anno.search().notNull());
             anField.setSearchQueryType(anno.search().queryType());
             anField.setSearchPlaceHolder(anno.search().placeHolder());
-            anField.setSearchSize(anno.search().size());
 
             anField.setAddEnable(anno.edit().addEnable());
             anField.setEditEnable(anno.edit().editEnable());
@@ -218,8 +213,6 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
 
             // 图像
-            anField.setImageThumbRatio(anno.imageType().thumbRatio());
-            anField.setImageThumbMode(anno.imageType().thumbMode());
             anField.setImageEnlargeAble(anno.imageType().enlargeAble());
             anField.setImageWidth(anno.imageType().width());
             anField.setImageHeight(anno.imageType().height());
@@ -271,24 +264,42 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         entity.setFields(anFields);
     }
 
+    /**
+     * 设置AnEntity对象的多对多字段
+     *
+     * @param entity AnEntity对象
+     * @param clazz  需要设置多对多字段的类
+     */
     private void setAnMany2ManyFields(AnEntity entity, Class<?> clazz) {
         List<Field> fields = AnnoUtil.getAnnoMany2ManyFields(clazz);
         List<AnMany2ManyField> annoMany2ManyFields = new ArrayList<>();
         for (Field field : fields) {
             AnnoMany2ManyField anno = AnnotationUtil.getAnnotation(field, AnnoMany2ManyField.class);
-            AnMany2ManyField anMany2ManyField = new AnMany2ManyField();
-            anMany2ManyField.setField(field);
-            anMany2ManyField.setMediumTable(anno.mediumTable());
-
-            anMany2ManyField.setOtherColumnMediumName(anno.otherColumn().mediumName());
-            anMany2ManyField.setOtherColumnReferencedName(anno.otherColumn().referencedName());
-
-            anMany2ManyField.setThisColumnMediumName(anno.thisColumn().mediumName());
-            anMany2ManyField.setThisColumnReferencedName(anno.thisColumn().referencedName());
+            AnMany2ManyField anMany2ManyField = parseAnMany2ManyField(field, anno);
 
             annoMany2ManyFields.add(anMany2ManyField);
         }
         entity.setMany2ManyFields(annoMany2ManyFields);
+    }
+
+    /**
+     * 根据给定的Field和AnnoMany2ManyField注解获取AnMany2ManyField对象
+     *
+     * @param field 给定的Field对象
+     * @param anno 给定的AnnoMany2ManyField注解对象
+     * @return 返回一个AnMany2ManyField对象
+     */
+    private static AnMany2ManyField parseAnMany2ManyField(Field field, AnnoMany2ManyField anno) {
+        AnMany2ManyField anMany2ManyField = new AnMany2ManyField();
+        anMany2ManyField.setField(field);
+        anMany2ManyField.setMediumTable(anno.mediumTable());
+
+        anMany2ManyField.setOtherColumnMediumName(anno.otherColumn().mediumName());
+        anMany2ManyField.setOtherColumnReferencedName(anno.otherColumn().referencedName());
+
+        anMany2ManyField.setThisColumnMediumName(anno.thisColumn().mediumName());
+        anMany2ManyField.setThisColumnReferencedName(anno.thisColumn().referencedName());
+        return anMany2ManyField;
     }
 
     private List<AnColumnButton> getAnButton(Class<?> clazz) {
@@ -332,8 +343,6 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             if (anColumnButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setRunSupplier(anno.javaCmd().runSupplier());
-                annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
-                annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
                 AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(), annoJavaCmd);
@@ -369,15 +378,11 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anButton.setJsCmd(anno.jsCmd());
             anButton.setJumpUrl(anno.jumpUrl());
 
-
             // java cmd
-            anButton.setJavaCmdEnable(anno.javaCmd().enable());
             anButton.setJavaCmdEnable(anno.javaCmd().enable());
             if (anButton.getJavaCmdEnable()) {
                 AnnoJavaCmd annoJavaCmd = new AnnoJavaCmd();
                 annoJavaCmd.setRunSupplier(anno.javaCmd().runSupplier());
-                annoJavaCmd.setJavaCmdBeanClass(anno.javaCmd().beanClass());
-                annoJavaCmd.setJavaCmdMethodName(anno.javaCmd().methodName());
                 annoJavaCmd.setPermissionCode(anno.permissionCode());
                 annoJavaCmd.setId(getEntityName(clazz) + "::" + MD5Util.digestHex(JSONUtil.toJsonString(annoJavaCmd)));
                 AnnoJavaCmd.annoJavCmdMap.put(annoJavaCmd.getId(), annoJavaCmd);
@@ -387,4 +392,6 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
         }
         return anButtons;
     }
+
+
 }

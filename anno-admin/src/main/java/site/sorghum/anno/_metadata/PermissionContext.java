@@ -84,7 +84,7 @@ public class PermissionContext implements MetadataContext {
         String joinPermissionName = joinPermission(anEntity.getTitle(), tableButton.getName());
         permissionCodeAndNameMap.put(joinPermissionCode, joinPermissionName);
         if (tableButton.getJavaCmdEnable()) {
-            javaCmdPermissionMap.put(getPermissionKey(tableButton.getJavaCmdData().getJavaCmdBeanClass(), tableButton.getJavaCmdData().getJavaCmdMethodName()), tableButton.getPermissionCode());
+            javaCmdPermissionMap.put(getPermissionKey(tableButton.getJavaCmdData().getRunSupplier(), "run"), tableButton.getPermissionCode());
         }
     }
 

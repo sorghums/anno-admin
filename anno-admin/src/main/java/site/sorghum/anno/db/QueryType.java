@@ -1,8 +1,14 @@
 package site.sorghum.anno.db;
 
+import lombok.Getter;
+
 /**
  * 查询类型
+ *
+ * @author Sorghum
+ * @since 2024/01/14
  */
+@Getter
 public enum QueryType {
 
     AND("AND"),
@@ -37,7 +43,4 @@ public enum QueryType {
         this.type = type;
     }
 
-    public String getType() {
-        return type;
-    }
 }

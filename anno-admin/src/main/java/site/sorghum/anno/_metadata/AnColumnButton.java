@@ -80,11 +80,13 @@ public class AnColumnButton extends AnButton {
      */
     @ApiModelProperty(value = "模板资源名称",example = "tplName")
     private String tplName;
+
     /**
      * 模板资源ID
      */
     @ApiModelProperty(value = "模板资源ID",example = "A:a123456")
     private String tplId;
+
     /**
      * 模板资源类
      *

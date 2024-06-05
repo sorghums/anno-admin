@@ -11,6 +11,7 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class AnChartServiceImpl implements AnChartService {
     @Inject
     MetadataManager metadataManager;
 
+    @Inject
+    PermissionProxy permissionProxy;
+
     @Override
     public List<AnChartResponse<Object>> getChart(String clazz, String fieldId, Map<String, Object> params) {
         AnEntity entity = metadataManager.getEntity(clazz);
@@ -46,7 +50,7 @@ public class AnChartServiceImpl implements AnChartService {
         for (AnChartField field : chartFields) {
             // 字段权限校验
             try {
-                CheckPermissionFunction.permissionCheckFunction.accept(entity.getPermissionCode() + ":" + field.getPermissionCode());
+                permissionProxy.checkPermission(entity, field.getPermissionCode());
             } catch (Exception e) {
                 log.error("权限不足，无法获取{}图表！", field.getPermissionCode());
                 continue;

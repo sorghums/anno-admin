@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @since 2023/06/29
  */
 @Named
-public class SysUserDao implements AnnoBaseDao<AnUser> {
+public class AnUserDao implements AnnoBaseDao<AnUser> {
     /**
      * 根据用户手机号查询用户
      *

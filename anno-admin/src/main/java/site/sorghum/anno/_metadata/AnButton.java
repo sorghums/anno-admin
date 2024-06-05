@@ -30,11 +30,11 @@ public class AnButton {
     private String icon;
 
     /**
-     * 按钮大小 	'xs' | 'sm' | 'md' | 'lg'
+     * 按钮大小 	'default' | 'middle' | 'small' | 'large'
      *
      * @see AnnoTableButton#size()
      */
-    @ApiModelProperty(value = "按钮大小 	'xs' | 'sm' | 'md' | 'lg'", example = "md")
+    @ApiModelProperty(value = "按钮大小 	'default' | 'middle' | 'small' | 'large'", example = "default")
     private String size;
 
     /**
@@ -65,7 +65,7 @@ public class AnButton {
     /**
      * JavaCmd：bean类
      *
-     * @see AnnoTableButton.JavaCmd#beanClass()
+     * @see AnnoTableButton.JavaCmd
      */
     @ApiModelProperty(value = "JavaCmd数据", example = "b12345")
     private AnnoJavaCmd javaCmdData;

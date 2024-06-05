@@ -19,7 +19,7 @@ import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
-import site.sorghum.anno.anno.javacmd.supplier.JavaCmdSupplier;
+import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.anno.util.AnnoUtil;
@@ -52,8 +52,10 @@ public class BaseDbController {
 
     @Inject
     PermissionProxy permissionProxy;
+
     @Inject
     DbTableContext dbTableContext;
+
     @Inject
     AnChartService anChartService;
 
@@ -286,7 +288,7 @@ public class BaseDbController {
     }
 
     public AnnoResult<String> runJavaCmd(String clazz, Map<String, Object> map) throws ClassNotFoundException {
-        CheckPermissionFunction.loginCheckFunction.run();
+        permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
         AnnoJavaCmd annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
@@ -300,17 +302,15 @@ public class BaseDbController {
             JavaCmdSupplier cmdSupplier = AnnoBeanUtils.getBean(annoJavaCmd.getRunSupplier());
             return AnnoResult.succeed(cmdSupplier.run(map));
         }
-        Object bean = AnnoBeanUtils.getBean(annoJavaCmd.getJavaCmdBeanClass());
-        ReflectUtil.invoke(bean, annoJavaCmd.getJavaCmdMethodName(), map);
-        return AnnoResult.succeed("执行成功");
+        return AnnoResult.succeed("未找到具体执行器");
     }
 
 
     private List<AnChartResponse<Object>> chartData(String clazz, String fieldId, Map<String, Object> params) {
-        CheckPermissionFunction.loginCheckFunction.run();
+        permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         if (StrUtil.isNotBlank(entity.getPermissionCode())) {
-            CheckPermissionFunction.permissionCheckFunction.accept(entity.getPermissionCode());
+            permissionProxy.checkPermission(entity, entity.getPermissionCode());
         }
         if (!entity.getAnChart().getEnable()) {
             throw new BizException("实体类非图表类型或未加载!");

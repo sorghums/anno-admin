@@ -9,6 +9,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.plugin.javacmd.RunSqlJavaCmdSupplier;
 import site.sorghum.anno.plugin.service.AnSqlService;
 import site.sorghum.anno.plugin.tpl.AnnoSqlDetailTplRender;
 import site.sorghum.anno.suppose.model.PrimaryKeyModel;
@@ -104,8 +105,7 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
     @AnnoButton(
         name = "手动执行",
         javaCmd = @AnnoButton.JavaCmd(
-            beanClass = AnSqlService.class,
-            methodName = "runSql"
+            runSupplier = RunSqlJavaCmdSupplier.class
         ),
         permissionCode = "runSql"
     )
