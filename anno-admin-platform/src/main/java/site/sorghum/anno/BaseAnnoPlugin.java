@@ -15,6 +15,7 @@ import site.sorghum.anno.plugin.dao.AnPlatformDao;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -150,7 +151,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu2.setParentId("10");
         menu2.setTitle("菜单管理");
         menu2.setType(1);
-        menu2.setSort(10005);
         menu2.setIcon("ant-design:menu-unfold-outlined");
         menu2.setPermissionId("an_anno_menu");
         menu2.setParseType("annoMain");
@@ -161,7 +161,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu3.setParentId("10");
         menu3.setTitle("权限管理");
         menu3.setType(1);
-        menu3.setSort(10006);
         menu3.setIcon("ant-design:unlock-outlined");
         menu3.setPermissionId("an_permission");
         menu3.setParseType("annoMain");
@@ -172,7 +171,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu4.setParentId("10");
         menu4.setTitle("用户管理");
         menu4.setType(1);
-        menu4.setSort(10007);
         menu4.setIcon("ant-design:user-outlined");
         menu4.setPermissionId("an_user");
         menu4.setParseType("annoMain");
@@ -183,7 +181,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu5.setParentId("10");
         menu5.setTitle("角色管理");
         menu5.setType(1);
-        menu5.setSort(10008);
         menu5.setIcon("ant-design:apartment-outlined");
         menu5.setPermissionId("an_role");
         menu5.setParseType("annoMain");
@@ -194,18 +191,26 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6.setParentId("10");
         menu6.setTitle("组织管理");
         menu6.setType(1);
-        menu6.setSort(10009);
         menu6.setIcon("ant-design:trophy-outlined");
         menu6.setPermissionId("an_org");
         menu6.setParseType("annoMain");
         menu6.setParseData("AnOrg");
+
+        AnAnnoMenu menu6_0 = new AnAnnoMenu();
+        menu6_0.setId("15_0");
+        menu6_0.setParentId("10");
+        menu6_0.setTitle("C端管理");
+        menu6_0.setType(1);
+        menu6_0.setIcon("ant-design:mobile-outlined");
+        menu6_0.setPermissionId("an_client_user");
+        menu6_0.setParseType("annoMain");
+        menu6_0.setParseData("AnClientUser");
 
         AnAnnoMenu menu6_1 = new AnAnnoMenu();
         menu6_1.setId("15_1");
         menu6_1.setParentId("10");
         menu6_1.setTitle("脚本管理");
         menu6_1.setType(1);
-        menu6_1.setSort(10010);
         menu6_1.setIcon("ant-design:copy-outlined");
         menu6_1.setPermissionId("an_sql");
         menu6_1.setParseType("annoMain");
@@ -216,7 +221,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_2.setParentId("10");
         menu6_2.setTitle("平台信息");
         menu6_2.setType(1);
-        menu6_2.setSort(10011);
         menu6_2.setIcon("ant-design:hdd-outlined");
         menu6_2.setPermissionId("an_platform");
         menu6_2.setParseType("annoMain");
@@ -228,7 +232,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu7.setParentId("10");
         menu7.setTitle("接口文档");
         menu7.setType(1);
-        menu7.setSort(10011);
         menu7.setIcon("ant-design:read-outlined");
         menu7.setPermissionId("an_api_doc");
         menu7.setParseType("iframe");
@@ -250,7 +253,6 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu9.setParentId("20");
         menu9.setTitle("在线用户");
         menu9.setType(1);
-        menu9.setSort(9001);
         menu9.setIcon("ant-design:user-switch-outlined");
         menu9.setPermissionId("an_online_user");
         menu9.setParseType("annoMain");
@@ -261,19 +263,18 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu10.setParentId("20");
         menu10.setTitle("登录日志");
         menu10.setType(1);
-        menu10.setSort(9002);
         menu10.setIcon("ant-design:exception-outlined");
         menu10.setPermissionId("an_login_log");
         menu10.setParseType("annoMain");
         menu10.setParseData("AnLoginLog");
-
-        return CollUtil.newArrayList(
+        ArrayList<AnAnnoMenu> anAnnoMenus = CollUtil.newArrayList(
             menu1,
             menu2,
             menu3,
             menu4,
             menu5,
             menu6,
+            menu6_0,
             menu6_1,
             menu6_2,
             menu7,
@@ -281,6 +282,15 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu9,
             menu10
         );
+        // 重写排序
+        int beginSort = 100000;
+        for (int i = 0; i < anAnnoMenus.size(); i++) {
+            AnAnnoMenu anAnnoMenu = anAnnoMenus.get(i);
+            if (anAnnoMenu.getSort() == null){
+                anAnnoMenu.setSort(beginSort + i);
+            }
+        }
+        return anAnnoMenus;
     }
 
     private List<AnOrg> getAnOrgs() {
