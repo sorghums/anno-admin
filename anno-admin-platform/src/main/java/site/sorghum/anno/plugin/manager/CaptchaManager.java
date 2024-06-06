@@ -76,7 +76,7 @@ public class CaptchaManager {
             return;
         }
         String code = getCache(captchaKey);
-        if (StrUtil.equalsIgnoreCase(captchaCode, code)) {
+        if (!StrUtil.equalsIgnoreCase(captchaCode, code)) {
             throw new BizException("验证码错误");
         }
     }
