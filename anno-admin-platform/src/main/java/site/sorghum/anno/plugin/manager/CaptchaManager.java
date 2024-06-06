@@ -3,6 +3,7 @@ package site.sorghum.anno.plugin.manager;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +76,7 @@ public class CaptchaManager {
             return;
         }
         String code = getCache(captchaKey);
-        if (!captchaCode.equals(code)) {
+        if (StrUtil.equalsIgnoreCase(captchaCode, code)) {
             throw new BizException("验证码错误");
         }
     }
