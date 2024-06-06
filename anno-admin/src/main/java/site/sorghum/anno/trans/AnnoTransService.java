@@ -7,6 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.util.AnnoContextUtil;
+import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -179,8 +180,25 @@ public class AnnoTransService {
             Object fieldValue = ReflectUtil.getFieldValue(tItem, fieldName);
             if (fieldValue == null) continue;
             Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
-            tansMap.put(fieldName.toLowerCase() + "_label", dict.getOrDefault(String.valueOf(fieldValue), String.valueOf(fieldValue)));
+            List<String> fieldValues = parseStr2Array(String.valueOf(fieldValue));
+            StringBuilder finalResult = new StringBuilder();
+            for (String value : fieldValues) {
+                String dictOrDefault = dict.getOrDefault(value, String.valueOf(fieldValue));
+                finalResult.append(dictOrDefault).append(",");
+            }
+            if (!finalResult.isEmpty()) {
+                finalResult.setLength(finalResult.length() - 1);
+            }
+            tansMap.put(fieldName.toLowerCase() + "_label",finalResult);
         }
+    }
+
+    private List<String> parseStr2Array(String value) {
+        List<String> valueList = JSONUtil.toBeanList(value, String.class);
+        if (valueList.isEmpty()) {
+            return List.of(value);
+        }
+        return valueList;
     }
 
     private <T> void fixedDictToLowerCase(List<T> t) {
@@ -194,7 +212,7 @@ public class AnnoTransService {
                 tansMap.keySet().forEach(
                     (k) -> {
                         // 转换成小写
-                            newMap.put(k.toString().toLowerCase(), tansMap.get(k));
+                        newMap.put(k.toString().toLowerCase(), tansMap.get(k));
                     }
                 );
                 tansMap.putAll(newMap);

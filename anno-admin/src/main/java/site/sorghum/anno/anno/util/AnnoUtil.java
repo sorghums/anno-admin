@@ -2,27 +2,34 @@ package site.sorghum.anno.anno.util;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
+import site.sorghum.anno.anno.annotation.enums.AnnoEnumLabel;
+import site.sorghum.anno.anno.annotation.enums.AnnoEnumValue;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.plugin.join.util.InvokeUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -94,15 +101,15 @@ public class AnnoUtil {
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredField, AnnoField.class);
                 PrimaryKey primaryKey = AnnotationUtil.getAnnotation(declaredField, PrimaryKey.class);
                 if (annotation != null) {
-                    if (annotation.pkField()){
-                        primaryKey = new PrimaryKey(){
+                    if (annotation.pkField()) {
+                        primaryKey = new PrimaryKey() {
                             @Override
                             public Class<? extends Annotation> annotationType() {
                                 return PrimaryKey.class;
                             }
                         };
                     }
-                    annoFieldFields.add(new FieldAnnoField(declaredField,annotation,primaryKey));
+                    annoFieldFields.add(new FieldAnnoField(declaredField, annotation, primaryKey));
                 }
             }
             // 扫描方法
@@ -124,18 +131,18 @@ public class AnnoUtil {
                         name = StrUtil.lowerFirst(name);
                     }
                     Field field = ReflectUtil.getField(aClass, name);
-                    if (field == null){
+                    if (field == null) {
                         throw new BizException("%s,未找到对应的field".formatted(annotation.title()));
                     }
-                    if(annotation.pkField()){
-                        primaryKey = new PrimaryKey(){
+                    if (annotation.pkField()) {
+                        primaryKey = new PrimaryKey() {
                             @Override
                             public Class<? extends Annotation> annotationType() {
                                 return PrimaryKey.class;
                             }
                         };
                     }
-                    annoFieldFields.add(new FieldAnnoField(field,annotation,primaryKey));
+                    annoFieldFields.add(new FieldAnnoField(field, annotation, primaryKey));
                 }
             }
         }
@@ -196,7 +203,6 @@ public class AnnoUtil {
         Optional<FieldAnnoField> first = declaredFields.stream().filter(field -> field.getPrimaryKey() != null).findFirst();
         return first.map(fieldAnnoField -> fieldAnnoField.getField().getName()).orElseThrow(() -> new BizException("未找到主键"));
     }
-
 
 
     /**
@@ -309,15 +315,70 @@ public class AnnoUtil {
         DbCriteria criteria = new DbCriteria();
         criteria.setEntityName(entity.getEntityName());
         criteria.setTableName(entity.getTableName());
-
+        Class<?> entityClazz = entity.getClazz();
+        Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(params), entityClazz);
         List<AnField> anFields = entity.getDbAnFields();
         for (AnField anField : anFields) {
             String sqlColumn = anField.getTableFieldName();
-            Object value = params.get(anField.getFieldName());
+            Object value = InvokeUtil.invokeGetter(eObject, anField.getReflectField());
             if (sqlColumn != null && value != null) {
                 criteria.condition().create(sqlColumn, anField.getSearchQueryType(), value);
             }
         }
         return criteria;
+    }
+
+    /**
+     * 将枚举类转化为AnField.OptionData数组
+     *
+     * @param clazz 枚举类Class对象
+     * @return AnField.OptionData数组
+     */
+    public static List<AnField.OptionData> enum2OptionData(Class<? extends Enum> clazz) {
+        return Singleton.get(clazz.getName(), () -> {
+            List<AnField.OptionData> optionDatas = new ArrayList<>();
+            Enum[] enumConstants = clazz.getEnumConstants();
+            Field[] fields = ReflectUtil.getFields(clazz);
+            AtomicReference<Field> labelField = new AtomicReference<>();
+            AtomicReference<Field> valueField = new AtomicReference<>();
+            Arrays.stream(fields).forEach(f -> {
+                boolean b = AnnotationUtil.hasAnnotation(f, AnnoEnumLabel.class);
+                if (b) {
+                    labelField.set(f);
+                }
+                b = AnnotationUtil.hasAnnotation(f, AnnoEnumValue.class);
+                if (b) {
+                    valueField.set(f);
+                }
+
+            });
+            for (Enum e : enumConstants) {
+                Object label = e.name();
+                Object value = e;
+                if (labelField.get() != null) {
+                    label = ReflectUtil.getFieldValue(e, labelField.get());
+                }
+                if (valueField.get() != null) {
+                    value = ReflectUtil.getFieldValue(e, valueField.get());
+                }
+                optionDatas.add(new AnField.OptionData(label == null ? "" : label.toString(), value == null ? "" : value.toString()));
+            }
+            return optionDatas;
+        });
+    }
+
+    public static Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
+        Map<String, Object> nParam = new HashMap<>(param.size());
+        for (String key : param.keySet()) {
+            Object item = param.get(key);
+            if (item instanceof String sItem) {
+                if (StrUtil.isNotBlank(sItem)) {
+                    nParam.put(key, sItem);
+                }
+            } else {
+                nParam.put(key, param.get(key));
+            }
+        }
+        return nParam;
     }
 }

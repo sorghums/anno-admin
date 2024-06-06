@@ -82,7 +82,7 @@ public class BaseDbController {
         List<AnOrder> anOrderList = pageRequest.getAnOrderList();
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.VIEW);
-        param = emptyStringIgnore(param);
+        param = AnnoUtil.emptyStringIgnore(param);
         AnnoMtm annoMtm = pageRequest.getAnnoMtm();
         String m2mSql = Utils.m2mSql(annoMtm, pageRequest.getJoinValue());
         String andSql = null;
@@ -114,7 +114,7 @@ public class BaseDbController {
 
         TableParam<T> tableParam = dbTableContext.getTableParam(clazz);
 
-        T t = JSONUtil.toBean(emptyStringIgnore(param), tableParam.getClazz());
+        T t = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), tableParam.getClazz());
         baseService.insert(t);
         return AnnoResult.succeed();
     }
@@ -159,14 +159,14 @@ public class BaseDbController {
         permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
 
         AnField pkField = anEntity.getPkField();
-        T bean = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
+        T bean = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getClazz());
         baseService.update(bean, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
         return AnnoResult.succeed();
     }
 
     public <T> AnnoResult<T> saveOrUpdate(String clazz, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
-        T data = (T) JSONUtil.toBean(emptyStringIgnore(param), anEntity.getClazz());
+        T data = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getClazz());
         AnField pkField = anEntity.getPkField();
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
@@ -329,20 +329,5 @@ public class BaseDbController {
             return AnnoResult.succeed();
         }
         return AnnoResult.succeed(chart.get(0));
-    }
-
-    private Map<String, Object> emptyStringIgnore(Map<String, ?> param) {
-        Map<String, Object> nParam = new HashMap<>(param.size());
-        for (String key : param.keySet()) {
-            Object item = param.get(key);
-            if (item instanceof String sItem) {
-                if (StrUtil.isNotBlank(sItem)) {
-                    nParam.put(key, sItem);
-                }
-            } else {
-                nParam.put(key, param.get(key));
-            }
-        }
-        return nParam;
     }
 }

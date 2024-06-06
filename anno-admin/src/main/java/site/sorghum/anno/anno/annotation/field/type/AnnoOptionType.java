@@ -29,6 +29,13 @@ public @interface AnnoOptionType {
     OptionData[] value() default {};
 
     /**
+     * 返回一个枚举类型的Class对象，该枚举类型用于表示选项。
+     *
+     * @return 枚举类型的Class对象，如果未指定则返回Enum.class。
+     */
+    Class<? extends Enum> optionEnum() default Enum.class;
+
+    /**
      * annoMain注释的类，比如 SysOrg.class
      * 最后会执行类似的：select value, label from sys_org where del_flag = 0 order by id desc
      * 并且会自动走SysOrg的代理操作

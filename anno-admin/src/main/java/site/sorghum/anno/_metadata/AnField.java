@@ -219,6 +219,14 @@ public class AnField {
     private OptionAnnoClass optionAnnoClass;
 
     /**
+     * 自动解析枚举类
+     *
+     * @see AnnoOptionType#optionEnum()
+     */
+    @ApiModelProperty(value = "[下拉框]自动解析枚举类")
+    private Class<? extends Enum> optionEnum;
+
+    /**
      * 是否多选，多选的值格式为逗号拼接 value 值
      */
     @ApiModelProperty(value = "[下拉框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")

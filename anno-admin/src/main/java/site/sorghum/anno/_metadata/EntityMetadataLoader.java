@@ -23,10 +23,7 @@ import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -205,10 +202,16 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setOptionAnnoClass(
                 new AnField.OptionAnnoClass(optionAnnoClass.labelKey(), optionAnnoClass.idKey(), optionAnnoClass.annoClass())
             );
+            anField.setOptionEnum(anno.optionType().optionEnum());
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
-            List<AnField.OptionData> optionDataList = Arrays.stream(optionData)
-                .map(e -> new AnField.OptionData(e.label(), e.value()))
-                .collect(Collectors.toList());
+            List<AnField.OptionData> optionDataList;
+            if (anField.getOptionEnum() != Enum.class) {
+                optionDataList = AnnoUtil.enum2OptionData(anField.getOptionEnum());
+            }else {
+                optionDataList = Arrays.stream(optionData)
+                    .map(e -> new AnField.OptionData(e.label(), e.value()))
+                    .collect(Collectors.toList());
+            }
             anField.setOptionDatas(optionDataList);
 
 
