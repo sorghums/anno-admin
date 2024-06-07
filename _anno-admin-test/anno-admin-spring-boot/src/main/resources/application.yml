@@ -7,7 +7,7 @@ spring:
     password: 123456
     url: jdbc:mysql://127.0.0.1:3306/anno_admin_demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   mvc:
-    static-path-pattern: /anno-admin-api/**
+    static-path-pattern: /anno-admin/**
   web:
     resources:
       static-locations: classpath:/WEB-INF/anno-admin-ui/
@@ -27,8 +27,8 @@ anno-admin:
   theme: 'antd'
   # 忽略打印请求日志的路径
   skipPathPattern:
-    - /anno-admin-api/assets/**
-    - /anno-admin-api/index.html
+    - /anno-admin/assets/**
+    - /anno-admin/index.html
 server:
   port: 8855
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
