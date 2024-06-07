@@ -73,7 +73,7 @@ anno-admin:
   # 忽略打印日志的表
   skipTable: [an_anno_menu,pj_app_info,pj_container_info,pj_instance_info,pj_job_info,pj_oms_lock,pj_server_info,pj_workflow_info,pj_workflow_instance_info,pj_workflow_node_info]
   # 忽略打印请求日志的路径
-  skipPathPattern : [/anno-admin/assets/**, /server/acquire]
+  skipPathPattern : [/anno-admin-api/assets/**, /server/acquire]
 
 
 # powerjob-server

@@ -8,5 +8,5 @@ public interface AnnoConstants {
 
     String DEFAULT_DATASOURCE_NAME = "annoDataSource";
 
-    String BASE_URL = "/anno-admin";
+    String BASE_URL = "/anno-admin-api";
 }
