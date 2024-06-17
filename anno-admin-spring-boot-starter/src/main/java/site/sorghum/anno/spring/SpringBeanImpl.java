@@ -19,7 +19,14 @@ public class SpringBeanImpl implements AnnoBean {
 
     @Override
     public <T> T getBean(Class<T> type) {
-        return SpringUtil.getBean(type);
+        List<T> beansOfType = getBeansOfType(type);
+        if (beansOfType.size() > 1) {
+            throw new BizException(
+                    "未找到唯一" + type.getSimpleName() + "的代理bean，" +
+                    "请检查是否在spring容器中注册了该bean。"
+            );
+        }
+        return beansOfType.get(0);
     }
 
     @Override

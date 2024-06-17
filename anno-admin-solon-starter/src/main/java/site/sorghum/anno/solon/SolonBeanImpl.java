@@ -27,7 +27,13 @@ public class SolonBeanImpl implements AnnoBean {
 
     @Override
     public <T> T getBean(Class<T> type) {
-        return context.getBean(type);
+        List<T> beansOfType = context.getBeansOfType(type);
+        if (beansOfType == null || beansOfType.isEmpty()) {
+            throw new BizException(
+                "未找到" + type.getSimpleName() + "的代理bean，" +
+                    "请检查是否在solon容器中注册了该bean。");
+        }
+        return beansOfType.get(0);
     }
 
     @Override

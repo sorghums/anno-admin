@@ -83,5 +83,11 @@
             <version>${hikaricp.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>redisx</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

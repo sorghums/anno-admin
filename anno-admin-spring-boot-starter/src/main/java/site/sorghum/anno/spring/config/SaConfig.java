@@ -39,14 +39,6 @@ public class SaConfig implements WebMvcConfigurer {
         return new Properties();
     }
 
-    ;
-
-    @Bean
-    @ConditionalOnClass(name = "org.noear.redisx.RedisClient")
-    public RedisClient redisClient(Properties redisClientProperties) {
-        return new RedisClient(redisClientProperties);
-    }
-
     // 注册拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

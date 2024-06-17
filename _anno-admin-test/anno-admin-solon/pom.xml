@@ -22,7 +22,11 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.view.freemarker</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-cache-redis</artifactId>
+            <version>${anno.admin.version}</version>
+        </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-solon-starter</artifactId>

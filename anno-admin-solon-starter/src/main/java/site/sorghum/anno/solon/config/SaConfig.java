@@ -12,6 +12,8 @@ import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno.auth.AnnoStpUtil;
 
+import java.util.Properties;
+
 /**
  * @author Sorghum
  */
@@ -22,12 +24,6 @@ public class SaConfig {
     @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true", onClassName = "org.noear.redisx.RedisClient")
     public SaTokenDao saTokenDaoInit(@Inject("${anno-admin.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
-    }
-
-    @Bean
-    @Condition(onClassName = "org.noear.redisx.RedisClient")
-    public RedisClient redisClient(@Inject("${anno-admin.redis}") RedisClient client) {
-        return client;
     }
 
     @Bean(index = -100)  //-100，是顺序位（低值优先）

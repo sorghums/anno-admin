@@ -1,9 +1,8 @@
 package site.sorghum.anno._common.util;
 
 import jakarta.inject.Named;
-import org.noear.redisx.RedisClient;
-import org.noear.redisx.plus.RedisBucket;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.cache.AnnoCache;
 
 import java.util.List;
 
@@ -13,70 +12,64 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/08/02
  */
-@Named
 public class CacheUtil {
+
     private static final String BASE_PREFIX = "anno-cache";
-    static RedisBucket bucket;
+
+    private static AnnoCache annoCache;
 
     public static void putCache(String key, Object value) {
         putCache(key, value, 0);
     }
 
     public static void putCache(String key, Object value, int seconds) {
-        key = getCacheKey(key);
-        bucket.store(key, JSONUtil.toJsonString(value), seconds);
+        init();
+        annoCache.putCache(getCacheKey(key), JSONUtil.toJsonString(value), seconds);
     }
 
 
     public static <T> T getCacheItem(String key, Class<T> clazz) {
-        String json = bucket.get(getCacheKey(key));
-        if (json == null) {
-            return null;
-        }
-        return JSONUtil.toBean(json, clazz);
+        init();
+        return annoCache.getCacheItem(getCacheKey(key), clazz);
     }
 
     public static <T> List<T> getCacheList(String key, Class<T> clazz) {
-        key = getCacheKey(key);
-        String json = bucket.get(key);
-        if (json == null) {
-            return null;
-        }
-        return JSONUtil.toBeanList(json, clazz);
+        init();
+        return annoCache.getCacheList(getCacheKey(key), clazz);
     }
 
     public static boolean containsCache(String key) {
-        key = getCacheKey(key);
-        return bucket.exists(key);
+        init();
+        return annoCache.containsCache(getCacheKey(key));
     }
 
     public static void delKey(String key) {
-        key = getCacheKey(key);
-        bucket.remove(key);
+        init();
+        annoCache.delKey(getCacheKey(key));
     }
 
     public static void delKeyPattern(String key) {
-        key = getCacheKey(key);
-        bucket.removeByPattern(key);
+        init();
+        annoCache.delKeyPattern(getCacheKey(key));
     }
 
     public static void removeKey(String key) {
-        delKey(key);
+        init();
+        delKey(getCacheKey(key));
     }
 
-    public static String getCacheKey(String key) {
-        init();
+    private static String getCacheKey(String key) {
         return BASE_PREFIX + ":" + key;
     }
 
-    public static String getCacheKey(String key, String tag) {
+    private static String getCacheKey(String key, String tag) {
         return BASE_PREFIX + ":" + key + ":" + tag;
     }
 
 
     private static void init() {
-        if (bucket == null) {
-            bucket = AnnoBeanUtils.getBean(RedisClient.class).getBucket();
+        if (annoCache == null) {
+            annoCache = AnnoBeanUtils.getBean(AnnoCache.class);
         }
     }
 }
