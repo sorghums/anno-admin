@@ -9,6 +9,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import site.sorghum.anno._common.cache.AnnoCache;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -61,16 +62,18 @@ public class CaffeineAnnoCache extends AnnoCache {
 
     @Override
     public void delKey(String key) {
-        caffeine.put(key,null);
+        caffeine.invalidate(key);
     }
 
     @Override
     public void delKeyPattern(String key) {
+        List<String> keys = new ArrayList<>();
         for (String tempKey : caffeine.asMap().keySet()) {
             if (ReUtil.isMatch(key,tempKey)){
-                caffeine.put(tempKey,null);
+                keys.add(tempKey);
             }
         }
+        caffeine.invalidate(keys);
     }
 
 }
