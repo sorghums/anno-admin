@@ -1,7 +1,11 @@
 package site.sorghum.anno.plugin.proxy;
 
+import cn.dev33.satoken.SaManager;
+import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.dao.SaTokenDaoDefaultImpl;
 import cn.dev33.satoken.session.SaSession;
 import cn.hutool.core.date.DateUtil;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
@@ -17,9 +21,16 @@ import java.util.List;
 
 @Named
 public class AnOnlineUserProxy implements AnnoBaseProxy<AnOnlineUser> {
+    /**
+     * 后缀
+     */
+    private String suffix = "*";
+
+    private boolean initSuffix = false;
 
     @Override
     public void afterFetch(DbCriteria criteria, AnnoPage<AnOnlineUser> page) {
+        initSuffix();
         DbPage dbPage = criteria.getPageOrDefault();
         List<String> tokenValues = AnnoStpUtil.searchTokenValue("", dbPage.getOffset(), dbPage.getPageSize(), false);
         List<String> actualTokens = tokenValues.stream().map(s -> s.split(":")[s.split(":").length - 1]).toList();
@@ -30,11 +41,22 @@ public class AnOnlineUserProxy implements AnnoBaseProxy<AnOnlineUser> {
             AnnoAuthUser authUser = (AnnoAuthUser) session.get("authUser");
             AnOnlineUser onlineUser = AnOnlineUser.authToOnlineUser(authUser);
             onlineUser.setExpireTime(
-                DateUtil.offsetSecond(now, (int)AnnoStpUtil.getTokenTimeout(actualToken))
+                DateUtil.offsetSecond(now, (int) AnnoStpUtil.getTokenTimeout(actualToken))
             );
-            onlineUser.setToken(actualToken.substring(0, actualToken.length() - 8) + "*");
+            onlineUser.setToken(actualToken.substring(0, actualToken.length() - 8) + suffix);
             userList.add(onlineUser);
         }
         page.getList().addAll(userList);
+    }
+
+    private void initSuffix() {
+        if (initSuffix) {
+            return;
+        }
+        SaTokenDao saTokenDao = SaManager.getSaTokenDao();
+        if (saTokenDao instanceof SaTokenDaoDefaultImpl) {
+            suffix = "";
+        }
+        initSuffix = true;
     }
 }

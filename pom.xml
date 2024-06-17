@@ -43,6 +43,7 @@
         <!-- 实体类 -->
         <module>anno-admin-db-entity</module>
         <module>anno-admin-cache</module>
+        <module>anno-admin-warm-flow</module>
     </modules>
 
     <properties>

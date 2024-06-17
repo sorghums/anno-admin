@@ -229,13 +229,13 @@ public class AuthServiceImpl implements AuthService {
         }
         List<String> roleIds = AuthFunctions.roleList.apply(userId);
         List<String> permissionCodes;
+        List<AnPermission> anPermissions;
         if (roleIds.contains("admin")) {
-            List<AnPermission> anPermissions = anPermissionDao.bizList();
-            permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
+            anPermissions = anPermissionDao.bizList();
         } else {
-            List<AnPermission> anPermissions = anPermissionDao.querySysPermissionByUserId(userId);
-            permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
+            anPermissions = anPermissionDao.querySysPermissionByUserId(userId);
         }
+        permissionCodes = anPermissions.stream().map(AnPermission::getCode).collect(Collectors.toList());
         CacheUtil.putCache(key, permissionCodes, 60 * 60 * 2);
         return permissionCodes;
     }

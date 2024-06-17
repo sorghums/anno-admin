@@ -1,5 +1,6 @@
 package site.sorghum.anno.solon.config;
 
+import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
@@ -24,6 +25,11 @@ public class SaConfig {
     @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true", onClassName = "org.noear.redisx.RedisClient")
     public SaTokenDao saTokenDaoInit(@Inject("${anno-admin.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
+    }
+
+    @Condition(onMissingBean = SaTokenDao.class)
+    public SaTokenDao localSaTokenDaoInit() {
+        return SaManager.getSaTokenDao();
     }
 
     @Bean(index = -100)  //-100，是顺序位（低值优先）
