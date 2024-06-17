@@ -8,6 +8,7 @@ import jakarta.inject.Named;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import site.sorghum.anno._common.cache.AnnoCache;
+import site.sorghum.anno._common.util.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +19,20 @@ import java.util.concurrent.TimeUnit;
 @Named
 public class CaffeineAnnoCache extends AnnoCache {
     Map<String, Integer> defaultExpireTime = new ConcurrentHashMap<>();
-    Cache<String, Object> caffeine = Caffeine.newBuilder().expireAfter(
-        new Expiry<String, Object>() {
+    Cache<String, String> caffeine = Caffeine.newBuilder().expireAfter(
+        new Expiry<String, String>() {
             @Override
-            public long expireAfterCreate(@NonNull String key, @NonNull Object v, long currentTime) {
+            public long expireAfterCreate(@NonNull String key, @NonNull String v, long currentTime) {
                 return TimeUnit.SECONDS.toNanos(defaultExpireTime.getOrDefault(key, 30));
             }
 
             @Override
-            public long expireAfterUpdate(@NonNull String key, @NonNull Object v, long currentTime, @NonNegative long currentDuration) {
+            public long expireAfterUpdate(@NonNull String key, @NonNull String v, long currentTime, @NonNegative long currentDuration) {
                 return TimeUnit.SECONDS.toNanos(defaultExpireTime.getOrDefault(key, 30));
             }
 
             @Override
-            public long expireAfterRead(@NonNull String object, @NonNull Object v, long currentTime, @NonNegative long currentDuration) {
+            public long expireAfterRead(@NonNull String object, @NonNull String v, long currentTime, @NonNegative long currentDuration) {
                 return currentDuration;
             }
         }
@@ -42,17 +43,25 @@ public class CaffeineAnnoCache extends AnnoCache {
         defaultExpireTime.computeIfAbsent(
             key, s -> seconds
         );
-        caffeine.put(key, value);
+        caffeine.put(key, JSONUtil.toJsonString(value));
     }
 
     @Override
     public <T> T getCacheItem(String key, Class<T> clazz) {
-        return (T) caffeine.getIfPresent(key);
+        String json = caffeine.getIfPresent(key);
+        if (json == null) {
+            return null;
+        }
+        return JSONUtil.toBean(json, clazz);
     }
 
     @Override
     public <T> List<T> getCacheList(String key, Class<T> clazz) {
-        return (List<T>) caffeine.getIfPresent(key);
+        String json = caffeine.getIfPresent(key);
+        if (json == null) {
+            return null;
+        }
+        return JSONUtil.toBeanList(json, clazz);
     }
 
     @Override

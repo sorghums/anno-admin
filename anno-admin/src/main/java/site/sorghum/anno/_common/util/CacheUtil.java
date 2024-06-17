@@ -1,6 +1,5 @@
 package site.sorghum.anno._common.util;
 
-import jakarta.inject.Named;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.cache.AnnoCache;
 
@@ -24,7 +23,7 @@ public class CacheUtil {
 
     public static void putCache(String key, Object value, int seconds) {
         init();
-        annoCache.putCache(getCacheKey(key), JSONUtil.toJsonString(value), seconds);
+        annoCache.putCache(getCacheKey(key), value, seconds);
     }
 
 
