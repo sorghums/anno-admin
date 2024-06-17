@@ -10,6 +10,12 @@
     </parent>
 
     <artifactId>anno-admin-db-entity</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>anno-admin-db-entity-mybatis-flex</module>
+        <module>anno-admin-db-entity-mybatis-plus</module>
+        <module>anno-admin-db-entity-common</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

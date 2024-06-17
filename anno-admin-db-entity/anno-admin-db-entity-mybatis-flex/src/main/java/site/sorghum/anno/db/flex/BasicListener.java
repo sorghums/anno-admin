@@ -1,9 +1,9 @@
-package site.sorghum.anno.flex;
+package site.sorghum.anno.db.flex;
 
 import com.mybatisflex.annotation.InsertListener;
 import com.mybatisflex.annotation.UpdateListener;
 import lombok.extern.slf4j.Slf4j;
-import site.sorghum.anno.BaseMetaModel;
+import site.sorghum.anno.db.BaseMetaModel;
 
 import java.time.LocalDateTime;
 import java.util.function.Supplier;

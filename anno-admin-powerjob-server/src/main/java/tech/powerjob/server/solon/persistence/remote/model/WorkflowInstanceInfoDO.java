@@ -8,7 +8,7 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.BaseMetaModel;
+import site.sorghum.anno.db.BaseMetaModel;
 
 /**
  * 工作流运行实例表

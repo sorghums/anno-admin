@@ -1,4 +1,4 @@
-package site.sorghum.anno.plus;
+package site.sorghum.anno.db.plus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;

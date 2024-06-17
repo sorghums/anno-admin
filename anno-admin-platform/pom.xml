@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-db-entity</artifactId>
+            <artifactId>anno-admin-db-entity-common</artifactId>
         </dependency>
     </dependencies>
 </project>

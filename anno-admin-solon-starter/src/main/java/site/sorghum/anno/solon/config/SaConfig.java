@@ -19,12 +19,13 @@ import site.sorghum.anno.auth.AnnoStpUtil;
 public class SaConfig {
 
     @Bean
-    @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true")
+    @Condition(onProperty = "${anno-admin.class.SaTokenInterceptor:true} = true", onClassName = "org.noear.redisx.RedisClient")
     public SaTokenDao saTokenDaoInit(@Inject("${anno-admin.redis}") SaTokenDaoOfRedis saTokenDao) {
         return saTokenDao;
     }
 
     @Bean
+    @Condition(onClassName = "org.noear.redisx.RedisClient")
     public RedisClient redisClient(@Inject("${anno-admin.redis}") RedisClient client) {
         return client;
     }
@@ -36,7 +37,7 @@ public class SaConfig {
             // [拦截路由]
             .addInclude(AnnoConstants.BASE_URL + "/**")
             // [放行路由]
-            .addExclude("/favicon.ico","/doc.html", "/swagger-resources", "/swagger/*")
+            .addExclude("/favicon.ico", "/doc.html", "/swagger-resources", "/swagger/*")
             // 认证函数: 每次请求执行
             .setAuth(req -> SaRouter.match(AnnoConstants.BASE_URL + "/**", AnnoStpUtil::checkLogin));
     }

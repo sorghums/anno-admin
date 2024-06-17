@@ -10,8 +10,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.auth.AnnoAuthUser;
+import site.sorghum.anno.db.PrimaryKeyModel;
 import site.sorghum.anno.plugin.javacmd.ForceLogOutJavaCmdSupplier;
-import site.sorghum.anno.PrimaryKeyModel;
 
 import java.io.Serial;
 import java.io.Serializable;

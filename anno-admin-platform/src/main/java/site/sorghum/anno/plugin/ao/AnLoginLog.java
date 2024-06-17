@@ -9,8 +9,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.db.PrimaryKeyModel;
 import site.sorghum.anno.db.QueryType;
-import site.sorghum.anno.PrimaryKeyModel;
 
 import java.io.Serial;
 import java.io.Serializable;

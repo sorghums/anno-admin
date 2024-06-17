@@ -7,9 +7,9 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.noear.redisx.RedisClient;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 
 import java.util.Objects;
@@ -26,9 +26,6 @@ public class CaptchaManager {
 
     @Inject
     private AnnoProperty annoProperty;
-
-    @Inject
-    private RedisClient redisClient;
 
     /**
      * 创建图片验证码
@@ -104,11 +101,11 @@ public class CaptchaManager {
     }
 
     private void putCache(String key, String code, Integer seconds) {
-        redisClient.getBucket().store("anno-admin:captcha:admin:" + key, code, seconds);
+        CacheUtil.putCache("anno-admin:captcha:admin:" + key, code, seconds);
     }
 
     private String getCache(String key) {
-        return redisClient.getBucket().get("anno-admin:captcha:admin:" + key);
+            return CacheUtil.getCacheItem("anno-admin:captcha:admin:" + key,String.class);
     }
 
 }

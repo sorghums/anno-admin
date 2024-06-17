@@ -14,7 +14,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.BaseMetaModel;
+import site.sorghum.anno.db.BaseMetaModel;
 import tech.powerjob.common.enums.InstanceStatus;
 import tech.powerjob.server.solon.anno.button.JobRetryInstanceButtonService;
 

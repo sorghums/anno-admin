@@ -10,7 +10,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.*;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.BaseMetaModel;
+import site.sorghum.anno.db.BaseMetaModel;
 
 import java.util.List;
 

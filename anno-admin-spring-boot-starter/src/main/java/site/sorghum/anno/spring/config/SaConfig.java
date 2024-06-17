@@ -4,6 +4,7 @@ import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import org.noear.redisx.RedisClient;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class SaConfig implements WebMvcConfigurer {
 
 
     @Bean
+    @ConditionalOnClass(name = "org.noear.redisx.RedisClient")
     public SaTokenDao saTokenDaoInit(Properties redisClientProperties) {
         return new SaTokenDaoOfRedis(redisClientProperties);
     }
@@ -40,6 +42,7 @@ public class SaConfig implements WebMvcConfigurer {
     ;
 
     @Bean
+    @ConditionalOnClass(name = "org.noear.redisx.RedisClient")
     public RedisClient redisClient(Properties redisClientProperties) {
         return new RedisClient(redisClientProperties);
     }
