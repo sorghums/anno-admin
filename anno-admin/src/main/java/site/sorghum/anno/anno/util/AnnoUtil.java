@@ -124,8 +124,7 @@ public class AnnoUtil {
                         name = StrUtil.removePrefix(name, "get");
                         // 首字符小写
                         name = StrUtil.lowerFirst(name);
-                    }
-                    if (name.startsWith("is")) {
+                    } else if (name.startsWith("is")) {
                         name = StrUtil.removePrefix(name, "is");
                         // 首字符小写
                         name = StrUtil.lowerFirst(name);

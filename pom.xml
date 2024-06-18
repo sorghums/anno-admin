@@ -42,8 +42,10 @@
         <module>anno-admin-powerjob-server</module>
         <!-- 实体类 -->
         <module>anno-admin-db-entity</module>
+        <!-- 缓存 -->
         <module>anno-admin-cache</module>
-        <module>anno-admin-warm-flow</module>
+        <!-- warm-flow -->
+        <module>anno-admin-warm-flow-solon-plugin</module>
     </modules>
 
     <properties>
@@ -85,6 +87,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-warm-flow-solon-plugin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-cache</artifactId>

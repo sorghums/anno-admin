@@ -29,6 +29,12 @@
             <groupId>site.sorghum.sorghum-plugin</groupId>
             <artifactId>easy-join-core</artifactId>
             <version>${easyjoin.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>mybatis-plus-annotation</artifactId>
+                    <groupId>com.baomidou</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
