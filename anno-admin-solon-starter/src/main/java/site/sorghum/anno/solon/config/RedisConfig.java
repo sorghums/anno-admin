@@ -6,8 +6,6 @@ import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
-import java.util.Properties;
-
 @Configuration
 @Condition(onClassName = "org.noear.redisx.RedisClient")
 public class RedisConfig {

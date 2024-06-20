@@ -9,7 +9,6 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
@@ -17,7 +16,6 @@ import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.plugin.entity.response.VbenMenu;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
-import site.sorghum.anno.plugin.service.AuthService;
 import site.sorghum.anno.plugin.service.SysAnnoMenuService;
 
 import java.util.*;

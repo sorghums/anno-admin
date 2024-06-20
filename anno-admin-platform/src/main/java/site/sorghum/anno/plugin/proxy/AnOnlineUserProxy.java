@@ -5,7 +5,6 @@ import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.dao.SaTokenDaoDefaultImpl;
 import cn.dev33.satoken.session.SaSession;
 import cn.hutool.core.date.DateUtil;
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;

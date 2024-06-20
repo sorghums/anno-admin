@@ -1,8 +1,5 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.lang.annotation.*;
 
 /**

@@ -5,15 +5,12 @@ import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedis;
 import cn.dev33.satoken.solon.integration.SaTokenInterceptor;
-import org.noear.redisx.RedisClient;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno.auth.AnnoStpUtil;
-
-import java.util.Properties;
 
 /**
  * @author Sorghum

@@ -12,8 +12,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.db.BaseMetaModel;
+import site.sorghum.anno.db.QueryType;
 
 /**
  * 商品分类

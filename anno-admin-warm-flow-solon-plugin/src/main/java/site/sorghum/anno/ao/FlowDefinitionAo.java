@@ -12,8 +12,6 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.enums.TrueFalseEnum;
 import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
-import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
-import site.sorghum.anno.anno.proxy.field.ZeroFiledBaseSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.enums.TrueFalseCharEnum;
 import site.sorghum.plugin.join.aop.JoinResMap;

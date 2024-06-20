@@ -10,7 +10,6 @@ import site.sorghum.anno._metadata.AnChartField;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
-import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.ArrayList;

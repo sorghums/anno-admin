@@ -10,8 +10,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
-import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
-import site.sorghum.anno.anno.proxy.field.ZeroFiledBaseSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.enums.FlowStatusEnum;
 import site.sorghum.anno.enums.NodeTypeEnum;

@@ -1,6 +1,5 @@
 package site.sorghum.anno.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import site.sorghum.anno.anno.annotation.enums.AnnoEnumLabel;

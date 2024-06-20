@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
+import site.sorghum.anno.db.BaseMetaModel;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
-import site.sorghum.anno.db.BaseMetaModel;
 import site.sorghum.anno.suppose.proxy.BaseAnnoPreProxy;
 import site.sorghum.anno.suppose.proxy.VirtualJoinTableProxy;
 

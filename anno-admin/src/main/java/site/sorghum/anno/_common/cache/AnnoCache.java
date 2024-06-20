@@ -1,7 +1,5 @@
 package site.sorghum.anno._common.cache;
 
-import jakarta.inject.Named;
-
 import java.util.List;
 
 /**

@@ -4,8 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
-import site.sorghum.anno.anno.enums.AnnoChartType;
 import site.sorghum.anno.anno.chart.supplier.ChartSupplier;
+import site.sorghum.anno.anno.enums.AnnoChartType;
 
 @Data
 @AllArgsConstructor

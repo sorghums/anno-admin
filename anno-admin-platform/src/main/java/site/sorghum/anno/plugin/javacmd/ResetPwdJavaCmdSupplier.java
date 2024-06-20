@@ -5,8 +5,6 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno.anno.javacmd.JavaCmdParam;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
-import site.sorghum.anno.auth.AnnoAuthUser;
-import site.sorghum.anno.plugin.ao.AnClientUser;
 import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.service.AuthService;

@@ -2,7 +2,6 @@ package site.sorghum.anno.test.modular.wtf;
 
 import lombok.Data;
 import org.noear.wood.annotation.PrimaryKey;
-import site.sorghum.anno.anno.annotation.clazz.AnnoJoinTable;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;

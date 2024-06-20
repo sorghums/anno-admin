@@ -7,7 +7,6 @@ import cn.hutool.core.exceptions.InvocationTargetRuntimeException;
 import cn.hutool.core.text.AntPathMatcher;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.Context;

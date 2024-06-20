@@ -2,15 +2,15 @@ package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.anno.annotation.clazz.*;
-import site.sorghum.anno.anno.annotation.field.AnnoButton;
+import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoOrder;
+import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
-import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
 import java.io.Serial;

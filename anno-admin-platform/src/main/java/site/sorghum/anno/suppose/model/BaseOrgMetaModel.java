@@ -2,13 +2,13 @@ package site.sorghum.anno.suppose.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import site.sorghum.anno.db.BaseMetaModel;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.db.BaseMetaModel;
 import site.sorghum.anno.plugin.ao.AnOrg;
 
 import java.io.Serializable;
