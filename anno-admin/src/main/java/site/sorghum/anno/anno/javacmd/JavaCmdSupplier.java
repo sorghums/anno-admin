@@ -1,7 +1,5 @@
 package site.sorghum.anno.anno.javacmd;
 
-import java.util.Map;
-
 public interface JavaCmdSupplier {
 
     /**
@@ -11,5 +9,5 @@ public interface JavaCmdSupplier {
      * @param param 参数
      * @return {@link String}
      */
-    String run(Map<String, Object> param);
+    String run(JavaCmdParam param);
 }

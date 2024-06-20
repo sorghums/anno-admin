@@ -20,4 +20,9 @@ public class UpdatePwdReq {
      * 新pwd2
      */
     private String newPwd2;
+
+    /**
+     * 来自系统
+     */
+    private Boolean fromAdmin = false;
 }

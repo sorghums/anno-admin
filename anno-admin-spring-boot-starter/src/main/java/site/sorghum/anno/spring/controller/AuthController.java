@@ -2,7 +2,6 @@ package site.sorghum.anno.spring.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
-import io.swagger.annotations.ApiOperation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._common.AnnoConstants;
@@ -13,8 +12,6 @@ import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
-
-import javax.swing.text.html.FormSubmitEvent;
 
 /**
  * Auth控制器
@@ -53,6 +50,7 @@ public class AuthController extends AuthBaseController {
     @PostMapping(value = "/updatePwd")
     public AnnoResult<String> updatePwd(@RequestBody UpdatePwdReq req) {
         req.setUserId(AnnoStpUtil.getLoginIdAsString());
+        req.setFromAdmin(false);
         return super.updatePwd(req);
     }
 }

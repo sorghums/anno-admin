@@ -19,6 +19,7 @@ import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.javacmd.JavaCmdParam;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -287,7 +288,7 @@ public class BaseDbController {
         return AnnoResult.succeed();
     }
 
-    public AnnoResult<String> runJavaCmd(String clazz, Map<String, Object> map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(String clazz, JavaCmdParam map) throws ClassNotFoundException {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");

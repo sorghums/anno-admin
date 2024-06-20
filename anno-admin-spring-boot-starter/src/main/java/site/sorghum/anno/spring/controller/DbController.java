@@ -17,6 +17,7 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
+import site.sorghum.anno.anno.javacmd.JavaCmdParam;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -118,9 +119,9 @@ public class DbController extends BaseDbController {
     }
 
     @PostMapping(value = "/{clazz}/runJavaCmd", consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@PathVariable String clazz, @RequestBody JavaCmdParam map) throws ClassNotFoundException {
         if (map == null) {
-            map = new HashMap<>();
+            map = new JavaCmdParam();
         }
         return super.runJavaCmd(clazz, map);
     }

@@ -269,15 +269,6 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    @Override
-    public void resetPwd(Map<String, Object> props) {
-        AnUser anUser = new AnUser();
-        String mobile = props.get("mobile").toString();
-        String id = props.get("id").toString();
-        anUser.setId(id);
-        anUser.setPassword(MD5Util.digestHex(mobile + ":" + "123456"));
-        anUserDao.updateById(anUser);
-    }
 
     @Override
     public void verifyButtonPermission(String className, String methodName) {
@@ -318,9 +309,11 @@ public class AuthServiceImpl implements AuthService {
         if (anUser == null) {
             throw new BizException("用户不存在");
         }
-        // 清除缓存
-        if (!anUser.getPassword().equals(MD5Util.digestHex(anUser.getMobile() + ":" + req.getOldPwd()))) {
-            throw new BizException("密码错误");
+        if (!req.getFromAdmin()){
+            // 校验旧密码
+            if (!anUser.getPassword().equals(MD5Util.digestHex(anUser.getMobile() + ":" + req.getOldPwd()))) {
+                throw new BizException("密码错误");
+            }
         }
         // 校验新密码
         if (!req.getNewPwd1().equals(req.getNewPwd2())){

@@ -33,14 +33,6 @@ public interface AuthService {
      */
     void verifyPermission(String permissionCode);
 
-
-    /**
-     * 重置pwd
-     *
-     * @param data 数据
-     */
-    void resetPwd(Map<String,Object> data);
-
     /**
      * 校验是否有按钮权限
      */

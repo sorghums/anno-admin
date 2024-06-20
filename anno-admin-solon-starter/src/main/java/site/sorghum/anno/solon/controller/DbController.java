@@ -23,6 +23,7 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
+import site.sorghum.anno.anno.javacmd.JavaCmdParam;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -226,7 +227,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body Map<String, Object> map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body JavaCmdParam map) throws ClassNotFoundException {
         return super.runJavaCmd(clazz, map);
     }
 
