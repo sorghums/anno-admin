@@ -10,6 +10,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.plugin.form.ResetPwdForm;
 import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
@@ -81,7 +82,10 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     /**
      * 重置密码按钮
      */
-    @AnnoButton(permissionCode = "resetPwd", icon = "fluent:key-reset-20-filled", name = "重置密码",
+    @AnnoButton(permissionCode = "resetPwd",
+        icon = "fluent:key-reset-20-filled",
+        name = "重置密码",
+        baseForm = ResetPwdForm.class,
         javaCmd = @AnnoButton.JavaCmd(runSupplier = ResetPwdJavaCmdSupplier.class))
     private Object resetPwdButton;
 

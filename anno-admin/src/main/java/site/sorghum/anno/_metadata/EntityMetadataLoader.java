@@ -5,8 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import org.noear.wood.annotation.PrimaryKey;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._common.util.MD5Util;
+import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
@@ -123,6 +125,28 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
 
         // 加载图表
         loadChart(annoMain, entity);
+        return entity;
+    }
+
+    /**
+     * 加载AnEntity对象
+     *
+     * @param clazz 类对象
+     * @return AnEntity对象
+     */
+    @Override
+    public AnEntity loadForm(Class<?> clazz) {
+        AnnoForm annoForm = AnnoUtil.getAnnoForm(clazz);
+        AnEntity entity = new AnEntity();
+        entity.setTitle(annoForm.name());
+        entity.setVirtualTable(true);
+        entity.setAutoMaintainTable(false);
+        entity.setClazz(clazz);
+        entity.setEntityName(getEntityName(clazz));
+        // 类字段
+        setAnFields(entity, clazz);
+        // 多对多字段
+        setAnMany2ManyFields(entity, clazz);
         return entity;
     }
 
@@ -315,6 +339,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anColumnButton.setName(anno.name());
             anColumnButton.setIcon(anno.icon());
             anColumnButton.setPermissionCode(anno.permissionCode());
+            anColumnButton.setFormEntity(AnnoBeanUtils.getBean(anno.baseForm()).getEntity());
             anColumnButton.setSize(anno.size());
             anColumnButton.setJsCmd(anno.jsCmd());
             anColumnButton.setJumpUrl(anno.jumpUrl());
@@ -378,6 +403,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anButton.setIcon(anno.icon());
             anButton.setPermissionCode(anno.permissionCode());
             anButton.setSize(anno.size());
+            anButton.setFormEntity(AnnoBeanUtils.getBean(anno.baseForm()).getEntity());
             anButton.setJsCmd(anno.jsCmd());
             anButton.setJumpUrl(anno.jumpUrl());
 

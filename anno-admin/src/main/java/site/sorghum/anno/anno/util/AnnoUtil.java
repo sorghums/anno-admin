@@ -13,6 +13,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.enums.AnnoEnumLabel;
@@ -379,5 +380,9 @@ public class AnnoUtil {
             }
         }
         return nParam;
+    }
+
+    public static AnnoForm getAnnoForm(Class<?> clazz)  {
+        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoForm.class);
     }
 }

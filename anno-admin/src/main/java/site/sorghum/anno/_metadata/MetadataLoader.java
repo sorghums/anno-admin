@@ -23,5 +23,10 @@ public interface MetadataLoader<T> {
      */
     AnEntity load(T entity);
 
-
+    /**
+     * 加载元数据
+     *
+     * @param entity 被加载的对象
+     */
+    AnEntity loadForm(T entity);
 }

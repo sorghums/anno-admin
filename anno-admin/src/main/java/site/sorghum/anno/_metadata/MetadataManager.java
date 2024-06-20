@@ -52,6 +52,21 @@ public class MetadataManager {
     }
 
     /**
+     * 从实体类中加载表单元数据，已存在的实体不会重复加载
+     *
+     * @param clazz anno 实体类
+     */
+    public AnEntity loadFormEntity(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        if (entityMap.containsKey(entityName)) {
+            return entityMap.get(entityName);
+        }
+        AnEntity entity = entityMetadataLoader.loadForm(clazz);
+        postProcess(entity);
+        return entity;
+    }
+
+    /**
      * 加载自定义元数据
      */
     public void loadCustomized(Object object) {

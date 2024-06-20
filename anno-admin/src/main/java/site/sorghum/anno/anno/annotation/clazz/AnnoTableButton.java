@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
 
+import site.sorghum.anno.anno.form.BaseForm;
+import site.sorghum.anno.anno.form.DefaultBaseForm;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 
 import java.lang.annotation.*;
@@ -36,6 +38,13 @@ public @interface AnnoTableButton {
      * @return {@link String}
      */
     String size() default "default";
+
+
+    /**
+     * 表单提供类
+     * @return @{@link Class}
+     */
+    Class<? extends BaseForm> baseForm() default DefaultBaseForm.class;
 
     //----------------------- 以下为按钮事件 -----------------------
 

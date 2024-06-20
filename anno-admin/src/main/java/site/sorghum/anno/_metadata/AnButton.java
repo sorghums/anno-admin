@@ -38,6 +38,12 @@ public class AnButton {
     private String size;
 
     /**
+     * 按钮自定义表单
+     */
+    @ApiModelProperty(value = "按钮自定义表单")
+    private AnEntity formEntity;
+
+    /**
      * 按下按钮后的js命令
      *
      * @see AnnoTableButton#jsCmd()
