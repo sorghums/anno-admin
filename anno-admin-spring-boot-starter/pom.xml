@@ -20,6 +20,10 @@
     <dependencies>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-cache-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-platform</artifactId>
         </dependency>
         <dependency>

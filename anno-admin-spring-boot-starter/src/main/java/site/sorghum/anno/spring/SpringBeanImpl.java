@@ -25,8 +25,21 @@ public class SpringBeanImpl implements AnnoBean {
                     "未找到唯一" + type.getSimpleName() + "的代理bean，" +
                     "请检查是否在spring容器中注册了该bean。"
             );
+        } else if (beansOfType.isEmpty()) {
+            return _getBean(type);
         }
         return beansOfType.get(0);
+    }
+
+    /**
+     * 获取指定类型的Bean对象
+     *
+     * @param type 要获取的Bean对象的类型
+     * @param <T>  Bean对象的类型
+     * @return 返回指定类型的Bean对象
+     */
+    private  <T> T _getBean(Class<T> type) {
+       return SpringUtil.getBean(type);
     }
 
     @Override
