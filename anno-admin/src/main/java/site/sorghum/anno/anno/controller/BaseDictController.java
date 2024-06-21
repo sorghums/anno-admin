@@ -4,12 +4,16 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
+import site.sorghum.anno.anno.option.OptionDataSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
+import site.sorghum.anno.anno.tree.TreeDataSupplier;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
@@ -44,7 +48,10 @@ public class BaseDictController {
         String sqlKey,
         String annoClazz,
         String idKey,
-        String labelKey
+        String labelKey,
+        String optionAnnoClazz,
+        String treeAnnoClazz,
+        Map<String, Object> _extra
     ) {
         if (StrUtil.isNotBlank(sqlKey)) {
             String actualSql = QuerySqlCache.get(sqlKey);
@@ -69,6 +76,28 @@ public class BaseDictController {
             }
             annoTreeDTOs.add(0, AnnoTreeDTO.<String>builder().id("").label("无选择").title("无选择").value("").key("").build());
             return AnnoResult.succeed(annoTreeDTOs);
+        }
+        if (StrUtil.isNotBlank(optionAnnoClazz)) {
+            Class<? extends OptionDataSupplier> aClass = OptionDataSupplier.CLASS_MAP.get(optionAnnoClazz);
+            if (aClass == null) {
+                return AnnoResult.failure("未找到对应的下拉框提供器:" + optionAnnoClazz);
+            }
+            List<AnField.OptionData> optionDataList = AnnoBeanUtils.getBean(aClass).getOptionDataList();
+            List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+                optionDataList, "label", "value", "pid"
+            );
+            return AnnoResult.succeed(trees);
+        }
+        if (StrUtil.isNotBlank(treeAnnoClazz)) {
+            Class<? extends TreeDataSupplier> aClass = TreeDataSupplier.CLASS_MAP.get(treeAnnoClazz);
+            if (aClass == null) {
+                return AnnoResult.failure("未找到对应的树下拉框提供器:" + treeAnnoClazz);
+            }
+            List<AnField.TreeData> optionDataList = AnnoBeanUtils.getBean(aClass).getTreeDataList();
+            List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+                optionDataList, "label", "id", "pid"
+            );
+            return AnnoResult.succeed(trees);
         }
         return AnnoResult.succeed(Collections.emptyList());
     }

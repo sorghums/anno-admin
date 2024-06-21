@@ -12,6 +12,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.form.ResetPwdForm;
 import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
+import site.sorghum.anno.plugin.option.AnUserEnableOptionSupplier;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
 import java.io.Serial;
@@ -61,17 +62,15 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
         dataType = AnnoDataType.RADIO,
-        optionType = @AnnoOptionType(value = {
-            @AnnoOptionType.OptionData(label = "正常", value = "1"),
-            @AnnoOptionType.OptionData(label = "封禁", value = "0")
-        }),
+        optionType = @AnnoOptionType(supplier = AnUserEnableOptionSupplier.class),
         edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     private String enable;
 
     /**
      * 角色按钮
      */
-    @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined", m2mJoinButton = @AnnoButton.M2MJoinButton(
+    @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined",
+        m2mJoinButton = @AnnoButton.M2MJoinButton(
         joinTargetClazz = AnRole.class,
         mediumTableClass = AnUserRole.class,
         mediumTargetField = "roleId",

@@ -12,7 +12,9 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.option.OptionDataSupplier;
 import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
+import site.sorghum.anno.anno.tree.TreeDataSupplier;
 import site.sorghum.anno.db.QueryType;
 
 import java.lang.reflect.Field;
@@ -226,11 +228,21 @@ public class AnField {
     @ApiModelProperty(value = "[下拉框]自动解析枚举类")
     private Class<? extends Enum> optionEnum;
 
+
+    /**
+     * 选项供应商
+     *
+     * @see AnnoOptionType#supplier
+     */
+    @ApiModelProperty(value = "[下拉框]选项供应商")
+    public Class<? extends OptionDataSupplier> optionSupplier;
+
     /**
      * 是否多选，多选的值格式为逗号拼接 value 值
      */
     @ApiModelProperty(value = "[下拉框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")
     private boolean optionIsMultiple;
+
 
     @Data
     @AllArgsConstructor
@@ -325,6 +337,13 @@ public class AnField {
     private List<TreeData> treeDatas;
 
     /**
+     * 树形数据供应商
+     *
+     * @see AnnoTreeType#supplier()
+     */
+    private Class<? extends TreeDataSupplier> treeOptionSupplier;
+
+    /**
      * 选择类型-树形
      * @see AnnoTreeType#treeAnno();
      */
@@ -399,14 +418,6 @@ public class AnField {
          */
         @ApiModelProperty(value = "标签",example = "正常")
         private String label;
-
-        /**
-         * 传递给后端的值
-         *
-         * @see AnnoTreeType.TreeData#value()
-         */
-        @ApiModelProperty(value = "传递给后端的值",example = "1")
-        private String value;
 
         /**
          * 父节点id

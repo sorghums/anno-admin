@@ -20,15 +20,14 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
+import site.sorghum.anno.anno.option.OptionDataSupplier;
 import site.sorghum.anno.anno.tpl.BaseTplRender;
+import site.sorghum.anno.anno.tree.TreeDataSupplier;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -231,16 +230,21 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             );
             anField.setOptionEnum(anno.optionType().optionEnum());
             AnnoOptionType.OptionData[] optionData = anno.optionType().value();
+            Class<? extends OptionDataSupplier> optionSupplier = anno.optionType().supplier();
             List<AnField.OptionData> optionDataList;
             if (anField.getOptionEnum() != Enum.class) {
                 optionDataList = AnnoUtil.enum2OptionData(anField.getOptionEnum());
-            }else {
+            } else if (optionData.length > 0) {
                 optionDataList = Arrays.stream(optionData)
                     .map(e -> new AnField.OptionData(e.label(), e.value()))
                     .collect(Collectors.toList());
+            }else {
+                optionDataList = Collections.emptyList();
             }
             anField.setOptionDatas(optionDataList);
-
+            if (optionSupplier != OptionDataSupplier.class){
+                anField.setOptionSupplier(optionSupplier);
+            }
 
             // 图像
             anField.setImageEnlargeAble(anno.imageType().enlargeAble());
@@ -254,12 +258,16 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 anField.setTreeTypeSql(treeQuerySqlCacheKey);
             }
             AnnoTreeType.TreeAnnoClass treeAnnoClass = anno.treeType().treeAnno();
+            Class<? extends TreeDataSupplier> treeOptionSupplier = anno.treeType().supplier();
             anField.setTreeOptionAnnoClass(
                 new AnField.TreeAnnoClass(treeAnnoClass.annoClass(), treeAnnoClass.idKey(), treeAnnoClass.labelKey(), treeAnnoClass.pidKey())
             );
+            if (treeOptionSupplier != TreeDataSupplier.class){
+                anField.setTreeOptionSupplier(treeOptionSupplier);
+            }
             AnnoTreeType.TreeData[] treeData = anno.treeType().value();
             List<AnField.TreeData> treeDataList = Arrays.stream(treeData)
-                .map(e -> new AnField.TreeData(e.id(), e.label(), e.value(), e.pid()))
+                .map(e -> new AnField.TreeData(e.id(), e.label(), e.pid()))
                 .collect(Collectors.toList());
             anField.setTreeDatas(treeDataList);
             anField.setTreeOptionIsMultiple(anno.treeType().isMultiple());

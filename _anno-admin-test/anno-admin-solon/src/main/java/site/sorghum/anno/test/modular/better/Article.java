@@ -9,8 +9,10 @@ import org.noear.wood.annotation.Table;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.*;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.db.BaseMetaModel;
+import site.sorghum.anno.test.modular.better.supplier.TestTreeSupplier;
 
 import java.util.List;
 
@@ -45,6 +47,14 @@ public class Article extends BaseMetaModel {
         search = @AnnoSearch,
         edit = @AnnoEdit(placeHolder = "请输入文章排序"), dataType = AnnoDataType.NUMBER)
     String order;
+
+    @AnnoField(
+        title = "测试树",
+        tableFieldName = "test_tree",
+        search = @AnnoSearch,
+        edit = @AnnoEdit(placeHolder = "测试树"), dataType = AnnoDataType.TREE,
+    treeType = @AnnoTreeType(supplier = TestTreeSupplier.class))
+    String tree;
 
 
     @AnnoMany2ManyField(

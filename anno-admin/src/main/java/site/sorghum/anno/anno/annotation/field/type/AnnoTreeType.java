@@ -1,5 +1,8 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
+import site.sorghum.anno.anno.option.OptionDataSupplier;
+import site.sorghum.anno.anno.tree.TreeDataSupplier;
+
 import java.lang.annotation.*;
 
 /**
@@ -28,6 +31,15 @@ public @interface AnnoTreeType {
      */
     TreeData[] value() default {};
 
+
+    /**
+     * 自定义数据提供者
+     *
+     * @return 自定义数据提供者，返回值为TreeDataSupplier的类型
+     */
+
+    Class<? extends TreeDataSupplier> supplier() default TreeDataSupplier.class;
+
     /**
      * annoMain注释的类，比如 SysPermission.class
      */
@@ -38,6 +50,10 @@ public @interface AnnoTreeType {
      */
     boolean isMultiple() default false;
 
+
+    /**
+     * 树形数据
+     */
     @interface TreeData {
         /**
          * 主键
@@ -47,11 +63,6 @@ public @interface AnnoTreeType {
          * 显示的标签
          */
         String label();
-
-        /**
-         * 显示的值
-         */
-        String value();
 
         /**
          * 父主键

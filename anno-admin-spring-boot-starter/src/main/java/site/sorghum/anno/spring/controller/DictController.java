@@ -13,6 +13,7 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.anno.controller.BaseDictController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,17 +32,26 @@ public class DictController extends BaseDictController {
     @ApiOperation("加载字典")
     @ApiImplicitParams(
         value = {
-            @ApiImplicitParam(name = "sqlKey", value = "[模式一]字典的查询sql的key", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "annoClazz", value = "[模式二]字典值的加载类", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "idKey", value = "[模式二]值的key", dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "sqlKey", value = "[模式一]字典的查询sql的key", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "annoClazz", value = "[模式二]字典值的加载类", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "idKey", value = "[模式二]值的key", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "optionAnnoClazz", value = "[模式三]字典的查询提供类", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "treeAnnoClazz", value = "[模式四]字典树的查询提供类", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "_extra", value = "额外参数", dataType = "Map<String,Object>", paramType = "body"),
         }
     )
     public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@RequestBody Map<String, Object> dictParam) {
-        return super.loadDict(MapUtil.getStr(dictParam, "sqlKey"), MapUtil.getStr(dictParam, "annoClazz"), MapUtil.getStr(dictParam, "idKey"), MapUtil.getStr(dictParam, "labelKey"));
+        return super.loadDict(
+            MapUtil.getStr(dictParam, "sqlKey"),
+            MapUtil.getStr(dictParam, "annoClazz"),
+            MapUtil.getStr(dictParam, "idKey"),
+            MapUtil.getStr(dictParam, "labelKey"),
+            MapUtil.getStr(dictParam, "optionAnnoClazz"),
+            MapUtil.getStr(dictParam, "treeAnnoClazz"),
+            MapUtil.get(dictParam, "_extra", Map.class, Collections.emptyMap())
+        );
     }
-
-
 
 
     @RequestMapping("/transOne")

@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
+import site.sorghum.anno.anno.option.OptionDataSupplier;
+
 import java.lang.annotation.*;
 
 /**
@@ -27,6 +29,14 @@ public @interface AnnoOptionType {
      * @return {@link OptionData[]}
      */
     OptionData[] value() default {};
+
+    /**
+     * 自定义数据提供者
+     *
+     * @return 自定义数据提供者，返回值为OptionDataSupplier的子类类型
+     */
+
+    Class<? extends OptionDataSupplier> supplier() default OptionDataSupplier.class;
 
     /**
      * 返回一个枚举类型的Class对象，该枚举类型用于表示选项。
