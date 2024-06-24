@@ -46,7 +46,7 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
                 List<String> tableList = null;
                 try {
                     tableList = tablesNamesFinder.getTableList(parse);
-                } catch (UnsupportedOperationException e) {
+                } catch (Exception e) {
                     printSql(cmd);
                     return;
                 }

@@ -2,11 +2,15 @@ package site.sorghum.anno;
 
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.WoodConfig;
 import org.noear.wood.wrap.NamingStrategy;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;
+import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -29,7 +33,7 @@ public class AnnoCorePlugin extends AnnoPlugin {
 
     @Override
     public int runOrder() {
-        return 1000;
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -57,8 +61,16 @@ public class AnnoCorePlugin extends AnnoPlugin {
         WoodConfig.namingStrategy = new NamingStrategy() {
             @Override
             public String classToTableName(Class<?> clz) {
-                // TODO 后续可解绑Wood
-                return super.classToTableName(clz);
+                try {
+                    AnEntity entity = AnnoBeanUtils.getBean(MetadataManager.class).getEntity(clz);
+                    String tableName = entity.getTableName();
+                    if (!entity.isVirtualTable() && StrUtil.isNotBlank(tableName)) {
+                        return tableName;
+                    }
+                    return super.classToTableName(clz);
+                } catch (Exception ignore) {
+                    return super.classToTableName(clz);
+                }
             }
 
             @Override

@@ -310,10 +310,7 @@ public class AnnoUtil {
      * @param entity 参数
      */
     public static DbCriteria simpleEntity2conditions(AnEntity entity, Map<String, Object> params) {
-
-        DbCriteria criteria = new DbCriteria();
-        criteria.setEntityName(entity.getEntityName());
-        criteria.setTableName(entity.getTableName());
+        DbCriteria criteria = DbCriteria.from(entity);
         Class<?> entityClazz = entity.getClazz();
         Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(params), entityClazz);
         List<AnField> anFields = entity.getDbAnFields();

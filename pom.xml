@@ -33,19 +33,16 @@
         <module>anno-admin-i18n</module>
         <!-- 基础JS支持包-->
         <module>anno-admin-javascript</module>
-        <!-- 在线元数据管理 -->
-        <module>anno-admin-online-meta</module>
         <!-- 快速引入包 -->
         <module>anno-admin-solon-starter</module>
         <module>anno-admin-spring-boot-starter</module>
         <!-- 任务调度：PowerJob -->
-        <module>anno-admin-powerjob-server</module>
         <!-- 实体类 -->
         <module>anno-admin-db-entity</module>
         <!-- 缓存 -->
         <module>anno-admin-cache</module>
-        <!-- warm-flow -->
-        <module>anno-admin-warm-flow-solon-plugin</module>
+        <!-- 插件 -->
+        <module>anno-admin-plugins</module>
     </modules>
 
     <properties>
@@ -87,6 +84,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-plugins</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-warm-flow-solon-plugin</artifactId>

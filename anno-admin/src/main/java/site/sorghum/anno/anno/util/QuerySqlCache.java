@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class QuerySqlCache {
 
-    private static Map<String, String> SQL_CACHE = new HashMap<>();
+    private static final Map<String, String> SQL_CACHE = new HashMap<>();
 
     public static String generateKey(String fileName, String sql) {
         return fileName + ":" + MD5Util.digestHex(sql);

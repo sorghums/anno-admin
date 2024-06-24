@@ -37,6 +37,11 @@ public class FileInfo {
     InputStream inputStream;
 
     /**
+     * 读写权限
+     */
+    String acl;
+
+    /**
      * 获取文件数据
      */
     public byte[] getBytes() {

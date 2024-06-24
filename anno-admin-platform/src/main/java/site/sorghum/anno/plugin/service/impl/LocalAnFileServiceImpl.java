@@ -36,6 +36,8 @@ public class LocalAnFileServiceImpl implements AnFileService {
      * 查找实际服务
      */
     private boolean findActualService = true;
+
+
     @Override
     public FileInfo uploadFile(FileInfo fileInfo) {
         findActualService();
@@ -84,6 +86,7 @@ public class LocalAnFileServiceImpl implements AnFileService {
             for (AnFileService anFileService : beansOfType) {
                 if (anFileService != this){
                     actualService = anFileService;
+                    findActualService = false;
                 }
             }
         }
