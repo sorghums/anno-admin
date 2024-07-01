@@ -1,6 +1,8 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
+import site.sorghum.anno.anno.form.BaseForm;
+import site.sorghum.anno.anno.form.DefaultBaseForm;
 
 import java.lang.annotation.*;
 
@@ -34,4 +36,10 @@ public @interface AnnoChart {
      * @return {@link AnnoChartField[]}
      */
     AnnoChartField[] chartFields() default {};
+
+    /**
+     * 查询表单提供类
+     * @return @{@link Class}
+     */
+    Class<? extends BaseForm> searchForm() default DefaultBaseForm.class;
 }

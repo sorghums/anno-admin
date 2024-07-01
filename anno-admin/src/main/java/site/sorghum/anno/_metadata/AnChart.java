@@ -3,6 +3,7 @@ package site.sorghum.anno._metadata;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 
@@ -33,6 +34,12 @@ public class AnChart {
     private List<AnChartField> fields;
 
     /**
+     * 搜索表单
+     */
+    @ApiModelProperty(value = "搜索表单")
+    private AnEntity searchFormEntity;
+
+    /**
      * 是否启用
      */
     @ApiModelProperty(value = "是否启用", example = "true")
@@ -41,6 +48,7 @@ public class AnChart {
     public AnChart(AnnoChart annoChart) {
         this.enable = annoChart.enable();
         this.layout = annoChart.layout();
+        this.searchFormEntity = AnnoBeanUtils.getBean(annoChart.searchForm()).getEntity();
         this.fields = Arrays.stream(annoChart.chartFields()).map(AnChartField::new).peek(
             field -> {
                 field.setId(MD5Util.digestHex(

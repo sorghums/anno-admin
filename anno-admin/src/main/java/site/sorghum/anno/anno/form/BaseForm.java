@@ -1,7 +1,9 @@
 package site.sorghum.anno.anno.form;
 
 
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno._metadata.MetadataManager;
 
 /**
  * 基础表单
@@ -9,8 +11,11 @@ import site.sorghum.anno._metadata.AnEntity;
 public interface BaseForm {
 
     /**
-     * 基础表单Entity
-     * @return 基础表单Entity
+     * 获取当前对象的实体类对象
+     *
+     * @return 返回当前对象的实体类对象
      */
-    AnEntity getEntity();
+    default AnEntity getEntity() {
+        return AnnoBeanUtils.getBean(MetadataManager.class).loadFormEntity(this.getClass());
+    }
 }
