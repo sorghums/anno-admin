@@ -1,7 +1,7 @@
 package site.sorghum.anno.anno.chart.supplier;
 
 
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 
 /**
  * 图表供应商
@@ -19,5 +19,5 @@ public interface ChartSupplier<T> {
      * @param param 参数
      * @return {@link T}
      */
-    T get(CommenParam param);
+    T get(CommonParam param);
 }

@@ -1,10 +1,10 @@
 package site.sorghum.anno.anno.chart;
 
 
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 图表服务
@@ -23,5 +23,5 @@ public interface AnChartService {
      * @param params  params
      * @return 对象
      */
-    List<AnChartResponse<Object>> getChart(String clazz, String fieldId, Map<String, Object> params);
+    List<AnChartResponse<Object>> getChart(String clazz, String fieldId, CommonParam params);
 }

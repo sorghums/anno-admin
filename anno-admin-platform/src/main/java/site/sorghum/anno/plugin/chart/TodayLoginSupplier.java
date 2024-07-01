@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno.anno.chart.supplier.IntegerSupplier;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 
 /**
  * 今天登录供应商
@@ -21,7 +21,7 @@ public class TodayLoginSupplier implements IntegerSupplier {
     DbContext dbContext;
 
     @Override
-    public Integer get(CommenParam param) {
+    public Integer get(CommonParam param) {
         try {
             return (int) dbContext.table("an_login_log").where("latest_time >= curdate()").selectCount();
         } catch (Exception e) {

@@ -4,7 +4,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno._common.entity.IgnoreCaseHashMap;
 import site.sorghum.anno.anno.chart.supplier.CommonChartSupplier;
 
@@ -24,7 +24,7 @@ public class AccessDeviceSupplier implements CommonChartSupplier {
     DbContext dbContext;
 
     @Override
-    public List<PieChartResponse> get(CommenParam param) {
+    public List<PieChartResponse> get(CommonParam param) {
         try {
             List<IgnoreCaseHashMap> mapList = dbContext.sql("select device as item,count(*) as itemCount from an_login_log group by device")
                 .getMapList()

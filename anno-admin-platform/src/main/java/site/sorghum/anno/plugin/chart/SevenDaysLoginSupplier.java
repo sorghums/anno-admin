@@ -5,7 +5,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno.anno.chart.supplier.IntegerSupplier;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class SevenDaysLoginSupplier implements IntegerSupplier {
     DbContext dbContext;
 
     @Override
-    public Integer get(CommenParam param) {
+    public Integer get(CommonParam param) {
         try {
             Date date = DateUtil.offsetDay(DateUtil.date(),-7);
             return (int) dbContext.table("an_login_log").where("1=1").andLte("latest_time", date).selectCount();

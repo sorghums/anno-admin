@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno._metadata.AnChart;
 import site.sorghum.anno._metadata.AnChartField;
 import site.sorghum.anno._metadata.AnEntity;
@@ -14,7 +15,6 @@ import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -34,7 +34,7 @@ public class AnChartServiceImpl implements AnChartService {
     PermissionProxy permissionProxy;
 
     @Override
-    public List<AnChartResponse<Object>> getChart(String clazz, String fieldId, Map<String, Object> params) {
+    public List<AnChartResponse<Object>> getChart(String clazz, String fieldId, CommonParam params) {
         AnEntity entity = metadataManager.getEntity(clazz);
         AnChart anChart = entity.getAnChart();
         if (!anChart.getEnable()) {

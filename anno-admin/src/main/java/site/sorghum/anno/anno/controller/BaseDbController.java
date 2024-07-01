@@ -19,7 +19,7 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
@@ -287,7 +287,7 @@ public class BaseDbController {
         return AnnoResult.succeed();
     }
 
-    public AnnoResult<String> runJavaCmd(String clazz, CommenParam map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(String clazz, CommonParam map) throws ClassNotFoundException {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
@@ -306,7 +306,7 @@ public class BaseDbController {
     }
 
 
-    private List<AnChartResponse<Object>> chartData(String clazz, String fieldId, Map<String, Object> params) {
+    private List<AnChartResponse<Object>> chartData(String clazz, String fieldId, CommonParam params) {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         if (StrUtil.isNotBlank(entity.getPermissionCode())) {
@@ -318,12 +318,12 @@ public class BaseDbController {
         return anChartService.getChart(clazz, fieldId, params);
     }
 
-    public AnnoResult<List<AnChartResponse<Object>>> getChart(String clazz, String fieldId, Map<String, Object> params) {
+    public AnnoResult<List<AnChartResponse<Object>>> getChart(String clazz, String fieldId, CommonParam params) {
         List<AnChartResponse<Object>> chart =chartData(clazz, fieldId, params);
         return AnnoResult.succeed(chart);
     }
 
-    public AnnoResult<AnChartResponse<Object>> getOneChart(String clazz, String fieldId, Map<String, Object> params) {
+    public AnnoResult<AnChartResponse<Object>> getOneChart(String clazz, String fieldId, CommonParam params) {
         List<AnChartResponse<Object>> chart = chartData(clazz, fieldId, params);
         if (CollUtil.isEmpty(chart)) {
             return AnnoResult.succeed();

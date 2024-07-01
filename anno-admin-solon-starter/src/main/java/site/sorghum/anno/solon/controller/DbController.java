@@ -23,7 +23,7 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -227,7 +227,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body CommenParam map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@Path String clazz, @Body CommonParam map) throws ClassNotFoundException {
         return super.runJavaCmd(clazz, map);
     }
 
@@ -243,7 +243,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<List<AnChartResponse<Object>>> chartData(@Path String clazz, @Body HashMap map) throws ClassNotFoundException {
+    public AnnoResult<List<AnChartResponse<Object>>> chartData(@Path String clazz, @Body CommonParam map) throws ClassNotFoundException {
         if (map == null) {
             throw new BizException("body参数不能为空");
         }
@@ -261,7 +261,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "[[param]]", value = "参数", required = true, dataType = "String", paramType = "query"),
         }
     )
-    public AnnoResult<AnChartResponse<Object>> oneChartData(@Path String clazz, @Body HashMap map) throws ClassNotFoundException {
+    public AnnoResult<AnChartResponse<Object>> oneChartData(@Path String clazz, @Body CommonParam map) throws ClassNotFoundException {
         if (map == null) {
             throw new BizException("body参数不能为空");
         }

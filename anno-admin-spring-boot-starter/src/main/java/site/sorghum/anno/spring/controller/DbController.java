@@ -17,7 +17,7 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
-import site.sorghum.anno._common.entity.CommenParam;
+import site.sorghum.anno._common.entity.CommonParam;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -119,15 +119,15 @@ public class DbController extends BaseDbController {
     }
 
     @PostMapping(value = "/{clazz}/runJavaCmd", consumes = "application/json")
-    public AnnoResult<String> runJavaCmd(@PathVariable String clazz, @RequestBody CommenParam map) throws ClassNotFoundException {
+    public AnnoResult<String> runJavaCmd(@PathVariable String clazz, @RequestBody CommonParam map) throws ClassNotFoundException {
         if (map == null) {
-            map = new CommenParam();
+            map = new CommonParam();
         }
         return super.runJavaCmd(clazz, map);
     }
 
     @PostMapping(value = "/{clazz}/chartData", consumes = "application/json")
-    public AnnoResult<List<AnChartResponse<Object>>> chartData(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
+    public AnnoResult<List<AnChartResponse<Object>>> chartData(@PathVariable String clazz, @RequestBody CommonParam map) throws ClassNotFoundException {
         if (map == null) {
             throw new BizException("body参数不能为空");
         }
@@ -135,7 +135,7 @@ public class DbController extends BaseDbController {
     }
 
     @PostMapping(value = "/{clazz}/oneChartData", consumes = "application/json")
-    public AnnoResult<AnChartResponse<Object>> oneChartData(@PathVariable String clazz, @RequestBody HashMap map) throws ClassNotFoundException {
+    public AnnoResult<AnChartResponse<Object>> oneChartData(@PathVariable String clazz, @RequestBody CommonParam map) throws ClassNotFoundException {
         if (map == null) {
             throw new BizException("body参数不能为空");
         }

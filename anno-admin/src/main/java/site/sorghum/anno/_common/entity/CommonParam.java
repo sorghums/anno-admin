@@ -11,7 +11,7 @@ import java.util.HashMap;
  * @author Sorghum
  * @since 2024/06/20
  */
-public class CommenParam extends HashMap<String, Object> {
+public class CommonParam extends HashMap<String, Object> {
 
     /**
      * 将指定键对应的值转换为指定类型的对象
@@ -29,8 +29,8 @@ public class CommenParam extends HashMap<String, Object> {
      *
      * @return 返回一个包含额外输入参数的Map，其中键为字符串类型，值为对象类型
      */
-    public CommenParam getExtraInput() {
-        return JSONUtil.toBean(get("_extra"), CommenParam.class);
+    public CommonParam getExtraInput() {
+        return JSONUtil.toBean(get("_extra"), CommonParam.class);
     }
 
     /**
