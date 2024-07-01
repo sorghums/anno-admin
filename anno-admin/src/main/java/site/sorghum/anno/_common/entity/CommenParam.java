@@ -1,4 +1,4 @@
-package site.sorghum.anno.anno.javacmd;
+package site.sorghum.anno._common.entity;
 
 import cn.hutool.core.convert.Convert;
 import site.sorghum.anno._common.util.JSONUtil;
@@ -6,17 +6,16 @@ import site.sorghum.anno._common.util.JSONUtil;
 import java.util.HashMap;
 
 /**
- * Java命令行参数
+ * 通用参数
  *
  * @author Sorghum
  * @since 2024/06/20
  */
-public class JavaCmdParam extends HashMap<String, Object> {
+public class CommenParam extends HashMap<String, Object> {
 
     /**
      * 将指定键对应的值转换为指定类型的对象
      *
-     * @param key 键值
      * @param clazz 目标对象的类型
      * @param <T> 目标对象的泛型类型
      * @return 转换后的对象，如果转换失败则返回null
@@ -30,8 +29,8 @@ public class JavaCmdParam extends HashMap<String, Object> {
      *
      * @return 返回一个包含额外输入参数的Map，其中键为字符串类型，值为对象类型
      */
-    public JavaCmdParam getExtraInput() {
-        return JSONUtil.toBean(get("_extra"), JavaCmdParam.class);
+    public CommenParam getExtraInput() {
+        return JSONUtil.toBean(get("_extra"), CommenParam.class);
     }
 
     /**

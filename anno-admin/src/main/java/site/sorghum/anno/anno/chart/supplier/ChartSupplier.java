@@ -1,7 +1,7 @@
 package site.sorghum.anno.anno.chart.supplier;
 
 
-import java.util.Map;
+import site.sorghum.anno._common.entity.CommenParam;
 
 /**
  * 图表供应商
@@ -14,10 +14,10 @@ public interface ChartSupplier<T> {
 
 
     /**
-     * 收到
+     * 提供器
      *
      * @param param 参数
      * @return {@link T}
      */
-    T get(Map<String, Object> param);
+    T get(CommenParam param);
 }

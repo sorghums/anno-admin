@@ -4,13 +4,11 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno._common.entity.CommenParam;
 import site.sorghum.anno._common.entity.IgnoreCaseHashMap;
-import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.chart.supplier.CommonChartSupplier;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 访问浏览器供应商
@@ -26,7 +24,7 @@ public class AccessBrowserSupplier implements CommonChartSupplier {
     DbContext dbContext;
 
     @Override
-    public List<PieChartResponse> get(Map<String, Object> param) {
+    public List<PieChartResponse> get(CommenParam param) {
         try {
             List<IgnoreCaseHashMap> mapList =
                 dbContext.sql("select browser as item,count(*) as itemCount from an_login_log group by browser")

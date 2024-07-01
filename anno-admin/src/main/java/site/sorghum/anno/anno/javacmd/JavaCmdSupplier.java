@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.javacmd;
 
+import site.sorghum.anno._common.entity.CommenParam;
+
 public interface JavaCmdSupplier {
 
     /**
@@ -9,5 +11,5 @@ public interface JavaCmdSupplier {
      * @param param 参数
      * @return {@link String}
      */
-    String run(JavaCmdParam param);
+    String run(CommenParam param);
 }

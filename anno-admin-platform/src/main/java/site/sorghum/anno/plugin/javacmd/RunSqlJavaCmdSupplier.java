@@ -2,7 +2,7 @@ package site.sorghum.anno.plugin.javacmd;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import site.sorghum.anno.anno.javacmd.JavaCmdParam;
+import site.sorghum.anno._common.entity.CommenParam;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.plugin.service.AnSqlService;
 
@@ -13,7 +13,7 @@ public class RunSqlJavaCmdSupplier implements JavaCmdSupplier {
     AnSqlService anSqlService;
 
     @Override
-    public String run(JavaCmdParam param) {
+    public String run(CommenParam param) {
         anSqlService.runSql(param);
         return "执行成功";
     }

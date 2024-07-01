@@ -9,6 +9,7 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
+import site.sorghum.anno._common.entity.CommenParam;
 import site.sorghum.anno.anno.chart.supplier.CommonChartSupplier;
 
 import java.util.*;
@@ -28,7 +29,7 @@ public class TrafficTrendSupplier implements CommonChartSupplier {
     DbContext dbContext;
 
     @Override
-    public List<PieChartResponse> get(Map<String, Object> param) {
+    public List<PieChartResponse> get(CommenParam param) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         List<PieChartResponse> list = new ArrayList<>();
