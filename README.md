@@ -105,6 +105,7 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 修复验证码校验大小写的问题
 + 支持enum作为option选项，新增注解：@AnnoEnumLabel/AnnoEnumValue注解
 + 新增用户重置密码功能
++ 图表支持自定义筛选条件
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 
