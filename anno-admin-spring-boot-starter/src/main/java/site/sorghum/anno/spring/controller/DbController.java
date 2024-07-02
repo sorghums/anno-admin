@@ -7,6 +7,7 @@ import org.noear.wood.IPage;
 import org.springframework.web.bind.annotation.*;
 import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
@@ -17,7 +18,6 @@ import site.sorghum.anno.anno.entity.req.AnnoPageRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreeListRequestAnno;
 import site.sorghum.anno.anno.entity.req.AnnoTreesRequestAnno;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
-import site.sorghum.anno._common.entity.CommonParam;
 
 import java.sql.SQLException;
 import java.util.HashMap;

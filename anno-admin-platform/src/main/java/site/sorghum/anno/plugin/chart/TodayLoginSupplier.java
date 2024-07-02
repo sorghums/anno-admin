@@ -4,8 +4,8 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
-import site.sorghum.anno.anno.chart.supplier.IntegerSupplier;
 import site.sorghum.anno._common.entity.CommonParam;
+import site.sorghum.anno.anno.chart.supplier.IntegerSupplier;
 
 /**
  * 今天登录供应商

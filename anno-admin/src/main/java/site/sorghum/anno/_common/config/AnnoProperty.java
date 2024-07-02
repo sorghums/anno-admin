@@ -36,7 +36,7 @@ public class AnnoProperty {
     /**
      * 接口服务地址
      */
-    private String apiServerUrl = "http://localhost:8866";
+    private String apiServerUrl = "http://localhost:" + System.getProperty("server.port");
 
     /**
      * 是否打印执行的 sql

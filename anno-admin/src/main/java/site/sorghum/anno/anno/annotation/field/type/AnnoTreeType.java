@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
-import site.sorghum.anno.anno.option.OptionDataSupplier;
 import site.sorghum.anno.anno.tree.TreeDataSupplier;
 
 import java.lang.annotation.*;

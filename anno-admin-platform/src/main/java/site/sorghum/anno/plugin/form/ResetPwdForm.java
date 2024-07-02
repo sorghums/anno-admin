@@ -3,9 +3,6 @@ package site.sorghum.anno.plugin.form;
 
 import jakarta.inject.Named;
 import lombok.Data;
-import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
