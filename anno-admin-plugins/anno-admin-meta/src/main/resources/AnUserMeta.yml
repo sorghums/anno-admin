@@ -3,6 +3,7 @@ entityName: AnUserMeta
 tableName: an_user
 extend: site.sorghum.anno.suppose.model.BaseOrgMetaModel
 annoLeftTree:
+  enable: true
   leftTreeName: "组织"
   catKey: "orgId"
   treeClass: site.sorghum.anno.plugin.ao.AnOrg
@@ -44,8 +45,15 @@ columns:
     title: "状态"
     tableFieldName: "enable"
     dataType: RADIO
+    optionType:
+      value:
+        - label: "启用"
+          value: "1"
+        - label: "禁用"
+          value: "0"
 columnButtons:
   - name: "重置密码"
     baseForm: site.sorghum.anno.plugin.form.ResetPwdForm
     javaCmd:
+      enable: true
       runSupplier: site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier

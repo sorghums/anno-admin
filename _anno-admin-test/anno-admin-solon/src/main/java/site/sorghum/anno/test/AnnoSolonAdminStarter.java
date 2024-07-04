@@ -30,7 +30,8 @@ public class AnnoSolonAdminStarter {
         MetadataManager bean = Solon.context().getBean(MetadataManager.class);
         Map<TypeDescription, Class<?>> typeDescriptionClassMap = DemoUtil.loadClass();
         for (Class<?>  value: typeDescriptionClassMap.values()) {
-            bean.loadEntity(value);
+            bean.loadEntity(value,true);
+            bean.loadEntity(value,true);
         }
         bean.refresh();
     }

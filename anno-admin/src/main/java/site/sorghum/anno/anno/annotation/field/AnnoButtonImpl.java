@@ -57,32 +57,44 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 一对多关联按钮
      */
-    private O2MJoinButtonImpl o2mJoinButton = new O2MJoinButtonImpl();
+    private O2MJoinButtonImpl o2mJoinButton = new O2MJoinButtonImpl(){{
+        setEnable(false);
+    }};
 
     /**
      * 多对多关联设置【新】
      */
-    private M2MRelationImpl m2mRelation = new M2MRelationImpl();
+    private M2MRelationImpl m2mRelation = new M2MRelationImpl(){{
+        setEnable(false);
+    }};
 
     /**
      * 多对多关联按钮
      */
-    private M2MJoinButtonImpl m2mJoinButton = new M2MJoinButtonImpl();
+    private M2MJoinButtonImpl m2mJoinButton = new M2MJoinButtonImpl(){{
+        setEnable(false);
+    }};
 
     /**
      * java命令行
      */
-    private JavaCmdImpl javaCmd = new JavaCmdImpl();
+    private JavaCmdImpl javaCmd = new JavaCmdImpl(){{
+        setEnable(false);
+    }};
 
     /**
      * 下钻按钮【未启用】
      */
-    private DrillDownButtonImpl drillDownButton = new DrillDownButtonImpl();
+    private DrillDownButtonImpl drillDownButton = new DrillDownButtonImpl(){{
+        setEnable(false);
+    }};
 
     /**
      * 模板视图按钮
      */
-    private AnnoTplImpl annoTpl = new AnnoTplImpl();
+    private AnnoTplImpl annoTpl = new AnnoTplImpl(){{
+        setEnable(false);
+    }};
 
     @Override
     public String name() {
@@ -157,6 +169,7 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 一对多关联按钮的内部类
      */
+    @Data
     public static class O2MJoinButtonImpl implements O2MJoinButton {
         /**
          * 连表查询
@@ -207,6 +220,7 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 多对多关联设置的内部类
      */
+    @Data
     public static class M2MRelationImpl implements M2MRelation {
         /**
          * 对象目标类
@@ -290,6 +304,7 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 多对多关联按钮的内部类
      */
+    @Data
     public static class M2MJoinButtonImpl implements M2MJoinButton {
         /**
          * 目标表
@@ -555,6 +570,7 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 模板视图按钮的内部类
      */
+    @Data
     public static class AnnoTplImpl implements AnnoTpl {
         /**
          * 启用

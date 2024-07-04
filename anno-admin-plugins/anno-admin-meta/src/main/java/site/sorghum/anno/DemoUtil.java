@@ -32,7 +32,7 @@ public class DemoUtil {
     @SneakyThrows
     public static Map<TypeDescription, Class<?>> loadClass() {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        Dict dict = YamlUtil.loadByPath("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-meta\\src\\main\\resources\\AnUserMeta.yml");
+        Dict dict = YamlUtil.loadByPath("C:\\Code\\anno-admin\\anno-admin-plugins\\anno-admin-meta\\src\\main\\resources\\AnUserMeta.yml");
         AnMeta anMeta = JSONUtil.toBean(dict, AnMeta.class);
         DynamicType.Builder<?> builder;
         ByteBuddy byteBuddy = new ByteBuddy();
@@ -61,7 +61,7 @@ public class DemoUtil {
         DynamicType.Unloaded<?> dynamicType = builder
             .make();
         // 打印dynamicType
-        dynamicType.toJar(new File("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-meta\\src\\main\\resources\\_anno_proxy.jar"));
+        dynamicType.toJar(new File("C:\\Code\\anno-admin\\anno-admin-plugins\\anno-admin-meta\\src\\main\\resources\\_anno_proxy.jar"));
         return dynamicType.load(classLoader)
             .getAllLoaded();
     }

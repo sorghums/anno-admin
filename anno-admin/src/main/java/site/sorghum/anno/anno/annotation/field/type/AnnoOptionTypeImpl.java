@@ -24,7 +24,7 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
     /**
      * 选择数据
      */
-    private OptionData[] value = {};
+    private OptionDataImpl[] value = {};
 
     /**
      * 自定义数据提供者

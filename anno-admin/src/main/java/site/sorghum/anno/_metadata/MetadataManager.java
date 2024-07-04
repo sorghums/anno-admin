@@ -40,8 +40,29 @@ public class MetadataManager {
      * @param clazz anno 实体类
      */
     public AnEntity loadEntity(Class<?> clazz) {
+        return loadEntity(clazz, false);
+    }
+
+    /**
+     * 从实体类中加载表单元数据，已存在的实体不会重复加载
+     *
+     * @param clazz anno 实体类
+     */
+    public AnEntity loadFormEntity(Class<?> clazz) {
+        return loadFormEntity(clazz, false);
+    }
+
+
+    /**
+     * 从实体类中加载元数据，已存在的实体不会重复加载
+     *
+     * @param clazz     anno 实体类
+     * @param forceLoad 强制重新加载
+     * @return {@link AnEntity }
+     */
+    public AnEntity loadEntity(Class<?> clazz, boolean forceLoad) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
-        if (entityMap.containsKey(entityName)) {
+        if (!forceLoad && entityMap.containsKey(entityName)) {
             return entityMap.get(entityName);
         }
 
@@ -54,11 +75,13 @@ public class MetadataManager {
     /**
      * 从实体类中加载表单元数据，已存在的实体不会重复加载
      *
-     * @param clazz anno 实体类
+     * @param clazz     anno 实体类
+     * @param forceLoad 强制重新加载
+     * @return {@link AnEntity }
      */
-    public AnEntity loadFormEntity(Class<?> clazz) {
+    public AnEntity loadFormEntity(Class<?> clazz, boolean forceLoad) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
-        if (entityMap.containsKey(entityName)) {
+        if (!forceLoad && entityMap.containsKey(entityName)) {
             return entityMap.get(entityName);
         }
         AnEntity entity = entityMetadataLoader.loadForm(clazz);

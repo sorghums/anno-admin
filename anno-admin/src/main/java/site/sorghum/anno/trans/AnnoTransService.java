@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
@@ -106,6 +107,11 @@ public class AnnoTransService {
                     Map<String, String> optionsMap = field.getOptionDatas().stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
                     fixedDictTrans(t, optionsMap, field.getFieldName());
                 }
+                if (field.getOptionSupplier() != null) {
+                    List<AnField.OptionData> optionDataList = AnnoBeanUtils.getBean(field.getOptionSupplier()).getOptionDataList();
+                    Map<String, String> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                }
             }
             if (dataType == AnnoDataType.TREE) {
                 String sqlIdKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(), field.getTreeOptionAnnoClass().getIdKey());
@@ -159,7 +165,12 @@ public class AnnoTransService {
                             , null));
                 }
                 if (CollUtil.isNotEmpty(field.getTreeDatas())) {
-                    Map<String, String> optionsMap = field.getOptionDatas().stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
+                    Map<String, String> optionsMap = field.getTreeDatas().stream().collect(Collectors.toMap(AnField.TreeData::getId, AnField.TreeData::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                }
+                if (field.getTreeOptionSupplier() != null) {
+                    List<AnField.TreeData> treeDataList = AnnoBeanUtils.getBean(field.getTreeOptionSupplier()).getTreeDataList();
+                    Map<String, String> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnField.TreeData::getId, AnField.TreeData::getLabel));
                     fixedDictTrans(t, optionsMap, field.getFieldName());
                 }
             }
@@ -189,7 +200,7 @@ public class AnnoTransService {
             if (!finalResult.isEmpty()) {
                 finalResult.setLength(finalResult.length() - 1);
             }
-            tansMap.put(fieldName.toLowerCase() + "_label",finalResult);
+            tansMap.put(fieldName.toLowerCase() + "_label", finalResult);
         }
     }
 
