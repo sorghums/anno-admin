@@ -86,6 +86,11 @@
         <dependencies>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-meta</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-plugins</artifactId>
                 <version>${project.version}</version>
             </dependency>

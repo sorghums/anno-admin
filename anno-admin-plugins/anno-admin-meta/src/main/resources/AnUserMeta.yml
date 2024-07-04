@@ -1,0 +1,51 @@
+name: "动态用户"
+entityName: AnUserMeta
+tableName: an_user
+extend: site.sorghum.anno.suppose.model.BaseOrgMetaModel
+annoLeftTree:
+  leftTreeName: "组织"
+  catKey: "orgId"
+  treeClass: site.sorghum.anno.plugin.ao.AnOrg
+annoOrder:
+  - orderType: "desc"
+    orderValue: "id"
+permission:
+  baseCode: "an_user"
+  baseCodeTranslate: "用户管理"
+columns:
+  - javaName: "avatar"
+    javaType: java.lang.String
+    title: "头像"
+    tableFieldName: "avatar"
+    dataType: AVATAR
+    edit:
+      addEnable: true
+      editEnable: true
+      placeHolder: "请输入头像"
+    imageType:
+      width: 50
+      height: 50
+  - javaName: "name"
+    javaType: java.lang.String
+    title: "姓名"
+    tableFieldName: "name"
+    dataType: STRING
+    edit:
+      addEnable: true
+      editEnable: true
+      notNull: true
+      placeHolder: "请输入姓名"
+    search:
+      enable: true
+      queryType: LIKE
+      placeHolder: "请输入姓名"
+  - javaName: "enable"
+    javaType: java.lang.String
+    title: "状态"
+    tableFieldName: "enable"
+    dataType: RADIO
+columnButtons:
+  - name: "重置密码"
+    baseForm: site.sorghum.anno.plugin.form.ResetPwdForm
+    javaCmd:
+      runSupplier: site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier

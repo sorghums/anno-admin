@@ -5,23 +5,32 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>site.sorghum.anno</groupId>
-        <artifactId>anno-admin-parent</artifactId>
+        <artifactId>anno-admin-plugins</artifactId>
         <version>1.1.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>anno-admin-plugins</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>anno-admin-meta</artifactId>
+
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <modules>
-        <module>anno-admin-powerjob-server</module>
-        <module>anno-admin-warm-flow-solon-plugin</module>
-        <module>anno-admin-online-meta</module>
-        <module>anno-admin-x-file-storage</module>
-        <module>anno-admin-meta</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-platform</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>1.14.13</version>
+        </dependency>
+    </dependencies>
 </project>

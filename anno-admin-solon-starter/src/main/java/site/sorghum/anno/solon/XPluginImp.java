@@ -158,18 +158,7 @@ public class XPluginImp implements Plugin {
             AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
             if (annoMain != null) {
                 // 加载anEntity
-                AnEntity anEntity = metadataManager.loadEntity(clazz);
-                // 缓存处理类
-                AnnoClazzCache.put(clazz.getSimpleName(), clazz);
-                // 缓存字段信息
-                for (AnField field : anEntity.getFields()) {
-                    String columnName = field.getTableFieldName();
-                    AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getFieldName());
-                    // 同时保存其实际节点的类的字段信息
-                    if (clazz != field.getDeclaringClass()) {
-                        AnnoFieldCache.putFieldName2FieldAndSql(field.getDeclaringClass(), columnName, field.getFieldName());
-                    }
-                }
+                metadataManager.loadEntity(clazz);
             }
         }
         metadataManager.refresh();

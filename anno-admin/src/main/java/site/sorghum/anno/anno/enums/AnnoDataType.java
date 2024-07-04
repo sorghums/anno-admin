@@ -38,4 +38,22 @@ public enum AnnoDataType {
      */
     private final String name;
 
+
+    /**
+     * 根据枚举名称获取枚举值
+     *
+     * @param INSTANCE_NAME 枚举名称
+     * @return 对应的枚举值
+     * @throws IllegalArgumentException 如果未找到对应枚举值，则抛出此异常
+     */
+    public static AnnoDataType getByName(String INSTANCE_NAME) {
+        AnnoDataType[] annoDataTypes = AnnoDataType.values();
+        for (AnnoDataType INSTANCE : annoDataTypes) {
+            if(INSTANCE_NAME.equals(INSTANCE.toString())){
+                return INSTANCE;
+            }
+        }
+        throw new IllegalArgumentException("未找到对应枚举");
+    }
+
 }
