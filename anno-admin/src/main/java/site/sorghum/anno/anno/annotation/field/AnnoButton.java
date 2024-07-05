@@ -78,7 +78,7 @@ public @interface AnnoButton {
      *
      * @return {@link O2MJoinButton}
      */
-    M2MJoinButton m2mJoinButton() default @M2MJoinButton(enable = false, mediumTableClass = Object.class);
+    M2MJoinButton m2mJoinButton() default @M2MJoinButton(enable = false, mediumTableClazz = Object.class);
 
     /**
      * java命令行
@@ -161,7 +161,7 @@ public @interface AnnoButton {
          *
          * @return {@link Class}<{@link ?}>
          */
-        Class<?> mediumTableClass();
+        Class<?> mediumTableClazz();
 
 
         /**

@@ -28,7 +28,7 @@ public class AnnoMtm {
     /**
      * 多对多中间类
      */
-    String m2mMediumTableClass;
+    String m2mMediumTableClazz;
     /**
      * 多对多中间表的字段【本表】
      */
@@ -62,7 +62,7 @@ public class AnnoMtm {
      */
     public String getM2mMediumThisFieldSql() {
         try {
-            return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClass), m2mMediumThisField);
+            return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClazz), m2mMediumThisField);
         } catch (BizException exception) {
             return m2mMediumThisField;
         }
@@ -76,7 +76,7 @@ public class AnnoMtm {
      */
     public String getM2mMediumTargetFieldSql() {
         try {
-            return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClass), m2mMediumTargetField);
+            return AnnoFieldCache.getSqlColumnByJavaName(AnnoFieldCache.getClazzByEntityName(m2mMediumTableClazz), m2mMediumTargetField);
         } catch (BizException exception) {
             return m2mMediumTargetField;
         }

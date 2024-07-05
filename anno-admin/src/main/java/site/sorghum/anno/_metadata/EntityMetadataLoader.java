@@ -367,7 +367,7 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
                 AnnoMtm annoMtm = new AnnoMtm();
                 annoMtm.setM2mJoinTargetClazz(getEntityName(anno.m2mJoinButton().joinTargetClazz()));
                 annoMtm.setM2mJoinThisClazz(getEntityName(clazz));
-                annoMtm.setM2mMediumTableClass(getEntityName(anno.m2mJoinButton().mediumTableClass()));
+                annoMtm.setM2mMediumTableClazz(getEntityName(anno.m2mJoinButton().mediumTableClazz()));
                 annoMtm.setM2mMediumThisField(anno.m2mJoinButton().mediumThisField());
                 annoMtm.setM2mMediumTargetField(anno.m2mJoinButton().mediumTargetField());
                 annoMtm.setM2mJoinThisClazzField(anno.m2mJoinButton().joinThisClazzField());

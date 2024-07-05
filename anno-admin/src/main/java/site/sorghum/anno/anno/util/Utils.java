@@ -46,10 +46,10 @@ public class Utils {
 
     public static <T> String m2mSql(Map<?, ?> param) {
         init();
-        if (StrUtil.isBlank(MapUtil.getStr(param, "m2mMediumTableClass"))) {
+        if (StrUtil.isBlank(MapUtil.getStr(param, "m2mMediumTableClazz"))) {
             return "";
         }
-        AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "m2mMediumTableClass"));
+        AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "m2mMediumTableClazz"));
         String mediumOtherField =AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumTargetField"));
         String thisValue = MapUtil.getStr(param, "joinValue");
         String mediumThisField = AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumThisField"));
@@ -63,7 +63,7 @@ public class Utils {
         if (Objects.isNull(annoMtm)) {
             return "";
         }
-        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
+        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
         String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
         String mediumThisFieldSql = annoMtm.getM2mMediumThisFieldSql();
         String mediumTable = mediumEntity.getTableName();

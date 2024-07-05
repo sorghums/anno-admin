@@ -9,7 +9,6 @@ import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoFieldImpl;
 import site.sorghum.anno.annotation.AnnoIgnore;
 
-import java.security.Permission;
 import java.util.List;
 
 @Data

@@ -206,7 +206,7 @@ public class DbController extends BaseDbController {
     @ApiImplicitParams(
         value = {
             @ApiImplicitParam(name = "clearAll", value = "是否清空所有关系", example = "false", required = true, dataType = "boolean", paramType = "query"),
-            @ApiImplicitParam(name = "m2mMediumTableClass", value = "多对多中间表", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "m2mMediumTableClazz", value = "多对多中间表", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumTargetField", value = "多对多中间表目标字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "m2mMediumThisField", value = "多对多中间表本表字段", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),

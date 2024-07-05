@@ -186,7 +186,7 @@ public class BaseDbController {
         permissionProxy.checkPermission(entity, PermissionProxy.DELETE);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
+        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
         String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
         List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
         String thisValue = MapUtil.getStr(param, "thisJoinValue");
@@ -256,7 +256,7 @@ public class BaseDbController {
             throw new BizException("未找到对应的多对多数据!");
         }
         // 中间表
-        AnEntity entity = metadataManager.getEntity(annoMtm.getM2mMediumTableClass());
+        AnEntity entity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
         String[] split;
         Object ids = param.get("targetJoinValue");
         // 字段一

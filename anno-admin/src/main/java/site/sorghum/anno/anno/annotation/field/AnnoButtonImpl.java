@@ -324,7 +324,7 @@ public class AnnoButtonImpl implements AnnoButton {
         /**
          * 中间表的类
          */
-        private Class<?> mediumTableClass = Object.class;
+        private Class<?> mediumTableClazz = Object.class;
 
         /**
          * 中间表的字段【目标表】
@@ -363,8 +363,8 @@ public class AnnoButtonImpl implements AnnoButton {
         }
 
         @Override
-        public Class<?> mediumTableClass() {
-            return mediumTableClass;
+        public Class<?> mediumTableClazz() {
+            return mediumTableClazz;
         }
 
         @Override

@@ -72,7 +72,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined",
         m2mJoinButton = @AnnoButton.M2MJoinButton(
         joinTargetClazz = AnRole.class,
-        mediumTableClass = AnUserRole.class,
+        mediumTableClazz = AnUserRole.class,
         mediumTargetField = "roleId",
         mediumThisField = "userId"
     ))
