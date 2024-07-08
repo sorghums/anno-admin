@@ -93,6 +93,16 @@ public class AnnoUtil {
      * @return {@link List<String>}
      */
     public static List<FieldAnnoField> getAnnoFields(Class<?> clazz) {
+        return getAnnoFields(clazz, true);
+    }
+
+    /**
+     * 获取表字段
+     *
+     * @param clazz 类
+     * @return {@link List<String>}
+     */
+    public static List<FieldAnnoField> getAnnoFields(Class<?> clazz, boolean deepSuper) {
         List<FieldAnnoField> annoFieldFields = CollUtil.newArrayList();
         List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : allClass) {
@@ -143,6 +153,9 @@ public class AnnoUtil {
                     }
                     annoFieldFields.add(new FieldAnnoField(field, annotation, primaryKey));
                 }
+                if (!deepSuper) {
+                    return annoFieldFields;
+                }
             }
         }
         return annoFieldFields;
@@ -176,6 +189,16 @@ public class AnnoUtil {
      * @return {@link List<String>}
      */
     public static List<Field> getAnnoButtonFields(Class<?> clazz) {
+        return getAnnoButtonFields(clazz,true);
+    }
+
+    /**
+     * 获取表字段
+     *
+     * @param clazz 类
+     * @return {@link List<String>}
+     */
+    public static List<Field> getAnnoButtonFields(Class<?> clazz,boolean deepSuper) {
         List<Field> annoFieldFields = CollUtil.newArrayList();
         List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : allClass) {
@@ -186,10 +209,12 @@ public class AnnoUtil {
                     annoFieldFields.add(declaredField);
                 }
             }
+            if(!deepSuper) {
+                return annoFieldFields;
+            }
         }
         return annoFieldFields;
     }
-
 
     /**
      * 得到主键字段
@@ -378,7 +403,7 @@ public class AnnoUtil {
         return nParam;
     }
 
-    public static AnnoForm getAnnoForm(Class<?> clazz)  {
+    public static AnnoForm getAnnoForm(Class<?> clazz) {
         return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoForm.class);
     }
 }
