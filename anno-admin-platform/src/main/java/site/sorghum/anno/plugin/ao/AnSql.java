@@ -7,6 +7,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoCodeType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.db.PrimaryKeyModel;
@@ -85,8 +86,11 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
     @AnnoField(
         title = "SQL内容",
         tableFieldName = "sql_content",
-        dataType = AnnoDataType.TEXT_AREA,
-        show = false
+        dataType = AnnoDataType.CODE_EDITOR,
+        codeType = @AnnoCodeType(
+            mode = "sql"
+        ),
+        show = true
     )
     private String sqlContent;
 

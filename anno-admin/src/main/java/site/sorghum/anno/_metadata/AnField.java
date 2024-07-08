@@ -356,6 +356,12 @@ public class AnField {
     @ApiModelProperty(value = "[树形选择框]是否多选，多选的值格式为逗号拼接 value 值",example = "false")
     private boolean treeOptionIsMultiple;
 
+    @ApiModelProperty("代码模式")
+    private String codeMode;
+
+    @ApiModelProperty("代码主题")
+    private String codeTheme;
+
     /**
      * 文件类型限制
      *

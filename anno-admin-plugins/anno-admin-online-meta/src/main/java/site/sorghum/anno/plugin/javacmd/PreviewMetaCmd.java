@@ -38,7 +38,7 @@ public class PreviewMetaCmd implements JavaCmdSupplier {
         typeDescriptionClassMap.values().forEach(
             c -> allEntity.add(metadataManager.loadEntity(c, true))
         );
-        StringBuffer pathParam = new StringBuffer();
+        StringBuilder pathParam = new StringBuilder();
         // 增加预览缓存
         for (AnEntity anEntity : allEntity) {
             preViewCache.put(anEntity.getEntityName(), true);

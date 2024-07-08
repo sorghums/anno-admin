@@ -70,16 +70,16 @@ public class FailureFilter implements Filter {
                 ctx.render(AnnoResult.failure(e.getCode(), e.getMessage()));
             }
         } catch (BizException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             ctx.render(AnnoResult.failure(e.getMessage()));
         } catch (DateTimeParseException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             ctx.render(AnnoResult.failure("日期格式化出错"));
         } catch (IllegalArgumentException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             ctx.render(AnnoResult.failure("非法参数,%s".formatted(e.getMessage())));
         } catch (SaTokenException e) {
-            log.error(e.getMessage(), e);
+            log.error(e.getMessage());
             if (e instanceof NotPermissionException) {
                 ctx.render(AnnoResult.failure(400,"权限不足"));
                 return;

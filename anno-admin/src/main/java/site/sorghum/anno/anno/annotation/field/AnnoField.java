@@ -1,9 +1,6 @@
 package site.sorghum.anno.anno.annotation.field;
 
-import site.sorghum.anno.anno.annotation.field.type.AnnoFileType;
-import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
-import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
-import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.anno.annotation.field.type.*;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
 import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
@@ -80,6 +77,12 @@ public @interface AnnoField {
      */
     AnnoImageType imageType() default @AnnoImageType;
 
+    /**
+     * 代码类型
+     *
+     * @return {@link AnnoCodeType}
+     */
+    AnnoCodeType codeType() default @AnnoCodeType;
     /**
      * 选择类型-树
      *

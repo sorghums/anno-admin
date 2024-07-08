@@ -64,6 +64,11 @@ public class AnnoFieldImpl implements AnnoField {
     AnnoOptionTypeImpl optionType = new AnnoOptionTypeImpl();
 
     /**
+     * 代码类型
+     */
+    AnnoCodeType codeType = new AnnoCodeTypeImpl();
+
+    /**
      * 图像类型
      */
     AnnoImageTypeImpl imageType = new AnnoImageTypeImpl();
@@ -150,6 +155,11 @@ public class AnnoFieldImpl implements AnnoField {
     @Override
     public AnnoImageType imageType() {
         return this.imageType;
+    }
+
+    @Override
+    public AnnoCodeType codeType() {
+        return this.codeType;
     }
 
     @Override

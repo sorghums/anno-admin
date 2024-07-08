@@ -7,6 +7,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoCodeType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
@@ -38,6 +39,7 @@ public class OnlineMeta {
     @AnnoField(title = "元数据",
         tableFieldName = "yml_content",
         dataType = AnnoDataType.CODE_EDITOR,
+        codeType = @AnnoCodeType(mode = "yaml"),
         edit = @AnnoEdit())
     String ymlContent;
 

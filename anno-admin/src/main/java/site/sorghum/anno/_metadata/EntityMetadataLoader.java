@@ -278,6 +278,10 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
             anField.setFileMaxCount(annoFileType.fileMaxCount());
             anField.setFileMaxSize(annoFileType.fileMaxSize());
 
+            // 代码类型
+            anField.setCodeMode(anno.codeType().mode());
+            anField.setCodeTheme(anno.codeType().theme());
+
             // pk
             PrimaryKey primaryKey = fieldAnnoField.getPrimaryKey();
             if (primaryKey != null) {
