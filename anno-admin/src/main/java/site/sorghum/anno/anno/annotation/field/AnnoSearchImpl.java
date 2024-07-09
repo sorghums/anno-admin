@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.db.QueryType;
 
 import java.lang.annotation.*;
@@ -12,6 +15,9 @@ import java.lang.annotation.*;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoSearchImpl implements AnnoSearch {
     /**
      * 是否必填

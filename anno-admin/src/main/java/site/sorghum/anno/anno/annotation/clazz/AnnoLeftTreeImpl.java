@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 
@@ -12,6 +15,9 @@ import java.lang.annotation.Annotation;
  * @since 2023/05/21
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoLeftTreeImpl implements AnnoLeftTree {
     /**
      * 左树名称
@@ -32,7 +38,7 @@ public class AnnoLeftTreeImpl implements AnnoLeftTree {
     /**
      * 是否启用
      */
-    private boolean enable = true;
+    private boolean enable = false;
 
     @Override
     public String leftTreeName() {

@@ -15,6 +15,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.field.AnnoEditImpl;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
 import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
@@ -197,7 +198,8 @@ public class DbServiceWood implements DbService {
         }
         if (fieldValue == null) {
             AnField anField = entity.getFieldMap().get(AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), tableFieldName));
-            return anField.isEditCanClear();
+            AnnoEditImpl edit = anField.getEdit();
+            return edit.canClear();
         }
         return tableParam.getColumns().contains(tableFieldName);
     }
@@ -356,8 +358,8 @@ public class DbServiceWood implements DbService {
             Class<? extends FieldBaseSupplier> fieldWhenNullSet = insert ? field.getInsertWhenNullSet() : field.getUpdateWhenNullSet();
             if (fieldWhenNullSet != EmptyFieldBaseSupplier.class) {
                 FieldBaseSupplier<?> fieldBaseSupplier = AnnoBeanUtils.getBean(fieldWhenNullSet);
-                if (fieldBaseSupplier != null && InvokeUtil.invokeGetter(data, field.getReflectField()) == null) {
-                    InvokeUtil.invokeSetter(data, field.getReflectField(), fieldBaseSupplier.get());
+                if (fieldBaseSupplier != null && InvokeUtil.invokeGetter(data, field.getJavaField()) == null) {
+                    InvokeUtil.invokeSetter(data, field.getJavaField(), fieldBaseSupplier.get());
                 }
             }
         }

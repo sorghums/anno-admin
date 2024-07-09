@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.tree;
 
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,5 @@ public interface TreeDataSupplier {
      *
      * @return 包含选项数据的List集合
      */
-    List<AnField.TreeData> getTreeDataList();
+    List<AnnoTreeTypeImpl.TreeDataImpl> getTreeDataList();
 }

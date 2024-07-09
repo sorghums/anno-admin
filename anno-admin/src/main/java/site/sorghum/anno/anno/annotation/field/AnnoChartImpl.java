@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.form.BaseForm;
@@ -15,6 +18,9 @@ import java.lang.annotation.Annotation;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoChartImpl implements AnnoChart {
     /**
      * 启用
@@ -59,5 +65,12 @@ public class AnnoChartImpl implements AnnoChart {
     @Override
     public Class<? extends Annotation> annotationType() {
         return AnnoChart.class;
+    }
+
+    public AnnoChartFieldImpl[] getChartFields() {
+        if (chartFields == null) {
+            return new AnnoChartFieldImpl[0];
+        }
+        return chartFields;
     }
 }

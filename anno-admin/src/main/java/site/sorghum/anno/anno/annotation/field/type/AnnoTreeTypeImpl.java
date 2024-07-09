@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.tree.TreeDataSupplier;
@@ -13,6 +14,10 @@ import java.lang.annotation.Annotation;
  * @author Sorghum
  * @since 2024/07/04
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoTreeTypeImpl implements AnnoTreeType {
     /**
      * SQL语句, 优先级高于value

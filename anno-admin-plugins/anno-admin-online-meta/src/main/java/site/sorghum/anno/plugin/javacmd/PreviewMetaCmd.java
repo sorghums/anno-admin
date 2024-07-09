@@ -5,8 +5,7 @@ import cn.hutool.cache.impl.TimedCache;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import net.bytebuddy.description.type.TypeDescription;
-import site.sorghum.anno.MetaClassUtil;
-import site.sorghum.anno._common.AnnoConstants;
+import site.sorghum.anno._common.util.MetaClassUtil;
 import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -16,7 +15,6 @@ import site.sorghum.anno.plugin.ao.OnlineMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Named
 public class PreviewMetaCmd implements JavaCmdSupplier {

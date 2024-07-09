@@ -63,7 +63,7 @@ public class AnnoFieldCache {
      * @return {@link Class}<{@link ?}>
      */
     public static synchronized Class<?> getClazzByEntityName(String entityName) {
-        return AnnoBeanUtils.getBean(MetadataManager.class).getEntity(entityName).getClazz();
+        return AnnoBeanUtils.getBean(MetadataManager.class).getEntity(entityName).getThisClass();
     }
 
 }

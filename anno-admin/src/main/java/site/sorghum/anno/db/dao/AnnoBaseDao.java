@@ -285,7 +285,7 @@ public interface AnnoBaseDao<T> {
      * @return {@link String}
      */
     default String getPkJavaFieldName() {
-        return metadataManager().getEntity(entityClass()).getPkField().getFieldName();
+        return metadataManager().getEntity(entityClass()).getPkField().getJavaName();
     }
 
 

@@ -13,6 +13,7 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.*;
+import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
 import site.sorghum.anno.anno.chart.AnChartService;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -159,24 +160,24 @@ public class BaseDbController {
         permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
 
         AnField pkField = anEntity.getPkField();
-        T bean = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getClazz());
-        baseService.update(bean, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
+        T bean = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
+        baseService.update(bean, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getJavaName())));
         return AnnoResult.succeed();
     }
 
     public <T> AnnoResult<T> saveOrUpdate(String clazz, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
-        T data = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getClazz());
+        T data = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
         AnField pkField = anEntity.getPkField();
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
         }
-        if (ReflectUtil.getFieldValue(data, pkField.getFieldName()) == null) {
+        if (ReflectUtil.getFieldValue(data, pkField.getJavaName()) == null) {
             permissionProxy.checkPermission(anEntity, PermissionProxy.ADD);
             baseService.insert(data);
         } else {
             permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
-            baseService.update(data, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getFieldName())));
+            baseService.update(data, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getJavaName())));
         }
         return AnnoResult.succeed(data);
     }
@@ -282,7 +283,7 @@ public class BaseDbController {
                 put(annoMtm.getM2mMediumThisField(), mediumThisValue);
                 put(annoMtm.getM2mMediumTargetField(), mediumTargetValue);
             }};
-            baseService.insert(JSONUtil.toBean(addValue, entity.getClazz()));
+            baseService.insert(JSONUtil.toBean(addValue, entity.getThisClass()));
         }
         return AnnoResult.succeed();
     }
@@ -309,10 +310,11 @@ public class BaseDbController {
     private List<AnChartResponse<Object>> chartData(String clazz, String fieldId, CommonParam params) {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
-        if (StrUtil.isNotBlank(entity.getPermissionCode())) {
+        AnnoPermissionImpl annoPermission = entity.getAnnoPermission();
+        if (StrUtil.isNotBlank(annoPermission.baseCode())) {
             permissionProxy.checkPermission(entity, null);
         }
-        if (!entity.getAnChart().getEnable()) {
+        if (!entity.getAnnoChart().enable()) {
             throw new BizException("实体类非图表类型或未加载!");
         }
         return anChartService.getChart(clazz, fieldId, params);

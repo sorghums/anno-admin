@@ -12,7 +12,7 @@
     <artifactId>anno-admin</artifactId>
 
     <properties>
-
+        <byte-buddy.version>1.14.13</byte-buddy.version>
     </properties>
 
     <dependencies>
@@ -24,6 +24,16 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${byte-buddy.version}</version>
         </dependency>
         <dependency>
             <groupId>site.sorghum.sorghum-plugin</groupId>

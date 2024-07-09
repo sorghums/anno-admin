@@ -6,6 +6,7 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.EntityMetadataLoader;
 import site.sorghum.anno._metadata.MetadataContext;
+import site.sorghum.anno.anno.annotation.clazz.AnnoRemoveImpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,14 +67,15 @@ public class DbTableContext implements MetadataContext {
         for (AnEntity entity : allEntities) {
             TableParam<?> tableParam = new TableParam<>();
 
-            tableParam.setClazz(entity.getClazz());
+            tableParam.setClazz(entity.getThisClass());
             tableParam.setTableName(entity.getTableName());
             List<String> columns = entity.getDbAnFields().stream().map(AnField::getTableFieldName).collect(Collectors.toList());
             tableParam.setColumns(columns);
-            if (entity.getRemoveType() == 0) {
+            AnnoRemoveImpl annoRemove = entity.getAnnoRemove();
+            if (annoRemove.getRemoveType() == 0) {
                 tableParam.setDbRemove(new DbRemove());
             } else {
-                tableParam.setDbRemove(new DbRemove(true, entity.getRemoveField(), entity.getRemoveValue(), entity.getNotRemoveValue()));
+                tableParam.setDbRemove(new DbRemove(true, annoRemove.getRemoveField(), annoRemove.getRemoveValue(), annoRemove.getNotRemoveValue()));
             }
             // 设置是否虚拟表
             tableParam.setVirtualTable(entity.isVirtualTable());

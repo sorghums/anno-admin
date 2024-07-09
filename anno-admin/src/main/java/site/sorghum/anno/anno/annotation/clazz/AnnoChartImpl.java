@@ -1,5 +1,9 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
 import site.sorghum.anno.anno.form.BaseForm;
@@ -13,6 +17,10 @@ import java.lang.annotation.Annotation;
  * @author Qianjiawei
  * @since 2024/01/25
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoChartImpl implements AnnoChart {
     /**
      * 是否启用

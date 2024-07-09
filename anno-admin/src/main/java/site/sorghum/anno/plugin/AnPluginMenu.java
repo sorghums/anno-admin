@@ -55,7 +55,7 @@ public class AnPluginMenu {
 
     public String getTitle() {
         if (StrUtil.isBlank(title)) {
-            return entity.getTitle();
+            return entity.getName();
         }
         return title;
     }

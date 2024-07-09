@@ -1,29 +1,30 @@
-package site.sorghum.anno;
+package site.sorghum.anno._common.util;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.yaml.YamlUtil;
-import com.alibaba.fastjson2.util.PropertiesUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
-import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._metadata.AnChart;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.AnMeta;
+import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
+import site.sorghum.anno.anno.annotation.clazz.AnnoMainImpl;
+import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.method.resource.ResourceFinder;
-import site.sorghum.anno.plugin.ao.AnLoginChart;
-import site.sorghum.anno.plugin.ao.AnOnlineUser;
-import site.sorghum.anno.plugin.ao.AnUser;
 
 import java.io.File;
 import java.io.StringReader;
@@ -35,83 +36,58 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class MetaClassUtil {
-    private static Set<String> IGNORE_METHOD_NAME = new HashSet<>();
+    private static final Set<String> IGNORE_METHOD_NAME = new HashSet<>();
+
     static {
         IGNORE_METHOD_NAME.add("getClass");
         IGNORE_METHOD_NAME.add("toString");
         IGNORE_METHOD_NAME.add("hashCode");
         IGNORE_METHOD_NAME.add("annotationType");
+        IGNORE_METHOD_NAME.add("pkField");
     }
 
     @SneakyThrows
     public static Map<TypeDescription, Class<?>> loadSystemClass() {
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         // 遍历根目录下所有资源，并过滤保留符合条件的资源
         MultiResource multiResource = ResourceFinder.of().find("dynamic/*.yml");
+        Map<TypeDescription, Class<?>> map = new HashMap<>();
         final DynamicType.Unloaded<?>[] dynamicType = {null};
         multiResource.iterator().forEachRemaining(resource -> {
             try {
                 log.info("加载：{}", resource);
                 if (resource.getName().endsWith(".yml")) {
-                    Dict dict = YamlUtil.load(resource.getReader(Charset.defaultCharset()));
-                    AnMeta anMeta = JSONUtil.toBean(dict, AnMeta.class);
-                    DynamicType.Builder<?> builder;
-                    ByteBuddy byteBuddy = new ByteBuddy();
-                    if (StrUtil.isNotBlank(anMeta.getExtend())) {
-                        classLoader.loadClass(anMeta.getExtend());
-                        builder = byteBuddy.subclass(Class.forName(anMeta.getExtend()));
-                    } else {
-                        builder = byteBuddy.subclass(Object.class);
-                    }
-                    builder = builder.name("site.sorghum.anno.meta.proxy.%s".formatted(anMeta.getEntityName()));
-                    // 定义annoMain
-                    builder = builder.annotateType(anMeta);
-                    // 定义annoField
-                    List<AnMeta.Column> anMetaColumns = anMeta.getColumns();
-                    for (AnMeta.Column column : anMetaColumns) {
-                        builder = builder.defineField(
-                            column.getJavaName(), column.getJavaType(), Modifier.PUBLIC
-                        ).annotateField(column);
-                    }
-                    List<AnnoButtonImpl> columnButtons = anMeta.getColumnButtons();
-                    for (AnnoButtonImpl columnBtn : columnButtons) {
-                        builder = builder.defineField(
-                            columnBtn.getName(), Object.class, Modifier.PUBLIC
-                        ).annotateField(columnBtn);
-                    }
-                    if (Objects.isNull(dynamicType[0])) {
-                        dynamicType[0] = builder.make();
-                    } else {
-                        dynamicType[0].include(builder.make());
-                    }
+                    String content = resource.getReader(Charset.defaultCharset()).lines().collect(Collectors.joining());
+                    map.putAll(loadClass(content, false));
+                    ;
                 }
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
             }
         });
-        dynamicType[0].toJar(
-            new File(FileUtil.file("dynamic.jar").getAbsolutePath())
-        );
-        return dynamicType[0].load(classLoader)
-            .getAllLoaded();
+        return map;
     }
 
     @SneakyThrows
     public static Map<TypeDescription, Class<?>> loadClass(String ymlContent) {
+        return loadClass(ymlContent, false);
+    }
+
+    @SneakyThrows
+    public static Map<TypeDescription, Class<?>> loadClass(String ymlContent, boolean toJar) {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         final DynamicType.Unloaded<?>[] dynamicType = {null};
         try {
-            log.info("加载：{}", ymlContent);
             Dict dict = YamlUtil.load(new StringReader(ymlContent));
             AnMeta anMeta = JSONUtil.toBean(dict, AnMeta.class);
             DynamicType.Builder<?> builder;
             ByteBuddy byteBuddy = new ByteBuddy();
-            if (StrUtil.isNotBlank(anMeta.getExtend())) {
-                classLoader.loadClass(anMeta.getExtend());
-                builder = byteBuddy.subclass(Class.forName(anMeta.getExtend()));
+            if (Objects.nonNull(anMeta.getExtend())) {
+                classLoader.loadClass(anMeta.getExtend().getName());
+                builder = byteBuddy.subclass(anMeta.getExtend());
             } else {
                 builder = byteBuddy.subclass(Object.class);
             }
@@ -119,8 +95,8 @@ public class MetaClassUtil {
             // 定义annoMain
             builder = builder.annotateType(anMeta);
             // 定义annoField
-            List<AnMeta.Column> anMetaColumns = Optional.ofNullable(anMeta.getColumns()).orElse(Collections.emptyList());
-            for (AnMeta.Column column : anMetaColumns) {
+            List<AnField> anMetaColumns = Optional.ofNullable(anMeta.getColumns()).orElse(Collections.emptyList());
+            for (AnField column : anMetaColumns) {
                 builder = builder.defineField(
                     column.getJavaName(), column.getJavaType(), Modifier.PUBLIC
                 ).annotateField(column);
@@ -139,46 +115,88 @@ public class MetaClassUtil {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
-        dynamicType[0].
-            toJar(
-                new File(FileUtil.file("dynamic.jar").
-                    getAbsolutePath())
-            );
+        if (toJar) {
+            dynamicType[0].
+                toJar(
+                    new File(FileUtil.file("dynamic.jar").
+                        getAbsolutePath())
+                );
+        }
         return dynamicType[0].
             load(classLoader).
             getAllLoaded();
     }
 
+    @SneakyThrows
+    public static String class2Yml(Class<?> clazz) {
+        Dict dict = class2Dict(clazz, false);
+        StringWriter writer = new StringWriter();
+        YamlUtil.dump(dict, writer);
+        return writer.toString();
+    }
 
     @SneakyThrows
-    public static String class2yml(Class<?> clazz) {
+    public static String class2Json(Class<?> clazz) {
+        return JSONUtil.toJsonString(class2Dict(clazz, false));
+    }
+
+    public static AnMeta class2AnMeta(Class<?> clazz) {
+        AnMeta anMeta = JSONUtil.toBean(class2Dict(clazz, true), AnMeta.class);
+        // 重新设置 javaField
+        List<AnField> columns = anMeta.getColumns();
+        if (CollUtil.isNotEmpty(columns)) {
+            for (AnField column : columns) {
+                Field field = ReflectUtil.getField(clazz, column.getJavaName());
+                column.setJavaField(field);
+            }
+        }
+        // 重新设置 chart的ID
+        AnnoChartFieldImpl[] annoChartFields = anMeta.getAnnoChart().getChartFields();
+        for (AnnoChartFieldImpl annoChartField : annoChartFields) {
+            annoChartField.setId(anMeta.getEntityName() + ":" + MD5Util.digestHex(annoChartField.getName() + annoChartField.getRunSupplier().getName()));
+        }
+        return anMeta;
+    }
+
+
+    @SneakyThrows
+    public static Dict class2Dict(Class<?> clazz, boolean deepSuper) {
         AnnoMain annoMain = AnnoUtil.getAnnoMain(clazz);
+        if (annoMain == null) {
+            AnnoForm annoForm = AnnoUtil.getAnnoForm(clazz);
+            annoMain = AnnoMainImpl.builder().name(annoForm.name()).virtualTable(true).build();
+        }
         StringBuilder yml = new StringBuilder();
+        yml.append("thisClass=").append(clazz.getName()).append("\n");
         yml.append("entityName=").append(clazz.getSimpleName()).append("\n");
         yml.append("extend=").append(clazz.getSuperclass().getName()).append("\n");
         printAnnotation(null, annoMain, yml);
-        List<FieldAnnoField> annoFields = AnnoUtil.getAnnoFields(clazz,false);
+        List<FieldAnnoField> annoFields = AnnoUtil.getAnnoFields(clazz, deepSuper);
         int i = 0;
         for (FieldAnnoField annoField : annoFields) {
             int nowValue = i++;
-            yml.append("columns[%d].javaName=%s\n".formatted(nowValue,annoField.getField().getName()));
-            yml.append("columns[%d].javaType=%s\n".formatted(nowValue,annoField.getField().getType().getName()));
+            yml.append("columns[%d].javaName=%s\n".formatted(nowValue, annoField.getField().getName()));
+            yml.append("columns[%d].javaType=%s\n".formatted(nowValue, annoField.getField().getType().getName()));
+            // 手动设置主键
+            if (annoField.getPrimaryKey() != null) {
+                yml.append("columns[%d].pkField=%s\n".formatted(nowValue, true));
+            }
             printAnnotation("columns[%d]".formatted(nowValue), annoField.getAnnoField(), yml);
         }
-        List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz,false);
+        List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz, false);
         i = 0;
         for (Field buttonField : buttonFields) {
             int nowValue = i++;
-            yml.append("columnButtons[%d].javaName=%s\n".formatted(nowValue,buttonField.getName()));
-            yml.append("columnButtons[%d].javaType=%s\n".formatted(nowValue,buttonField.getType().getName()));
+            yml.append("columnButtons[%d].javaName=%s\n".formatted(nowValue, buttonField.getName()));
+            yml.append("columnButtons[%d].javaType=%s\n".formatted(nowValue, buttonField.getType().getName()));
             printAnnotation("columnButtons[%d]".formatted(nowValue), AnnotationUtil.getAnnotation(buttonField, AnnoButton.class), yml);
         }
+        // 设置annoRemove信息
+        AnnoRemove annoRemove = AnnoUtil.getAnnoRemove(clazz);
+        printAnnotation("annoRemove", annoRemove, yml);
         Properties properties = new Properties();
         properties.load(new StringReader(yml.toString()));
-        Dict dict = JSONUtil.toBean(properties, Dict.class);
-        StringWriter writer = new StringWriter();
-        YamlUtil.dump(dict,writer);
-        return writer.toString();
+        return JSONUtil.toBean(properties, Dict.class);
     }
 
     @SneakyThrows
@@ -199,21 +217,21 @@ public class MetaClassUtil {
         }
     }
 
-    private static void processOne(Object invoke, String name, StringBuilder yml){
+    private static void processOne(Object invoke, String name, StringBuilder yml) {
         if (invoke instanceof Annotation _annotation) {
             printAnnotation(name, _annotation, yml);
         } else if (invoke instanceof Object[] objectArray) {
             int i = 0;
             for (Object item : objectArray) {
-                processOne(item, name+"[%d]".formatted(i++), yml);
+                processOne(item, name + "[%d]".formatted(i++), yml);
             }
         } else if (invoke.getClass().isArray()) {
             int i = 0;
-            while (true){
+            while (true) {
                 try {
                     Object item = Array.get(invoke, i);
-                    processOne(item, name+"[%d]".formatted(i++), yml);
-                }catch (Exception e){
+                    processOne(item, name + "[%d]".formatted(i++), yml);
+                } catch (Exception e) {
                     break;
                 }
             }
@@ -226,7 +244,6 @@ public class MetaClassUtil {
 
 
     public static void main(String[] args) {
-        String string = class2yml(AnOnlineUser.class);
-        System.out.println(string);
+
     }
 }

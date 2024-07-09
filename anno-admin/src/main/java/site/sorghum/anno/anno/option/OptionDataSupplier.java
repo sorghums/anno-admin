@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.option;
 
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -36,5 +37,5 @@ public interface OptionDataSupplier {
      *
      * @return 包含选项数据的List集合
      */
-    List<AnField.OptionData> getOptionDataList();
+    List<AnnoOptionTypeImpl.OptionDataImpl> getOptionDataList();
 }

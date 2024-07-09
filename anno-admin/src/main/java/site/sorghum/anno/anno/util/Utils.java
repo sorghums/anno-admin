@@ -7,6 +7,7 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTreeImpl;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
@@ -32,7 +33,8 @@ public class Utils {
             return new ArrayList<>(1);
         }
         AnEntity anEntity = metadataManager.getEntity(dataList.get(0).getClass());
-        return AnnoUtil.buildAnnoTree(dataList, anEntity.getTreeLabel(), anEntity.getTreeKey(), anEntity.getTreeParentKey());
+        AnnoTreeImpl annoTree = anEntity.getAnnoTree();
+        return AnnoUtil.buildAnnoTree(dataList, annoTree.label(), annoTree.key(), annoTree.parentKey());
     }
 
     public static <T> List<AnnoTreeDTO<String>> toTrees(List<T> dataList,String idKey,String labelKey) {
@@ -41,7 +43,8 @@ public class Utils {
             return new ArrayList<>(1);
         }
         AnEntity anEntity = metadataManager.getEntity(dataList.get(0).getClass());
-        return AnnoUtil.buildAnnoTree(dataList, labelKey, idKey, anEntity.getTreeParentKey());
+        AnnoTreeImpl annoTree = anEntity.getAnnoTree();
+        return AnnoUtil.buildAnnoTree(dataList, labelKey, idKey, annoTree.parentKey());
     }
 
     public static <T> String m2mSql(Map<?, ?> param) {
@@ -50,12 +53,12 @@ public class Utils {
             return "";
         }
         AnEntity mediumEntity = metadataManager.getEntity(MapUtil.getStr(param, "m2mMediumTableClazz"));
-        String mediumOtherField =AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumTargetField"));
+        String mediumOtherField =AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getThisClass(),MapUtil.getStr(param,"m2mMediumTargetField"));
         String thisValue = MapUtil.getStr(param, "joinValue");
-        String mediumThisField = AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getClazz(),MapUtil.getStr(param,"m2mMediumThisField"));
+        String mediumThisField = AnnoFieldCache.getSqlColumnByJavaName(mediumEntity.getThisClass(),MapUtil.getStr(param,"m2mMediumThisField"));
         String mediumTable = mediumEntity.getTableName();
         String sql = "select " + mediumOtherField + " from " + mediumTable + " where " + mediumThisField + " = '" + thisValue + "'";
-        return sql(mediumEntity.getClazz(), sql);
+        return sql(mediumEntity.getThisClass(), sql);
     }
 
     public static <T> String m2mSql(AnnoMtm annoMtm,String thisValue) {
@@ -68,7 +71,7 @@ public class Utils {
         String mediumThisFieldSql = annoMtm.getM2mMediumThisFieldSql();
         String mediumTable = mediumEntity.getTableName();
         String sql = "select " + mediumOtherFieldSql + " from " + mediumTable + " where " + mediumThisFieldSql + " = '" + thisValue + "'";
-        return sql(mediumEntity.getClazz(), sql);
+        return sql(mediumEntity.getThisClass(), sql);
     }
 
 

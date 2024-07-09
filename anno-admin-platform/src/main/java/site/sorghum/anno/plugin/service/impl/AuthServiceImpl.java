@@ -11,6 +11,10 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.CacheUtil;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._metadata.*;
+import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButtonImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.db.service.DbService;
@@ -25,6 +29,7 @@ import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.service.AuthService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,12 +73,13 @@ public class AuthServiceImpl implements AuthService {
         // 初始化的时候，进行Db的注入
         List<AnEntity> allEntity = metadataManager.getAllEntity();
         for (AnEntity anEntity : allEntity) {
-            if (anEntity.isEnablePermission()) {
-                String baseCode = anEntity.getPermissionCode();
-                String baseName = anEntity.getPermissionCodeTranslate();
+            AnnoPermissionImpl annoPermission = anEntity.getAnnoPermission();
+            if (annoPermission.enable()) {
+                String baseCode = annoPermission.baseCode();
+                String baseName = annoPermission.baseCodeTranslate();
                 // 按钮权限每次必查
-                List<AnColumnButton> anColumnButtons = anEntity.getColumnButtons();
-                for (AnColumnButton anColumnButton : anColumnButtons) {
+                List<AnnoButtonImpl> anColumnButtons = anEntity.getColumnButtons();
+                for (AnnoButtonImpl anColumnButton : anColumnButtons) {
                     if (StrUtil.isNotBlank(anColumnButton.getPermissionCode())) {
                         String buttonCode = baseCode + ":" + anColumnButton.getPermissionCode();
                         AnPermission anPermission = anPermissionDao.selectByCode(buttonCode);
@@ -90,8 +96,8 @@ public class AuthServiceImpl implements AuthService {
                     }
                 }
 
-                List<AnButton> anEntityTableButtons = anEntity.getTableButtons();
-                for (AnButton anButton : anEntityTableButtons) {
+                List<AnnoTableButtonImpl> anEntityTableButtons = anEntity.getTableButtons();
+                for (AnnoTableButtonImpl anButton : anEntityTableButtons) {
                     if (StrUtil.isNotBlank(anButton.getPermissionCode())) {
                         String buttonCode = baseCode + ":" + anButton.getPermissionCode();
                         AnPermission anPermission = anPermissionDao.selectByCode(buttonCode);
@@ -109,8 +115,8 @@ public class AuthServiceImpl implements AuthService {
                 }
 
                 // TODO 图表权限每次必查
-                List<AnChartField> anChartFields = anEntity.getAnChart().getFields();
-                for (AnChartField anChartField : anChartFields) {
+                List<AnnoChartFieldImpl> anChartFields = Arrays.asList(anEntity.getAnnoChart().getChartFields());
+                for (AnnoChartFieldImpl anChartField : anChartFields) {
                     if (StrUtil.isNotBlank(anChartField.getPermissionCode())) {
                         String chartFieldCode = baseCode + ":" + anChartField.getPermissionCode();
                         AnPermission anPermission = anPermissionDao.selectByCode(chartFieldCode);
@@ -350,8 +356,9 @@ public class AuthServiceImpl implements AuthService {
                     anAnnoMenu.setIcon(anPluginMenu.getIcon());
                     if (anPluginMenu.getEntity() != null) {
                         anAnnoMenu.setParseData(anPluginMenu.getEntity().getEntityName());
-                        if (anPluginMenu.getEntity().isEnablePermission()) {
-                            anAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
+                        AnnoPermissionImpl annoPermission = anPluginMenu.getEntity().getAnnoPermission();
+                        if (annoPermission.enable()) {
+                            anAnnoMenu.setPermissionId(annoPermission.baseCode());
                         }
                     }
                     anAnnoMenu.setParseType(AnAnnoMenu.ParseTypeConstant.ANNO_MAIN);
@@ -379,8 +386,9 @@ public class AuthServiceImpl implements AuthService {
                         update = 1;
                     }
                     if (anPluginMenu.getEntity() != null) {
-                        if (anPluginMenu.getEntity().isEnablePermission() && !StrUtil.equals(anPluginMenu.getEntity().getPermissionCode(), anAnnoMenu.getPermissionId())) {
-                            updateAnnoMenu.setPermissionId(anPluginMenu.getEntity().getPermissionCode());
+                        AnnoPermissionImpl annoPermission = anPluginMenu.getEntity().getAnnoPermission();
+                        if (annoPermission.enable() && !StrUtil.equals(annoPermission.getBaseCode(), anAnnoMenu.getPermissionId())) {
+                            updateAnnoMenu.setPermissionId(annoPermission.getBaseCode());
                             update = 1;
                         }
                         if (!StrUtil.equals(anPluginMenu.getEntity().getEntityName(), anAnnoMenu.getParseData())) {

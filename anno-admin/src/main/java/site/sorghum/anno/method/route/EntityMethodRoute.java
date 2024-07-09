@@ -21,7 +21,7 @@ public class EntityMethodRoute implements MethodRoute {
         if (arg instanceof DbCriteria) {
             String entityName = ((DbCriteria) arg).getEntityName();
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(entityName);
-            return argClass2Router(entity.getClazz());
+            return argClass2Router(entity.getThisClass());
         } else if (!ClassUtil.isJdkClass(arg.getClass())) {
             return argClass2Router(arg.getClass());
         }

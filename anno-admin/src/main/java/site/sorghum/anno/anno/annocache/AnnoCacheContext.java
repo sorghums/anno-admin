@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.annocache;
 
-import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
@@ -17,16 +16,16 @@ public class AnnoCacheContext implements MetadataContext {
     @Override
     public void refresh(List<AnEntity> allEntities) {
         for (AnEntity anEntity : allEntities) {
-            Class<?> clazz = anEntity.getClazz();
+            Class<?> clazz = anEntity.getThisClass();
             // 缓存处理类
             AnnoClazzCache.put(clazz.getSimpleName(), clazz);
             // 缓存字段信息
             for (AnField field : anEntity.getFields()) {
                 String columnName = field.getTableFieldName();
-                AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getFieldName());
+                AnnoFieldCache.putFieldName2FieldAndSql(clazz, columnName, field.getJavaName());
                 // 同时保存其实际节点的类的字段信息
-                if (clazz != field.getDeclaringClass()) {
-                    AnnoFieldCache.putFieldName2FieldAndSql(field.getDeclaringClass(), columnName, field.getFieldName());
+                if (clazz != field.getJavaField().getDeclaringClass()) {
+                    AnnoFieldCache.putFieldName2FieldAndSql(field.getJavaField().getDeclaringClass(), columnName, field.getJavaName());
                 }
             }
         }

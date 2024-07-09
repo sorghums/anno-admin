@@ -9,6 +9,8 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.option.OptionDataSupplier;
 import site.sorghum.anno.anno.proxy.AnnoBaseService;
@@ -82,7 +84,7 @@ public class BaseDictController {
             if (aClass == null) {
                 return AnnoResult.failure("未找到对应的下拉框提供器:" + optionAnnoClazz);
             }
-            List<AnField.OptionData> optionDataList = AnnoBeanUtils.getBean(aClass).getOptionDataList();
+            List<AnnoOptionTypeImpl.OptionDataImpl> optionDataList = AnnoBeanUtils.getBean(aClass).getOptionDataList();
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
                 optionDataList, "label", "value", "pid"
             );
@@ -93,7 +95,7 @@ public class BaseDictController {
             if (aClass == null) {
                 return AnnoResult.failure("未找到对应的树下拉框提供器:" + treeAnnoClazz);
             }
-            List<AnField.TreeData> optionDataList = AnnoBeanUtils.getBean(aClass).getTreeDataList();
+            List<AnnoTreeTypeImpl.TreeDataImpl> optionDataList = AnnoBeanUtils.getBean(aClass).getTreeDataList();
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
                 optionDataList, "label", "id", "pid"
             );
@@ -106,7 +108,7 @@ public class BaseDictController {
         AnEntity managerEntity = metadataManager.getEntity(annoClazz);
         DbCriteria criteria = new DbCriteria();
         criteria.setEntityName(annoClazz);
-        String sqlIdKey = AnnoFieldCache.getSqlColumnByJavaName(managerEntity.getClazz(), idKey);
+        String sqlIdKey = AnnoFieldCache.getSqlColumnByJavaName(managerEntity.getThisClass(), idKey);
         criteria.addCondition(sqlIdKey, QueryType.EQ, idValue);
 
         List<Object> list = queryTreeList(criteria);

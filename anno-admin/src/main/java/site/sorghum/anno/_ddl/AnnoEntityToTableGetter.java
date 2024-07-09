@@ -36,13 +36,13 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
     @Override
     public TableWrap getTable(AnEntity anEntity) {
 
-        TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getTitle());
+        TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getName());
 
         List<AnField> fields = new ArrayList<>(anEntity.getDbAnFields());
 
         // 将 id 字段放到第一位
-        AnField idField = CollUtil.findOne(fields, e -> e.getFieldName().equals(defaultPkName));
-        fields.removeIf(e -> e.getFieldName().equals(defaultPkName));
+        AnField idField = CollUtil.findOne(fields, e -> e.getJavaName().equals(defaultPkName));
+        fields.removeIf(e -> e.getJavaName().equals(defaultPkName));
         fields.add(0, idField);
 
         for (AnField field : fields) {
@@ -54,13 +54,13 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
                 continue;
             }
             // 不是基本类型，跳过
-            if (!columnIsSupport(field.getFieldType())) {
+            if (!columnIsSupport(field.getJavaType())) {
                 continue;
             }
             String columnName = field.getTableFieldName();
             if (StrUtil.isBlank(columnName)) {
                 // 默认使用小写，下划线命名
-                columnName = StrUtil.toUnderlineCase(field.getFieldName());
+                columnName = StrUtil.toUnderlineCase(field.getJavaName());
             }
 
             int sqlType;
@@ -98,7 +98,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             }
 
             // 主键
-            if (anEntity.getPkField().getFieldName().equals(field.getFieldName())) {
+            if (anEntity.getPkField().getJavaName().equals(field.getJavaName())) {
                 defaultValue = "NOT NULL";
                 tableWrap.addPk(columnName);
                 size = 32;
@@ -117,7 +117,7 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     public ColumnWrap getColumn(AnEntity anEntity, AnField field) {
         String fieldName = field.getTableFieldName();
-        Class<?> fieldType = field.getFieldType();
+        Class<?> fieldType = field.getJavaType();
         int sqlType;
         Integer size = null;
         Integer digit = null;

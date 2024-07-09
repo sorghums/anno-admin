@@ -1,5 +1,9 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.chart.supplier.ChartSupplier;
 import site.sorghum.anno.anno.enums.AnnoChartType;
 
@@ -11,7 +15,15 @@ import java.lang.annotation.Annotation;
  * @author Sorghum Qjw
  * @since 2024/07/04
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoChartFieldImpl implements AnnoChartField {
+    /**
+     * 唯一标识
+     */
+    private String id = "";
     /**
      * 名称
      */

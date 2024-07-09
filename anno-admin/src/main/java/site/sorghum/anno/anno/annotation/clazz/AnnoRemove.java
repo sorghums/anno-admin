@@ -14,13 +14,16 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Documented
 public @interface AnnoRemove {
+
+    int DEFAULT_REMOVE_TYPE = 0;
     /**
      * 删除类型 0 物理删除 1 逻辑删除
      *
      * @return int
      */
-    int removeType() default 0;
+    int removeType() default DEFAULT_REMOVE_TYPE;
 
+    String DEFAULT_REMOVE_VALUE = "1";
 
     /**
      * 逻辑删除值
@@ -28,8 +31,9 @@ public @interface AnnoRemove {
      *
      * @return {@link String}
      */
-    String removeValue() default "1";
+    String removeValue() default DEFAULT_REMOVE_VALUE;
 
+    String DEFAULT_NOT_REMOVE_VALUE = "0";
 
     /**
      * 逻辑删除值
@@ -37,8 +41,9 @@ public @interface AnnoRemove {
      *
      * @return {@link String}
      */
-    String notRemoveValue() default "0";
+    String notRemoveValue() default DEFAULT_NOT_REMOVE_VALUE;
 
+    String DEFAULT_REMOVE_FIELD = "del_flag";
 
     /**
      * 逻辑删除字段
@@ -46,5 +51,5 @@ public @interface AnnoRemove {
      *
      * @return {@link String}
      */
-    String removeField() default "del_flag";
+    String removeField() default DEFAULT_REMOVE_FIELD;
 }

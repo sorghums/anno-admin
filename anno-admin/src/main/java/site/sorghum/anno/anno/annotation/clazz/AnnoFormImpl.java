@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 
@@ -11,6 +14,10 @@ import java.lang.annotation.Annotation;
  * @author sorghum
  * @since 2024/06/20
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoFormImpl implements AnnoForm {
     /**
      * 名称

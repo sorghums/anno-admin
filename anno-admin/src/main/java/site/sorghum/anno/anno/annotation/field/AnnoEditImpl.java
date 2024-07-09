@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 
@@ -11,6 +14,9 @@ import java.lang.annotation.Annotation;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoEditImpl implements AnnoEdit {
     /**
      * 是否必填
@@ -46,9 +52,7 @@ public class AnnoEditImpl implements AnnoEdit {
     /**
      * 展示依赖条件
      */
-    ShowByImpl showBy = new ShowByImpl(){{
-        this.enable = false;
-    }};
+    ShowByImpl showBy = new ShowByImpl();
 
     @Override
     public boolean notNull() {
@@ -98,7 +102,7 @@ public class AnnoEditImpl implements AnnoEdit {
         /**
          * 是否启用展示
          */
-        boolean enable = true;
+        boolean enable = false;
         /**
          * 展示条件表达式
          * 必须以：annoDataForm.xx 为变量的取值

@@ -1,7 +1,11 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
+import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
@@ -16,6 +20,9 @@ import java.lang.annotation.Annotation;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoButtonImpl implements AnnoButton {
     /**
      * 按钮名称
@@ -92,9 +99,7 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 模板视图按钮
      */
-    private AnnoTplImpl annoTpl = new AnnoTplImpl(){{
-        setEnable(false);
-    }};
+    private AnnoTplImpl annoTpl = AnnoTplImpl.builder().enable(false).build();
 
     @Override
     public String name() {
@@ -564,58 +569,6 @@ public class AnnoButtonImpl implements AnnoButton {
         @Override
         public Class<? extends Annotation> annotationType() {
             return DrillDownButton.class;
-        }
-    }
-
-    /**
-     * 模板视图按钮的内部类
-     */
-    @Data
-    public static class AnnoTplImpl implements AnnoTpl {
-        /**
-         * 启用
-         */
-        private boolean enable = false;
-
-        /**
-         * 弹出窗口宽度
-         */
-        String windowWidth = "960px";
-
-        /**
-         * 弹出窗口高度
-         */
-        String windowHeight = "800px";
-
-        /**
-         * 模板渲染类
-         */
-        Class<? extends BaseTplRender> tplClazz = BaseTplRender.class;
-
-
-        @Override
-        public Class<? extends BaseTplRender> tplClazz() {
-            return this.tplClazz;
-        }
-
-        @Override
-        public String windowWidth() {
-            return this.windowWidth;
-        }
-
-        @Override
-        public String windowHeight() {
-            return this.windowHeight;
-        }
-
-        @Override
-        public boolean enable() {
-            return this.enable;
-        }
-
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return AnnoTpl.class;
         }
     }
 }

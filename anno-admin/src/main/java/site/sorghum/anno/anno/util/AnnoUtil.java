@@ -20,6 +20,8 @@ import site.sorghum.anno.anno.annotation.enums.AnnoEnumValue;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.db.DbCriteria;
@@ -336,28 +338,28 @@ public class AnnoUtil {
      */
     public static DbCriteria simpleEntity2conditions(AnEntity entity, Map<String, Object> params) {
         DbCriteria criteria = DbCriteria.from(entity);
-        Class<?> entityClazz = entity.getClazz();
+        Class<?> entityClazz = entity.getThisClass();
         Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(params), entityClazz);
         List<AnField> anFields = entity.getDbAnFields();
         for (AnField anField : anFields) {
             String sqlColumn = anField.getTableFieldName();
-            Object value = InvokeUtil.invokeGetter(eObject, anField.getReflectField());
+            Object value = InvokeUtil.invokeGetter(eObject, anField.getJavaField());
             if (sqlColumn != null && value != null) {
-                criteria.condition().create(sqlColumn, anField.getSearchQueryType(), value);
+                criteria.condition().create(sqlColumn, anField.getSearch().getQueryType(), value);
             }
         }
         return criteria;
     }
 
     /**
-     * 将枚举类转化为AnField.OptionData数组
+     * 将枚举类转化为AnnoOptionTypeImpl.OptionDataImpl数组
      *
      * @param clazz 枚举类Class对象
-     * @return AnField.OptionData数组
+     * @return AnnoOptionTypeImpl.OptionDataImpl数组
      */
-    public static List<AnField.OptionData> enum2OptionData(Class<? extends Enum> clazz) {
+    public static List<AnnoOptionTypeImpl.OptionDataImpl> enum2OptionData(Class<? extends Enum> clazz) {
         return Singleton.get(clazz.getName(), () -> {
-            List<AnField.OptionData> optionDatas = new ArrayList<>();
+            List<AnnoOptionTypeImpl.OptionDataImpl> optionDatas = new ArrayList<>();
             Enum[] enumConstants = clazz.getEnumConstants();
             Field[] fields = ReflectUtil.getFields(clazz);
             AtomicReference<Field> labelField = new AtomicReference<>();
@@ -382,7 +384,7 @@ public class AnnoUtil {
                 if (valueField.get() != null) {
                     value = ReflectUtil.getFieldValue(e, valueField.get());
                 }
-                optionDatas.add(new AnField.OptionData(label == null ? "" : label.toString(), value == null ? "" : value.toString()));
+                optionDatas.add(new AnnoOptionTypeImpl.OptionDataImpl(label == null ? "" : label.toString(), value == null ? "" : value.toString()));
             }
             return optionDatas;
         });

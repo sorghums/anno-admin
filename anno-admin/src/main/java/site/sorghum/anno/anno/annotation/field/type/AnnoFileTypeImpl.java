@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.field.type;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.lang.annotation.Annotation;
 
@@ -11,6 +14,9 @@ import java.lang.annotation.Annotation;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoFileTypeImpl implements AnnoFileType {
     /**
      * 文件类型

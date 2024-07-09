@@ -15,24 +15,27 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
 @Documented
 public @interface AnnoTpl {
+
     /**
      * 解析的Action类
      */
     Class<? extends BaseTplRender> tplClazz() default BaseTplRender.class;
 
+    String WINDOW_WIDTH = "960px";
     /**
      * 弹出窗口宽度
      *
      * @return {@link String}
      */
-    String windowWidth() default "960px";
+    String windowWidth() default WINDOW_WIDTH;
 
+    String WINDOW_HEIGHT = "800px";
     /**
      * 弹出窗口高度
      *
      * @return {@link String}
      */
-    String windowHeight() default "800px";
+    String windowHeight() default WINDOW_HEIGHT;
 
     /**
      * 是否启用

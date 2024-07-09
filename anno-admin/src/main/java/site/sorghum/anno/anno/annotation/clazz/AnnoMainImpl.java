@@ -1,6 +1,6 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
-import lombok.Getter;
+import lombok.*;
 import site.sorghum.anno.anno.annotation.field.AnnoChartImpl;
 
 import java.lang.annotation.Annotation;
@@ -13,7 +13,10 @@ import java.lang.annotation.Annotation;
  * @author sorghum
  * @since 2024/07/04
  */
-@Getter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoMainImpl implements AnnoMain {
 
     /**
@@ -24,9 +27,7 @@ public class AnnoMainImpl implements AnnoMain {
     /**
      * anno图表
      */
-    AnnoChartImpl annoChart = new AnnoChartImpl() {{
-        setEnable(false);
-    }};
+    AnnoChartImpl annoChart = AnnoChartImpl.builder().enable(false).build();
 
     /**
      * 表名称
@@ -41,23 +42,17 @@ public class AnnoMainImpl implements AnnoMain {
     /**
      * 权限配置
      */
-    AnnoPermissionImpl annoPermission = new AnnoPermissionImpl() {{
-        setEnable(false);
-    }};
+    AnnoPermissionImpl annoPermission = new AnnoPermissionImpl();
 
     /**
      * 左树右表配置
      */
-    AnnoLeftTreeImpl annoLeftTree = new AnnoLeftTreeImpl() {{
-        setEnable(false);
-    }};
+    AnnoLeftTreeImpl annoLeftTree = new AnnoLeftTreeImpl();
 
     /**
      * Anno 树定义
      */
-    AnnoTreeImpl annoTree = new AnnoTreeImpl() {{
-        setEnable(false);
-    }};
+    AnnoTreeImpl annoTree = new AnnoTreeImpl();
 
     /**
      * Anno 表按钮

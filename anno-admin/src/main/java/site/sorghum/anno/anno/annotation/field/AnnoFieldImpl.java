@@ -1,7 +1,6 @@
 package site.sorghum.anno.anno.annotation.field;
 
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import site.sorghum.anno.anno.annotation.field.type.*;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
@@ -16,6 +15,9 @@ import java.lang.annotation.*;
  * @since 2024/07/04
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoFieldImpl implements AnnoField {
     /**
      * 标题
@@ -41,17 +43,12 @@ public class AnnoFieldImpl implements AnnoField {
     /**
      * 搜索信息
      */
-    AnnoSearchImpl search = new AnnoSearchImpl(){{
-        enable = false;
-    }};
+    AnnoSearchImpl search = AnnoSearchImpl.builder().enable(false).build();
 
     /**
      * 编辑信息
      */
-    AnnoEditImpl edit = new AnnoEditImpl(){{
-        editEnable = false;
-        addEnable = false;
-    }};
+    AnnoEditImpl edit = AnnoEditImpl.builder().editEnable(false).addEnable(false).build();
 
     /**
      * 数据类型

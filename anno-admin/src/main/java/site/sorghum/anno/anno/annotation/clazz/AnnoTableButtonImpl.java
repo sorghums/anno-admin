@@ -1,5 +1,9 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
@@ -12,6 +16,10 @@ import java.lang.annotation.Annotation;
  * @author sorghum
  * @since 2023/05/20
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AnnoTableButtonImpl implements AnnoTableButton {
     /**
      * 按钮名称

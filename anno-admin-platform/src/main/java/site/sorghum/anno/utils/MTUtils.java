@@ -16,7 +16,7 @@ public class MTUtils {
     public static boolean instanceofBaseMetaModel(Object arg) {
         if (arg instanceof DbCriteria criteria) {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(criteria.getEntityName());
-            return BaseMetaModel.class.isAssignableFrom(entity.getClazz());
+            return BaseMetaModel.class.isAssignableFrom(entity.getThisClass());
         } else {
             return arg instanceof BaseMetaModel;
         }
@@ -25,7 +25,7 @@ public class MTUtils {
     public static boolean instanceofBaseOrgMetaModel(Object arg) {
         if (arg instanceof DbCriteria criteria) {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(criteria.getEntityName());
-            return BaseOrgMetaModel.class.isAssignableFrom(entity.getClazz());
+            return BaseOrgMetaModel.class.isAssignableFrom(entity.getThisClass());
         } else {
             return arg instanceof BaseOrgMetaModel;
         }
@@ -34,7 +34,7 @@ public class MTUtils {
     public static boolean instanceofPrimaryKeyModel(Object arg) {
         if (arg instanceof DbCriteria criteria) {
             AnEntity entity = AnnoBeanUtils.metadataManager().getEntity(criteria.getEntityName());
-            return PrimaryKeyModel.class.isAssignableFrom(entity.getClazz());
+            return PrimaryKeyModel.class.isAssignableFrom(entity.getThisClass());
         } else {
             return arg instanceof PrimaryKeyModel;
         }

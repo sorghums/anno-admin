@@ -5,6 +5,7 @@ import cn.dev33.satoken.context.model.SaRequest;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
+import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 
 /**
@@ -38,11 +39,12 @@ public class PermissionProxy {
         }
         // 校验登录
         checkLogin();
-        boolean enable = anEntity.isEnablePermission();
+        AnnoPermissionImpl annoPermission = anEntity.getAnnoPermission();
+        boolean enable = annoPermission.enable();
         if (!enable) {
             return;
         }
-        String baseCode = anEntity.getPermissionCode();
+        String baseCode = annoPermission.baseCode();
         // 校验权限
         String permissionCode = StrUtil.isNotBlank(code) ? baseCode + ":" + code : baseCode;
         CheckPermissionFunction.permissionCheckFunction.accept(permissionCode);

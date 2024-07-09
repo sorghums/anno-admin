@@ -3,6 +3,9 @@ package site.sorghum.anno._metadata;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButtonImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.Arrays;
@@ -34,20 +37,21 @@ public class PermissionContext implements MetadataContext {
         permissionCodeAndNameMap.clear();
 
         for (AnEntity anEntity : allEntities) {
-            if (StrUtil.isBlank(anEntity.getPermissionCode())) {
+            String baseCode = anEntity.getAnnoPermission().getBaseCode();
+            if (StrUtil.isBlank(baseCode)) {
                 continue;
             }
 
             // 默认权限
-            permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.VIEW), joinPermission(anEntity.getTitle(), PermissionProxy.VIEW_TRANSLATE));
-            permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.ADD), joinPermission(anEntity.getTitle(), PermissionProxy.ADD_TRANSLATE));
-            permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.UPDATE), joinPermission(anEntity.getTitle(), PermissionProxy.UPDATE_TRANSLATE));
-            permissionCodeAndNameMap.put(joinPermission(anEntity.getPermissionCode(), PermissionProxy.DELETE), joinPermission(anEntity.getTitle(), PermissionProxy.DELETE_TRANSLATE));
+            permissionCodeAndNameMap.put(joinPermission(baseCode, PermissionProxy.VIEW), joinPermission(anEntity.getName(), PermissionProxy.VIEW_TRANSLATE));
+            permissionCodeAndNameMap.put(joinPermission(baseCode, PermissionProxy.ADD), joinPermission(anEntity.getName(), PermissionProxy.ADD_TRANSLATE));
+            permissionCodeAndNameMap.put(joinPermission(baseCode, PermissionProxy.UPDATE), joinPermission(anEntity.getName(), PermissionProxy.UPDATE_TRANSLATE));
+            permissionCodeAndNameMap.put(joinPermission(baseCode, PermissionProxy.DELETE), joinPermission(anEntity.getName(), PermissionProxy.DELETE_TRANSLATE));
 
             // 表级按钮
-            List<AnButton> tableButtons = anEntity.getTableButtons();
+            List<AnnoTableButtonImpl> tableButtons = anEntity.getTableButtons();
             if (CollectionUtil.isNotEmpty(tableButtons)) {
-                for (AnButton tableButton : tableButtons) {
+                for (AnnoTableButtonImpl tableButton : tableButtons) {
                     if (StrUtil.isBlank(tableButton.getPermissionCode())) {
                         continue;
                     }
@@ -56,9 +60,9 @@ public class PermissionContext implements MetadataContext {
             }
 
             // 行级按钮
-            List<AnColumnButton> columnButtons = anEntity.getColumnButtons();
+            List<AnnoButtonImpl> columnButtons = anEntity.getColumnButtons();
             if (CollectionUtil.isNotEmpty(columnButtons)) {
-                for (AnColumnButton columnButton : columnButtons) {
+                for (AnnoButtonImpl columnButton : columnButtons) {
                     if (StrUtil.isBlank(columnButton.getPermissionCode())) {
                         continue;
                     }
@@ -67,9 +71,9 @@ public class PermissionContext implements MetadataContext {
             }
 
             // 图表权限
-            List<AnChartField> chartFields = anEntity.getAnChart().getFields();
+            List<AnnoChartFieldImpl> chartFields = Arrays.asList(anEntity.getAnnoChart().getChartFields());
             if (CollectionUtil.isNotEmpty(chartFields)) {
-                for (AnChartField chartField : chartFields) {
+                for (AnnoChartFieldImpl chartField : chartFields) {
                     if (StrUtil.isBlank(chartField.getPermissionCode())) {
                         continue;
                     }
@@ -79,18 +83,24 @@ public class PermissionContext implements MetadataContext {
         }
     }
 
-    private void dealButton(AnEntity anEntity, AnButton tableButton) {
-        String joinPermissionCode = joinPermission(anEntity.getPermissionCode(), tableButton.getPermissionCode());
-        String joinPermissionName = joinPermission(anEntity.getTitle(), tableButton.getName());
+    private void dealButton(AnEntity anEntity, AnnoButtonImpl tableButton) {
+        String joinPermissionCode = joinPermission(anEntity.getAnnoPermission().getBaseCode(), tableButton.getPermissionCode());
+        String joinPermissionName = joinPermission(anEntity.getName(), tableButton.getName());
         permissionCodeAndNameMap.put(joinPermissionCode, joinPermissionName);
-        if (tableButton.getJavaCmdEnable()) {
-            javaCmdPermissionMap.put(getPermissionKey(tableButton.getJavaCmdData().getRunSupplier(), "run"), tableButton.getPermissionCode());
+        if (tableButton.getJavaCmd().isEnable()) {
+            javaCmdPermissionMap.put(getPermissionKey(tableButton.getJavaCmd().getRunSupplier(), "run"), tableButton.getPermissionCode());
         }
     }
 
-    private void dealButton(AnEntity anEntity, AnChartField anChartField) {
-        String joinPermissionCode = joinPermission(anEntity.getPermissionCode(), anChartField.getPermissionCode());
-        String joinPermissionName = joinPermission(anEntity.getTitle(), anChartField.getName());
+    private void dealButton(AnEntity anEntity, AnnoTableButtonImpl tableButton) {
+        String joinPermissionCode = joinPermission(anEntity.getAnnoPermission().getBaseCode(), tableButton.getPermissionCode());
+        String joinPermissionName = joinPermission(anEntity.getName(), tableButton.getName());
+        permissionCodeAndNameMap.put(joinPermissionCode, joinPermissionName);
+    }
+
+    private void dealButton(AnEntity anEntity, AnnoChartFieldImpl anChartField) {
+        String joinPermissionCode = joinPermission(anEntity.getAnnoPermission().getBaseCode(), anChartField.getPermissionCode());
+        String joinPermissionName = joinPermission(anEntity.getName(), anChartField.getName());
         permissionCodeAndNameMap.put(joinPermissionCode, joinPermissionName);
     }
 

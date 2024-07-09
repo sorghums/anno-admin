@@ -10,10 +10,13 @@ import site.sorghum.anno._metadata.AnChart;
 import site.sorghum.anno._metadata.AnChartField;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoChartImpl;
 import site.sorghum.anno.anno.entity.response.AnChartResponse;
 import site.sorghum.anno.anno.proxy.PermissionProxy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,17 +39,17 @@ public class AnChartServiceImpl implements AnChartService {
     @Override
     public List<AnChartResponse<Object>> getChart(String clazz, String fieldId, CommonParam params) {
         AnEntity entity = metadataManager.getEntity(clazz);
-        AnChart anChart = entity.getAnChart();
-        if (!anChart.getEnable()) {
+        AnnoChartImpl anChart = entity.getAnnoChart();
+        if (!anChart.enable()) {
             log.error("实体类非图表类型或未加载!");
             return null;
         }
 
         List<AnChartResponse<Object>> responses = new ArrayList<>();
-        List<AnChartField> chartFields = anChart.getFields().stream().filter(
+        List<AnnoChartFieldImpl> chartFields = Arrays.asList(anChart.getChartFields()).stream().filter(
             field -> field.getId().equals(fieldId) || StrUtil.isEmpty(fieldId)
         ).toList();
-        for (AnChartField field : chartFields) {
+        for (AnnoChartFieldImpl field : chartFields) {
             // 字段权限校验
             try {
                 permissionProxy.checkPermission(entity, field.getPermissionCode());

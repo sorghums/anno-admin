@@ -12,7 +12,13 @@ import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.clazz.AnnoRemoveImpl;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 import site.sorghum.anno.anno.enums.AnnoDataType;
+import site.sorghum.anno.anno.option.OptionDataSupplier;
+import site.sorghum.anno.anno.tree.TreeDataSupplier;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
@@ -53,23 +59,26 @@ public class AnnoTransService {
         for (AnField field : entity.getFields()) {
             AnnoDataType dataType = field.getDataType();
             if (OPTIONS_TYPE.contains(dataType)) {
-                String sqlIdKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(), field.getOptionAnnoClass().getIdKey());
-                String sqlLabelKey = fileNameToTableName(field.getOptionAnnoClass().getAnnoClass(), field.getOptionAnnoClass().getLabelKey());
-                if (!Objects.equals(field.getOptionAnnoClass().getAnnoClass(), Object.class)) {
-                    AnEntity optionClass = metadataManager.getEntity(field.getOptionAnnoClass().getAnnoClass());
+                AnnoOptionTypeImpl optionType = field.getOptionType();
+                AnnoOptionTypeImpl.OptionAnnoClassImpl optionAnno = optionType.getOptionAnno();
+                String sqlIdKey = fileNameToTableName(optionAnno.getAnnoClass(), optionAnno.getIdKey());
+                String sqlLabelKey = fileNameToTableName(optionAnno.getAnnoClass(), optionAnno.getLabelKey());
+                if (!Objects.equals(optionAnno.getAnnoClass(), Object.class)) {
+                    AnEntity optionClass = metadataManager.getEntity(optionAnno.getAnnoClass());
                     String tableName = optionClass.getTableName();
-                    String isLogicRemove = optionClass.getRemoveType() == 1 ? " and %s = %s".formatted(optionClass.getRemoveField(), optionClass.getNotRemoveValue()) : "";
+                    AnnoRemoveImpl annoRemove = optionClass.getAnnoRemove();
+                    String isLogicRemove = annoRemove.getRemoveType() == 1 ? " and %s = %s".formatted(annoRemove.getRemoveField(), annoRemove.getNotRemoveValue()) : "";
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
                         """.formatted(sqlLabelKey
-                        , field.getFieldName().toLowerCase() + "_label"
+                        , field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey
                         , tableName
                         , sqlIdKey
                         , isLogicRemove);
                     joinParams.add(
-                        new JoinParam<>(field.getFieldName()
-                            , field.getFieldName()
+                        new JoinParam<>(field.getJavaName()
+                            , field.getJavaName()
                             , null
                             , sqlIdKey
                             , null
@@ -81,17 +90,17 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if (StrUtil.isNotBlank(field.getOptionTypeSql())) {
+                String optionSql = field.getOptionType().sql();
+                if (StrUtil.isNotBlank(optionSql)) {
                     //select value, label from table where del_flag = 0 order by id desc
-                    String originalSql = field.getOptionTypeSql();
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getFieldName().toLowerCase() + "_label"
+                         """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
-                        QuerySqlCache.get(originalSql));
+                        QuerySqlCache.get(optionSql));
                     joinParams.add(
-                        new JoinParam<>(field.getFieldName()
-                            , field.getFieldName()
+                        new JoinParam<>(field.getJavaName()
+                            , field.getJavaName()
                             , null
                             , sqlIdKey
                             , null
@@ -103,34 +112,38 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if (CollUtil.isNotEmpty(field.getOptionDatas())) {
-                    Map<String, String> optionsMap = field.getOptionDatas().stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
-                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                List<AnnoOptionTypeImpl.OptionDataImpl> optionData = Arrays.asList(field.getOptionType().getValue());
+                if (CollUtil.isNotEmpty(optionData)) {
+                    Map<String, String> optionsMap = optionData.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
-                if (field.getOptionSupplier() != null) {
-                    List<AnField.OptionData> optionDataList = AnnoBeanUtils.getBean(field.getOptionSupplier()).getOptionDataList();
-                    Map<String, String> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnField.OptionData::getValue, AnField.OptionData::getLabel));
-                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                Class<? extends OptionDataSupplier> optionSupplier = field.getOptionType().getSupplier();
+                if (optionSupplier != null) {
+                    List<AnnoOptionTypeImpl.OptionDataImpl> optionDataList = AnnoBeanUtils.getBean(optionSupplier).getOptionDataList();
+                    Map<String, String> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
             }
             if (dataType == AnnoDataType.TREE) {
-                String sqlIdKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(), field.getTreeOptionAnnoClass().getIdKey());
-                String sqlLabelKey = fileNameToTableName(field.getTreeOptionAnnoClass().getAnnoClass(), field.getTreeOptionAnnoClass().getLabelKey());
-                if (!Objects.equals(field.getTreeOptionAnnoClass().getAnnoClass(), Object.class)) {
-                    AnEntity optionClass = metadataManager.getEntity(field.getTreeOptionAnnoClass().getAnnoClass());
+                AnnoTreeTypeImpl.TreeAnnoClassImpl treeAnnoClass = field.getTreeType().getTreeAnno();
+                String sqlIdKey = fileNameToTableName(treeAnnoClass.getAnnoClass(), treeAnnoClass.getIdKey());
+                String sqlLabelKey = fileNameToTableName(treeAnnoClass.getAnnoClass(), treeAnnoClass.getLabelKey());
+                if (!Objects.equals(treeAnnoClass.getAnnoClass(), Object.class)) {
+                    AnEntity optionClass = metadataManager.getEntity(treeAnnoClass.getAnnoClass());
                     String tableName = optionClass.getTableName();
-                    String isLogicRemove = optionClass.getRemoveType() == 1 ? " and %s = %s".formatted(optionClass.getRemoveField(), optionClass.getNotRemoveValue()) : "";
+                    AnnoRemoveImpl optionClassAnnoRemove = optionClass.getAnnoRemove();
+                    String isLogicRemove = optionClassAnnoRemove.getRemoveType() == 1 ? " and %s = %s".formatted(optionClassAnnoRemove.getRemoveField(), optionClassAnnoRemove.getNotRemoveValue()) : "";
                     String querySql = """
                         select %s as %s,%s from %s where %s = #{uniqueKey} %s
                         """.formatted(sqlLabelKey
-                        , field.getFieldName().toLowerCase() + "_label"
+                        , field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey
                         , tableName
                         , sqlIdKey
                         , isLogicRemove);
                     joinParams.add(
-                        new JoinParam(field.getFieldName()
-                            , field.getFieldName()
+                        new JoinParam(field.getJavaName()
+                            , field.getJavaName()
                             , null
                             , sqlIdKey
                             , null
@@ -142,17 +155,17 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if (StrUtil.isNotBlank(field.getTreeTypeSql())) {
+                String treeTypeSql = field.getTreeType().getSql();
+                if (StrUtil.isNotBlank(treeTypeSql)) {
                     //select value, label from table where del_flag = 0 order by id desc
-                    String originalSql = field.getTreeTypeSql();
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getFieldName().toLowerCase() + "_label"
+                         """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
-                        QuerySqlCache.get(originalSql));
+                        QuerySqlCache.get(treeTypeSql));
                     joinParams.add(
-                        new JoinParam(field.getFieldName()
-                            , field.getFieldName()
+                        new JoinParam(field.getJavaName()
+                            , field.getJavaName()
                             , null
                             , sqlIdKey
                             , null
@@ -164,14 +177,16 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                if (CollUtil.isNotEmpty(field.getTreeDatas())) {
-                    Map<String, String> optionsMap = field.getTreeDatas().stream().collect(Collectors.toMap(AnField.TreeData::getId, AnField.TreeData::getLabel));
-                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                List<AnnoTreeType.TreeData> treeData = Arrays.asList(field.getTreeType().getValue());
+                if (CollUtil.isNotEmpty(treeData)) {
+                    Map<String, String> optionsMap = treeData.stream().collect(Collectors.toMap(AnnoTreeType.TreeData::id, AnnoTreeType.TreeData::label));
+                    fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
-                if (field.getTreeOptionSupplier() != null) {
-                    List<AnField.TreeData> treeDataList = AnnoBeanUtils.getBean(field.getTreeOptionSupplier()).getTreeDataList();
-                    Map<String, String> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnField.TreeData::getId, AnField.TreeData::getLabel));
-                    fixedDictTrans(t, optionsMap, field.getFieldName());
+                Class<? extends TreeDataSupplier> treeSupplier = field.getTreeType().getSupplier();
+                if (treeSupplier != null) {
+                    List<AnnoTreeTypeImpl.TreeDataImpl> treeDataList = AnnoBeanUtils.getBean(treeSupplier).getTreeDataList();
+                    Map<String, String> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnnoTreeTypeImpl.TreeDataImpl::getId, AnnoTreeTypeImpl.TreeDataImpl::getLabel));
+                    fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
             }
         }
