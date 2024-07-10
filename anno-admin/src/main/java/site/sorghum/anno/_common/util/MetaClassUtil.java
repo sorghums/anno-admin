@@ -14,6 +14,7 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import org.noear.wood.annotation.Table;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
@@ -22,10 +23,12 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMainImpl;
 import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
+import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
+import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.method.resource.ResourceFinder;
 
@@ -193,6 +196,12 @@ public class MetaClassUtil {
                     javaCmd.setId(id);
                     AnnoJavaCmd.annoJavCmdMap.put(id, javaCmd);
                     AnnoJavaCmd.annoJavaCmd2ButtonMap.put(id, columnBtn);
+                }
+
+                AnnoTplImpl annoTpl = columnBtn.getAnnoTpl();
+                if (annoTpl != null && annoTpl.isEnable()){
+                    BaseTplRender tplRender = AnnoBeanUtils.getBean(annoTpl.getTplClazz());
+                    annoTpl.setId(tplRender.getId());
                 }
             }
         }

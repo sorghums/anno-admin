@@ -21,6 +21,11 @@ import java.lang.annotation.Annotation;
 @NoArgsConstructor
 public class AnnoTplImpl implements AnnoTpl {
     /**
+     * 缓存主键
+     */
+    String id;
+
+    /**
      * 解析的Action类
      */
     Class<? extends BaseTplRender> tplClazz = BaseTplRender.class;
