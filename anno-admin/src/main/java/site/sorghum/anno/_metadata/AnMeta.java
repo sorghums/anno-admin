@@ -35,6 +35,11 @@ public class AnMeta extends AnnoMainImpl {
     private List<AnField> columns;
 
     /**
+     * 实体主键字段
+     */
+    private AnField pkColumn;
+
+    /**
      * 按钮信息
      */
     private List<AnnoButtonImpl> columnButtons;

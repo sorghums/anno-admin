@@ -48,7 +48,6 @@ public class AnChart {
     public AnChart(AnnoChart annoChart) {
         this.enable = annoChart.enable();
         this.layout = annoChart.layout();
-        this.searchFormEntity = AnnoBeanUtils.getBean(annoChart.searchForm()).getEntity();
         this.fields = Arrays.stream(annoChart.chartFields()).map(AnChartField::new).peek(
             field -> {
                 field.setId(MD5Util.digestHex(

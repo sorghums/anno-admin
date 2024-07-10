@@ -8,6 +8,7 @@ import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoTreeImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
@@ -61,14 +62,14 @@ public class Utils {
         return sql(mediumEntity.getThisClass(), sql);
     }
 
-    public static <T> String m2mSql(AnnoMtm annoMtm,String thisValue) {
+    public static <T> String m2mSql(AnnoButtonImpl.M2MJoinButtonImpl annoMtm, String thisValue) {
         init();
         if (Objects.isNull(annoMtm)) {
             return "";
         }
-        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
-        String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
-        String mediumThisFieldSql = annoMtm.getM2mMediumThisFieldSql();
+        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.mediumTableClazz());
+        String mediumOtherFieldSql = AnnoMtm.getM2mMediumTargetFieldSql(annoMtm);
+        String mediumThisFieldSql = AnnoMtm.getM2mMediumThisFieldSql(annoMtm);
         String mediumTable = mediumEntity.getTableName();
         String sql = "select " + mediumOtherFieldSql + " from " + mediumTable + " where " + mediumThisFieldSql + " = '" + thisValue + "'";
         return sql(mediumEntity.getThisClass(), sql);

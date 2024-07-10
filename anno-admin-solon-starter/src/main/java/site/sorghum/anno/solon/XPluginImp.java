@@ -28,6 +28,7 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoClazzCache;
@@ -159,6 +160,11 @@ public class XPluginImp implements Plugin {
             if (annoMain != null) {
                 // 加载anEntity
                 metadataManager.loadEntity(clazz);
+            }
+            AnnoForm annoForm = AnnoUtil.getAnnoForm(clazz);
+            if (annoForm != null) {
+                // 加载anForm
+                metadataManager.loadFormEntity(clazz);
             }
         }
         metadataManager.refresh();

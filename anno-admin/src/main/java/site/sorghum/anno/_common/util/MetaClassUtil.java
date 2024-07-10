@@ -15,6 +15,8 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
+import site.sorghum.anno._metadata.AnnoJavaCmd;
+import site.sorghum.anno._metadata.AnnoMtm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMainImpl;
@@ -142,18 +144,46 @@ public class MetaClassUtil {
 
     public static AnMeta class2AnMeta(Class<?> clazz) {
         AnMeta anMeta = JSONUtil.toBean(class2Dict(clazz, true), AnMeta.class);
+        // 重新设置 tableName
+        if (StrUtil.isBlank(anMeta.getTableName())) {
+            StrUtil.toUnderlineCase(anMeta.getEntityName());
+        }
         // 重新设置 javaField
         List<AnField> columns = anMeta.getColumns();
         if (CollUtil.isNotEmpty(columns)) {
             for (AnField column : columns) {
                 Field field = ReflectUtil.getField(clazz, column.getJavaName());
                 column.setJavaField(field);
+                if (column.pkField()) {
+                    anMeta.setPkColumn(column);
+                }
             }
         }
         // 重新设置 chart的ID
         AnnoChartFieldImpl[] annoChartFields = anMeta.getAnnoChart().getChartFields();
         for (AnnoChartFieldImpl annoChartField : annoChartFields) {
             annoChartField.setId(anMeta.getEntityName() + ":" + MD5Util.digestHex(annoChartField.getName() + annoChartField.getRunSupplier().getName()));
+        }
+
+        // 重新设置m2m的ID
+        List<AnnoButtonImpl> columnButtons = anMeta.getColumnButtons();
+        if (CollUtil.isNotEmpty(columnButtons)) {
+            for (AnnoButtonImpl columnBtn : columnButtons) {
+                AnnoButtonImpl.M2MJoinButtonImpl m2mJoinButton = columnBtn.getM2mJoinButton();
+                if (m2mJoinButton != null && m2mJoinButton.isEnable()) {
+                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.hashCode());
+                    m2mJoinButton.setId(id);
+                    AnnoMtm.annoMtmMap.put(id, m2mJoinButton);
+                }
+
+                AnnoButtonImpl.JavaCmdImpl javaCmd = columnBtn.getJavaCmd();
+                if (javaCmd != null && javaCmd.isEnable()) {
+                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.hashCode());
+                    javaCmd.setId(id);
+                    AnnoJavaCmd.annoJavCmdMap.put(id, javaCmd);
+                    AnnoJavaCmd.annoJavaCmd2ButtonMap.put(id, columnBtn);
+                }
+            }
         }
         return anMeta;
     }
@@ -218,6 +248,9 @@ public class MetaClassUtil {
     }
 
     private static void processOne(Object invoke, String name, StringBuilder yml) {
+        if (invoke == null) {
+            return;
+        }
         if (invoke instanceof Annotation _annotation) {
             printAnnotation(name, _annotation, yml);
         } else if (invoke instanceof Object[] objectArray) {

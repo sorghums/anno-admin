@@ -9,9 +9,10 @@ import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
-import site.sorghum.anno.anno.tpl.BaseTplRender;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Anno Button 注解
@@ -64,37 +65,27 @@ public class AnnoButtonImpl implements AnnoButton {
     /**
      * 一对多关联按钮
      */
-    private O2MJoinButtonImpl o2mJoinButton = new O2MJoinButtonImpl(){{
-        setEnable(false);
-    }};
+    private O2MJoinButtonImpl o2mJoinButton = O2MJoinButtonImpl.builder().enable(false).build();
 
     /**
      * 多对多关联设置【新】
      */
-    private M2MRelationImpl m2mRelation = new M2MRelationImpl(){{
-        setEnable(false);
-    }};
+    private M2MRelationImpl m2mRelation = M2MRelationImpl.builder().enable(false).build();
 
     /**
      * 多对多关联按钮
      */
-    private M2MJoinButtonImpl m2mJoinButton = new M2MJoinButtonImpl(){{
-        setEnable(false);
-    }};
+    private M2MJoinButtonImpl m2mJoinButton = M2MJoinButtonImpl.builder().enable(false).build();
 
     /**
      * java命令行
      */
-    private JavaCmdImpl javaCmd = new JavaCmdImpl(){{
-        setEnable(false);
-    }};
+    private JavaCmdImpl javaCmd = new JavaCmdImpl();
 
     /**
      * 下钻按钮【未启用】
      */
-    private DrillDownButtonImpl drillDownButton = new DrillDownButtonImpl(){{
-        setEnable(false);
-    }};
+    private DrillDownButtonImpl drillDownButton = new DrillDownButtonImpl();
 
     /**
      * 模板视图按钮
@@ -175,6 +166,9 @@ public class AnnoButtonImpl implements AnnoButton {
      * 一对多关联按钮的内部类
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class O2MJoinButtonImpl implements O2MJoinButton {
         /**
          * 连表查询
@@ -226,6 +220,9 @@ public class AnnoButtonImpl implements AnnoButton {
      * 多对多关联设置的内部类
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class M2MRelationImpl implements M2MRelation {
         /**
          * 对象目标类
@@ -310,7 +307,15 @@ public class AnnoButtonImpl implements AnnoButton {
      * 多对多关联按钮的内部类
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class M2MJoinButtonImpl implements M2MJoinButton {
+        /**
+         * 多对多缓存主键
+         */
+        private String id;
+
         /**
          * 目标表
          */
@@ -402,7 +407,14 @@ public class AnnoButtonImpl implements AnnoButton {
      * java命令行的内部类
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class JavaCmdImpl implements JavaCmd {
+        /**
+         * 缓存主键
+         */
+        private String id;
         /**
          * 运行供应商
          */
@@ -411,7 +423,7 @@ public class AnnoButtonImpl implements AnnoButton {
         /**
          * 启用
          */
-        private boolean enable = true;
+        private boolean enable = false;
 
         @Override
         public Class<? extends JavaCmdSupplier> runSupplier() {
@@ -433,6 +445,9 @@ public class AnnoButtonImpl implements AnnoButton {
      * 下钻按钮的内部类
      */
     @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class DrillDownButtonImpl implements DrillDownButton {
         /**
          * 用于数据展示的查询
@@ -499,7 +514,7 @@ public class AnnoButtonImpl implements AnnoButton {
         /**
          * 是否启用
          */
-        private boolean enable = true;
+        private boolean enable = false;
 
         @Override
         public String fetchSql() {

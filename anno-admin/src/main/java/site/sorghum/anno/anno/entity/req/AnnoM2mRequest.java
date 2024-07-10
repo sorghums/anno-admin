@@ -3,6 +3,7 @@ package site.sorghum.anno.anno.entity.req;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import site.sorghum.anno._metadata.AnnoMtm;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 
 /**
  * m2m请求
@@ -28,7 +29,7 @@ public class AnnoM2mRequest {
     @ApiModelProperty(value = "m2m的id")
     String annoM2mId;
 
-    public AnnoMtm getAnnoMtm() {
+    public AnnoButtonImpl.M2MJoinButtonImpl getAnnoMtm() {
         return AnnoMtm.annoMtmMap.get(annoM2mId);
     }
 }

@@ -97,7 +97,7 @@ public class AnnoTransService {
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
                          """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
-                        QuerySqlCache.get(optionSql));
+                        optionSql);
                     joinParams.add(
                         new JoinParam<>(field.getJavaName()
                             , field.getJavaName()

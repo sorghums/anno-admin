@@ -14,6 +14,7 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.chart.AnChartService;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
@@ -84,7 +85,7 @@ public class BaseDbController {
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.VIEW);
         param = AnnoUtil.emptyStringIgnore(param);
-        AnnoMtm annoMtm = pageRequest.getAnnoMtm();
+        AnnoButtonImpl.M2MJoinButtonImpl annoMtm= pageRequest.getAnnoMtm();
         String m2mSql = Utils.m2mSql(annoMtm, pageRequest.getJoinValue());
         String andSql = null;
         String inPrefix = " in (";
@@ -92,7 +93,7 @@ public class BaseDbController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !pageRequest.isIgnoreM2m()) {
-            String joinThisClazzFieldSql = annoMtm.getM2mJoinThisClazzFieldSql();
+            String joinThisClazzFieldSql = AnnoMtm.getM2mJoinThisClazzFieldSql(entity.getThisClass(),annoMtm);
             andSql = joinThisClazzFieldSql + inPrefix + m2mSql + ")";
         }
         DbCriteria criteria = AnnoUtil.simpleEntity2conditions(entity, param);
@@ -186,12 +187,12 @@ public class BaseDbController {
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.DELETE);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
-        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
-        String mediumOtherFieldSql = annoMtm.getM2mMediumTargetFieldSql();
+        AnnoButtonImpl.M2MJoinButtonImpl annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
+        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.mediumTableClazz());
+        String mediumOtherFieldSql = AnnoMtm.getM2mMediumTargetFieldSql(annoMtm);
         List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
         String thisValue = MapUtil.getStr(param, "thisJoinValue");
-        String mediumThisField = annoMtm.getM2mMediumThisFieldSql();
+        String mediumThisField = AnnoMtm.getM2mMediumThisFieldSql(annoMtm);
         DbCriteria criteria = DbCriteria.from(mediumEntity)
             .in(mediumOtherFieldSql, targetValue.toArray())
             .eq(mediumThisField, thisValue);
@@ -217,7 +218,7 @@ public class BaseDbController {
     private <T> List<T> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
-        AnnoMtm annoMtm = annoTreeListRequestAnno.getAnnoMtm();
+        AnnoButtonImpl.M2MJoinButtonImpl annoMtm = annoTreeListRequestAnno.getAnnoMtm();
         String m2mSql = Utils.m2mSql(annoMtm, annoTreeListRequestAnno.getJoinValue());
         String andSql = null;
         String inPrefix = " in (";
@@ -225,7 +226,7 @@ public class BaseDbController {
             inPrefix = " not in (";
         }
         if (StrUtil.isNotEmpty(m2mSql) && !annoTreeListRequestAnno.isIgnoreM2m()) {
-            String joinThisClazzField = annoMtm.getM2mJoinThisClazzFieldSql();
+            String joinThisClazzField = AnnoMtm.getM2mJoinThisClazzFieldSql(anEntity.getThisClass(), annoMtm);
             andSql = joinThisClazzField + inPrefix + m2mSql + ")";
         }
         DbCriteria criteria = AnnoUtil.simpleEntity2conditions(anEntity, param);
@@ -244,26 +245,26 @@ public class BaseDbController {
         if (list == null || list.isEmpty()) {
             return AnnoResult.succeed(Collections.emptyList());
         }
-        AnnoMtm annoMtm = annoTreesRequest.getAnnoMtm();
-        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.getM2mJoinTargetClazzField())).collect(Collectors.toList());
+        AnnoButtonImpl.M2MJoinButtonImpl annoMtm = annoTreesRequest.getAnnoMtm();
+        List<Object> data = list.stream().map(item -> ReflectUtil.getFieldValue(item, annoMtm.joinTargetClazzField())).collect(Collectors.toList());
         return AnnoResult.succeed(data);
     }
 
     public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
-        AnnoMtm annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
+        AnnoButtonImpl.M2MJoinButtonImpl annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
         if (Objects.isNull(annoMtm)) {
             throw new BizException("未找到对应的多对多数据!");
         }
         // 中间表
-        AnEntity entity = metadataManager.getEntity(annoMtm.getM2mMediumTableClazz());
+        AnEntity entity = metadataManager.getEntity(annoMtm.mediumTableClazz());
         String[] split;
         Object ids = param.get("targetJoinValue");
         // 字段一
-        String mediumThisFieldSql = annoMtm.getM2mMediumThisFieldSql();
+        String mediumThisFieldSql = AnnoMtm.getM2mMediumThisFieldSql(annoMtm);
         // 字段二
-        String mediumTargetFieldSql = annoMtm.getM2mMediumTargetFieldSql();
+        String mediumTargetFieldSql = AnnoMtm.getM2mMediumTargetFieldSql(annoMtm);
 
         String mediumThisValue = param.get("thisJoinValue").toString();
 
@@ -280,8 +281,8 @@ public class BaseDbController {
         }
         for (String mediumTargetValue : split) {
             Map<String, Object> addValue = new HashMap<>() {{
-                put(annoMtm.getM2mMediumThisField(), mediumThisValue);
-                put(annoMtm.getM2mMediumTargetField(), mediumTargetValue);
+                put(annoMtm.mediumThisField(), mediumThisValue);
+                put(annoMtm.mediumTargetField(), mediumTargetValue);
             }};
             baseService.insert(JSONUtil.toBean(addValue, entity.getThisClass()));
         }
@@ -292,12 +293,13 @@ public class BaseDbController {
         permissionProxy.checkLogin();
         AnEntity entity = metadataManager.getEntity(clazz);
         String annoJavaCmdId = MapUtil.getStr(map, "annoJavaCmdId");
-        AnnoJavaCmd annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
+        AnnoButtonImpl.JavaCmdImpl annoJavaCmd = AnnoJavaCmd.annoJavCmdMap.get(annoJavaCmdId);
         if (annoJavaCmd == null) {
             return AnnoResult.failure("未找到对应的JavaCmd数据!");
         }
-        if (StrUtil.isNotBlank(annoJavaCmd.getPermissionCode())) {
-            permissionProxy.checkPermission(entity, annoJavaCmd.getPermissionCode());
+        AnnoButtonImpl annoButton = AnnoJavaCmd.annoJavaCmd2ButtonMap.get(annoJavaCmdId);
+        if (StrUtil.isNotBlank(annoButton.getPermissionCode())) {
+            permissionProxy.checkPermission(entity, annoButton.getPermissionCode());
         }
         if (!Objects.equals(annoJavaCmd.getRunSupplier(), JavaCmdSupplier.class)){
             JavaCmdSupplier cmdSupplier = AnnoBeanUtils.getBean(annoJavaCmd.getRunSupplier());

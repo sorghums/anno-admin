@@ -28,7 +28,7 @@ public class AnnoTreeTypeImpl implements AnnoTreeType {
     /**
      * 树形选择数据
      */
-    private TreeData[] value = {};
+    private TreeDataImpl[] value = {};
 
     /**
      * 自定义数据提供者
