@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.option;
 
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
 
 import java.util.List;

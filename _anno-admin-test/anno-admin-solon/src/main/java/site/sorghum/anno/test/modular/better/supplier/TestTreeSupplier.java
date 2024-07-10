@@ -1,7 +1,6 @@
 package site.sorghum.anno.test.modular.better.supplier;
 
 import org.noear.solon.annotation.Component;
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 import site.sorghum.anno.anno.tree.TreeDataSupplier;
 

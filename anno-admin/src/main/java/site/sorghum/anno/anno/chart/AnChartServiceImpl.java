@@ -6,8 +6,6 @@ import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.entity.CommonParam;
-import site.sorghum.anno._metadata.AnChart;
-import site.sorghum.anno._metadata.AnChartField;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;

@@ -3,7 +3,6 @@ package site.sorghum.anno._metadata;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 
 import java.util.HashMap;

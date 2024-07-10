@@ -1,9 +1,7 @@
 package site.sorghum.anno._metadata;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
-import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 
 import java.util.HashMap;
 import java.util.Map;

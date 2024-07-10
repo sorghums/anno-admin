@@ -1,6 +1,5 @@
 package site.sorghum.anno.spring;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.io.resource.Resource;
@@ -25,13 +24,10 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
 import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
 import site.sorghum.anno._metadata.AnEntity;
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
-import site.sorghum.anno.anno.util.AnnoClazzCache;
-import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;

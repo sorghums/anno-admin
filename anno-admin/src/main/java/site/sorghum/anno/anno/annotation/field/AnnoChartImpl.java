@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
-import site.sorghum.anno.anno.annotation.field.AnnoChartField;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
 

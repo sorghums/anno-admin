@@ -2,33 +2,14 @@ package site.sorghum.anno._metadata;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
-import org.noear.wood.annotation.PrimaryKey;
-import org.noear.wood.annotation.Table;
-import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno._common.util.JSONUtil;
-import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno._common.util.MetaClassUtil;
-import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
-import site.sorghum.anno.anno.annotation.clazz.AnnoTableButton;
-import site.sorghum.anno.anno.annotation.field.AnnoButton;
-import site.sorghum.anno.anno.annotation.field.AnnoEdit;
-import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
-import site.sorghum.anno.anno.annotation.field.type.*;
-import site.sorghum.anno.anno.entity.common.FieldAnnoField;
-import site.sorghum.anno.anno.option.OptionDataSupplier;
-import site.sorghum.anno.anno.tpl.BaseTplRender;
-import site.sorghum.anno.anno.tree.TreeDataSupplier;
 import site.sorghum.anno.anno.util.AnnoUtil;
-import site.sorghum.anno.anno.util.QuerySqlCache;
 
 import java.lang.reflect.Field;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * anno 实体 元数据加载

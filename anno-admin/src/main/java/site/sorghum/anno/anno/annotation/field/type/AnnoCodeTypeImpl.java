@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
 
 /**
  * 代码类型

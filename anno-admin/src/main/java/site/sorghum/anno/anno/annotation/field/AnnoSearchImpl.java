@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.sorghum.anno.db.QueryType;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
 
 /**
  * Anno搜索

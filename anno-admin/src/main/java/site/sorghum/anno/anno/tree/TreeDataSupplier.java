@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.tree;
 
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 
 import java.util.List;

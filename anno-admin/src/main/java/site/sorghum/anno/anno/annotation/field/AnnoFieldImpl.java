@@ -1,12 +1,15 @@
 package site.sorghum.anno.anno.annotation.field;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.field.type.*;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
 import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
 
 /**
  * Anno字段注解

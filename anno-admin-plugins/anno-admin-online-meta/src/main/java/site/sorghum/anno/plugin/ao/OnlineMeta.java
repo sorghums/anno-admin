@@ -1,14 +1,12 @@
 package site.sorghum.anno.plugin.ao;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoCodeType;
-import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
 import site.sorghum.anno.plugin.javacmd.ExportJarCmd;

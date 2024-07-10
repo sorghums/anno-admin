@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.tpl.BaseTplRender;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Annotation;
 
 /**
  * 外置页面

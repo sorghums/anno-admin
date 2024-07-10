@@ -3,8 +3,8 @@ package site.sorghum.anno.plugin.javacmd;
 import cn.hutool.core.io.FileUtil;
 import jakarta.inject.Named;
 import net.bytebuddy.description.type.TypeDescription;
-import site.sorghum.anno._common.util.MetaClassUtil;
 import site.sorghum.anno._common.entity.CommonParam;
+import site.sorghum.anno._common.util.MetaClassUtil;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 import site.sorghum.anno.plugin.ao.OnlineMeta;
 

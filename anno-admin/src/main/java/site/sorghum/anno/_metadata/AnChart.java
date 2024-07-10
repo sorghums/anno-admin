@@ -3,7 +3,6 @@ package site.sorghum.anno._metadata;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.MD5Util;
 import site.sorghum.anno.anno.annotation.clazz.AnnoChart;
 

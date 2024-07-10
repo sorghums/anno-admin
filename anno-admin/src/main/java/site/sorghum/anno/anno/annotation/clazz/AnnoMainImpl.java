@@ -1,6 +1,9 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import site.sorghum.anno.anno.annotation.field.AnnoChartImpl;
 
 import java.lang.annotation.Annotation;

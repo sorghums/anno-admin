@@ -1,7 +1,6 @@
 package site.sorghum.anno.plugin.option;
 
 import jakarta.inject.Named;
-import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
 import site.sorghum.anno.anno.option.OptionDataSupplier;
 
