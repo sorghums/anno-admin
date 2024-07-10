@@ -66,7 +66,7 @@ public class AnnoFieldImpl implements AnnoField {
     /**
      * 代码类型
      */
-    AnnoCodeType codeType = new AnnoCodeTypeImpl();
+    AnnoCodeTypeImpl codeType = new AnnoCodeTypeImpl();
 
     /**
      * 图像类型

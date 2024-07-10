@@ -21,12 +21,12 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(
-    name = "数据库脚本管理",
+    name = "脚本管理",
     tableName = "an_sql",
     annoPermission = @AnnoPermission(
         enable = true,
         baseCode = "an_sql",
-        baseCodeTranslate = "数据库脚本管理"
+        baseCodeTranslate = "脚本管理"
     ),
     canRemove = true
 )

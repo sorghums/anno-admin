@@ -50,7 +50,8 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
             EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<AnEntity>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
-                if (anEntity.isAutoMaintainTable()) {
+                if (anEntity.isAutoMaintainTable() && !anEntity.isVirtualTable()) {
+                    log.info("auto maintain table: {} - {}", anEntity.getEntityName(), anEntity.getThisClass());
                     generator.autoMaintainTable(anEntity);
                 }
             }

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
+import org.noear.wood.annotation.Table;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
@@ -146,7 +147,13 @@ public class MetaClassUtil {
         AnMeta anMeta = JSONUtil.toBean(class2Dict(clazz, true), AnMeta.class);
         // 重新设置 tableName
         if (StrUtil.isBlank(anMeta.getTableName())) {
-            StrUtil.toUnderlineCase(anMeta.getEntityName());
+            // @Table 获取
+            Table table = AnnotationUtil.getAnnotation(anMeta.getThisClass(), Table.class);
+            if (Objects.nonNull(table)) {
+                anMeta.setTableName(table.value());
+            }else {
+                anMeta.setTableName(StrUtil.toUnderlineCase(anMeta.getEntityName()));;
+            }
         }
         // 重新设置 javaField
         List<AnField> columns = anMeta.getColumns();
@@ -156,6 +163,10 @@ public class MetaClassUtil {
                 column.setJavaField(field);
                 if (column.pkField()) {
                     anMeta.setPkColumn(column);
+                }
+                // 重新设置tableFieldName
+                if (StrUtil.isBlank(column.getTableFieldName())) {
+                    column.setTableFieldName(StrUtil.toUnderlineCase(column.getJavaName()));;
                 }
             }
         }
