@@ -61,7 +61,6 @@
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-
         <hutool.version>5.8.25</hutool.version>
         <easyjoin.version>0.0.2-M2</easyjoin.version>
         <node.version>v18.16.0</node.version>
@@ -84,6 +83,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-meta</artifactId>

@@ -44,6 +44,14 @@
                     <artifactId>mybatis-plus-annotation</artifactId>
                     <groupId>com.baomidou</groupId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.noear</groupId>
+                    <artifactId>wood</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>cn.hutool</groupId>
+                    <artifactId>hutool-core</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -84,27 +92,22 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-cache</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-http</artifactId>
-            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>
