@@ -65,10 +65,6 @@ public class AnnoButtonImpl implements AnnoButton {
      */
     private O2MJoinButtonImpl o2mJoinButton = O2MJoinButtonImpl.builder().enable(false).build();
 
-    /**
-     * 多对多关联设置【新】
-     */
-    private M2MRelationImpl m2mRelation = M2MRelationImpl.builder().enable(false).build();
 
     /**
      * 多对多关联按钮
@@ -79,11 +75,6 @@ public class AnnoButtonImpl implements AnnoButton {
      * java命令行
      */
     private JavaCmdImpl javaCmd = new JavaCmdImpl();
-
-    /**
-     * 下钻按钮【未启用】
-     */
-    private DrillDownButtonImpl drillDownButton = new DrillDownButtonImpl();
 
     /**
      * 模板视图按钮
@@ -125,10 +116,6 @@ public class AnnoButtonImpl implements AnnoButton {
         return o2mJoinButton;
     }
 
-    @Override
-    public M2MRelation m2mRelation() {
-        return m2mRelation;
-    }
 
     @Override
     public M2MJoinButton m2mJoinButton() {
@@ -138,11 +125,6 @@ public class AnnoButtonImpl implements AnnoButton {
     @Override
     public JavaCmd javaCmd() {
         return javaCmd;
-    }
-
-    @Override
-    public DrillDownButton drillDownButton() {
-        return drillDownButton;
     }
 
     @Override
@@ -211,93 +193,6 @@ public class AnnoButtonImpl implements AnnoButton {
         @Override
         public Class<? extends Annotation> annotationType() {
             return O2MJoinButton.class;
-        }
-    }
-
-    /**
-     * 多对多关联设置的内部类
-     */
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class M2MRelationImpl implements M2MRelation {
-        /**
-         * 对象目标类
-         */
-        private Class<?> joinTargetClass = Object.class;
-
-        /**
-         * 以哪个字段为条件【目标表】
-         */
-        private String joinTargetField = "id";
-
-        /**
-         * SQL语句：? 为 joinThisClazzField的值
-         * demo1: select user_id from an_user_role where role_id = ?
-         * demo2: select role_id from an_user_role where user_id = ?
-         */
-        private String joinSql = "";
-
-        /**
-         * 以哪个字段为条件【本】
-         */
-        private String joinThisField = "id";
-
-        /**
-         * 弹出窗口大小
-         * xs、sm、md、lg、xl、full
-         */
-        private String windowSize = "xl";
-
-        /**
-         * 弹出窗口高度
-         */
-        private String windowHeight = "700px";
-
-        /**
-         * 启用
-         */
-        private boolean enable = true;
-
-        @Override
-        public Class<?> joinTargetClass() {
-            return joinTargetClass;
-        }
-
-        @Override
-        public String joinTargetField() {
-            return joinTargetField;
-        }
-
-        @Override
-        public String joinSql() {
-            return joinSql;
-        }
-
-        @Override
-        public String joinThisField() {
-            return joinThisField;
-        }
-
-        @Override
-        public String windowSize() {
-            return windowSize;
-        }
-
-        @Override
-        public String windowHeight() {
-            return windowHeight;
-        }
-
-        @Override
-        public boolean enable() {
-            return enable;
-        }
-
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return M2MRelation.class;
         }
     }
 
@@ -409,10 +304,12 @@ public class AnnoButtonImpl implements AnnoButton {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class JavaCmdImpl implements JavaCmd {
+
         /**
          * 缓存主键
          */
         private String id;
+
         /**
          * 运行供应商
          */
@@ -439,149 +336,4 @@ public class AnnoButtonImpl implements AnnoButton {
         }
     }
 
-    /**
-     * 下钻按钮的内部类
-     */
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class DrillDownButtonImpl implements DrillDownButton {
-        /**
-         * 用于数据展示的查询
-         * select * from sys_user t1 left join sys_org t2 where user_id = ?
-         */
-        private String fetchSql = "";
-
-        /**
-         * 以哪个字段为条件【本表】
-         */
-        private String thisField = "";
-
-        /**
-         * 以哪个字段为条件【目标表】
-         */
-        private String targetField = "";
-
-        /**
-         * 中间表
-         */
-        private Class<?> mediumTableClass = Object.class;
-
-        /**
-         * 中间表 的字段【目标表】
-         */
-        private String mediumOtherField = "";
-
-        /**
-         * 中间表 的字段【本表】
-         */
-        private String mediumThisField = "";
-
-        /**
-         * 是否是树形结构
-         */
-        private boolean isTree = false;
-
-        /**
-         * 树形结构 的id字段
-         */
-        private String treeIdField = "id";
-
-        /**
-         * 树形结构 的父id字段
-         */
-        private String treeParentIdField = "pid";
-
-        /**
-         * 树形结构 的label字段
-         */
-        private String treeLabelField = "name";
-
-        /**
-         * 弹出窗口大小
-         * xs、sm、md、lg、xl、full
-         */
-        private String windowSize = "xl";
-
-        /**
-         * 弹出窗口高度
-         */
-        private String windowHeight = "700px";
-
-        /**
-         * 是否启用
-         */
-        private boolean enable = false;
-
-        @Override
-        public String fetchSql() {
-            return fetchSql;
-        }
-
-        @Override
-        public String thisField() {
-            return thisField;
-        }
-
-        @Override
-        public String targetField() {
-            return targetField;
-        }
-
-        @Override
-        public Class<?> mediumTableClass() {
-            return mediumTableClass;
-        }
-
-        @Override
-        public String mediumOtherField() {
-            return mediumOtherField;
-        }
-
-        @Override
-        public String mediumThisField() {
-            return mediumThisField;
-        }
-
-        @Override
-        public boolean isTree() {
-            return isTree;
-        }
-
-        @Override
-        public String treeIdField() {
-            return treeIdField;
-        }
-
-        @Override
-        public String treeParentIdField() {
-            return treeParentIdField;
-        }
-
-        @Override
-        public String treeLabelField() {
-            return treeLabelField;
-        }
-
-        @Override
-        public String windowSize() {
-            return windowSize;
-        }
-
-        @Override
-        public String windowHeight() {
-            return windowHeight;
-        }
-
-        @Override
-        public boolean enable() {
-            return enable;
-        }
-
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return DrillDownButton.class;
-        }
-    }
 }

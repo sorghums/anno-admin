@@ -27,9 +27,12 @@ import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoChartFieldImpl;
+import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeTypeImpl;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.method.resource.ResourceFinder;
 
 import java.io.File;
@@ -170,6 +173,20 @@ public class MetaClassUtil {
                 // 重新设置tableFieldName
                 if (StrUtil.isBlank(column.getTableFieldName())) {
                     column.setTableFieldName(StrUtil.toUnderlineCase(column.getJavaName()));;
+                }
+                // 重新设置SqlKey
+                AnnoOptionTypeImpl optionType = column.getOptionType();
+                if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(column.getJavaName(), optionType.sql());
+                    optionType.setSqlKey(sqlKey);
+                    QuerySqlCache.put(sqlKey, optionType.sql());
+                }
+                // 重新设置SqlKey
+                AnnoTreeTypeImpl treeType = column.getTreeType();
+                if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(column.getJavaName(), treeType.sql());
+                    treeType.setSqlKey(sqlKey);
+                    QuerySqlCache.put(sqlKey, treeType.sql());
                 }
             }
         }

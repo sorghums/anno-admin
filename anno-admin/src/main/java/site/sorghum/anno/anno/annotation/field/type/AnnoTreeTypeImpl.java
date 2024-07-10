@@ -20,6 +20,11 @@ import java.lang.annotation.Annotation;
 @NoArgsConstructor
 public class AnnoTreeTypeImpl implements AnnoTreeType {
     /**
+     * SQL缓存主键
+     */
+    private String sqlKey;
+
+    /**
      * SQL语句, 优先级高于value
      * 必须返回三列，列名分别为 id, label, pid
      */

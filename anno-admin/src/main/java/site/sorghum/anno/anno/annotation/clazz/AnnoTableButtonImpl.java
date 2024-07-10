@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
-import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
 
 import java.lang.annotation.Annotation;
 
@@ -54,7 +54,7 @@ public class AnnoTableButtonImpl implements AnnoTableButton {
     /**
      * java命令行
      */
-    private JavaCmdImpl javaCmd = new JavaCmdImpl();
+    private AnnoButtonImpl.JavaCmdImpl javaCmd = new AnnoButtonImpl.JavaCmdImpl();
 
     /**
      * 权限码，默认为空，不进行权限控制
@@ -92,7 +92,7 @@ public class AnnoTableButtonImpl implements AnnoTableButton {
     }
 
     @Override
-    public JavaCmd javaCmd() {
+    public AnnoButtonImpl.JavaCmd javaCmd() {
         return this.javaCmd;
     }
 
@@ -106,33 +106,4 @@ public class AnnoTableButtonImpl implements AnnoTableButton {
         return AnnoTableButton.class;
     }
 
-    /**
-     * Java命令行的内部类实现
-     */
-    public class JavaCmdImpl implements JavaCmd {
-        /**
-         * 运行供应商
-         */
-        private Class<? extends JavaCmdSupplier> runSupplier = JavaCmdSupplier.class;
-
-        /**
-         * 启用
-         */
-        private boolean enable = false;
-
-        @Override
-        public Class<? extends JavaCmdSupplier> runSupplier() {
-            return this.runSupplier;
-        }
-
-        @Override
-        public boolean enable() {
-            return this.enable;
-        }
-
-        @Override
-        public Class<? extends Annotation> annotationType() {
-            return JavaCmd.class;
-        }
-    }
 }

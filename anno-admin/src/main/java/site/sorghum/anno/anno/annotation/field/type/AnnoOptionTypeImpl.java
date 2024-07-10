@@ -20,6 +20,11 @@ import java.lang.annotation.Annotation;
 @NoArgsConstructor
 public class AnnoOptionTypeImpl implements AnnoOptionType {
     /**
+     * SQL缓存主键
+     */
+    private String sqlKey;
+
+    /**
      * SQL语句, 优先级高于value
      * 必须返回两列，列名分别为 label 和 id
      * 比如 select id, label from table where del_flag = 0 order by id desc

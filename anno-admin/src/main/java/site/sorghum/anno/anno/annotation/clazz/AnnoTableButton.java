@@ -1,6 +1,7 @@
 package site.sorghum.anno.anno.annotation.clazz;
 
 
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.form.BaseForm;
 import site.sorghum.anno.anno.form.DefaultBaseForm;
 import site.sorghum.anno.anno.javacmd.JavaCmdSupplier;
@@ -67,25 +68,7 @@ public @interface AnnoTableButton {
      *
      * @return {@link String}
      */
-    JavaCmd javaCmd() default @JavaCmd(enable = false);
-
-    @interface JavaCmd {
-
-        /**
-         * 运行供应商
-         *
-         * @return {@link Class}<{@link ?extends} {@link JavaCmdSupplier}>
-         */
-        Class<?extends JavaCmdSupplier> runSupplier() default JavaCmdSupplier.class;
-
-        /**
-         * 启用
-         *
-         * @return boolean
-         */
-        boolean enable() default true;
-
-    }
+    AnnoButton.JavaCmd javaCmd() default @AnnoButton.JavaCmd(enable = false);
 
     /**
      * 权限码

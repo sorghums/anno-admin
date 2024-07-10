@@ -90,14 +90,14 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                String optionSql = field.getOptionType().sql();
+                String optionSql = field.getOptionType().getSqlKey();
                 if (StrUtil.isNotBlank(optionSql)) {
                     //select value, label from table where del_flag = 0 order by id desc
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
                          """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
-                        optionSql);
+                        QuerySqlCache.get(optionSql));
                     joinParams.add(
                         new JoinParam<>(field.getJavaName()
                             , field.getJavaName()
@@ -155,7 +155,7 @@ public class AnnoTransService {
                             , false
                             , null));
                 }
-                String treeTypeSql = field.getTreeType().getSql();
+                String treeTypeSql = field.getTreeType().getSqlKey();
                 if (StrUtil.isNotBlank(treeTypeSql)) {
                     //select value, label from table where del_flag = 0 order by id desc
                     String newSql = """
