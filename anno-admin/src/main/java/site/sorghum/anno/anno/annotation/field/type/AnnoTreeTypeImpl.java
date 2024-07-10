@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.noear.snack.annotation.ONodeAttr;
 import site.sorghum.anno.anno.tree.TreeDataSupplier;
 
 import java.lang.annotation.Annotation;

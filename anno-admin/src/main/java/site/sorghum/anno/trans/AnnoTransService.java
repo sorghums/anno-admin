@@ -118,7 +118,7 @@ public class AnnoTransService {
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
                 Class<? extends OptionDataSupplier> optionSupplier = field.getOptionType().getSupplier();
-                if (optionSupplier != null) {
+                if (optionSupplier != null && optionSupplier != OptionDataSupplier.class) {
                     List<AnnoOptionTypeImpl.OptionDataImpl> optionDataList = AnnoBeanUtils.getBean(optionSupplier).getOptionDataList();
                     Map<String, String> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
@@ -183,7 +183,7 @@ public class AnnoTransService {
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
                 Class<? extends TreeDataSupplier> treeSupplier = field.getTreeType().getSupplier();
-                if (treeSupplier != null) {
+                if (treeSupplier != null && treeSupplier != TreeDataSupplier.class) {
                     List<AnnoTreeTypeImpl.TreeDataImpl> treeDataList = AnnoBeanUtils.getBean(treeSupplier).getTreeDataList();
                     Map<String, String> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnnoTreeTypeImpl.TreeDataImpl::getId, AnnoTreeTypeImpl.TreeDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
