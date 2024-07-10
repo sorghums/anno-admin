@@ -36,7 +36,7 @@
             <version>${byte-buddy.version}</version>
         </dependency>
         <dependency>
-            <groupId>site.sorghum.sorghum-plugin</groupId>
+            <groupId>site.sorghum.easy-plugin</groupId>
             <artifactId>easy-join-core</artifactId>
             <version>${easyjoin.version}</version>
             <exclusions>

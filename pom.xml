@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.8.5-RC</version>
+        <version>2.8.5</version>
         <relativePath/>
     </parent>
 
@@ -63,7 +63,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <hutool.version>5.8.25</hutool.version>
-        <easyjoin.version>0.0.1.M7</easyjoin.version>
+        <easyjoin.version>0.0.2-M2</easyjoin.version>
         <node.version>v18.16.0</node.version>
         <npm.version>9.5.1</npm.version>
     </properties>
@@ -190,6 +190,16 @@
     </dependencyManagement>
 
     <repositories>
+        <repository>
+            <id>apache_snapshot</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
         <repository>
             <id>tencent</id>
             <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>

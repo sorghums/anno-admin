@@ -23,8 +23,9 @@ import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.ReentrantStopWatch;
 import site.sorghum.plugin.join.aop.EasyJoin;
-import site.sorghum.plugin.join.entity.JoinParam;
+import site.sorghum.plugin.join.common.JoinParam;
 import site.sorghum.plugin.join.operator.JoinOperator;
+import site.sorghum.plugin.join.util.Utils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -205,7 +206,7 @@ public class AnnoTransService {
         for (T tItem : t) {
             Object fieldValue = ReflectUtil.getFieldValue(tItem, fieldName);
             if (fieldValue == null) continue;
-            Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
+            Map<Object, Object> tansMap = Utils.getJoinResMap(tItem);
             List<String> fieldValues = parseStr2Array(String.valueOf(fieldValue));
             StringBuilder finalResult = new StringBuilder();
             for (String value : fieldValues) {
@@ -230,7 +231,7 @@ public class AnnoTransService {
     private <T> void fixedDictToLowerCase(List<T> t) {
         t.forEach(
             tItem -> {
-                Map<Object, Object> tansMap = JoinParam.getJoinResMap(tItem);
+                Map<Object, Object> tansMap = Utils.getJoinResMap(tItem);
                 if (tansMap == null || tansMap.isEmpty()) {
                     return;
                 }
