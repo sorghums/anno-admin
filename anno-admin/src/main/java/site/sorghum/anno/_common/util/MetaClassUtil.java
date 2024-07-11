@@ -6,6 +6,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.yaml.YamlUtil;
@@ -35,7 +36,6 @@ import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.method.resource.ResourceFinder;
-import site.sorghum.plugin.join.util.AssertUtil;
 
 import java.io.File;
 import java.io.StringReader;
@@ -171,17 +171,6 @@ public class MetaClassUtil {
         AnMeta anMeta = JSONUtil.toBean(classed2Dict, AnMeta.class);
         // 重新设置 thisClass
         anMeta.setThisClass(thisClass);
-        // 重新设置 tableName
-        if (StrUtil.isBlank(anMeta.getTableName())) {
-            // @Table 获取
-            Table table = AnnotationUtil.getAnnotation(anMeta.getThisClass(), Table.class);
-            if (Objects.nonNull(table)) {
-                anMeta.setTableName(table.value());
-            } else {
-                anMeta.setTableName(StrUtil.toUnderlineCase(anMeta.getEntityName()));
-                ;
-            }
-        }
         // 重新设置 javaField
         List<AnField> columns = anMeta.getColumns();
         if (CollUtil.isNotEmpty(columns)) {
@@ -260,6 +249,17 @@ public class MetaClassUtil {
         yml.append("entityName=").append(clazz.getSimpleName()).append("\n");
         yml.append("extend=").append(clazz.getSuperclass().getName()).append("\n");
         printAnnotation(null, annoMain, yml);
+        // 正则判断 一行只有 tableName=
+        if (yml.toString().contains("tableName=\n")) {
+            // 重新设置 tableName
+            // @Table 获取
+            Table table = AnnotationUtil.getAnnotation(clazz, Table.class);
+            if (Objects.nonNull(table)) {
+                yml.append("tableName=").append(table.value()).append("\n");
+            } else {
+                yml.append("tableName=").append(StrUtil.toUnderlineCase(clazz.getSimpleName())).append("\n");
+            }
+        }
         List<FieldAnnoField> annoFields = AnnoUtil.getAnnoFields(clazz, deepSuper);
         int i = 0;
         for (FieldAnnoField annoField : annoFields) {
