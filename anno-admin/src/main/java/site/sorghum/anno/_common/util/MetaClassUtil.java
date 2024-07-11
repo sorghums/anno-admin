@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.lang.Dict;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.yaml.YamlUtil;
@@ -34,6 +35,7 @@ import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.method.resource.ResourceFinder;
+import site.sorghum.plugin.join.util.AssertUtil;
 
 import java.io.File;
 import java.io.StringReader;
@@ -58,6 +60,10 @@ public class MetaClassUtil {
         IGNORE_METHOD_NAME.add("annotationType");
         IGNORE_METHOD_NAME.add("pkField");
     }
+
+    private static final String THIS_CLASS_KEY = "thisClass";
+
+    private static final Map<String, Class<?>> DY_TYPE_MAP = new HashMap<>();
 
     @SneakyThrows
     public static Map<TypeDescription, Class<?>> loadSystemClass() {
@@ -131,9 +137,11 @@ public class MetaClassUtil {
                         getAbsolutePath())
                 );
         }
-        return dynamicType[0].
+        Map<TypeDescription, Class<?>> allLoaded = dynamicType[0].
             load(classLoader).
             getAllLoaded();
+        allLoaded.forEach((typeDescription, aClass) -> DY_TYPE_MAP.put(aClass.getName(), aClass));
+        return allLoaded;
     }
 
     @SneakyThrows
@@ -149,16 +157,29 @@ public class MetaClassUtil {
         return JSONUtil.toJsonString(class2Dict(clazz, false));
     }
 
+    @SneakyThrows
     public static AnMeta class2AnMeta(Class<?> clazz) {
-        AnMeta anMeta = JSONUtil.toBean(class2Dict(clazz, true), AnMeta.class);
+        Dict classed2Dict = class2Dict(clazz, true);
+        // 删除原有thisClass
+        String _thisClass = MapUtil.getStr(classed2Dict, THIS_CLASS_KEY);
+        classed2Dict.remove(THIS_CLASS_KEY);
+        // 获取新的thisClass
+        Class<?> thisClass;
+        if ((thisClass = DY_TYPE_MAP.get(_thisClass)) == null) {
+            thisClass = Class.forName(_thisClass);
+        }
+        AnMeta anMeta = JSONUtil.toBean(classed2Dict, AnMeta.class);
+        // 重新设置 thisClass
+        anMeta.setThisClass(thisClass);
         // 重新设置 tableName
         if (StrUtil.isBlank(anMeta.getTableName())) {
             // @Table 获取
             Table table = AnnotationUtil.getAnnotation(anMeta.getThisClass(), Table.class);
             if (Objects.nonNull(table)) {
                 anMeta.setTableName(table.value());
-            }else {
-                anMeta.setTableName(StrUtil.toUnderlineCase(anMeta.getEntityName()));;
+            } else {
+                anMeta.setTableName(StrUtil.toUnderlineCase(anMeta.getEntityName()));
+                ;
             }
         }
         // 重新设置 javaField
@@ -172,7 +193,8 @@ public class MetaClassUtil {
                 }
                 // 重新设置tableFieldName
                 if (StrUtil.isBlank(column.getTableFieldName())) {
-                    column.setTableFieldName(StrUtil.toUnderlineCase(column.getJavaName()));;
+                    column.setTableFieldName(StrUtil.toUnderlineCase(column.getJavaName()));
+                    ;
                 }
                 // 重新设置SqlKey
                 AnnoOptionTypeImpl optionType = column.getOptionType();
@@ -202,21 +224,21 @@ public class MetaClassUtil {
             for (AnnoButtonImpl columnBtn : columnButtons) {
                 AnnoButtonImpl.M2MJoinButtonImpl m2mJoinButton = columnBtn.getM2mJoinButton();
                 if (m2mJoinButton != null && m2mJoinButton.isEnable()) {
-                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.hashCode());
+                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.m2mJoinButton().mediumTableClazz());
                     m2mJoinButton.setId(id);
                     AnnoMtm.annoMtmMap.put(id, m2mJoinButton);
                 }
 
                 AnnoButtonImpl.JavaCmdImpl javaCmd = columnBtn.getJavaCmd();
                 if (javaCmd != null && javaCmd.isEnable()) {
-                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.hashCode());
+                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(columnBtn.getName() + columnBtn.getJavaCmd().runSupplier().getName());
                     javaCmd.setId(id);
                     AnnoJavaCmd.annoJavCmdMap.put(id, javaCmd);
                     AnnoJavaCmd.annoJavaCmd2ButtonMap.put(id, columnBtn);
                 }
 
                 AnnoTplImpl annoTpl = columnBtn.getAnnoTpl();
-                if (annoTpl != null && annoTpl.isEnable()){
+                if (annoTpl != null && annoTpl.isEnable()) {
                     BaseTplRender tplRender = AnnoBeanUtils.getBean(annoTpl.getTplClazz());
                     annoTpl.setId(tplRender.getId());
                 }

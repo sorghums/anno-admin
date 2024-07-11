@@ -53,6 +53,9 @@ public class AnnoChartImpl implements AnnoChart {
 
     @Override
     public AnnoChartField[] chartFields() {
+        if (chartFields == null) {
+            return chartFields = new AnnoChartFieldImpl[0];
+        }
         return chartFields;
     }
 
@@ -68,7 +71,7 @@ public class AnnoChartImpl implements AnnoChart {
 
     public AnnoChartFieldImpl[] getChartFields() {
         if (chartFields == null) {
-            return new AnnoChartFieldImpl[0];
+            return chartFields = new AnnoChartFieldImpl[0];
         }
         return chartFields;
     }

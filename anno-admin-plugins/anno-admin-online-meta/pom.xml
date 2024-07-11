@@ -22,9 +22,5 @@
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>
-        <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-meta</artifactId>
-        </dependency>
     </dependencies>
 </project>

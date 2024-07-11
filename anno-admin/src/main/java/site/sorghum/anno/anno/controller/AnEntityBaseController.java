@@ -1,5 +1,6 @@
 package site.sorghum.anno.anno.controller;
 
+import cn.hutool.core.lang.Singleton;
 import jakarta.inject.Inject;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
@@ -22,7 +23,11 @@ public class AnEntityBaseController {
     public AnnoResult<Map<Object,Object>> anEntity(String clazz){
         AnEntity entity = metadataManager.getEntity(clazz);
         if (entity != null){
-            return AnnoResult.succeed(JSONUtil.toBean(entity,Map.class));
+            return AnnoResult.succeed(
+                Singleton.get(
+                    entity.getEntityName(),() -> JSONUtil.toBean(entity,Map.class)
+                )
+            );
         }
         return AnnoResult.succeed();
     }
