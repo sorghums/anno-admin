@@ -6,7 +6,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.setting.yaml.YamlUtil;
@@ -158,7 +157,7 @@ public class MetaClassUtil {
     }
 
     @SneakyThrows
-    public static String class2Json(Class<?> clazz,boolean deepSuper) {
+    public static String class2Json(Class<?> clazz, boolean deepSuper) {
         return JSONUtil.toJsonString(class2Dict(clazz, deepSuper));
     }
 
@@ -204,6 +203,13 @@ public class MetaClassUtil {
                     treeType.setSqlKey(sqlKey);
                     QuerySqlCache.put(sqlKey, treeType.sql());
                 }
+                // 如果optionEnum是支持的枚举，则重新设置optionData
+                Class<? extends Enum> optionEnum = column.getOptionType().optionEnum();
+                if (optionEnum != null && optionEnum != Enum.class) {
+                    List<AnnoOptionTypeImpl.OptionDataImpl> optionData = AnnoUtil.enum2OptionData(optionEnum);
+                    column.getOptionType().setValue(optionData.toArray(new AnnoOptionTypeImpl.OptionDataImpl[0]));
+                }
+
             }
         }
         // 重新设置 chart的ID

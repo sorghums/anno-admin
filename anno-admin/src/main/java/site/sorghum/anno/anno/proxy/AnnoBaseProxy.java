@@ -1,12 +1,18 @@
 package site.sorghum.anno.anno.proxy;
 
+import cn.hutool.core.util.StrUtil;
+import org.slf4j.LoggerFactory;
+import site.sorghum.anno._common.util.GenericsUtil;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
+import site.sorghum.anno.anno.util.AnnoFieldCache;
+import site.sorghum.anno.db.DbCondition;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.method.MethodTemplate;
 import site.sorghum.anno.method.route.EntityMethodRoute;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Anno代理
@@ -24,8 +30,31 @@ public interface AnnoBaseProxy<T> {
      */
     default String[] supportEntities() {
         return new String[]{
-            clazzToDamiEntityName(this.getClass())
+            clazzToDamiEntityName(entityClass())
         };
+    }
+
+    /**
+     * 从给定的数据库条件中获取主键值。
+     *
+     * @param dbCondition 数据库条件对象，包含字段名和对应的值
+     * @param entityClass 实体类对象，用于获取主键字段名
+     * @return 返回主键值，如果未找到则返回null
+     */
+    default String getPkValueFromDbCriteria(DbCondition dbCondition, Class<?> entityClass) {
+        String pkName = AnnoFieldCache.getPkName(entityClass);
+        if (Objects.equals(dbCondition.getField(),pkName)) {
+            for (Object value : dbCondition.getValues()) {
+                return StrUtil.toString(value);
+            }
+        } else {
+            for (Object value : dbCondition.getValues()) {
+                if (value instanceof DbCondition _dbCondition) {
+                    return getPkValueFromDbCriteria(_dbCondition,entityClass);
+                }
+            }
+        }
+        return null;
     }
 
     static String clazzToDamiEntityName(Class<?> clazz) {
@@ -116,5 +145,18 @@ public interface AnnoBaseProxy<T> {
 
     }
 
-
+    /**
+     * 实体类
+     *
+     * @return {@link Class}<{@link T}>
+     */
+    default Class<?> entityClass() {
+        try {
+            Class<? extends AnnoBaseProxy> nowClass = this.getClass();
+            return (Class<T>) GenericsUtil.getInterfaceGenericsType(nowClass, AnnoBaseProxy.class, 0);
+        } catch (Exception e) {
+            LoggerFactory.getLogger(this.getClass()).warn("自动代理获取实体类失败：{}，自动设置为:{}，代理可能会失效。", e.getMessage(), this.getClass());
+            return this.getClass();
+        }
+    }
 }
