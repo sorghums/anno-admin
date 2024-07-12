@@ -27,6 +27,13 @@ public class AnnoCacheContext implements MetadataContext {
                 if (clazz != field.getJavaField().getDeclaringClass()) {
                     AnnoFieldCache.putFieldName2FieldAndSql(field.getJavaField().getDeclaringClass(), columnName, field.getJavaName());
                 }
+                if (field.isPkField()) {
+                    AnnoFieldCache.putClass2PkName(clazz, field.getJavaName());
+                    // 同时保存其实际节点的类的字段信息
+                    if (clazz != field.getJavaField().getDeclaringClass()) {
+                        AnnoFieldCache.putClass2PkName(field.getJavaField().getDeclaringClass(), field.getJavaName());
+                    }
+                }
             }
         }
     }

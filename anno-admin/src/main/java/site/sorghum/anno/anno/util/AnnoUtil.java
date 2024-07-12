@@ -48,7 +48,7 @@ public class AnnoUtil {
      * @return {@link AnnoMain}
      */
     public static AnnoMain getAnnoMain(Class<?> clazz) {
-        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoMain.class);
+        return AnnotationUtil.getAnnotation(clazz, AnnoMain.class);
     }
 
     public static AnnoRemove getAnnoRemove(Class<?> clazz) {
@@ -405,6 +405,6 @@ public class AnnoUtil {
     }
 
     public static AnnoForm getAnnoForm(Class<?> clazz) {
-        return AnnotationUtil.getSynthesizedAnnotation(clazz, AnnoForm.class);
+        return AnnotationUtil.getAnnotation(clazz, AnnoForm.class);
     }
 }

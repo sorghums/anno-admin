@@ -30,6 +30,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.db.service.wood.AnnoWoodConfig;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
@@ -82,6 +83,10 @@ public class XPluginImp implements Plugin {
                 packages.addAll(CollUtil.newArrayList(value));
             }
         }
+        // 初始化wood
+        Solon.context().getBeanAsync(AnnoWoodConfig.class, config -> {
+            config.init();
+        });
 
         // 初始化自带的
         MethodTemplateManager.parse(ANNO_BASE_PACKAGE);

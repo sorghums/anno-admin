@@ -43,6 +43,18 @@ public interface AnnoBaseDao<T> {
     }
 
     /**
+     * 按条件查找一个
+     *
+     * @param criteria 查询条件
+     * @return {@link T}
+     */
+    default T findOne(DbCriteria criteria) {
+        return dbService().queryOne(
+            criteria
+        );
+    }
+
+    /**
      * 按id查找选项
      *
      * @param id id

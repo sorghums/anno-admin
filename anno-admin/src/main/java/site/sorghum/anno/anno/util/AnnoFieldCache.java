@@ -22,6 +22,7 @@ public class AnnoFieldCache {
      */
     public static Map<Class<?>, BiHashMap<String, String>> clazz2Sql2Field = new HashMap<>();
 
+    public static Map<Class<?>,String> class2PkName = new HashMap<>();
     /**
      * 存入缓存
      *
@@ -33,6 +34,26 @@ public class AnnoFieldCache {
         if (!map.containsKey(sqlColumnName)) {
             map.put(sqlColumnName, fieldName);
         }
+    }
+
+    /**
+     * 将给定的类对象与主键名映射关系存入class2PkName映射中。
+     *
+     * @param clazz 要映射的类对象
+     * @param pkName 与该类对象对应的主键名
+     */
+    public static void putClass2PkName(Class<?> clazz,String pkName){
+        class2PkName.put(clazz,pkName);
+    }
+
+    /**
+     * 获取指定类对应的主键名称。
+     *
+     * @param clazz 需要获取主键名称的类对象
+     * @return 返回指定类对应的主键名称，如果未找到则返回null
+     */
+    public static String getPkName(Class<?> clazz){
+        return class2PkName.get(clazz);
     }
 
     /**

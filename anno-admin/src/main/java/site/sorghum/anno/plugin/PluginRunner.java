@@ -15,11 +15,17 @@ import java.util.List;
 @Named
 public class PluginRunner {
 
-    public void init() {
+    public volatile boolean init;
+
+    public synchronized void init() {
+        if (init){
+            return;
+        }
         List<AnnoPlugin> annoPlugins = AnnoBeanUtils.getBeansOfType(AnnoPlugin.class);
         annoPlugins.sort(Comparator.comparingInt(AnnoPlugin::runOrder).reversed());
         annoPlugins.forEach(AnnoPlugin::printPluginInfo);
         annoPlugins.forEach(AnnoPlugin::run);
+        init = true;
     }
 
 }

@@ -52,6 +52,10 @@
                     <groupId>cn.hutool</groupId>
                     <artifactId>hutool-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>cn.hutool</groupId>
+                    <artifactId>hutool-extra</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -137,6 +141,10 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.logback</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-setting</artifactId>
         </dependency>
     </dependencies>
 </project>

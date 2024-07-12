@@ -20,6 +20,7 @@ import java.util.Optional;
  * @author songyinyin
  * @since 2023/7/25 16:12
  */
+@Deprecated
 public interface AnnoBaseMapper<T extends PrimaryKeyModel> extends BaseMapper<T> {
 
     default Optional<T> findById(Object id) {

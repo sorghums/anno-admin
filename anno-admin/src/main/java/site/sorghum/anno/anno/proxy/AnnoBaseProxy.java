@@ -23,7 +23,9 @@ public interface AnnoBaseProxy<T> {
      * @return entityName
      */
     default String[] supportEntities() {
-        return null;
+        return new String[]{
+            clazzToDamiEntityName(this.getClass())
+        };
     }
 
     static String clazzToDamiEntityName(Class<?> clazz) {

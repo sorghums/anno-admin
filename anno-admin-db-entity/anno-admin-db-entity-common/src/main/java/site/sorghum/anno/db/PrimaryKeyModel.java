@@ -17,8 +17,7 @@ import java.util.Map;
 @Data
 public class PrimaryKeyModel implements Serializable {
 
-    @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32, insertWhenNullSet = SnowIdSupplier.class)
-    @PrimaryKey
+    @AnnoField(pkField = true, title = "主键", tableFieldName = "id", show = false, fieldSize = 32, insertWhenNullSet = SnowIdSupplier.class)
     protected String id;
 
     @JoinResMap

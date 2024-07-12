@@ -154,7 +154,12 @@ public class MetaClassUtil {
 
     @SneakyThrows
     public static String class2Json(Class<?> clazz) {
-        return JSONUtil.toJsonString(class2Dict(clazz, false));
+        return class2Json(clazz, false);
+    }
+
+    @SneakyThrows
+    public static String class2Json(Class<?> clazz,boolean deepSuper) {
+        return JSONUtil.toJsonString(class2Dict(clazz, deepSuper));
     }
 
     @SneakyThrows
@@ -267,7 +272,7 @@ public class MetaClassUtil {
             yml.append("columns[%d].javaName=%s\n".formatted(nowValue, annoField.getField().getName()));
             yml.append("columns[%d].javaType=%s\n".formatted(nowValue, annoField.getField().getType().getName()));
             // 手动设置主键
-            if (annoField.getPrimaryKey() != null) {
+            if (annoField.getPrimaryKey() != null || annoField.getAnnoField().pkField()) {
                 yml.append("columns[%d].pkField=%s\n".formatted(nowValue, true));
             }
             printAnnotation("columns[%d]".formatted(nowValue), annoField.getAnnoField(), yml);

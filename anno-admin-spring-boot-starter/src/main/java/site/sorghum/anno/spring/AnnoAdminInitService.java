@@ -29,6 +29,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.anno.util.AnnoUtil;
+import site.sorghum.anno.db.service.wood.AnnoWoodConfig;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
@@ -106,6 +107,8 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         WoodConfig.isSelectItemEmptyAsNull = true;
         WoodConfig.isUsingValueNull = true;
         WoodConfig.connectionFactory = new SpringDbConnectionFactory();
+        // 初始化wood
+        SpringUtil.getBean(AnnoWoodConfig.class).init();
     }
 
 
@@ -148,7 +151,7 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
             EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
             List<AnEntity> allEntity = metadataManager.getAllEntity();
             for (AnEntity anEntity : allEntity) {
-                if (anEntity.isAutoMaintainTable()) {
+                if (anEntity.isAutoMaintainTable() && !anEntity.isVirtualTable()) {
                     generator.autoMaintainTable(anEntity);
                 }
             }
