@@ -96,7 +96,7 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 修复翻译代理顺序错乱导致虚拟表不会翻译的问题.
 + 新增TPL渲染器.
 + 修复SpringBoot启动错误的问题.
-### 快照分支
+### 2024-07-22 1.2.0发布
 + 新增图表组件，支持多种图表展示.
 + 支持自定义表单提交按钮
 + 支持脱离redis使用，新增anno-admin-cache-caffeine/anno-admin-cache-redis
@@ -106,6 +106,8 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 支持enum作为option选项，新增注解：@AnnoEnumLabel/AnnoEnumValue注解
 + 新增用户重置密码功能
 + 图表支持自定义筛选条件
+### 快照分支
++ 暂无
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 
