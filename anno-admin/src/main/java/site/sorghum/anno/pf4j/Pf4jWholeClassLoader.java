@@ -23,6 +23,10 @@ public class Pf4jWholeClassLoader extends ClassLoader {
         classLoaders.add(pluginClassLoader);
     }
 
+    public static void removeClassLoader(ClassLoader pluginClassLoader) {
+        classLoaders.remove(pluginClassLoader);
+    }
+
     @Override
     protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
         for (ClassLoader classLoader : classLoaders) {

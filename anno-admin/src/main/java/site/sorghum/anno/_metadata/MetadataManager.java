@@ -44,6 +44,7 @@ public class MetadataManager {
     public AnEntity loadEntity(Class<?> clazz) {
         return loadEntity(clazz, false);
     }
+
     /**
      * 从YAML内容加载AnEntity对象列表。
      * 不强制加载
@@ -52,7 +53,7 @@ public class MetadataManager {
      * @return 包含从YAML内容解析得到的AnEntity对象的列表
      */
     public List<AnEntity> loadEntityListByYml(String ymlContent) {
-       return loadEntityListByYml(ymlContent, false);
+        return loadEntityListByYml(ymlContent, false);
     }
 
     /**
@@ -102,6 +103,31 @@ public class MetadataManager {
         postProcess(entity);
 
         return entity;
+    }
+
+
+    /**
+     * 从实体映射中移除指定类型的实体。
+     *
+     * @param clazz 要移除的实体的类型
+     */
+    public void removeEntity(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        entityMap.remove(entityName);
+    }
+
+
+    /**
+     * 根据给定的YAML内容移除实体列表
+     *
+     * @param ymlContent 包含要移除实体类的类描述的YAML内容
+     */
+    public void removeEntityListByYml(String ymlContent) {
+        Map<TypeDescription, Class<?>> classMap = MetaClassUtil.loadClass(ymlContent);
+        classMap.values().stream().forEach((aClass) -> {
+            String entityName = entityMetadataLoader.getEntityName(aClass);
+            entityMap.remove(entityName);
+        });
     }
 
     /**

@@ -56,7 +56,20 @@ public abstract class Pf4jLoadEntityPlugin extends Pf4jPlugin {
 
     @Override
     public void stop() {
-        super.stop();
+        metadataManager = AnnoBeanUtils.getBean(MetadataManager.class);
+        PluginWrapper pluginWrapper = this.context.getPluginWrapper();
+        Pf4jWholeClassLoader.removeClassLoader(pluginWrapper.getPluginClassLoader());
+        String pluginId = pluginWrapper.getPluginId();
+        log.info("[{}]停止实体类插件中", pluginId);
+        List<Class<?>> classes = javaClasses();
+        for (Class<?> aClass : classes) {
+            metadataManager.removeEntity(aClass);
+        }
+        List<String> ymlList = ymlContents();
+        for (String ymlContent : ymlList) {
+            metadataManager.removeEntityListByYml(ymlContent);
+        }
+        metadataManager.refresh();
     }
 
     @Override
