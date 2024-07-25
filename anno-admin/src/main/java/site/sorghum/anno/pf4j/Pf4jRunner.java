@@ -24,7 +24,7 @@ public class Pf4jRunner {
 
 
     /**
-     * 运行插件
+     * 加载并运行插件
      *
      * @param path 插件文件所在的路径
      * @return 插件ID
@@ -37,6 +37,18 @@ public class Pf4jRunner {
         annoPlugins.sort(Comparator.comparingInt(AnnoPlugin::runOrder).reversed());
         annoPlugins.forEach(AnnoPlugin::printPluginInfo);
         annoPlugins.forEach(AnnoPlugin::run);
+        return pluginId;
+    }
+
+    /**
+     * 停止并删除指定插件
+     *
+     * @param pluginId 插件ID
+     * @return 停止并删除的插件ID
+     */
+    public static String stopPlugin(String pluginId) {
+        PLUGIN_MANAGER.stopPlugin(pluginId);
+        PLUGIN_MANAGER.deletePlugin(pluginId);
         return pluginId;
     }
 }
