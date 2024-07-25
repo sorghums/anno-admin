@@ -64,12 +64,16 @@ public class SpringBeanImpl implements AnnoBean {
     }
 
     @Override
+    public void registerBean(String name, Object bean) {
+        try {
+            SpringUtil.registerBean(name, bean);
+        }catch (IllegalStateException ignore){}
+    }
+
+    @Override
     public void unregisterBean(String name) {
         SpringUtil.unregisterBean(name);
     }
 
-    @Override
-    public void registerBean(String name, Object bean) {
-        SpringUtil.registerBean(name, bean);
-    }
+
 }

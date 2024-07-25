@@ -58,6 +58,7 @@ public class SolonBeanImpl implements AnnoBean {
 
     @Override
     public void registerBean(String name, Object bean) {
+        context.beanInject(bean);
         context.beanRegister(new BeanWrap(context, bean.getClass(), bean, name), name, true);
     }
 

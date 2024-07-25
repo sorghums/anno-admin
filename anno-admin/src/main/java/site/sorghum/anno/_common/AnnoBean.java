@@ -49,7 +49,6 @@ public interface AnnoBean {
      * 注册一个Bean到容器中
      *
      * @param name Bean的名称
-     * @param clazz Bean的类类型
      * @param bean 要注册的Bean实例
      */
     void registerBean(String name, Object bean);

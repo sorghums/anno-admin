@@ -6,6 +6,9 @@ import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.pf4j.Pf4jRunner;
+
+import java.nio.file.Path;
 
 /**
  * Ano 管理入门
@@ -21,5 +24,7 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 public class AnnoSolonAdminStarter {
     public static void main(String[] args) throws Exception {
         Solon.start(AnnoSolonAdminStarter.class, args);
+        Pf4jRunner.runPlugin(Path.of("D:\\Project\\rep\\anno-admin-demo-p4j-plugin\\target\\anno-admin-demo-p4j-plugin-1.0-SNAPSHOT.jar"));
+        System.out.println("");
     }
 }
