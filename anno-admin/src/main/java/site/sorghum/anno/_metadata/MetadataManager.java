@@ -5,8 +5,10 @@ import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.description.type.TypeDescription;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
+import site.sorghum.anno._common.util.MetaClassUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 
 import java.util.ArrayList;
@@ -41,6 +43,36 @@ public class MetadataManager {
      */
     public AnEntity loadEntity(Class<?> clazz) {
         return loadEntity(clazz, false);
+    }
+    /**
+     * 从YAML内容加载AnEntity对象列表。
+     * 不强制加载
+     *
+     * @param ymlContent YAML格式的内容字符串
+     * @return 包含从YAML内容解析得到的AnEntity对象的列表
+     */
+    public List<AnEntity> loadEntityListByYml(String ymlContent) {
+       return loadEntityListByYml(ymlContent, false);
+    }
+
+    /**
+     * 从YAML内容加载AnEntity对象列表。
+     *
+     * @param ymlContent YAML格式的内容字符串
+     * @param forceLoad  是否强制加载，如果为true，则忽略缓存，重新加载所有实体；如果为false，则优先从缓存中获取实体
+     * @return 包含从YAML内容解析得到的AnEntity对象的列表
+     */
+    public List<AnEntity> loadEntityListByYml(String ymlContent, boolean forceLoad) {
+        Map<TypeDescription, Class<?>> classMap = MetaClassUtil.loadClass(ymlContent);
+        return classMap.values().stream().map((aClass) -> {
+            String entityName = entityMetadataLoader.getEntityName(aClass);
+            if (!forceLoad && entityMap.containsKey(entityName)) {
+                return entityMap.get(entityName);
+            }
+            AnEntity entity = entityMetadataLoader.load(aClass);
+            postProcess(entity);
+            return entity;
+        }).toList();
     }
 
     /**

@@ -54,6 +54,7 @@
         <jsqlparser.version>4.6</jsqlparser.version>
         <dami.version>0.56</dami.version>
         <aviator.version>5.4.1</aviator.version>
+        <p4j.version>3.12.0</p4j.version>
 
         <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
         <jakarta.transaction-api.version>2.0.1</jakarta.transaction-api.version>

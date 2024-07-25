@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
+import org.pf4j.ExtensionPoint;
 import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
-public class AnnoPlugin implements Runnable {
+public class AnnoPlugin implements ExtensionPoint {
 
     /**
      * 模块名称（菜单名称）
@@ -50,7 +51,6 @@ public class AnnoPlugin implements Runnable {
         this.pluginDesc = pluginDesc;
     }
 
-    @Override
     public void run() {
     }
 

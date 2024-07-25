@@ -23,6 +23,11 @@ import java.time.LocalDateTime;
 public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
 
     @Override
+    public int index() {
+        return Integer.MIN_VALUE + 1;
+    }
+
+    @Override
     public void beforeFetch(DbCriteria criteria) {
         log.debug("网络请求参数：{}", AnnoContextUtil.getContext().getRequestParams());
     }

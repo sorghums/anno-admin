@@ -15,6 +15,12 @@ import site.sorghum.anno.db.DbCriteria;
 @Named
 @Slf4j
 public class AllEntityProxy<T> implements AnnoBaseProxy<T> {
+    @Override
+    public String[] supportEntities() {
+        return  new String[]{
+            AnnoBaseProxy.clazzToDamiEntityName(Object.class)
+        };
+    }
 
     @Override
     public void beforeAdd(T data) {

@@ -162,18 +162,9 @@ public class MethodTemplateManager {
                     info.setMethodName(methodName);
                     info.setExclude(false);
 
-                    String key = "method/all/" + methodName + ".csv";
-                    if (StrUtil.equals(supportEntity, "PrimaryKeyModel")) {
-                        info.setCondition("mt.instanceofPrimaryKeyModel(p0)");
-                    } else if (StrUtil.equals(supportEntity, "PrimaryKeyModel.BaseMetaModel")) {
-                        info.setCondition("mt.instanceofBaseMetaModel(p0)");
-                    } else if (StrUtil.equals(supportEntity, "PrimaryKeyModel.BaseMetaModel.BaseOrgMetaModel")) {
-                        info.setCondition("mt.instanceofBaseOrgMetaModel(p0)");
-                    } else {
-                        String[] split = supportEntity.split("\\.");
-                        String entityName = split[split.length - 1];
-                        key = "method/" + entityName + "/" + methodName + ".csv";
-                    }
+                    String[] split = supportEntity.split("\\.");
+                    String entityName = split[split.length - 1];
+                    String key = "method/" + entityName + "/" + methodName + ".csv";
                     info.setFullPath(key);
                     if (methodUnit != null) {
                         info.setPhase(methodUnit.phase());

@@ -84,9 +84,7 @@ public class XPluginImp implements Plugin {
             }
         }
         // 初始化wood
-        Solon.context().getBeanAsync(AnnoWoodConfig.class, config -> {
-            config.init();
-        });
+        Solon.context().getBeanAsync(AnnoWoodConfig.class, AnnoWoodConfig::init);
 
         // 初始化自带的
         MethodTemplateManager.parse(ANNO_BASE_PACKAGE);

@@ -17,7 +17,7 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 @Slf4j
 @EnableRetry
 @EnableScheduling
-@AnnoScan(scanPackage = {"site.sorghum.anno", "tech.powerjob.server.solon"})
+@AnnoScan(scanPackage = {"tech.powerjob.server.solon"})
 public class AnnoSolonAdminStarter {
     public static void main(String[] args) throws Exception {
         Solon.start(AnnoSolonAdminStarter.class, args);

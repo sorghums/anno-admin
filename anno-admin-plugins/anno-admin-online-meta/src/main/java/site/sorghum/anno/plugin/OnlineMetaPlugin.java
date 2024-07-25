@@ -1,7 +1,7 @@
 package site.sorghum.anno.plugin;
 
 
-import jakarta.inject.Named;
+import org.pf4j.Extension;
 import site.sorghum.anno.plugin.ao.OnlineMeta;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Sorghum
  * @since 2024/02/26
  */
-@Named
+@Extension
 public class OnlineMetaPlugin extends AnnoPlugin {
 
     public OnlineMetaPlugin() {

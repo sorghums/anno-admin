@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Created-By: Sorghum
+Plugin-Class: site.sorghum.anno.PlatformP4fjLoadEntityPlugin
+Plugin-Id: anno-admin-platform-plugin
+Plugin-Provider: Sorghum
+Plugin-Version: 0.0.1

@@ -1,6 +1,6 @@
 package tech.powerjob.server.solon;
 
-import org.noear.solon.annotation.Component;
+import org.pf4j.Extension;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 import tech.powerjob.server.solon.persistence.remote.model.AppInfoDO;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/9/5 12:39
  */
-@Component
+@Extension
 public class PowerjobPlugin extends AnnoPlugin {
 
     public PowerjobPlugin() {

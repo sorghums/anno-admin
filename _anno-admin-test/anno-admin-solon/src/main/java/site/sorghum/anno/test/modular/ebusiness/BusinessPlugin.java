@@ -1,6 +1,6 @@
 package site.sorghum.anno.test.modular.ebusiness;
 
-import org.noear.solon.annotation.Component;
+import org.pf4j.Extension;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/7/23 15:39
  */
-@Component
+@Extension
 public class BusinessPlugin extends AnnoPlugin {
 
     public BusinessPlugin() {

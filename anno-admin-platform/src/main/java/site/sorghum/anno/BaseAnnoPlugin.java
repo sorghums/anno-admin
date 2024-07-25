@@ -2,9 +2,8 @@ package site.sorghum.anno;
 
 
 import cn.hutool.core.collection.CollUtil;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
+import org.pf4j.Extension;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.db.DbCriteria;
@@ -25,13 +24,11 @@ import java.util.List;
  * @since 2023/07/15
  */
 @Slf4j
-@Named
+@Extension
 public class BaseAnnoPlugin extends AnnoPlugin {
-    @Inject
-    @Named("dbServiceWood")
+
     DbService dbService;
 
-    @Inject
     AnPlatformDao anPlatformDao;
 
     public BaseAnnoPlugin() {
@@ -45,6 +42,8 @@ public class BaseAnnoPlugin extends AnnoPlugin {
 
     @Override
     public void run() {
+        dbService = AnnoBeanUtils.getBean(DbService.class);
+        anPlatformDao = AnnoBeanUtils.getBean(AnPlatformDao.class);
         // 权限校验
         CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
             AuthService authService = AnnoBeanUtils.getBean(AuthService.class);

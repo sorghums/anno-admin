@@ -5,23 +5,28 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>site.sorghum.anno</groupId>
-        <artifactId>anno-admin-parent</artifactId>
+        <artifactId>anno-admin-plugins</artifactId>
         <version>1.2.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>anno-admin-plugins</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>anno-admin-p4j-plugin</artifactId>
+
     <properties>
+        <p4j.version>3.12.0</p4j.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <modules>
-        <module>anno-admin-powerjob-server</module>
-        <module>anno-admin-warm-flow-solon-plugin</module>
-        <module>anno-admin-online-meta</module>
-        <module>anno-admin-x-file-storage</module>
-        <module>anno-admin-p4j-plugin</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.pf4j</groupId>
+            <artifactId>pf4j</artifactId>
+            <version>${p4j.version}</version>
+        </dependency>
+    </dependencies>
 </project>
