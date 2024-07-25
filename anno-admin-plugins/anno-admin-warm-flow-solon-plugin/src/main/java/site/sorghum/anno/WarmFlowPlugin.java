@@ -1,6 +1,6 @@
 package site.sorghum.anno;
 
-import org.noear.solon.annotation.Component;
+import org.pf4j.Extension;
 import site.sorghum.anno.ao.FlowDefinitionAo;
 import site.sorghum.anno.ao.FlowHisTaskAo;
 import site.sorghum.anno.plugin.AnPluginMenu;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author songyinyin
  * @since 2023/9/5 12:39
  */
-@Component
+@Extension
 public class WarmFlowPlugin extends AnnoPlugin {
 
     public WarmFlowPlugin() {
