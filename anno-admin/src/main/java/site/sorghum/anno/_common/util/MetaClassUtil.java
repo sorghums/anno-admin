@@ -139,7 +139,7 @@ public class MetaClassUtil {
         Map<TypeDescription, Class<?>> allLoaded = dynamicType[0].
             load(classLoader).
             getAllLoaded();
-        allLoaded.forEach((typeDescription, aClass) -> DY_TYPE_MAP.put(aClass.getName(), aClass));
+        allLoaded.forEach((typeDescription, aClass) -> putDyTypeMap( aClass));
         return allLoaded;
     }
 
@@ -260,6 +260,7 @@ public class MetaClassUtil {
         yml.append("entityName=").append(clazz.getSimpleName()).append("\n");
         yml.append("extend=").append(clazz.getSuperclass().getName()).append("\n");
         printAnnotation(null, annoMain, yml);
+        putDyTypeMap(clazz);
         // 正则判断 一行只有 tableName=
         if (yml.toString().contains("tableName=\n")) {
             // 重新设置 tableName
@@ -345,6 +346,10 @@ public class MetaClassUtil {
         }
     }
 
+
+    public static void putDyTypeMap(Class<?> clazz){
+        DY_TYPE_MAP.put(clazz.getName(), clazz);
+    }
 
     public static void main(String[] args) {
 

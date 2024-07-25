@@ -1,7 +1,7 @@
 package site.sorghum.anno.pf4j;
 
 import lombok.Getter;
-import org.pf4j.RuntimeMode;
+import org.pf4j.PluginWrapper;
 
 /**
  * 插件上下文
@@ -12,10 +12,10 @@ import org.pf4j.RuntimeMode;
 @Getter
 public class Pf4jPluginContext {
 
-    private final RuntimeMode runtimeMode;
+    private final PluginWrapper pluginWrapper;
 
-    public Pf4jPluginContext(RuntimeMode runtimeMode) {
-        this.runtimeMode = runtimeMode;
+    public Pf4jPluginContext(PluginWrapper pluginWrapper) {
+        this.pluginWrapper = pluginWrapper;
     }
 
 }

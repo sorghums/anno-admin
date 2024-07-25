@@ -23,5 +23,4 @@ public class Pf4jPluginManager extends DefaultPluginManager {
     protected PluginFactory createPluginFactory() {
         return new Pf4jPluginFactory();
     }
-
 }

@@ -22,8 +22,6 @@ import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
-import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
@@ -33,6 +31,7 @@ import site.sorghum.anno.db.service.wood.AnnoWoodConfig;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
+import site.sorghum.anno.pf4j.Pf4jRunner;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.AnSqlService;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
@@ -41,7 +40,6 @@ import site.sorghum.anno.spring.config.AnnoScanConfig;
 import site.sorghum.anno.spring.config.SpringDbConnectionFactory;
 import site.sorghum.anno.utils.MTUtils;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -109,6 +107,9 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
         WoodConfig.connectionFactory = new SpringDbConnectionFactory();
         // 初始化wood
         SpringUtil.getBean(AnnoWoodConfig.class).init();
+
+        // pfj support
+        new Pf4jRunner();
     }
 
 
@@ -145,27 +146,13 @@ public class AnnoAdminInitService implements ApplicationListener<ApplicationStar
 
     private void init() throws Exception {
         metadataManager.refresh();
-
-        // 维护 entity 对应的表结构
-        if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<>(dbContext, annoEntityToTableGetter);
-            List<AnEntity> allEntity = metadataManager.getAllEntity();
-            for (AnEntity anEntity : allEntity) {
-                if (anEntity.isAutoMaintainTable() && !anEntity.isVirtualTable()) {
-                    generator.autoMaintainTable(anEntity);
-                }
-            }
-        }
-
         // 初始化数据
         MultiResource resources = ResourceFinder.of().find("init-data/**.sql");
         for (Resource resource : resources) {
             sqlService.runResourceSql(resource);
         }
-
         // 初始化anno插件
         pluginRunner.init();
-
         authService.initPermissions();
         authService.initMenus();
     }

@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
+import site.sorghum.anno.pf4j.Pf4jWholeClassLoader;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -24,8 +25,10 @@ public class JSONUtil {
     private static final Options DEFAULT_OPTIONS;
 
     private static final String SPLIT = "\\.";
+
     static {
         DEFAULT_OPTIONS = Options.def();
+        DEFAULT_OPTIONS.setClassLoader(new Pf4jWholeClassLoader());
         DEFAULT_OPTIONS.addEncoder(
             LocalDateTime.class,
             (data,node) -> {

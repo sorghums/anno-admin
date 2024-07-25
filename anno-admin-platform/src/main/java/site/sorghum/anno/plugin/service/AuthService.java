@@ -54,4 +54,6 @@ public interface AuthService {
      * @param req 请求体
      */
     void updatePwd(UpdatePwdReq req);
+
+    void initMenus();
 }

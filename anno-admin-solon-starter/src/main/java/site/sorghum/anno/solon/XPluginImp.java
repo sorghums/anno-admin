@@ -33,6 +33,7 @@ import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.db.service.wood.AnnoWoodConfig;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.anno.method.MethodTemplateManager;
+import site.sorghum.anno.pf4j.Pf4jRunner;
 import site.sorghum.anno.solon.init.InitDdlAndDataService;
 import site.sorghum.anno.solon.init.MethodTemplateInitService;
 import site.sorghum.anno.solon.interceptor.AnnoSerializationInterceptor;
@@ -126,6 +127,8 @@ public class XPluginImp implements Plugin {
             });
         });
 
+        // pfj support
+        new Pf4jRunner();
      }
 
     /**

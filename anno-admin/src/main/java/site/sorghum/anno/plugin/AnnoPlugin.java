@@ -2,11 +2,11 @@ package site.sorghum.anno.plugin;
 
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Inject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import org.pf4j.ExtensionPoint;
+import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.MetadataManager;
 
 import java.util.List;
@@ -42,9 +42,6 @@ public class AnnoPlugin implements ExtensionPoint {
     public int runOrder() {
         return 10;
     }
-
-    @Inject
-    MetadataManager metadataManager;
 
     public AnnoPlugin(String pluginName, String pluginDesc) {
         this.pluginName = pluginName;
@@ -121,7 +118,7 @@ public class AnnoPlugin implements ExtensionPoint {
         anPluginMenu.setSort(sort);
         anPluginMenu.setType(1);
         anPluginMenu.setParentId(parentId);
-        anPluginMenu.setEntity(metadataManager.getEntity(entityClass));
+        anPluginMenu.setEntity(AnnoBeanUtils.getBean(MetadataManager.class).getEntity(entityClass));
         return anPluginMenu;
     }
 

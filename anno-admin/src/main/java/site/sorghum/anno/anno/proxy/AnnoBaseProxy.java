@@ -1,7 +1,6 @@
 package site.sorghum.anno.anno.proxy;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
 import org.slf4j.LoggerFactory;
 import site.sorghum.anno._common.util.GenericsUtil;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -30,7 +29,6 @@ public interface AnnoBaseProxy<T> {
      * @return entityName
      */
     default String[] supportEntities() {
-        StaticLog.info("类：{} 规则：{}",entityClass(),clazzToDamiEntityName(entityClass()));
         return new String[]{
             clazzToDamiEntityName(entityClass())
         };

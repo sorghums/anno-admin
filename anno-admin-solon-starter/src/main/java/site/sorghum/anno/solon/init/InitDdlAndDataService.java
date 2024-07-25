@@ -13,15 +13,11 @@ import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno._ddl.AnnoEntityToTableGetter;
-import site.sorghum.anno._ddl.entity2db.EntityToDdlGenerator;
-import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.AnSqlService;
 import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
-
-import java.util.List;
 
 /**
  * 初始化数据库表结构和预置数据
@@ -45,17 +41,6 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
     MetadataManager metadataManager;
 
     public void initDdl() throws Throwable {
-        // 维护 entity 对应的表结构
-        if (annoProperty.getIsAutoMaintainTable()) {
-            EntityToDdlGenerator<AnEntity> generator = new EntityToDdlGenerator<AnEntity>(dbContext, annoEntityToTableGetter);
-            List<AnEntity> allEntity = metadataManager.getAllEntity();
-            for (AnEntity anEntity : allEntity) {
-                if (anEntity.isAutoMaintainTable() && !anEntity.isVirtualTable()) {
-                    log.info("auto maintain table: {} - {}", anEntity.getEntityName(), anEntity.getThisClass());
-                    generator.autoMaintainTable(anEntity);
-                }
-            }
-        }
         // 初始化数据
         MultiResource resources = ResourceFinder.of().find("init-data/**.sql");
         for (Resource resource : resources) {

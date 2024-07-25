@@ -14,7 +14,7 @@ public class Pf4jPluginFactory extends DefaultPluginFactory {
 
     @Override
     protected Plugin createInstance(Class<?> pluginClass, PluginWrapper pluginWrapper) {
-        Pf4jPluginContext context = new Pf4jPluginContext(pluginWrapper.getRuntimeMode());
+        Pf4jPluginContext context = new Pf4jPluginContext(pluginWrapper);
         try {
             Constructor<?> constructor = pluginClass.getConstructor(Pf4jPluginContext.class);
             return (Plugin) constructor.newInstance(context);
@@ -23,5 +23,7 @@ public class Pf4jPluginFactory extends DefaultPluginFactory {
         }
         return null;
     }
+
+
 
 }
