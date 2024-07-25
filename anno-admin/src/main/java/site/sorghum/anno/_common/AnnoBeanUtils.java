@@ -28,7 +28,7 @@ public class AnnoBeanUtils {
     public static <T> List<T> getBeansOfType(Class<T> type) {
         List<T> beans = annoBean.getBeansOfType(type);
         // 如果不是ArrayList 则改为ArrayList
-        if (!(beans instanceof ArrayList)){
+        if (!(beans instanceof ArrayList)) {
             beans = new ArrayList<>(beans);
         }
         return beans;
@@ -40,5 +40,13 @@ public class AnnoBeanUtils {
 
     public static String getBeanName(Class<?> aClass) {
         return annoBean.getBeanName(aClass);
+    }
+
+    public static void registerBean(String name, Object bean) {
+        annoBean.registerBean(name, bean);
+    }
+
+    public static void unregisterBean(String name) {
+        annoBean.unregisterBean(name);
     }
 }

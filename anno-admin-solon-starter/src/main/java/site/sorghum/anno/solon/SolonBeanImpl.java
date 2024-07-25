@@ -31,7 +31,7 @@ public class SolonBeanImpl implements AnnoBean {
         if (beansOfType == null || beansOfType.isEmpty()) {
             throw new BizException(
                 "未找到" + type.getSimpleName() + "的代理bean，" +
-                    "请检查是否在solon容器中注册了该bean。");
+                "请检查是否在solon容器中注册了该bean。");
         }
         return beansOfType.get(0);
     }
@@ -50,9 +50,19 @@ public class SolonBeanImpl implements AnnoBean {
                 "请检查是否在solon容器中注册了该bean。");
         }
         String name = wrapsOfType.get(0).name();
-        if (StrUtil.isBlank(name)){
+        if (StrUtil.isBlank(name)) {
             name = StrUtil.lowerFirst(aClass.getSimpleName());
         }
         return name;
+    }
+
+    @Override
+    public void registerBean(String name, Object bean) {
+        context.beanRegister(new BeanWrap(context, bean.getClass(), bean, name), name, true);
+    }
+
+    @Override
+    public void unregisterBean(String name) {
+        context.removeWrap(name);
     }
 }

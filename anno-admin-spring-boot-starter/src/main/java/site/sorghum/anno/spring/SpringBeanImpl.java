@@ -22,8 +22,8 @@ public class SpringBeanImpl implements AnnoBean {
         List<T> beansOfType = getBeansOfType(type);
         if (beansOfType.size() > 1) {
             throw new BizException(
-                    "未找到唯一" + type.getSimpleName() + "的代理bean，" +
-                    "请检查是否在spring容器中注册了该bean。"
+                "未找到唯一" + type.getSimpleName() + "的代理bean，" +
+                "请检查是否在spring容器中注册了该bean。"
             );
         } else if (beansOfType.isEmpty()) {
             return _getBean(type);
@@ -38,8 +38,8 @@ public class SpringBeanImpl implements AnnoBean {
      * @param <T>  Bean对象的类型
      * @return 返回指定类型的Bean对象
      */
-    private  <T> T _getBean(Class<T> type) {
-       return SpringUtil.getBean(type);
+    private <T> T _getBean(Class<T> type) {
+        return SpringUtil.getBean(type);
     }
 
     @Override
@@ -52,14 +52,24 @@ public class SpringBeanImpl implements AnnoBean {
         String[] beanNamesForType = SpringUtil.getBeanNamesForType(aClass);
         if (beanNamesForType.length > 0) {
             String name = beanNamesForType[0];
-            if (StrUtil.isBlank(name)){
+            if (StrUtil.isBlank(name)) {
                 name = StrUtil.lowerFirst(aClass.getSimpleName());
             }
             return name;
         }
         throw new BizException(
-                "未找到" + aClass.getSimpleName() + "的代理bean，" +
-                "请检查是否在spring容器中注册了该bean。"
+            "未找到" + aClass.getSimpleName() + "的代理bean，" +
+            "请检查是否在spring容器中注册了该bean。"
         );
+    }
+
+    @Override
+    public void unregisterBean(String name) {
+        SpringUtil.unregisterBean(name);
+    }
+
+    @Override
+    public void registerBean(String name, Object bean) {
+        SpringUtil.registerBean(name, bean);
     }
 }

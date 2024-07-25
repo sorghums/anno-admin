@@ -44,4 +44,19 @@ public interface AnnoBean {
      * @return {@link String}
      */
     String getBeanName(Class aClass);
+
+    /**
+     * 注册一个Bean到容器中
+     *
+     * @param name Bean的名称
+     * @param clazz Bean的类类型
+     * @param bean 要注册的Bean实例
+     */
+    void registerBean(String name, Object bean);
+
+    /**
+     * 从容器中移除一个Bean
+     * @param name 名称
+     */
+    void unregisterBean(String name);
 }
