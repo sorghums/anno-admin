@@ -13,8 +13,11 @@ import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.enums.FlowStatusEnum;
 import site.sorghum.anno.enums.NodeTypeEnum;
+import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @AnnoMain(name = "历史任务记录",
     tableName = "flow_his_task",
@@ -127,4 +130,7 @@ public class FlowHisTaskAo extends FlowHisTask {
         return super.getMessage();
     }
 
+
+    @JoinResMap
+    Map<String, Object> joinResMap = new HashMap<>();
 }

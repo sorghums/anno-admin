@@ -2,6 +2,7 @@ package site.sorghum.anno._common.util;
 
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import org.noear.snack.ONode;
 import org.noear.snack.core.Feature;
 import org.noear.snack.core.Options;
@@ -29,6 +30,20 @@ public class JSONUtil {
     static {
         DEFAULT_OPTIONS = Options.def();
         DEFAULT_OPTIONS.setClassLoader(new Pf4jWholeClassLoader());
+        DEFAULT_OPTIONS.addEncoder(Long.class, (data, node) -> {
+            if (data == null) {
+                node.val().set(null);
+            } else {
+                node.val().set(StrUtil.toString(data));
+            }
+        } );
+        DEFAULT_OPTIONS.addEncoder(long.class, (data, node) -> {
+            if (data == null) {
+                node.val().set(null);
+            } else {
+                node.val().set(StrUtil.toString(data));
+            }
+        } );
         DEFAULT_OPTIONS.addEncoder(
             LocalDateTime.class,
             (data,node) -> {
@@ -88,6 +103,7 @@ public class JSONUtil {
             }
         });
         DEFAULT_OPTIONS.add(Feature.EnumUsingName);
+
     }
 
     public static <T> List<T> toBeanList(String json, Class<T> objectClass) {

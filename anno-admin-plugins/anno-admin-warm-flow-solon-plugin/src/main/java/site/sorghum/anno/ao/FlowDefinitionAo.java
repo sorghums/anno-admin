@@ -13,6 +13,8 @@ import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.enums.TrueFalseEnum;
 import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
+import site.sorghum.anno.cmd.FlowDefinitionPublishCmd;
+import site.sorghum.anno.cmd.FlowDefinitionUnPublishCmd;
 import site.sorghum.anno.enums.TrueFalseCharEnum;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
@@ -120,12 +122,15 @@ public class FlowDefinitionAo extends FlowDefinition {
     @AnnoButton(
         name = "发布",
         permissionCode = "publish",
+        javaCmd = @AnnoButton.JavaCmd(runSupplier = FlowDefinitionPublishCmd.class),
         icon = "ant-design:arrow-up-outlined"
     )
     Object publish;
 
     @AnnoButton(name = "取消发布",
-        permissionCode = "cancel_publish",icon = "ant-design:arrow-down-outlined")
+        permissionCode = "cancel_publish",
+        javaCmd = @AnnoButton.JavaCmd(runSupplier = FlowDefinitionUnPublishCmd.class),
+        icon = "ant-design:arrow-down-outlined")
     Object cancelPublish;
 
     @JoinResMap
