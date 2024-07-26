@@ -1,8 +1,10 @@
-package site.sorghum.anno.plugin;
+package site.sorghum.anno.om;
 
 
 import org.pf4j.Extension;
-import site.sorghum.anno.plugin.ao.OnlineMeta;
+import site.sorghum.anno.om.ao.OnlineMeta;
+import site.sorghum.anno.plugin.AnPluginMenu;
+import site.sorghum.anno.plugin.AnnoPlugin;
 
 import java.util.ArrayList;
 import java.util.List;

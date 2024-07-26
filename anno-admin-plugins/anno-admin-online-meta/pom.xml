@@ -23,4 +23,23 @@
             <artifactId>anno-admin</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Plugin-Id>anno-online-meta-plugin</Plugin-Id>
+                            <Plugin-Version>0.0.1</Plugin-Version>
+                            <!-- 新增 -->
+                            <Plugin-Class>site.sorghum.anno.om.Pf4jOnlineMetaPlugin</Plugin-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -15,7 +15,7 @@ public abstract class Pf4jLoadEntityPlugin extends Pf4jPlugin {
 
     MetadataManager metadataManager;
 
-    protected Pf4jLoadEntityPlugin(Pf4jPluginContext context) {
+    public Pf4jLoadEntityPlugin(Pf4jPluginContext context) {
         super(context);
     }
 

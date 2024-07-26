@@ -2,10 +2,7 @@ package site.sorghum.anno.pf4j;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.pf4j.DefaultPluginManager;
-import org.pf4j.ExtensionWrapper;
-import org.pf4j.PluginFactory;
-import org.pf4j.PluginRuntimeException;
+import org.pf4j.*;
 import site.sorghum.anno._common.AnnoBeanUtils;
 
 import java.nio.file.Path;
@@ -46,5 +43,13 @@ public class Pf4jPluginManager extends DefaultPluginManager {
             AnnoBeanUtils.registerBean(beanName, extension);
         }
         return extensions;
+    }
+
+    @Override
+    protected PluginLoader createPluginLoader() {
+        return new CompoundPluginLoader()
+            .add(new JarPluginLoader(this))
+            .add(new DevelopmentPluginLoader(this))
+            .add(new DefaultPluginLoader(this));
     }
 }

@@ -1,4 +1,4 @@
-package site.sorghum.anno.plugin.ao;
+package site.sorghum.anno.om.ao;
 
 import lombok.Data;
 import org.noear.wood.annotation.PrimaryKey;
@@ -9,8 +9,8 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoCodeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
-import site.sorghum.anno.plugin.javacmd.ExportJarCmd;
-import site.sorghum.anno.plugin.javacmd.PreviewMetaCmd;
+import site.sorghum.anno.om.javacmd.ExportJarCmd;
+import site.sorghum.anno.om.javacmd.PreviewMetaCmd;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.util.HashMap;
