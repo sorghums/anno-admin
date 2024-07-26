@@ -1,9 +1,5 @@
 package site.sorghum.anno.test;
 
-import com.warm.flow.core.dto.FlowParams;
-import com.warm.flow.core.enums.SkipType;
-import com.warm.flow.core.service.DefService;
-import com.warm.flow.core.service.InsService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.SolonMain;
@@ -13,7 +9,6 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 import site.sorghum.anno.pf4j.Pf4jRunner;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 
 /**
  * Ano 管理入门
@@ -31,10 +26,5 @@ public class AnnoSolonAdminStarter {
         Solon.start(AnnoSolonAdminStarter.class, args);
         Pf4jRunner.runPlugin(Path.of("D:\\Project\\rep\\anno-admin-demo-p4j-plugin\\target\\anno-admin-demo-p4j-plugin-1.0-SNAPSHOT.jar"));
         Pf4jRunner.runPlugin(Path.of("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-online-meta"));
-        System.out.println("");
-        DefService defService = Solon.context().getBean(DefService.class);
-        InsService insService = Solon.context().getBean(InsService.class);
-        insService.start("1", new FlowParams().flowCode("leaveFlow-serial1").handler("1666356287765979136").skipType(SkipType.PASS.getKey())
-            .permissionFlag(Arrays.asList("flow_definition:publish")));
     }
 }
