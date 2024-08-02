@@ -31,10 +31,10 @@ public class EntityMethodRoute implements MethodRoute {
     private static String[] argClass2Router(Class<?> argClass) {
         List<String> route = new ArrayList<>();
         // 循环直到父类是Object
-        while (argClass.getSuperclass() != Object.class) {
+        do {
             route.add(argClass.getSimpleName());
             argClass = argClass.getSuperclass();
-        }
+        } while (argClass != null && argClass.getSuperclass() != Object.class);
         route.add(0, "all");
         return route.toArray(new String[0]);
     }

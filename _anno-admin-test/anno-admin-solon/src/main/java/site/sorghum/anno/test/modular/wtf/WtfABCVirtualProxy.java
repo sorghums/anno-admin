@@ -10,17 +10,22 @@ import site.sorghum.anno.db.BaseMetaModel;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.TableParam;
+import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.suppose.proxy.BaseAnnoPreProxy;
-import site.sorghum.anno.suppose.proxy.VirtualJoinTableProxy;
+
+import java.util.List;
 
 @Component
 @Slf4j
-public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
+public class WtfABCVirtualProxy implements AnnoBaseProxy<WtfABCVirtual> {
     @Inject
     BaseAnnoPreProxy baseAnnoPreProxy;
 
     @Inject
     DbTableContext dbTableContext;
+
+    @Inject
+    DbService dbService;
 
     @Override
     public String[] supportEntities() {
@@ -52,10 +57,7 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
 
     }
 
-    @Override
-    public void afterAdd(WtfABCVirtual data) {
-        super.afterAdd(data);
-    }
+
 
     @Override
     public void beforeUpdate(WtfABCVirtual data, DbCriteria criteria) {
@@ -76,7 +78,13 @@ public class WtfABCVirtualProxy extends VirtualJoinTableProxy<WtfABCVirtual> {
     @Override
     public void afterFetch(DbCriteria criteria, AnnoPage<WtfABCVirtual> page) {
         // 系统仅支持查询，其余如新增、修改、删除等操作请自行实现。
-        super.afterFetch(criteria, page);
+        List<WtfABCVirtual> virtuals = dbService.sqlQueryList(WtfABCVirtual.class,
+            """
+                select * from wtf_a 
+                """
+        );
+        page.setList(virtuals);
+        page.setTotal(9999999999L);
     }
 
     @SneakyThrows

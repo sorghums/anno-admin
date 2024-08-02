@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Data
 @AnnoMain(name = "沃特发表ABC", virtualTable = true)
-@AnnoRemove(removeType = 1,removeField = "t1.del_flag")
+@AnnoRemove(removeType = 1, removeField = "t1.del_flag")
 public class WtfABCVirtual {
     @AnnoField(
         title = "C表主键[虚拟表主键]",

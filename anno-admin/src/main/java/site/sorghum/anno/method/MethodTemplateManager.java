@@ -49,7 +49,7 @@ public class MethodTemplateManager {
     private static final Map<String, Set<MTProcessorInfo>> processorInfoMap = new HashMap<>();
     private static final Map<Class<?>, MethodRoute> methodRouteBeanMap = new HashMap<>();
     private static final Map<Class<?>, Object> proxyCache = new ConcurrentHashMap<>();
-
+    private static final Set<Integer> processedOldProxy = new HashSet<>();
     public static <T> T create(Class<T> clazz) {
         Object proxy = proxyCache.computeIfAbsent(clazz, k -> {
             Object object = Proxy.newProxyInstance(k.getClassLoader(), new Class[]{k}, new MethodTemplateInvocationHandler());
@@ -76,7 +76,7 @@ public class MethodTemplateManager {
         parse(classes, METHOD_PATH + "/*.csv", METHOD_PATH + "/**/*.csv");
 
         // 兼容 AnnoBaseProxy#supportEntities
-        supportOld();
+        supportOld(packageName);
 
         // 兼容无决策表的情况
         supportNoRuleCsv(classes);
@@ -139,14 +139,22 @@ public class MethodTemplateManager {
     /**
      * 兼容 AnnoBaseProxy#supportEntities
      */
-    private static void supportOld() {
+    private static void supportOld(String packageName) {
 
         List<AnnoBaseProxy> proxies = AnnoBeanUtils.getBeansOfType(AnnoBaseProxy.class);
         for (AnnoBaseProxy<?> proxy : proxies) {
-            if (ArrayUtil.isEmpty(proxy.supportEntities())) {
+            if (!proxy.getClass().getName().startsWith(packageName)) {
                 continue;
             }
+            // 去重
+            if (processedOldProxy.contains(proxy.hashCode())){
+                continue;
+            }
+            processedOldProxy.add(proxy.hashCode());
             String[] supportEntities = proxy.supportEntities();
+            if (ArrayUtil.isEmpty(supportEntities)) {
+                continue;
+            }
             Method[] methods = findMethods(AnnoBaseProxy.class);
             for (Method method : methods) {
                 String methodName = method.getName();
