@@ -60,6 +60,26 @@ public class DbTableContext implements MetadataContext {
         return getTableParam(entityName);
     }
 
+    /**
+     * 获取原始信息
+     *
+     * @param entityName 对象名
+     * @return {@link Class}<{@link ?}>
+     */
+    public <T> TableParam<T> getOriginalTableParam(String entityName) {
+        return (TableParam<T>) tableParamCache.get(entityName);
+    }
+
+    /**
+     * 获取 entity db 原始信息
+     *
+     * @param clazz 实体类
+     */
+    public <T> TableParam<T> getOriginalTableParam(Class<?> clazz) {
+        String entityName = entityMetadataLoader.getEntityName(clazz);
+        return getTableParam(entityName);
+    }
+
     @Override
     public void refresh(List<AnEntity> allEntities) {
         tableParamCache.clear();

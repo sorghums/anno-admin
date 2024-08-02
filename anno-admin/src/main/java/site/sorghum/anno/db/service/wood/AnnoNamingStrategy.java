@@ -1,7 +1,6 @@
 package site.sorghum.anno.db.service.wood;
 
 import cn.hutool.core.util.StrUtil;
-import jakarta.inject.Named;
 import org.noear.wood.wrap.NamingStrategy;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
@@ -28,7 +27,11 @@ public class AnnoNamingStrategy extends NamingStrategy {
     @Override
     public String fieldToColumnName(Class<?> clz, Field f) {
         try {
-            return AnnoFieldCache.getSqlColumnByJavaName(clz, f.getName());
+            String column = AnnoFieldCache.getSqlColumnByJavaName(clz, f.getName()).trim();
+            if (column.contains(" as ")){
+                column = column.split("as")[1].trim();
+            }
+            return column;
         } catch (Exception ignore) {
             return super.fieldToColumnName(clz, f);
         }

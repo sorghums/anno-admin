@@ -341,9 +341,15 @@ public class AnnoUtil {
         Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(params), entityClazz);
         List<AnField> anFields = entity.getDbAnFields();
         for (AnField anField : anFields) {
-            String sqlColumn = anField.getTableFieldName();
+            String sqlColumn = anField.getTableFieldName().trim();
+            if (StrUtil.isBlank(sqlColumn)) {
+                continue;
+            }
+            if (sqlColumn.contains(" as ")) {
+                sqlColumn = sqlColumn.split("as")[0].trim();
+            }
             Object value = InvokeUtil.invokeGetter(eObject, anField.getJavaField());
-            if (sqlColumn != null && value != null) {
+            if (value != null) {
                 criteria.condition().create(sqlColumn, anField.getSearch().getQueryType(), value);
             }
         }

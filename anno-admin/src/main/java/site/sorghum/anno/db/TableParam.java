@@ -79,6 +79,7 @@ public class TableParam<T> {
     @Data
     @EqualsAndHashCode
     @AllArgsConstructor
+    @Builder
     public static class JoinTable {
 
         /**

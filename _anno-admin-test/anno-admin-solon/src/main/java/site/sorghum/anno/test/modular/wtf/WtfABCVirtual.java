@@ -65,7 +65,7 @@ public class WtfABCVirtual {
 
     @AnnoField(
         title = "性格",
-        tableFieldName = "t2.attr",
+        tableFieldName = "t2.attr as attr",
         edit = @AnnoEdit)
     String attr;
 
