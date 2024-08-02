@@ -74,20 +74,20 @@ public class WtfABCVirtualProxy implements AnnoBaseProxy<WtfABCVirtual> {
     @Override
     public void afterFetch(DbCriteria criteria, AnnoPage<WtfABCVirtual> page) {
         TableParam<WtfABCVirtual> tableParam = dbTableContext.getOriginalTableParam(criteria.getEntityName());
-        tableParam.setTableName("wtf_a as t1");
+        tableParam.setTableName("wtf_c as t1");
         tableParam.setJoinTables(
             List.of(
                 TableParam.JoinTable.builder()
                     .joinType(1)
                     .tableName("wtf_b")
                     .alias("t2")
-                    .joinCondition("t1.id = t2.wtf_a")
+                    .joinCondition("t1.wtf_b = t2.id")
                     .build(),
                 TableParam.JoinTable.builder()
                     .joinType(1)
-                    .tableName("wtf_c")
+                    .tableName("wtf_a")
                     .alias("t3")
-                    .joinCondition("t2.id = t3.wtf_b")
+                    .joinCondition("t3.id = t2.wtf_a")
                     .build())
         );
         AnnoPage<WtfABCVirtual> paged = dbService.page(criteria);
