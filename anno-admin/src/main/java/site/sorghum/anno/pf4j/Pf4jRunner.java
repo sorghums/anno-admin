@@ -37,6 +37,7 @@ public class Pf4jRunner {
         annoPlugins.sort(Comparator.comparingInt(AnnoPlugin::runOrder).reversed());
         annoPlugins.forEach(AnnoPlugin::printPluginInfo);
         annoPlugins.forEach(AnnoPlugin::run);
+        log.info("[{}]加载实体类拓展点完成", pluginId);
         return pluginId;
     }
 
@@ -48,7 +49,6 @@ public class Pf4jRunner {
      */
     public static String stopPlugin(String pluginId) {
         PLUGIN_MANAGER.stopPlugin(pluginId);
-        PLUGIN_MANAGER.deletePlugin(pluginId);
         return pluginId;
     }
 }
