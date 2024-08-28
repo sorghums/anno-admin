@@ -73,6 +73,7 @@ public class CaptchaManager {
             return;
         }
         String code = getCache(captchaKey);
+        removeCache(captchaKey);
         if (!StrUtil.equalsIgnoreCase(captchaCode, code)) {
             throw new BizException("验证码错误");
         }
@@ -104,6 +105,9 @@ public class CaptchaManager {
         CacheUtil.putCache("anno-admin:captcha:admin:" + key, code, seconds);
     }
 
+    private void removeCache(String key) {
+        CacheUtil.delKey("anno-admin:captcha:admin:" + key);
+    }
     private String getCache(String key) {
             return CacheUtil.getCacheItem("anno-admin:captcha:admin:" + key,String.class);
     }
