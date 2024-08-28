@@ -270,14 +270,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    @Override
-    public void verifyButtonPermission(String className, String methodName) {
-        String permissionCode = permissionContext.getPermissionCode(className, methodName);
-        if (StrUtil.isBlank(permissionCode)) {
-            throw new BizException("该方法不是按钮权限");
-        }
-        verifyPermission(permissionCode);
-    }
 
     @Override
     public void saveLoginLog(AnLoginLog anLoginLog) {

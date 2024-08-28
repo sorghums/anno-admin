@@ -33,10 +33,6 @@ public interface AuthService {
      */
     void verifyPermission(String permissionCode);
 
-    /**
-     * 校验是否有按钮权限
-     */
-    void verifyButtonPermission(String className, String methodName);
 
     /**
      * 保存登录日志
