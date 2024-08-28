@@ -69,6 +69,10 @@ public class AnnoContextUtil {
             }
             return this.stopWatch;
         }
+
+        public ReentrantStopWatch getStopWatch() {
+            return this.getStopWatch(null);
+        }
     }
 
     /**
