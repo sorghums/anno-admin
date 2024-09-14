@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.util.TablesNamesFinder;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.wood.DbContext;
 import org.noear.wood.annotation.Db;
 
@@ -13,7 +13,7 @@ import org.noear.wood.annotation.Db;
  * @since 2023/10/4 19:10
  */
 @Component
-public class AnnoTablesNamesFinder extends TablesNamesFinder implements InitializingBean {
+public class AnnoTablesNamesFinder extends TablesNamesFinder implements LifecycleBean {
 
     private String delimiterToken;
 
@@ -21,7 +21,7 @@ public class AnnoTablesNamesFinder extends TablesNamesFinder implements Initiali
     DbContext dbContext;
 
     @Override
-    public void afterInjection() throws Throwable {
+    public void start() throws Throwable {
         this.delimiterToken ="`";
     }
 

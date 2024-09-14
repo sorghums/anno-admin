@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.bean.LifecycleBean;
 import org.noear.wood.annotation.Db;
 import tech.powerjob.common.enums.WorkflowNodeType;
 import tech.powerjob.common.model.PEWorkflowDAG;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class WorkflowNodeHandleService implements InitializingBean {
+public class WorkflowNodeHandleService implements LifecycleBean {
 
     private Map<WorkflowNodeType, ControlNodeHandler> controlNodeHandlerContainer;
 
@@ -35,7 +35,7 @@ public class WorkflowNodeHandleService implements InitializingBean {
     private WorkflowInstanceInfoRepository workflowInstanceInfoRepository;
 
     @Override
-    public void afterInjection() throws Throwable {
+    public void start() throws Throwable {
         controlNodeHandlerContainer = new EnumMap<>(WorkflowNodeType.class);
         taskNodeHandlerContainer = new EnumMap<>(WorkflowNodeType.class);
         Solon.context().getBeansOfType(ControlNodeHandler.class)

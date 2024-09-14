@@ -3,7 +3,7 @@ package tech.powerjob.server.solon.core.uid;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.core.bean.InitializingBean;
+import org.noear.solon.core.bean.LifecycleBean;
 import tech.powerjob.server.solon.remote.server.self.ServerInfoService;
 
 /**
@@ -16,7 +16,7 @@ import tech.powerjob.server.solon.remote.server.self.ServerInfoService;
  */
 @Slf4j
 @Component
-public class IdGenerateService implements InitializingBean {
+public class IdGenerateService implements LifecycleBean {
 
     private SnowFlakeIdGenerator snowFlakeIdGenerator;
 
@@ -26,7 +26,7 @@ public class IdGenerateService implements InitializingBean {
     private static final int DATA_CENTER_ID = 0;
 
     @Override
-    public void afterInjection() {
+    public void start() {
         long id = serverInfoService.fetchServiceInfo().getId();
         snowFlakeIdGenerator = new SnowFlakeIdGenerator(DATA_CENTER_ID, id);
         log.info("[IdGenerateService] initialize IdGenerateService successfully, ID:{}", id);

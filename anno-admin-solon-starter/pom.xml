@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.i18n</artifactId>
+            <artifactId>solon-i18n</artifactId>
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon-api</artifactId>
+            <artifactId>solon-web</artifactId>
             <exclusions>
                 <exclusion>
                     <artifactId>solon.boot.smarthttp</artifactId>
@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.logging.logback</artifactId>
+            <artifactId>solon-logging-logback</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
@@ -62,7 +62,7 @@
 
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.web.staticfiles</artifactId>
+            <artifactId>solon-web-staticfiles</artifactId>
         </dependency>
 
         <!-- 测试 -->

@@ -30,7 +30,7 @@ public class PageController {
             throw new BizException("未找到渲染器");
         }
         // 注入参数 保留原参数
-        render.addProps(new HashMap<>(ctx.paramMap()));
+        render.addProps(new HashMap<>(ctx.paramMap().toValueMap()));
         // 执行函数
         render.hook();
         return new ModelAndView(render.getViewName(), render.getProps());
