@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.core.*;
-import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.util.ProxyBinder;
 import org.noear.solon.data.tran.TranExecutor;
 import org.noear.solon.data.tran.TranExecutorDefault;
@@ -169,7 +168,11 @@ public class XPluginImp implements Plugin {
                 metadataManager.loadFormEntity(clazz);
             }
         }
-        metadataManager.refresh();
+        Solon.context().getBeanAsync(
+            DataSource.class, ds -> {
+                metadataManager.refresh();
+            }
+        );
     }
 
     static class InjectBeanInjector implements BeanInjector<Inject> {
@@ -214,15 +217,11 @@ public class XPluginImp implements Plugin {
             ReflectUtil.setFieldValue(bw, "typed", typed);
 
             // see: AppContext#beanComponentized
-            //尝试提取函数并确定自动代理
             context.beanExtractOrProxy(bw);
-            //添加bean形态处理
-            context.beanShapeRegister(bw.clz(), bw, bw.clz());
-            //注册到容器
+            context.beanDeliver(bw);
+
             context.beanRegister(bw, bw.name(), bw.typed());
-            //单例，进行事件通知
             if (bw.singleton()) {
-                EventBus.publish(bw.raw()); //@deprecated
                 context.wrapPublish(bw);
             }
 

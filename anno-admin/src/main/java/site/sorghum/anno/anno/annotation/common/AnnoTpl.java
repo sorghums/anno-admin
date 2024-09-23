@@ -29,7 +29,7 @@ public @interface AnnoTpl {
      */
     String windowWidth() default WINDOW_WIDTH;
 
-    String WINDOW_HEIGHT = "800px";
+    String WINDOW_HEIGHT = "500px";
     /**
      * 弹出窗口高度
      *

@@ -15,7 +15,6 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import org.noear.wood.annotation.Table;
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
@@ -239,8 +238,8 @@ public class MetaClassUtil {
 
                 AnnoTplImpl annoTpl = columnBtn.getAnnoTpl();
                 if (annoTpl != null && annoTpl.isEnable()) {
-                    BaseTplRender tplRender = AnnoBeanUtils.getBean(annoTpl.getTplClazz());
-                    annoTpl.setId(tplRender.getId());
+                    String id = BaseTplRender.toId(annoTpl.getTplClazz());
+                    annoTpl.setId(id);
                 }
             }
         }

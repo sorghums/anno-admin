@@ -45,7 +45,7 @@ public class SystemController {
     @Post
     @ApiOperation(value = "文件上传", notes = "文件上传")
     public AnnoResult<String> upload(UploadedFile file,Context context) throws Exception {
-        Map<String, List<UploadedFile>> stringListMap = context.filesMap();
+        Map<String, List<UploadedFile>> stringListMap = context.fileMap().toValuesMap();
         if (file == null && CollUtil.isNotEmpty(stringListMap)){
             List<UploadedFile> next = stringListMap.values().iterator().next();
             if (CollUtil.isNotEmpty(next)){

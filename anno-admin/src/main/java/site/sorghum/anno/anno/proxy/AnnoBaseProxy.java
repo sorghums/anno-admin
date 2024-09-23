@@ -43,14 +43,28 @@ public interface AnnoBaseProxy<T> {
      */
     default String getPkValueFromDbCriteria(DbCondition dbCondition, Class<?> entityClass) {
         String pkName = AnnoFieldCache.getPkName(entityClass);
-        if (Objects.equals(dbCondition.getField(),pkName)) {
+        return getValueStringFromDbCriteria(dbCondition, pkName);
+    }
+
+    /**
+     * 从数据库条件中获取指定Java属性名的值，并转换为字符串返回
+     *
+     * @param dbCondition 数据库条件对象
+     * @param javaName Java属性名
+     * @return 转换后的字符串值，若未找到则返回null
+     */
+    default String getValueStringFromDbCriteria(DbCondition dbCondition, String javaName) {
+        if (Objects.equals(dbCondition.getField(), javaName)) {
             for (Object value : dbCondition.getValues()) {
                 return StrUtil.toString(value);
             }
         } else {
             for (Object value : dbCondition.getValues()) {
                 if (value instanceof DbCondition _dbCondition) {
-                    return getPkValueFromDbCriteria(_dbCondition,entityClass);
+                    String dbCriteria = getValueStringFromDbCriteria(_dbCondition, javaName);
+                    if (dbCriteria != null) {
+                        return dbCriteria;
+                    }
                 }
             }
         }
