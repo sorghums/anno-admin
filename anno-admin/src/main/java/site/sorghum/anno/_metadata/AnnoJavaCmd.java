@@ -1,6 +1,7 @@
 package site.sorghum.anno._metadata;
 
 import lombok.Data;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButtonImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 
 import java.util.HashMap;
@@ -18,4 +19,6 @@ public class AnnoJavaCmd {
     public static Map<String, AnnoButtonImpl.JavaCmdImpl> annoJavCmdMap = new HashMap<>();
 
     public static Map<String, AnnoButtonImpl> annoJavaCmd2ButtonMap = new HashMap<>();
+
+    public static Map<String, AnnoTableButtonImpl> annoJavaCmd2TableButtonMap = new HashMap<>();
 }

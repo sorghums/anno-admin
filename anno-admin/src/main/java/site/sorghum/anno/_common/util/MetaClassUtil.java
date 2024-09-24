@@ -19,10 +19,7 @@ import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
 import site.sorghum.anno._metadata.AnnoMtm;
-import site.sorghum.anno.anno.annotation.clazz.AnnoForm;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMainImpl;
-import site.sorghum.anno.anno.annotation.clazz.AnnoRemove;
+import site.sorghum.anno.anno.annotation.clazz.*;
 import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
@@ -241,6 +238,22 @@ public class MetaClassUtil {
                     String id = BaseTplRender.toId(annoTpl.getTplClazz());
                     annoTpl.setId(id);
                 }
+            }
+        }
+
+        // 重新设置tableButton
+        AnnoTableButtonImpl[] annoTableButtons = anMeta.getAnnoTableButton();
+        if (annoTableButtons != null){
+            List<AnnoTableButtonImpl> tableButtons = anMeta.getTableButtons();
+            for (AnnoTableButtonImpl annoTableButton : annoTableButtons) {
+                AnnoButtonImpl.JavaCmdImpl javaCmd = annoTableButton.getJavaCmd();
+                if (javaCmd != null && javaCmd.isEnable()) {
+                    String id = anMeta.getEntityName() + ":" + MD5Util.digestHex(annoTableButton.getName() + annoTableButton.getJavaCmd().runSupplier().getName());
+                    javaCmd.setId(id);
+                    AnnoJavaCmd.annoJavCmdMap.put(id, javaCmd);
+                    AnnoJavaCmd.annoJavaCmd2TableButtonMap.put(id, annoTableButton);
+                }
+                tableButtons.add(annoTableButton);
             }
         }
         return anMeta;

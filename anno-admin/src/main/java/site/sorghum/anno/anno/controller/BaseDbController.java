@@ -14,6 +14,7 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.*;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
+import site.sorghum.anno.anno.annotation.clazz.AnnoTableButtonImpl;
 import site.sorghum.anno.anno.annotation.field.AnnoButtonImpl;
 import site.sorghum.anno.anno.chart.AnChartService;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
@@ -298,8 +299,16 @@ public class BaseDbController {
             return AnnoResult.failure("未找到对应的JavaCmd数据!");
         }
         AnnoButtonImpl annoButton = AnnoJavaCmd.annoJavaCmd2ButtonMap.get(annoJavaCmdId);
-        if (StrUtil.isNotBlank(annoButton.getPermissionCode())) {
-            permissionProxy.checkPermission(entity, annoButton.getPermissionCode());
+        if (annoButton != null) {
+            if (StrUtil.isNotBlank(annoButton.getPermissionCode())) {
+                permissionProxy.checkPermission(entity, annoButton.getPermissionCode());
+            }
+        }
+        AnnoTableButtonImpl annoTableButton = AnnoJavaCmd.annoJavaCmd2TableButtonMap.get(annoJavaCmdId);
+        if (annoTableButton != null) {
+            if (StrUtil.isNotBlank(annoTableButton.getPermissionCode())) {
+                permissionProxy.checkPermission(entity, annoTableButton.getPermissionCode());
+            }
         }
         if (!Objects.equals(annoJavaCmd.getRunSupplier(), JavaCmdSupplier.class)){
             JavaCmdSupplier cmdSupplier = AnnoBeanUtils.getBean(annoJavaCmd.getRunSupplier());
