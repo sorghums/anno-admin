@@ -4,11 +4,11 @@ import cn.hutool.core.map.MapUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno.file.AnFileService;
+import site.sorghum.anno.file.FileInfo;
 import site.sorghum.anno.plugin.ao.AnPlatform;
-import site.sorghum.anno.plugin.entity.common.FileInfo;
 import site.sorghum.anno.plugin.entity.response.CaptchaResponse;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
-import site.sorghum.anno.plugin.service.AnFileService;
 import site.sorghum.anno.plugin.service.AnPlatformService;
 
 import java.io.InputStream;

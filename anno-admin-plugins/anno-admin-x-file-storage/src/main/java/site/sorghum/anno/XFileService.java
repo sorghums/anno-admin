@@ -7,8 +7,8 @@ import jakarta.inject.Named;
 import org.dromara.x.file.storage.core.FileStorageService;
 import org.dromara.x.file.storage.core.constant.Constant;
 import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno.plugin.entity.common.FileInfo;
-import site.sorghum.anno.plugin.service.AnFileService;
+import site.sorghum.anno.file.AnFileService;
+import site.sorghum.anno.file.FileInfo;
 
 @Named
 public class XFileService implements AnFileService {

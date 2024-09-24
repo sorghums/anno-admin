@@ -1,4 +1,4 @@
-package site.sorghum.anno.plugin.entity.common;
+package site.sorghum.anno.file;
 
 import cn.hutool.core.io.IoUtil;
 import lombok.Data;

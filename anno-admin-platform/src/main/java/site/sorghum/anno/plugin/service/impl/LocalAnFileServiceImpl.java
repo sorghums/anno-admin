@@ -10,8 +10,8 @@ import jakarta.inject.Named;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.config.AnnoProperty;
-import site.sorghum.anno.plugin.entity.common.FileInfo;
-import site.sorghum.anno.plugin.service.AnFileService;
+import site.sorghum.anno.file.AnFileService;
+import site.sorghum.anno.file.FileInfo;
 
 import java.util.List;
 

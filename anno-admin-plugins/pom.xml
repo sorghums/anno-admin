@@ -22,5 +22,6 @@
         <module>anno-admin-warm-flow-solon-plugin</module>
         <module>anno-admin-online-meta</module>
         <module>anno-admin-x-file-storage</module>
+        <module>anno-admin-excel</module>
     </modules>
 </project>

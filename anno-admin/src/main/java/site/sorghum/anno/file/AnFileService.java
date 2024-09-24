@@ -1,6 +1,5 @@
-package site.sorghum.anno.plugin.service;
+package site.sorghum.anno.file;
 
-import site.sorghum.anno.plugin.entity.common.FileInfo;
 
 /**
  * An文件服务

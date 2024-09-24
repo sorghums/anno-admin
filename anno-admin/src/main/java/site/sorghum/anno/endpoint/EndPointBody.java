@@ -14,5 +14,5 @@ public class EndPointBody {
     /**
      * 参数
      */
-    CommonParam commonParam;
+    CommonParam commonParam = new CommonParam();
 }

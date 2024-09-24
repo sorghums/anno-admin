@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import site.sorghum.anno._common.config.AnnoProperty;
-import site.sorghum.anno.plugin.service.AnFileService;
+import site.sorghum.anno.file.AnFileService;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
