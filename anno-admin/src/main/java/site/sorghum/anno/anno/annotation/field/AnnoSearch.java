@@ -1,5 +1,7 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.db.QueryType;
 
 import java.lang.annotation.*;
@@ -43,4 +45,17 @@ public @interface AnnoSearch {
      * @return {@link String}
      */
     String placeHolder() default "";
+
+    /**
+     * 搜索默认值
+     * @return {@link String}
+     */
+    String defaultValue() default "";
+
+    /**
+     * 搜索默认值 提供器
+     *
+     * @return {@link Class}<{@link ?}>
+     */
+    Class<? extends FieldBaseSupplier> defaultValueSupplier() default EmptyFieldBaseSupplier.class;
 }

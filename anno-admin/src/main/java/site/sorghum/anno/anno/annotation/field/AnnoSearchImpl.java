@@ -1,9 +1,11 @@
 package site.sorghum.anno.anno.annotation.field;
 
+import cn.hutool.core.convert.Convert;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.db.QueryType;
 
 import java.lang.annotation.Annotation;
@@ -35,6 +37,17 @@ public class AnnoSearchImpl implements AnnoSearch {
     QueryType queryType = QueryType.EQ;
 
     /**
+     * 默认值
+     */
+    Object defaultValue = "";
+
+
+    /**
+     * 默认值供应商
+     */
+    Class<? extends FieldBaseSupplier> defaultValueSupplier = FieldBaseSupplier.class;
+
+    /**
      * 提示信息
      */
     String placeHolder = "";
@@ -57,6 +70,16 @@ public class AnnoSearchImpl implements AnnoSearch {
     @Override
     public String placeHolder() {
         return this.placeHolder;
+    }
+
+    @Override
+    public String defaultValue() {
+        return Convert.toStr(this.defaultValue);
+    }
+
+    @Override
+    public Class<? extends FieldBaseSupplier> defaultValueSupplier() {
+        return this.defaultValueSupplier;
     }
 
     @Override

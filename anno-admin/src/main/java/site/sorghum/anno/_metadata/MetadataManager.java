@@ -9,6 +9,8 @@ import net.bytebuddy.description.type.TypeDescription;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._common.util.MetaClassUtil;
+import site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier;
+import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.method.MethodTemplateManager;
 
 import java.util.ArrayList;
@@ -96,7 +98,7 @@ public class MetadataManager {
     public AnEntity loadEntity(Class<?> clazz, boolean forceLoad) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
         if (!forceLoad && entityMap.containsKey(entityName)) {
-            return entityMap.get(entityName);
+            return getEntity(entityName);
         }
 
         AnEntity entity = entityMetadataLoader.load(clazz);
@@ -140,7 +142,7 @@ public class MetadataManager {
     public AnEntity loadFormEntity(Class<?> clazz, boolean forceLoad) {
         String entityName = entityMetadataLoader.getEntityName(clazz);
         if (!forceLoad && entityMap.containsKey(entityName)) {
-            return entityMap.get(entityName);
+            return getEntity(entityName);
         }
         AnEntity entity = entityMetadataLoader.loadForm(clazz);
         postProcess(entity);
@@ -175,13 +177,14 @@ public class MetadataManager {
 
     protected void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
+        _dynamicProcess(entity);
     }
 
     /**
      * 获取所有实体的元数据（无序）
      */
     public List<AnEntity> getAllEntity() {
-        return new ArrayList<>(entityMap.values());
+        return _dynamicProcess(new ArrayList<>(entityMap.values()));
     }
 
     /**
@@ -195,7 +198,7 @@ public class MetadataManager {
         if (anEntity == null) {
             throw new BizException("entity: %s is not found".formatted(entityName));
         }
-        return anEntity;
+        return _dynamicProcess(anEntity);
     }
 
     /**
@@ -243,4 +246,45 @@ public class MetadataManager {
         return field;
     }
 
+    /**
+     * 动态处理AnEntity对象
+     *
+     * @param entity 待处理的AnEntity对象
+     * @return 处理后的AnEntity对象
+     */
+    public AnEntity _dynamicProcess(AnEntity entity) {
+        for (AnField field : entity.getFields()) {
+            Class<? extends FieldBaseSupplier> defaultValueSupplier = field.getSearch().getDefaultValueSupplier();
+            // 搜索默认值手动重新设置
+            if (field.getSearch().enable() && defaultValueSupplier != EmptyFieldBaseSupplier.class) {
+                runIgnoreException(
+                    () -> field.getSearch().setDefaultValue(AnnoBeanUtils.getBean(defaultValueSupplier).get())
+                );
+            }
+        }
+        return entity;
+    }
+
+    /**
+     * 动态处理AnEntity对象
+     *
+     * @param entity 待处理的AnEntity对象
+     * @return 处理后的AnEntity对象
+     */
+    public List<AnEntity> _dynamicProcess(List<AnEntity> entity) {
+        return new ArrayList<>(entity.stream().map(this::_dynamicProcess).toList());
+    }
+
+    /**
+     * 运行忽略异常
+     *
+     * @param runnable 可运行
+     */
+    public void runIgnoreException(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Exception e) {
+            log.warn("Ignore metadata exception: {}", e.getMessage());
+        }
+    }
 }
