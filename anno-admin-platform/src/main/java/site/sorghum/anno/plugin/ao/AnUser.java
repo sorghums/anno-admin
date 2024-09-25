@@ -58,6 +58,17 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
     private String name;
 
     /**
+     * 首页菜单
+     */
+    @AnnoField(title = "首页菜单", tableFieldName = "home_menu",
+        dataType = AnnoDataType.TREE,
+        optionType = @AnnoOptionType(
+            optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnAnnoMenu.class, labelKey = "title")
+        ),
+        edit = @AnnoEdit(placeHolder = "请选择首页菜单"))
+    private String homeMenu;
+
+    /**
      * 状态 1 正常 0 封禁
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
@@ -71,11 +82,11 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoButton(name = "角色", icon = "ant-design:usergroup-add-outlined",
         m2mJoinButton = @AnnoButton.M2MJoinButton(
-        joinTargetClazz = AnRole.class,
-        mediumTableClazz = AnUserRole.class,
-        mediumTargetField = "roleId",
-        mediumThisField = "userId"
-    ))
+            joinTargetClazz = AnRole.class,
+            mediumTableClazz = AnUserRole.class,
+            mediumTargetField = "roleId",
+            mediumThisField = "userId"
+        ))
     private Object roleButton;
 
     /**

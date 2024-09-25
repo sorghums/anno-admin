@@ -16,7 +16,7 @@ import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.plugin.entity.response.VbenMenu;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
-import site.sorghum.anno.plugin.service.SysAnnoMenuService;
+import site.sorghum.anno.plugin.service.AnnoMenuService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class MenuBaseController {
 
     @Inject
-    SysAnnoMenuService sysAnnoMenuService;
+    AnnoMenuService annoMenuService;
 
     @Inject
     PermissionProxy permissionProxy;
@@ -191,7 +191,7 @@ public class MenuBaseController {
     private List<AnAnnoMenu> getAnAnnoMenus() {
         // 登录校验
         permissionProxy.checkLogin();
-        List<AnAnnoMenu> anAnnoMenus = sysAnnoMenuService.list();
+        List<AnAnnoMenu> anAnnoMenus = annoMenuService.list();
         String uid;
         // 登录校验通过 但是anno系统未登录
         if (AnnoStpUtil.isLogin()){

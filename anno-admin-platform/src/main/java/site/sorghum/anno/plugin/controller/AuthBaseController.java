@@ -19,11 +19,14 @@ import site.sorghum.anno.plugin.entity.common.LoginInfo;
 import site.sorghum.anno.plugin.entity.request.LoginReq;
 import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
 import site.sorghum.anno.plugin.entity.response.UserInfo;
+import site.sorghum.anno.plugin.entity.response.VbenMenu;
 import site.sorghum.anno.plugin.interfaces.AuthFunctions;
 import site.sorghum.anno.plugin.manager.CaptchaManager;
+import site.sorghum.anno.plugin.service.AnnoMenuService;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Auth控制器
@@ -43,6 +46,8 @@ public class AuthBaseController {
     PermissionProxy permissionProxy;
     @Inject
     CaptchaManager captchaManager;
+    @Inject
+    AnnoMenuService annoMenuService;
 
     public AnnoResult<String> login(LoginReq req, LoginInfo loginInfo) {
         // 校验验证码
@@ -61,6 +66,9 @@ public class AuthBaseController {
         AnLoginLog anLoginLog = buildLoginLog(loginInfo);
         anLoginLog.setUserId(anUser.getId());
         authService.saveLoginLog(anLoginLog);
+        String homePath = Optional.ofNullable(annoMenuService.getById(anUser.getHomeMenu())).map(
+            VbenMenu::toVbenMenu
+        ).map(VbenMenu::getPath).orElse("");
         // 缓存用户信息
         AnnoStpUtil.setAuthUser(
             AnnoAuthUser.builder().
@@ -76,6 +84,7 @@ public class AuthBaseController {
                 browser(anLoginLog.getBrowser()).
                 os(anLoginLog.getOs()).
                 device(anLoginLog.getDevice()).
+                homePath(homePath).
                 build()
         );
         return AnnoResult.succeed(AnnoStpUtil.getTokenValue());
@@ -126,6 +135,7 @@ public class AuthBaseController {
         }else{
             userInfo.setName(anUser.getUserName());
             userInfo.setAvatar(anUser.getAvatar());
+            userInfo.setHomePath(anUser.getHomePath());
             userInfo.setPerms(AnnoStpUtil.getPermissionList());
             userInfo.setRoles(AnnoStpUtil.getRoleList());
         }

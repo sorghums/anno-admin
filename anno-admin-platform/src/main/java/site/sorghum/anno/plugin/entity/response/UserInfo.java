@@ -17,6 +17,8 @@ public class UserInfo {
 
     String avatar;
 
+    String homePath;
+
     List<String> roles;
 
     List<String> perms;

@@ -81,4 +81,9 @@ public class AnnoAuthUser implements Serializable {
      * 设备
      */
     String device;
+
+    /**
+     * 首页菜单
+     */
+    String homePath;
 }

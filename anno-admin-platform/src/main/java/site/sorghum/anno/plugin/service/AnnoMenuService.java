@@ -10,11 +10,19 @@ import java.util.List;
  * @author Sorghum
  * @since 2023/06/30
  */
-public interface SysAnnoMenuService {
+public interface AnnoMenuService {
     /**
      * 列表
      *
      * @return {@link List}<{@link AnAnnoMenu}>
      */
     List<AnAnnoMenu> list();
+
+    /**
+     * 根据菜单ID获取菜单对象
+     *
+     * @param id 菜单ID
+     * @return 菜单对象，如果未找到则返回null
+     */
+    AnAnnoMenu getById(String id);
 }
