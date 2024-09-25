@@ -65,7 +65,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
         optionType = @AnnoOptionType(
             optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnAnnoMenu.class, labelKey = "title")
         ),
-        edit = @AnnoEdit(placeHolder = "请选择首页菜单"))
+        edit = @AnnoEdit(placeHolder = "请选择首页菜单",canClear = true))
     private String homeMenu;
 
     /**
