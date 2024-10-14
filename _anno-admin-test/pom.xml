@@ -15,7 +15,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>anno-admin-solon</module>
-        <module>anno-admin-solon-delay-kit</module>
         <module>anno-admin-spring-boot</module>
     </modules>
 

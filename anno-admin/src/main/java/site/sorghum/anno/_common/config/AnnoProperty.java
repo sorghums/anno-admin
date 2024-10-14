@@ -59,4 +59,19 @@ public class AnnoProperty {
      * 打印详细日志的阈值（毫秒），默认为超过 500 毫秒，就会打印出详细日志
      */
     private long detailLogThreshold = 500;
+
+    /**
+     * 系统标题
+     */
+    private String platformTitle = "AnnoAdmin快速开发";
+
+    /**
+     * 系统描述
+     */
+    private String platformDesc = "零前端代码，注解驱动";
+
+    /**
+     * 系统 Logo
+     */
+    private String platformLogo = "";
 }
