@@ -34,7 +34,7 @@ public class EntityMethodRoute implements MethodRoute {
         do {
             route.add(argClass.getSimpleName());
             argClass = argClass.getSuperclass();
-        } while (argClass != null && argClass.getSuperclass() != Object.class);
+        } while (argClass != null && argClass != Object.class);
         route.add(0, "all");
         return route.toArray(new String[0]);
     }
