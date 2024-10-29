@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.pf4j.Extension;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.config.AnnoProperty;
 import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
@@ -31,6 +32,8 @@ public class BaseAnnoPlugin extends AnnoPlugin {
 
     AnPlatformDao anPlatformDao;
 
+    AnnoProperty annoProperty;
+
     public BaseAnnoPlugin() {
         super("管理端插件", "包含B端用户，角色，组织，权限等。");
     }
@@ -44,6 +47,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
     public void run() {
         dbService = AnnoBeanUtils.getBean(DbService.class);
         anPlatformDao = AnnoBeanUtils.getBean(AnPlatformDao.class);
+        annoProperty = AnnoBeanUtils.getBean(AnnoProperty.class);
         // 权限校验
         CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
             AuthService authService = AnnoBeanUtils.getBean(AuthService.class);
@@ -117,9 +121,9 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         if (list.isEmpty()){
             AnPlatform platform = new AnPlatform();
             platform.setId("1");
-            platform.setName("AnnoAdmin快速开发");
-            platform.setPlatformLogo("");
-            platform.setDescription("零前端代码，注解驱动");
+            platform.setName(annoProperty.getPlatformTitle());
+            platform.setPlatformLogo(annoProperty.getPlatformLogo());
+            platform.setDescription(annoProperty.getPlatformDesc());
             anPlatformDao.insert(platform);
         }
     }

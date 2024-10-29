@@ -9,6 +9,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoImageType;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.form.ResetPwdForm;
 import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
@@ -62,8 +63,8 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoField(title = "首页菜单", tableFieldName = "home_menu",
         dataType = AnnoDataType.TREE,
-        optionType = @AnnoOptionType(
-            optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnAnnoMenu.class, labelKey = "title")
+        treeType = @AnnoTreeType(
+            treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class, labelKey = "title")
         ),
         edit = @AnnoEdit(placeHolder = "请选择首页菜单",canClear = true))
     private String homeMenu;
