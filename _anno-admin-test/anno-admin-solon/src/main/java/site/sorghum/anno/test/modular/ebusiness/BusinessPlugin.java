@@ -25,7 +25,7 @@ public class BusinessPlugin extends AnnoPlugin {
         list.add(createEntityMenu(BusinessProduct.class, list.get(0).getId(), "layui-icon layui-icon-cart", 100));
         list.add(createEntityMenu(BusinessProductCat.class, list.get(0).getId(), "layui-icon layui-icon-note", 110));
         list.add(createEntityMenu(BusinessVirtualTable.class, list.get(0).getId(), "layui-icon layui-icon-note", 110));
-
+        list.add(createEntityMenu(WholeDemo.class, list.get(0).getId(), "layui-icon layui-icon-note", 120));
         return list;
     }
 }

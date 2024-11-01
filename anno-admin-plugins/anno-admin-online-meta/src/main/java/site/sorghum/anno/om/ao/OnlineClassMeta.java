@@ -9,22 +9,21 @@ import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoCodeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdSupplier;
-import site.sorghum.anno.om.javacmd.ExportJarCmd;
-import site.sorghum.anno.om.javacmd.PreviewMetaCmd;
+import site.sorghum.anno.om.javacmd.PreviewClassMetaCmd;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 在线Yml加载器
+ * 在线Class加载器
  *
  * @author Sorghum
  * @since 2024/02/26
  */
 @Data
-@AnnoMain(name = "在线Yml加载器", tableName = "an_meta_ao")
-public class OnlineMeta {
+@AnnoMain(name = "在线Class加载器", tableName = "an_class_meta_ao")
+public class OnlineClassMeta {
 
     @AnnoField(title = "主键", tableFieldName = "id",
         show = false,
@@ -34,23 +33,22 @@ public class OnlineMeta {
     String id;
 
 
-    @AnnoField(title = "元数据",
-        tableFieldName = "yml_content",
-        dataType = AnnoDataType.CODE_EDITOR,
-        codeType = @AnnoCodeType(mode = "yaml"),
+    @AnnoField(title = "完整类名",
+        tableFieldName = "whole_class_name",
         edit = @AnnoEdit())
-    String ymlContent;
+    String wholeClassName;
 
 
-    @AnnoButton(
-        name = "导出Jar包",
-        javaCmd = @AnnoButton.JavaCmd(enable = true,runSupplier = ExportJarCmd.class)
-    )
-    Object exportJar;
+    @AnnoField(title = "元数据",
+        tableFieldName = "class_content",
+        dataType = AnnoDataType.CODE_EDITOR,
+        codeType = @AnnoCodeType(mode = "text/x-java"),
+        edit = @AnnoEdit())
+    String classContent;
 
     @AnnoButton(
         name = "预览",
-        javaCmd = @AnnoButton.JavaCmd(enable = true,runSupplier = PreviewMetaCmd.class)
+        javaCmd = @AnnoButton.JavaCmd(enable = true,runSupplier = PreviewClassMetaCmd.class)
     )
     Object preview;
 

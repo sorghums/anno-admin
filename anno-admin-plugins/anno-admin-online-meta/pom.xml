@@ -19,6 +19,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-extra</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>liquor-eval</artifactId>
+            <version>1.3.6</version>
+        </dependency>
+        <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin</artifactId>
         </dependency>

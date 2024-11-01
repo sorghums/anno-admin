@@ -1,0 +1,496 @@
+annoChart:
+  enable: 'false'
+  layout:
+    - '1'
+    - '2'
+    - '3'
+  searchForm: site.sorghum.anno.anno.form.DefaultBaseForm
+annoLeftTree:
+  catKey: ''
+  enable: 'false'
+  leftTreeName: 左树
+  treeClass: java.lang.Object
+annoPermission:
+  baseCode: an_anno_menu
+  baseCodeTranslate: 菜单管理
+  enable: 'true'
+annoTree:
+  displayAsTree: 'true'
+  enable: 'true'
+  key: id
+  label: title
+  parentKey: parentId
+autoMaintainTable: 'true'
+canRemove: 'true'
+columns:
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: TREE
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: parentId
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: parent_id
+    title: 父菜单
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: site.sorghum.anno.plugin.ao.AnAnnoMenu
+        idKey: id
+        labelKey: title
+        pidKey: parentId
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: STRING
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: title
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: title
+    title: 菜单名称
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: OPTIONS
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'true'
+      placeHolder: 请选择菜单类型
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: type
+    javaType: java.lang.Integer
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+      value:
+        - label: 页面
+          value: '1'
+        - label: 目录
+          value: '0'
+    pkField: 'false'
+    search:
+      enable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: type
+    title: 菜单类型
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: STRING
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: sort
+    javaType: java.lang.Integer
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: sort
+    title: 菜单排序
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: ICON
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: icon
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: icon
+    title: 菜单图标
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: OPTIONS
+    edit:
+      addEnable: 'true'
+      canClear: 'true'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: permissionId
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: select id, name as label from an_permission where del_flag = 0 and parent_id
+        is null order by id desc
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: permission_id
+    title: 权限标识
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: OPTIONS
+    edit:
+      addEnable: 'true'
+      canClear: 'false'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: parseType
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+      value:
+        - label: Anno组件
+          value: annoMain
+        - label: IFrame页面
+          value: iframe
+        - label: Anno图表
+          value: anChart
+        - label: 外链
+          value: link
+        - label: TPL模板
+          value: tpl
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: parse_type
+    title: 解析类型
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+  - codeType:
+      mode: text/x-yaml
+      theme: dracula
+    dataType: STRING
+    edit:
+      addEnable: 'true'
+      canClear: 'true'
+      editEnable: 'true'
+      notNull: 'false'
+      placeHolder: ''
+      showBy:
+        enable: 'false'
+        expr: annoDataForm.id == 0
+      span: '0'
+    fieldSize: '0'
+    fileType:
+      fileMaxCount: '1'
+      fileMaxSize: '5'
+      fileType: '*'
+    imageType:
+      enlargeAble: 'true'
+      height: '50'
+      width: '50'
+    insertWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    javaName: parseData
+    javaType: java.lang.String
+    optionType:
+      isMultiple: 'false'
+      optionAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+      optionEnum: java.lang.Enum
+      sql: ''
+      supplier: site.sorghum.anno.anno.option.OptionDataSupplier
+    pkField: 'false'
+    search:
+      enable: 'false'
+      notNull: 'false'
+      placeHolder: ''
+      queryType: EQ
+    show: 'true'
+    sort: '0'
+    tableFieldName: parse_data
+    title: 解析数据
+    treeType:
+      isMultiple: 'false'
+      sql: ''
+      supplier: site.sorghum.anno.anno.tree.TreeDataSupplier
+      treeAnno:
+        annoClass: java.lang.Object
+        idKey: id
+        labelKey: name
+        pidKey: pid
+    updateWhenNullSet: site.sorghum.anno.anno.proxy.field.EmptyFieldBaseSupplier
+    virtualColumn: 'false'
+entityName: AnAnnoMenu2
+extend: site.sorghum.anno.db.BaseMetaModel
+name: 菜单管理
+orgFilter: 'false'
+tableName: an_anno_menu
+virtualTable: 'false'
