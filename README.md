@@ -120,17 +120,23 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 新增导出Excel的插件包，一键配置导出;
 + 用户可以自定义首页菜单
 ### 快照分支
-+ 未完待续
++ 修复methodRoute错误
++ 修复首页菜单翻译出错的问题
++ 新增支持默认平台信息的初始配置
++ 修复iframe预览问题 codec预览问题
++ tabsUi优化
++ 进一步适配移动端UI,手机上也可以简单操作!
++ 修复modal最小高度不生效的问题
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 
 开发环境准备：
 ```
 # 1. 打前端包到本地仓库（idea 启动项目前，需要先打包前端）
-mvn clean install -pl anno-admin-ui -am
+地址：https://gitee.com/cmeet/anno-admin-ant-design-ui
 
 # 2. 打包后端代码
-mvn clean package -pl \!anno-admin-ui -Dmaven.test.skip=true
+mvn clean package -Dmaven.test.skip=true
 ```
 
 ## 许可证
