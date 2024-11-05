@@ -14,17 +14,17 @@ import site.sorghum.anno.plugin.chart.*;
  * @since 2024/02/22
  */
 @AnnoMain(
-    name = "登陆图表",
+    name = "登录图表",
     annoPermission = @AnnoPermission(
         enable = true,
         baseCode = "an_login_chart",
-        baseCodeTranslate = "登陆图表"
+        baseCodeTranslate = "登录图表"
     ),
     annoChart = @AnnoChart(
         layout = {2, 1, 3},
         chartFields = {
             @AnnoChartField(
-                name = "今日登陆",
+                name = "今日登录",
                 type = AnnoChartType.NUMBER,
                 runSupplier = TodayLoginSupplier.class,
                 order = 1,
@@ -33,14 +33,14 @@ import site.sorghum.anno.plugin.chart.*;
                 actionColor = "red"
             ),
             @AnnoChartField(
-                name = "近7日登陆",
+                name = "近7日登录",
                 type = AnnoChartType.NUMBER,
                 runSupplier = SevenDaysLoginSupplier.class,
                 order = 2,
                 permissionCode = "sevenDaysLogin",
                 action = "日"),
             @AnnoChartField(
-                name = "登陆趋势",
+                name = "登录趋势",
                 type = AnnoChartType.BAR,
                 runSupplier = TrafficTrendSupplier.class,
                 order = 3,
