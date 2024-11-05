@@ -16,12 +16,26 @@
         <powerjob.version>4.3.6</powerjob.version>
         <powerjob-remote-smart-http.version>0.0.4</powerjob-remote-smart-http.version>
     </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-parent</artifactId>
+                <version>${anno.admin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-warm-flow-solon-plugin</artifactId>
-            <version>${anno.admin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin-online-meta</artifactId>
         </dependency>
         <dependency>
             <groupId>org.noear</groupId>
@@ -30,12 +44,12 @@
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-cache-redis</artifactId>
-            <version>${anno.admin.version}</version>
+            
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-solon-starter</artifactId>
-            <version>${anno.admin.version}</version>
+            
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>
@@ -50,7 +64,6 @@
                     <groupId>tech.powerjob</groupId>
                 </exclusion>
             </exclusions>
-            <version>${anno.admin.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

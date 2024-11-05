@@ -1,5 +1,6 @@
 package site.sorghum.anno._metadata;
 
+import cn.hutool.core.lang.Singleton;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
@@ -177,6 +178,7 @@ public class MetadataManager {
 
     protected void postProcess(AnEntity entity) {
         entityMap.put(entity.getEntityName(), entity);
+        Singleton.remove(entity.getEntityName());
         _dynamicProcess(entity);
     }
 

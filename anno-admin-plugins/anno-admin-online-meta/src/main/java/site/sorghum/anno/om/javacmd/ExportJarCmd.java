@@ -1,6 +1,7 @@
 package site.sorghum.anno.om.javacmd;
 
 import cn.hutool.core.io.FileUtil;
+import jakarta.inject.Named;
 import net.bytebuddy.description.type.TypeDescription;
 import site.sorghum.anno._common.entity.CommonParam;
 import site.sorghum.anno._common.util.MetaClassUtil;
@@ -9,6 +10,7 @@ import site.sorghum.anno.om.ao.OnlineMeta;
 
 import java.util.Map;
 
+@Named
 public class ExportJarCmd implements JavaCmdSupplier {
 
     @Override
