@@ -1,8 +1,6 @@
 package site.sorghum.anno.om.tpl;
 
 import lombok.Data;
-import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
-import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
@@ -14,13 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-@AnnoMain(
-    name = "测试",
-    tableName = "test_main",
-    annoPermission = @AnnoPermission(baseCode = "test_main", baseCodeTranslate = "测试"),
-    canRemove = true,
-    autoMaintainTable = true
-)
 public class TestMain {
 
     @AnnoField(
