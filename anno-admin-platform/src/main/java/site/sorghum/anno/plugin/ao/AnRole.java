@@ -12,6 +12,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.db.BaseMetaModel;
+import site.sorghum.anno.plugin.option.SimpleEnableOptionSupplier;
 
 import java.io.Serializable;
 
@@ -50,10 +51,7 @@ public class AnRole extends BaseMetaModel implements Serializable {
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
         dataType = AnnoDataType.OPTIONS,
-        optionType = @AnnoOptionType(value = {
-            @AnnoOptionType.OptionData(label = "正常", value = "1"),
-            @AnnoOptionType.OptionData(label = "封禁", value = "0")
-        }),
+        optionType = @AnnoOptionType(supplier = SimpleEnableOptionSupplier.class),
         edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     Integer enable;
 

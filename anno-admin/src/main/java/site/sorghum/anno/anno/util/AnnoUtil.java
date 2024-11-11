@@ -389,7 +389,7 @@ public class AnnoUtil {
                 if (valueField.get() != null) {
                     value = ReflectUtil.getFieldValue(e, valueField.get());
                 }
-                optionDatas.add(new AnnoOptionTypeImpl.OptionDataImpl(label == null ? "" : label.toString(), value == null ? "" : value.toString()));
+                optionDatas.add(new AnnoOptionTypeImpl.OptionDataImpl(label == null ? "" : label, value == null ? "" : value.toString()));
             }
             return optionDatas;
         });
