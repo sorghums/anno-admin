@@ -13,7 +13,7 @@ import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.plugin.form.ResetPwdForm;
 import site.sorghum.anno.plugin.javacmd.ResetPwdJavaCmdSupplier;
-import site.sorghum.anno.plugin.option.AnUserEnableOptionSupplier;
+import site.sorghum.anno.plugin.option.SimpleEnableOptionSupplier;
 import site.sorghum.anno.suppose.model.BaseOrgMetaModel;
 
 import java.io.Serial;
@@ -74,7 +74,7 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
      */
     @AnnoField(title = "状态", tableFieldName = "enable", search = @AnnoSearch(),
         dataType = AnnoDataType.RADIO,
-        optionType = @AnnoOptionType(supplier = AnUserEnableOptionSupplier.class),
+        optionType = @AnnoOptionType(supplier = SimpleEnableOptionSupplier.class),
         edit = @AnnoEdit(placeHolder = "请选择状态", notNull = true))
     private String enable;
 

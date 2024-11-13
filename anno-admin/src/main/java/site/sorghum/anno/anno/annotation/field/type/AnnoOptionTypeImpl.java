@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.noear.snack.annotation.ONodeAttr;
 import site.sorghum.anno.anno.option.OptionDataSupplier;
 
 import java.lang.annotation.Annotation;
@@ -104,7 +103,7 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
         /**
          * 显示的标签
          */
-        private String label;
+        private Object label;
         /**
          * 返回的值
          */
@@ -112,7 +111,7 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
 
         @Override
         public String label() {
-            return this.label;
+            return this.label.toString();
         }
 
         @Override

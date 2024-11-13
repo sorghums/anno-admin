@@ -4,13 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.entity2db.EntityToTableGetter;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno.anno.annotation.field.AnnoFieldImpl;
 
 import java.math.BigDecimal;
 import java.sql.Types;
@@ -30,9 +31,6 @@ import java.util.List;
 @Slf4j
 public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
-    @Setter
-    private String defaultPkName = "id";
-
     @Override
     public TableWrap getTable(AnEntity anEntity) {
 
@@ -41,13 +39,16 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
         List<AnField> fields = new ArrayList<>(anEntity.getDbAnFields());
 
         // 将 id 字段放到第一位
-        AnField idField = CollUtil.findOne(fields, e -> e.getJavaName().equals(defaultPkName));
-        fields.removeIf(e -> e.getJavaName().equals(defaultPkName));
+        AnField idField = CollUtil.findOne(fields, AnnoFieldImpl::pkField);
+        if(idField == null) {
+            throw new BizException("[AnnoAdmin]实体类:%s 无主键配置.".formatted(anEntity.getEntityName()));
+        }
+        fields.removeIf(e -> e.getJavaName().equals(idField.getJavaName()));
         fields.add(0, idField);
 
         for (AnField field : fields) {
             if (field == null) {
-                log.error("AnField is null,AnEntity is {}", anEntity);
+                throw new BizException("AnField is null,AnEntity is " + anEntity);
             }
             // 虚拟列，跳过
             if (field.isVirtualColumn()) {
@@ -116,13 +117,14 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
     }
 
     public ColumnWrap getColumn(AnEntity anEntity, AnField field) {
+        boolean pk = field.pkField();
         String fieldName = field.getTableFieldName();
         Class<?> fieldType = field.getJavaType();
         int sqlType;
         Integer size = null;
         Integer digit = null;
         String defaultValue = "";
-        if (fieldName.equals(defaultPkName)) {
+        if (pk) {
             defaultValue = "NOT NULL";
         }
         if (fieldType == String.class) {

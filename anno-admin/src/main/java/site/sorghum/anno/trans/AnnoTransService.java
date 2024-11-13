@@ -96,7 +96,7 @@ public class AnnoTransService {
                     //select value, label from table where del_flag = 0 order by id desc
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getJavaName().toLowerCase() + "_label"
+                        """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
                         QuerySqlCache.get(optionSql));
                     joinParams.add(
@@ -115,13 +115,13 @@ public class AnnoTransService {
                 }
                 List<AnnoOptionTypeImpl.OptionDataImpl> optionData = Arrays.asList(field.getOptionType().getValue());
                 if (CollUtil.isNotEmpty(optionData)) {
-                    Map<String, String> optionsMap = optionData.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
+                    Map<String, Object> optionsMap = optionData.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
                 Class<? extends OptionDataSupplier> optionSupplier = field.getOptionType().getSupplier();
                 if (optionSupplier != null && optionSupplier != OptionDataSupplier.class) {
                     List<AnnoOptionTypeImpl.OptionDataImpl> optionDataList = AnnoBeanUtils.getBean(optionSupplier).getOptionDataList();
-                    Map<String, String> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
+                    Map<String, Object> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
             }
@@ -161,7 +161,7 @@ public class AnnoTransService {
                     //select value, label from table where del_flag = 0 order by id desc
                     String newSql = """
                         select label as %s,id as %s from ( %s ) temp where id = #{uniqueKey}
-                         """.formatted(field.getJavaName().toLowerCase() + "_label"
+                        """.formatted(field.getJavaName().toLowerCase() + "_label"
                         , sqlIdKey,
                         QuerySqlCache.get(treeTypeSql));
                     joinParams.add(
@@ -180,13 +180,13 @@ public class AnnoTransService {
                 }
                 List<AnnoTreeType.TreeData> treeData = Arrays.asList(field.getTreeType().getValue());
                 if (CollUtil.isNotEmpty(treeData)) {
-                    Map<String, String> optionsMap = treeData.stream().collect(Collectors.toMap(AnnoTreeType.TreeData::id, AnnoTreeType.TreeData::label));
+                    Map<String, Object> optionsMap = treeData.stream().collect(Collectors.toMap(AnnoTreeType.TreeData::id, AnnoTreeType.TreeData::label));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
                 Class<? extends TreeDataSupplier> treeSupplier = field.getTreeType().getSupplier();
                 if (treeSupplier != null && treeSupplier != TreeDataSupplier.class) {
                     List<AnnoTreeTypeImpl.TreeDataImpl> treeDataList = AnnoBeanUtils.getBean(treeSupplier).getTreeDataList();
-                    Map<String, String> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnnoTreeTypeImpl.TreeDataImpl::getId, AnnoTreeTypeImpl.TreeDataImpl::getLabel));
+                    Map<String, Object> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnnoTreeTypeImpl.TreeDataImpl::getId, AnnoTreeTypeImpl.TreeDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
             }
@@ -202,21 +202,27 @@ public class AnnoTransService {
         return t;
     }
 
-    private <T> void fixedDictTrans(List<T> t, Map<String, String> dict, String fieldName) {
+    private <T> void fixedDictTrans(List<T> t, Map<String, Object> dict, String fieldName) {
         for (T tItem : t) {
             Object fieldValue = ReflectUtil.getFieldValue(tItem, fieldName);
             if (fieldValue == null) continue;
             Map<Object, Object> tansMap = Utils.getJoinResMap(tItem);
             List<String> fieldValues = parseStr2Array(String.valueOf(fieldValue));
             StringBuilder finalResult = new StringBuilder();
+            Object finalSingleResult = "";
             for (String value : fieldValues) {
-                String dictOrDefault = dict.getOrDefault(value, String.valueOf(fieldValue));
+                Object dictOrDefault = dict.getOrDefault(value, String.valueOf(fieldValue));
+                finalSingleResult = dictOrDefault;
                 finalResult.append(dictOrDefault).append(",");
             }
             if (!finalResult.isEmpty()) {
                 finalResult.setLength(finalResult.length() - 1);
             }
-            tansMap.put(fieldName.toLowerCase() + "_label", finalResult);
+            if (fieldValues.size() == 1) {
+                tansMap.put(fieldName.toLowerCase() + "_label", finalSingleResult);
+            } else {
+                tansMap.put(fieldName.toLowerCase() + "_label", finalResult);
+            }
         }
     }
 
