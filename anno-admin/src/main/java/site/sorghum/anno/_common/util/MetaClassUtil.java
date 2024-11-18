@@ -135,7 +135,7 @@ public class MetaClassUtil {
         Map<TypeDescription, Class<?>> allLoaded = dynamicType[0].
             load(classLoader).
             getAllLoaded();
-        allLoaded.forEach((typeDescription, aClass) -> putDyTypeMap( aClass));
+        allLoaded.forEach((typeDescription, aClass) -> putDyTypeMap(aClass));
         return allLoaded;
     }
 
@@ -188,14 +188,14 @@ public class MetaClassUtil {
                 // 重新设置SqlKey
                 AnnoOptionTypeImpl optionType = column.getOptionType();
                 if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(column.getJavaName(), optionType.sql());
+                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), optionType.sql());
                     optionType.setSqlKey(sqlKey);
                     QuerySqlCache.put(sqlKey, optionType.sql());
                 }
                 // 重新设置SqlKey
                 AnnoTreeTypeImpl treeType = column.getTreeType();
                 if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(column.getJavaName(), treeType.sql());
+                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), treeType.sql());
                     treeType.setSqlKey(sqlKey);
                     QuerySqlCache.put(sqlKey, treeType.sql());
                 }
@@ -243,7 +243,7 @@ public class MetaClassUtil {
 
         // 重新设置tableButton
         AnnoTableButtonImpl[] annoTableButtons = anMeta.getAnnoTableButton();
-        if (annoTableButtons != null){
+        if (annoTableButtons != null) {
             List<AnnoTableButtonImpl> tableButtons = anMeta.getTableButtons();
             for (AnnoTableButtonImpl annoTableButton : annoTableButtons) {
                 AnnoButtonImpl.JavaCmdImpl javaCmd = annoTableButton.getJavaCmd();
@@ -359,7 +359,7 @@ public class MetaClassUtil {
     }
 
 
-    public static void putDyTypeMap(Class<?> clazz){
+    public static void putDyTypeMap(Class<?> clazz) {
         DY_TYPE_MAP.put(clazz.getName(), clazz);
     }
 

@@ -33,6 +33,7 @@ import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.DbTableContext;
 import site.sorghum.anno.db.QueryType;
 import site.sorghum.anno.db.TableParam;
+import site.sorghum.anno.db.service.context.AnnoDbContext;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -64,14 +65,20 @@ public class BaseDbController {
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
-        if (StrUtil.isEmpty(actualSql)) {
-            return AnnoResult.failure("sql 不存在,请检查相关配置项");
-        }
-        List<Map<String, Object>> mapList = baseService.sql2MapList(actualSql);
-        List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
-            mapList, "label", "id", "pid"
-        );
-        return AnnoResult.succeed(trees);
+        String[] split = sql.split(":");
+        String entityName = split[1];
+        AnEntity anEntity = metadataManager.getEntity(entityName);
+        permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
+        return AnnoDbContext.dynamicDbContext(anEntity.getDbName(),() -> {
+            if (StrUtil.isEmpty(actualSql)) {
+                return AnnoResult.failure("sql 不存在,请检查相关配置项");
+            }
+            List<Map<String, Object>> mapList = baseService.sql2MapList(actualSql);
+            List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+                mapList, "label", "id", "pid"
+            );
+            return AnnoResult.succeed(trees);
+        });
     }
 
 
@@ -187,18 +194,22 @@ public class BaseDbController {
     public <T> AnnoResult<T> removeRelation(String clazz, Map<String, Object> param) throws SQLException {
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.DELETE);
-        String annoM2mId = MapUtil.getStr(param, "annoM2mId");
-        AnnoButtonImpl.M2MJoinButtonImpl annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
-        AnEntity mediumEntity = metadataManager.getEntity(annoMtm.mediumTableClazz());
-        String mediumOtherFieldSql = AnnoMtm.getM2mMediumTargetFieldSql(annoMtm);
-        List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
-        String thisValue = MapUtil.getStr(param, "thisJoinValue");
-        String mediumThisField = AnnoMtm.getM2mMediumThisFieldSql(annoMtm);
-        DbCriteria criteria = DbCriteria.from(mediumEntity)
-            .in(mediumOtherFieldSql, targetValue.toArray())
-            .eq(mediumThisField, thisValue);
-        baseService.delete(criteria);
-        return AnnoResult.succeed();
+        return AnnoDbContext.dynamicDbContext(
+            entity.getDbName(), () -> {
+                String annoM2mId = MapUtil.getStr(param, "annoM2mId");
+                AnnoButtonImpl.M2MJoinButtonImpl annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);
+                AnEntity mediumEntity = metadataManager.getEntity(annoMtm.mediumTableClazz());
+                String mediumOtherFieldSql = AnnoMtm.getM2mMediumTargetFieldSql(annoMtm);
+                List<String> targetValue = MapUtil.get(param, "targetJoinValue", List.class);
+                String thisValue = MapUtil.getStr(param, "thisJoinValue");
+                String mediumThisField = AnnoMtm.getM2mMediumThisFieldSql(annoMtm);
+                DbCriteria criteria = DbCriteria.from(mediumEntity)
+                    .in(mediumOtherFieldSql, targetValue.toArray())
+                    .eq(mediumThisField, thisValue);
+                baseService.delete(criteria);
+                return AnnoResult.succeed();
+            }
+        );
     }
 
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
