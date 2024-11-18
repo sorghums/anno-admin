@@ -22,8 +22,18 @@ public class AnnoConfig {
         return ds;
     }
 
+    @Bean("db2")
+    public DataSource dataSource2(@Inject("${db.db2}") HikariDataSource ds) {
+        return ds;
+    }
+
     @Bean
     DbContext dbContext(@Inject DataSource dataSource){
+        return new DbContext(dataSource);
+    }
+
+    @Bean("db2Context")
+    public DbContext db2Context(@Inject("db2") DataSource dataSource){
         return new DbContext(dataSource);
     }
 
