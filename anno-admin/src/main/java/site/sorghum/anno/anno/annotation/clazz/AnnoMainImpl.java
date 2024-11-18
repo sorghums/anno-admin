@@ -84,6 +84,11 @@ public class AnnoMainImpl implements AnnoMain {
      */
     boolean autoMaintainTable;
 
+    /**
+     * 数据库名称
+     */
+    String dbName;
+
     @Override
     public String name() {
         return this.name;
@@ -142,6 +147,11 @@ public class AnnoMainImpl implements AnnoMain {
     @Override
     public boolean autoMaintainTable() {
         return this.autoMaintainTable;
+    }
+
+    @Override
+    public String dbName() {
+        return this.dbName;
     }
 
     @Override

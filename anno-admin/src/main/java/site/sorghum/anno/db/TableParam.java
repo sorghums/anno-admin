@@ -46,6 +46,10 @@ public class TableParam<T> {
      */
     boolean virtualTable = false;
 
+    /**
+     * 指定数据名
+     */
+    private String dbName;
 
     /**
      * 连表信息

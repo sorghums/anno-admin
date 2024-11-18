@@ -7,11 +7,10 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.SneakyThrows;
-import org.noear.wood.DbContext;
 import org.noear.wood.DbTableQuery;
 import org.noear.wood.IPage;
-import org.noear.wood.annotation.Db;
 import site.sorghum.anno._common.AnnoBeanUtils;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
@@ -22,6 +21,7 @@ import site.sorghum.anno.anno.proxy.field.FieldBaseSupplier;
 import site.sorghum.anno.anno.util.AnnoFieldCache;
 import site.sorghum.anno.db.*;
 import site.sorghum.anno.db.exception.AnnoDbException;
+import site.sorghum.anno.db.service.context.AnnoDbContext;
 import site.sorghum.anno.i18n.I18nUtil;
 import site.sorghum.plugin.join.util.InvokeUtil;
 
@@ -39,36 +39,44 @@ import java.util.stream.Collectors;
  */
 @Named("dbServiceWood")
 public class DbServiceWood implements DbService {
-
-    /**
-     * Wood数据库上下文
-     */
-    @Db
-    DbContext dbContext;
     @Inject
     DbTableContext dbTableContext;
     @Inject
     MetadataManager metadataManager;
 
     @Override
-    @SneakyThrows
     public <T> AnnoPage<T> page(DbCriteria criteria) {
-
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
-        if (criteria.getPage() == null) {
-            criteria.page(1, 10);
-        }
-        DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
-        IPage<T> page = dbTableQuery.selectPage(tableParam.getColumnStr(), tableParam.getClazz());
-        return new AnnoPage<>(true, page.getList(), page.getTotal(), criteria.getPage().getPageSize(), criteria.getPage().getPage());
+        return AnnoDbContext.dynamicDbContext(
+            tableParam.getDbName(), () -> {
+                if (criteria.getPage() == null) {
+                    criteria.page(1, 10);
+                }
+                DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
+                IPage<T> page = null;
+                try {
+                    page = dbTableQuery.selectPage(tableParam.getColumnStr(), tableParam.getClazz());
+                } catch (SQLException e) {
+                    throw new BizException(e);
+                }
+                return new AnnoPage<>(true, page.getList(), page.getTotal(), criteria.getPage().getPageSize(), criteria.getPage().getPage());
+            }
+        );
     }
 
     @SneakyThrows
     @Override
     public <T> List<T> list(DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
-        DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
-        return dbTableQuery.selectList(tableParam.getColumnStr(), tableParam.getClazz());
+        return AnnoDbContext.dynamicDbContext(tableParam.getDbName(),
+            () -> {
+                DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
+                try {
+                    return dbTableQuery.selectList(tableParam.getColumnStr(), tableParam.getClazz());
+                } catch (SQLException e) {
+                    throw new BizException(e);
+                }
+            });
     }
 
     @Override
@@ -87,12 +95,20 @@ public class DbServiceWood implements DbService {
     @Override
     public <T> int update(T t, DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
-        DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
-        // 执行值
         AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
-        preProcess(t, entity, false);
-        dbTableQuery.setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
-        return dbTableQuery.update();
+        return AnnoDbContext.dynamicDbContext(entity.getDbName(),() -> {
+            DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
+            // 执行值
+            preProcess(t, entity, false);
+            dbTableQuery.setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
+            try {
+                return dbTableQuery.update();
+            } catch (SQLException e) {
+                throw new BizException(e);
+            }
+        });
+
+
     }
 
     @SneakyThrows
@@ -101,38 +117,54 @@ public class DbServiceWood implements DbService {
         TableParam<T> tableParam = dbTableContext.getTableParam(t.getClass());
         DbRemove dbRemove = tableParam.getDbRemove();
         AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
-        preProcess(t, entity, true);
-        DbTableQuery dbTableQuery = dbContext.table(tableParam.getTableName())
-            .setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
-        if (dbRemove.getLogic()) {
-            // 查询当前字段的类型
-            Field field = ReflectUtil.getField(tableParam.getClazz(), AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), dbRemove.getRemoveColumn()));
-            if (field == null) {
-                throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(dbRemove.getRemoveColumn()));
+        return AnnoDbContext.dynamicDbContext(entity.getDbName(),() -> {
+            preProcess(t, entity, true);
+            DbTableQuery dbTableQuery = AnnoDbContext.dbContext().table(tableParam.getTableName())
+                .setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
+            if (dbRemove.getLogic()) {
+                // 查询当前字段的类型
+                Field field = ReflectUtil.getField(tableParam.getClazz(), AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), dbRemove.getRemoveColumn()));
+                if (field == null) {
+                    throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(dbRemove.getRemoveColumn()));
+                }
+                Object converted = Convert.convert(field.getType(), dbRemove.getNotRemoveValue());
+                dbTableQuery.set(dbRemove.getRemoveColumn(), converted);
             }
-            Object converted = Convert.convert(field.getType(), dbRemove.getNotRemoveValue());
-            dbTableQuery.set(dbRemove.getRemoveColumn(), converted);
-        }
-        return dbTableQuery.insert();
+            try {
+                return dbTableQuery.insert();
+            } catch (SQLException e) {
+                throw new BizException(e);
+            }
+        });
     }
 
     @SneakyThrows
     @Override
     public <T> int delete(DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
-        DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
-        DbRemove dbRemove = tableParam.getDbRemove();
-        if (dbRemove.getLogic()) {
-            // 查询当前字段的类型
-            Field field = ReflectUtil.getField(tableParam.getClazz(), AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), dbRemove.getRemoveColumn()));
-            if (field == null) {
-                throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(dbRemove.getRemoveColumn()));
+        return AnnoDbContext.dynamicDbContext(tableParam.getDbName(),() -> {
+            DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
+            DbRemove dbRemove = tableParam.getDbRemove();
+            if (dbRemove.getLogic()) {
+                // 查询当前字段的类型
+                Field field = ReflectUtil.getField(tableParam.getClazz(), AnnoFieldCache.getFieldNameBySqlColumn(tableParam.getClazz(), dbRemove.getRemoveColumn()));
+                if (field == null) {
+                    throw new AnnoDbException("未找在实体中找到对应的逻辑删除字段,请检查:%s".formatted(dbRemove.getRemoveColumn()));
+                }
+                Object converted = Convert.convert(field.getType(), dbRemove.getRemoveValue());
+                try {
+                    return dbTableQuery.set(dbRemove.getRemoveColumn(), converted).update();
+                } catch (SQLException e) {
+                    throw new BizException(e);
+                }
+            } else {
+                try {
+                    return dbTableQuery.delete();
+                } catch (SQLException e) {
+                    throw new BizException(e);
+                }
             }
-            Object converted = Convert.convert(field.getType(), dbRemove.getRemoveValue());
-            return dbTableQuery.set(dbRemove.getRemoveColumn(), converted).update();
-        } else {
-            return dbTableQuery.delete();
-        }
+        });
     }
 
     @Override
@@ -143,7 +175,7 @@ public class DbServiceWood implements DbService {
     @Override
     public List<Map<String, Object>> executeSql2MapList(String sql, Object... params) {
         try {
-            return dbContext.sql(sql, params).getDataList().getMapList();
+            return AnnoDbContext.dbContext().sql(sql, params).getDataList().getMapList();
         } catch (SQLException e) {
             throw new AnnoDbException(e.getMessage()).withCause(e);
         }
@@ -162,7 +194,7 @@ public class DbServiceWood implements DbService {
     @Override
     public Object executeSql(String sql, Object... params) {
         try {
-            return dbContext.exe(sql, params);
+            return AnnoDbContext.dbContext().exe(sql, params);
         } catch (Exception e) {
             throw new AnnoDbException(e.getMessage()).withCause(e);
         }
@@ -171,7 +203,7 @@ public class DbServiceWood implements DbService {
     @Override
     public <T> T sqlQueryOne(Class<T> clazz, String sql, Object... params) {
         try {
-            return dbContext.sql(sql, params).getItem(clazz);
+            return AnnoDbContext.dbContext().sql(sql, params).getItem(clazz);
         } catch (SQLException e) {
             throw new AnnoDbException(e.getMessage()).withCause(e);
         }
@@ -180,7 +212,7 @@ public class DbServiceWood implements DbService {
     @Override
     public <T> List<T> sqlQueryList(Class<T> clazz, String sql, Object... params) {
         try {
-            return dbContext.sql(sql, params).getList(clazz);
+            return AnnoDbContext.dbContext().sql(sql, params).getList(clazz);
         } catch (SQLException e) {
             throw new AnnoDbException(e.getMessage()).withCause(e);
         }
@@ -333,9 +365,9 @@ public class DbServiceWood implements DbService {
 
     private <T> DbTableQuery toTbQuery(TableParam<T> tableParam) {
         if (tableParam.getJoinTables().isEmpty()) {
-            return dbContext.table(tableParam.getTableName());
+            return AnnoDbContext.dbContext().table(tableParam.getTableName());
         } else {
-            DbTableQuery dbTableQuery = dbContext.table(tableParam.getTableName());
+            DbTableQuery dbTableQuery = AnnoDbContext.dbContext().table(tableParam.getTableName());
             for (TableParam.JoinTable joinTable : tableParam.getJoinTables()) {
                 String tbName = joinTable.getTableName();
                 if (StrUtil.isNotBlank(joinTable.getAlias())) {
