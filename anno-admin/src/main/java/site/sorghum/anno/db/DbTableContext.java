@@ -47,6 +47,7 @@ public class DbTableContext implements MetadataContext {
         returnParam.setDbRemove(tableParam.getDbRemove());
         returnParam.setVirtualTable(tableParam.isVirtualTable());
         returnParam.setJoinTables(new ArrayList<>(tableParam.getJoinTables()));
+        returnParam.setDbName(tableParam.getDbName());
         return returnParam;
     }
 
@@ -86,7 +87,6 @@ public class DbTableContext implements MetadataContext {
 
         for (AnEntity entity : allEntities) {
             TableParam<?> tableParam = new TableParam<>();
-
             tableParam.setClazz(entity.getThisClass());
             tableParam.setTableName(entity.getTableName());
             List<String> columns = entity.getDbAnFields().stream().map(AnField::getTableFieldName).collect(Collectors.toList());
@@ -99,6 +99,7 @@ public class DbTableContext implements MetadataContext {
             }
             // 设置是否虚拟表
             tableParam.setVirtualTable(entity.isVirtualTable());
+            tableParam.setDbName(entity.getDbName());
             tableParamCache.put(entity.getEntityName(), tableParam);
         }
     }

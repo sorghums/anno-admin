@@ -130,4 +130,10 @@ public @interface AnnoField {
      * @return {@link Class}<{@link ?}>
      */
     Class<? extends FieldBaseSupplier> insertWhenNullSet() default EmptyFieldBaseSupplier.class;
+
+    /**
+     * 是否不翻译
+     * @return boolean
+     */
+    boolean noTranslate() default false;
 }

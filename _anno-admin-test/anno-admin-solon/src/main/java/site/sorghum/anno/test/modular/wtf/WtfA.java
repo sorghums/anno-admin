@@ -21,7 +21,9 @@ import site.sorghum.anno.db.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "沃特发表A",annoOrder = @AnnoOrder(orderValue = "id",orderType = "desc"))
+@AnnoMain(name = "沃特发表A",
+    dbName = "db2Context",
+    annoOrder = @AnnoOrder(orderValue = "id", orderType = "desc"))
 @Table("wtf_a")
 @AllArgsConstructor
 @NoArgsConstructor

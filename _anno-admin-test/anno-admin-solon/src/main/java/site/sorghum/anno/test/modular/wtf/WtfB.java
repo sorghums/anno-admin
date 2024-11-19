@@ -22,17 +22,17 @@ import site.sorghum.anno.db.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "沃特发表B")
+@AnnoMain(name = "沃特发表B", dbName = "db2Context")
 @Table("wtf_b")
 @AllArgsConstructor
 @NoArgsConstructor
 public class WtfB extends BaseMetaModel {
 
     @AnnoField(
-            title = "性格",
-            tableFieldName = "attr",
-            search = @AnnoSearch,
-            edit = @AnnoEdit)
+        title = "性格",
+        tableFieldName = "attr",
+        search = @AnnoSearch,
+        edit = @AnnoEdit)
     String attr;
 
     @AnnoField(title = "沃特发A",
@@ -41,7 +41,7 @@ public class WtfB extends BaseMetaModel {
         dataType = AnnoDataType.CLASS_OPTIONS,
         search = @AnnoSearch(),
         optionType = @AnnoOptionType(
-            optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = WtfA.class,labelKey = "name")
+            optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = WtfA.class, labelKey = "name")
         ))
     String wtfA;
 
@@ -51,5 +51,5 @@ public class WtfB extends BaseMetaModel {
             thisJavaField = "id",
             targetJavaField = "wtfB"))
     private Object wtfC;
-    
+
 }

@@ -91,4 +91,10 @@ public @interface AnnoMain {
      * 自动维护表结构
      */
     boolean autoMaintainTable() default true;
+
+    /**
+     * 数据库名称
+     * @return {@link String}
+     */
+    String dbName() default "";
 }

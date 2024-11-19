@@ -6,11 +6,13 @@ import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.util.GenericsUtil;
+import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.exception.AnnoDbException;
 import site.sorghum.anno.db.service.DbService;
+import site.sorghum.anno.db.service.context.AnnoDbContext;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -243,7 +245,12 @@ public interface AnnoBaseDao<T> {
      * @return long
      */
     default long count(DbCriteria dbCriteria) {
-        return dbService().count(dbCriteria);
+        return AnnoDbContext.dynamicDbContext(
+            anEntity().dbName(),
+            () -> {
+                return dbService().count(dbCriteria);
+            }
+        );
     }
 
     /**
@@ -254,8 +261,13 @@ public interface AnnoBaseDao<T> {
      * @return {@link T}
      */
     default T sqlOne(String sql, Object... params) {
-        return dbService().sqlQueryOne(
-            entityClass(), sql, params
+        return AnnoDbContext.dynamicDbContext(
+            anEntity().dbName(),
+            () -> {
+                return dbService().sqlQueryOne(
+                    entityClass(), sql, params
+                );
+            }
         );
     }
 
@@ -267,8 +279,13 @@ public interface AnnoBaseDao<T> {
      * @return {@link List}<{@link T}>
      */
     default List<T> sqlList(String sql, Object... params) {
-        return dbService().sqlQueryList(
-            entityClass(), sql, params
+        return AnnoDbContext.dynamicDbContext(
+            anEntity().dbName(),
+            () -> {
+                return dbService().sqlQueryList(
+                    entityClass(), sql, params
+                );
+            }
         );
     }
 
@@ -324,6 +341,10 @@ public interface AnnoBaseDao<T> {
             METADATA_MANAGER.set(AnnoBeanUtils.getBean(MetadataManager.class));
         }
         return METADATA_MANAGER.get();
+    }
+
+    default AnEntity anEntity(){
+        return metadataManager().getEntity(this.entityClass());
     }
 
     /**

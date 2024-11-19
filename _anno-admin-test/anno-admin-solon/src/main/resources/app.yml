@@ -58,6 +58,12 @@ db.main:
   driverClassName: com.mysql.cj.jdbc.Driver
   username: root
   password: 123456
+db.db2:
+  schema: anno_admin_demo_db2
+  jdbcUrl: jdbc:mysql://localhost:3306/anno_admin_demo_db2?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: 123456
 anno-admin:
   apiServerUrl: http://localhost:8866
   redis:

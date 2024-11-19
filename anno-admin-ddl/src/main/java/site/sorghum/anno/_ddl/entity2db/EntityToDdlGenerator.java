@@ -14,7 +14,9 @@ import site.sorghum.anno._ddl.DialectUtil;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Java 实体类转换为 DDL 语句
@@ -31,6 +33,28 @@ public class EntityToDdlGenerator<T> {
     protected EntityToTableGetter<T> entityToTableGetter;
 
     protected Dialect dialect;
+
+    private final static Map<String, EntityToDdlGenerator> map = new HashMap<>();
+
+    /**
+     * 创建一个EntityToDdlGenerator实例
+     *
+     * @param dbContext           数据库上下文对象
+     * @param entityToTableGetter 实体到表的映射器
+     * @param <T>                 实体类型
+     * @return 返回创建的EntityToDdlGenerator实例
+     */
+    public static <T> EntityToDdlGenerator<T> of(DbContext dbContext, EntityToTableGetter<T> entityToTableGetter) {
+        int hashCodeOne = dbContext.hashCode();
+        int hashCodeTwo = entityToTableGetter.hashCode();
+        String key = hashCodeOne + "_" + hashCodeTwo;
+        if (map.containsKey(key)) {
+            return map.get(key);
+        }
+        EntityToDdlGenerator entityToDdlGenerator = new EntityToDdlGenerator(dbContext, entityToTableGetter);
+        map.put(key, entityToDdlGenerator);
+        return entityToDdlGenerator;
+    }
 
     public EntityToDdlGenerator(DbContext dbContext, EntityToTableGetter<T> entityToTableGetter) {
         this.dbContext = dbContext;
@@ -106,7 +130,7 @@ public class EntityToDdlGenerator<T> {
         List<ColumnWrap> columns = table.getColumns();
         List<String> existsTableColumnNames = existsTable.getColumns().stream().map(ColumnWrap::getName).map(String::toLowerCase).toList();
         List<ColumnWrap> addColumnWrap = columns.stream().filter(columnWrap -> !existsTableColumnNames.contains(columnWrap.getName().toLowerCase())).toList();
-        if (addColumnWrap.isEmpty()){
+        if (addColumnWrap.isEmpty()) {
             return Collections.emptyList();
         }
         List<ColumnModel> columnModels = DialectUtil.columnWrap2ColumnModel(addColumnWrap, table);

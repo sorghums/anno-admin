@@ -111,6 +111,10 @@ public class AnnoFieldImpl implements AnnoField {
      */
     Class<? extends FieldBaseSupplier> insertWhenNullSet = EmptyFieldBaseSupplier.class;
 
+    /**
+     * 是否不翻译
+     */
+    boolean noTranslate = false;
 
     @Override
     public String title() {
@@ -195,6 +199,11 @@ public class AnnoFieldImpl implements AnnoField {
     @Override
     public Class<? extends FieldBaseSupplier> insertWhenNullSet() {
         return this.insertWhenNullSet;
+    }
+
+    @Override
+    public boolean noTranslate() {
+        return this.noTranslate;
     }
 
     @Override

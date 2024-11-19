@@ -9,8 +9,8 @@ public class QuerySqlCache {
 
     private static final Map<String, String> SQL_CACHE = new HashMap<>();
 
-    public static String generateKey(String fileName, String sql) {
-        return fileName + ":" + MD5Util.digestHex(sql);
+    public static String generateKey(String entityName, String fileName, String sql) {
+        return entityName + ":" + fileName + ":" + MD5Util.digestHex(sql);
     }
 
     public static void put(String key, String value) {

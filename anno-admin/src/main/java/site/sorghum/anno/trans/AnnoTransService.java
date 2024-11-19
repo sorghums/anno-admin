@@ -58,6 +58,9 @@ public class AnnoTransService {
         List<JoinParam> joinParams = new ArrayList<>();
         AnEntity entity = metadataManager.getEntity(tClass);
         for (AnField field : entity.getFields()) {
+            if (field.noTranslate()){
+                continue;
+            }
             AnnoDataType dataType = field.getDataType();
             if (OPTIONS_TYPE.contains(dataType)) {
                 AnnoOptionTypeImpl optionType = field.getOptionType();
@@ -192,7 +195,11 @@ public class AnnoTransService {
             }
         }
         for (JoinParam joinParam : joinParams) {
-            joinOperator.batchJoinOne(joinParam, t);
+            try {
+                joinOperator.batchJoinOne(joinParam, t);
+            } catch (Exception e) {
+                log.warn("join error:{}", e.getMessage());
+            }
         }
         // 所有列的JoinResMap的Key全部变成小写 to 兼容部分大小写不敏感的数据库
         stopWatch.stop();
