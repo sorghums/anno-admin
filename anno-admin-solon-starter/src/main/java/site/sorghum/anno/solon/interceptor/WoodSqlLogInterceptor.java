@@ -11,7 +11,6 @@ import org.noear.wood.ext.Act1;
 import site.sorghum.anno._common.config.AnnoProperty;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author songyinyin
@@ -64,12 +63,7 @@ public class WoodSqlLogInterceptor implements Act1<Command> {
     }
 
     private void printSql(Command cmd) {
-        log.info("sql: {}, cost: {}ms", cmd.text, cmd.timespan());
-        Map<String, Object> map = cmd.paramMap();
-        if (map != null && !map.isEmpty()) {
-            log.info("var: {}", map);
-        }
+        log.info("sql: {}, cost: {}ms", cmd.toSqlString(), cmd.timespan());
     }
-
 
 }

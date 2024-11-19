@@ -23,6 +23,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoMany2ManyField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionTypeImpl;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
+import site.sorghum.anno.anno.entity.common.TagEnumLabel;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.plugin.join.util.InvokeUtil;
 
@@ -276,8 +277,8 @@ public class AnnoUtil {
             d -> {
                 AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
                 annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
-                annoTreeDto.setLabel(simpleToString(reflectGetValue(d, label)));
-                annoTreeDto.setTitle(simpleToString(reflectGetValue(d, label)));
+                annoTreeDto.setLabel(simpleToString(reflectGetLabel(d, label)));
+                annoTreeDto.setTitle(simpleToString(reflectGetLabel(d, label)));
                 annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
                 annoTreeDto.setKey(simpleToString(reflectGetValue(d, key)));
                 annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
@@ -328,6 +329,19 @@ public class AnnoUtil {
             return ((Map<?, ?>) o).get(field);
         }
         return ReflectUtil.getFieldValue(o, field);
+    }
+
+    private static Object reflectGetLabel(Object o, String field) {
+        Object value = null;
+        if (o instanceof Map) {
+            value = ((Map<?, ?>) o).get(field);
+        }else {
+            value = ReflectUtil.getFieldValue(o, field);
+        }
+        if (value instanceof TagEnumLabel){
+            return ((TagEnumLabel) value).getValue();
+        }
+        return value;
     }
 
     /**
