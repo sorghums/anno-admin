@@ -22,7 +22,7 @@ public class Export {
      * @param anEntity     一个实体
      * @param outputStream 输出流
      * @param titleName    标题名称
-     * @param ignoreColumn 忽略列
+     * @param ignoreColumns 忽略的列
      */
     @SneakyThrows
     public static void writeToOutPutStream(
