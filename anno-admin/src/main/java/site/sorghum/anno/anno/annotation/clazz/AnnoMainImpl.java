@@ -89,6 +89,11 @@ public class AnnoMainImpl implements AnnoMain {
      */
     String dbName;
 
+    /**
+     * 是否表单模式
+     */
+    boolean formTable;
+
     @Override
     public String name() {
         return this.name;
@@ -152,6 +157,11 @@ public class AnnoMainImpl implements AnnoMain {
     @Override
     public String dbName() {
         return this.dbName;
+    }
+
+    @Override
+    public boolean formTable() {
+        return this.formTable;
     }
 
     @Override
