@@ -32,7 +32,7 @@ public class AnDictBase{
      */
     String pid;
 
-    @AnnoField(pkField = true, title = "字典值",
+    @AnnoField(title = "字典值",
         tableFieldName = "value",
         edit = @AnnoEdit,
         fieldSize = 256)
