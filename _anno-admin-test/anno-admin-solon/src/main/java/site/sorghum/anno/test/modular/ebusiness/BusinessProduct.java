@@ -102,10 +102,7 @@ public class BusinessProduct extends BaseMetaModel {
         tableFieldName = "product_status",
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(
-            value = {
-                @AnnoOptionType.OptionData(value = "0", label = "下架"),
-                @AnnoOptionType.OptionData(value = "1", label = "上架")
-            }
+           onlineDictKey = "TRUE_FALSE"
         ),
         search = @AnnoSearch,
         edit = @AnnoEdit)

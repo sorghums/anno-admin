@@ -191,7 +191,7 @@ public class AnnoUtil {
      * @return {@link List<String>}
      */
     public static List<Field> getAnnoButtonFields(Class<?> clazz) {
-        return getAnnoButtonFields(clazz,true);
+        return getAnnoButtonFields(clazz, true);
     }
 
     /**
@@ -200,7 +200,7 @@ public class AnnoUtil {
      * @param clazz 类
      * @return {@link List<String>}
      */
-    public static List<Field> getAnnoButtonFields(Class<?> clazz,boolean deepSuper) {
+    public static List<Field> getAnnoButtonFields(Class<?> clazz, boolean deepSuper) {
         List<Field> annoFieldFields = CollUtil.newArrayList();
         List<Class<?>> allClass = AnnoUtil.findAllClass(clazz);
         for (Class<?> aClass : allClass) {
@@ -211,7 +211,7 @@ public class AnnoUtil {
                     annoFieldFields.add(declaredField);
                 }
             }
-            if(!deepSuper) {
+            if (!deepSuper) {
                 return annoFieldFields;
             }
         }
@@ -335,10 +335,10 @@ public class AnnoUtil {
         Object value = null;
         if (o instanceof Map) {
             value = ((Map<?, ?>) o).get(field);
-        }else {
+        } else {
             value = ReflectUtil.getFieldValue(o, field);
         }
-        if (value instanceof TagEnumLabel){
+        if (value instanceof TagEnumLabel) {
             return ((TagEnumLabel) value).getValue();
         }
         return value;

@@ -21,6 +21,7 @@ import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.QueryType;
+import site.sorghum.anno.trans.OnlineDictCache;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,16 +45,26 @@ public class BaseDictController {
     @Inject
     PermissionProxy permissionProxy;
 
+    @Inject
+    OnlineDictCache onlineDictCache;
 
     public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(
         String sqlKey,
         String annoClazz,
         String idKey,
         String labelKey,
+        String onlineDictKey,
         String optionAnnoClazz,
         String treeAnnoClazz,
         Map<String, Object> _extra
     ) {
+        if (StrUtil.isNotBlank(onlineDictKey)){
+            List<OnlineDictCache.OnlineDict> onlineDictList = onlineDictCache.getForLoadDict(onlineDictKey);
+            List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
+                onlineDictList, "name", "value", "parentValue"
+            );
+            return AnnoResult.succeed(trees);
+        }
         if (StrUtil.isNotBlank(sqlKey)) {
             String actualSql = QuerySqlCache.get(sqlKey);
             if (StrUtil.isEmpty(actualSql)) {

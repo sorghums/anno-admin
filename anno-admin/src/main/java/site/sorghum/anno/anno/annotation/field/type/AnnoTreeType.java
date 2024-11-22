@@ -92,4 +92,10 @@ public @interface AnnoTreeType {
          */
         String pidKey() default "pid";
     }
+
+    /**
+     * 在线字典的key，如果不为空，则会自动走在线字典的代理操作
+     * @return {@link String}
+     */
+    String onlineDictKey() default "";
 }

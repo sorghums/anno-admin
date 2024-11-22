@@ -43,6 +43,9 @@ public class AnnoTransService {
     @Inject
     MetadataManager metadataManager;
 
+    @Inject
+    OnlineDictCache onlineDictCache;
+
     public static List<AnnoDataType> OPTIONS_TYPE = Arrays.asList(AnnoDataType.OPTIONS, AnnoDataType.PICKER, AnnoDataType.RADIO, AnnoDataType.CLASS_OPTIONS);
 
     /**
@@ -127,6 +130,11 @@ public class AnnoTransService {
                     Map<String, Object> optionsMap = optionDataList.stream().collect(Collectors.toMap(AnnoOptionTypeImpl.OptionDataImpl::getValue, AnnoOptionTypeImpl.OptionDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
                 }
+                String onlineDict = field.getOptionType().getOnlineDictKey();
+                if (StrUtil.isNotBlank(onlineDict)) {
+                    Map<String, Object> optionsMap = onlineDictCache.getValueLabel(onlineDict);
+                    fixedDictTrans(t, optionsMap, field.getJavaName());
+                }
             }
             if (dataType == AnnoDataType.TREE) {
                 AnnoTreeTypeImpl.TreeAnnoClassImpl treeAnnoClass = field.getTreeType().getTreeAnno();
@@ -191,6 +199,11 @@ public class AnnoTransService {
                     List<AnnoTreeTypeImpl.TreeDataImpl> treeDataList = AnnoBeanUtils.getBean(treeSupplier).getTreeDataList();
                     Map<String, Object> optionsMap = treeDataList.stream().collect(Collectors.toMap(AnnoTreeTypeImpl.TreeDataImpl::getId, AnnoTreeTypeImpl.TreeDataImpl::getLabel));
                     fixedDictTrans(t, optionsMap, field.getJavaName());
+                }
+                String onlineDictKey = field.getTreeType().onlineDictKey();
+                if (StrUtil.isNotBlank(onlineDictKey)) {
+                    Map<String, Object> onlineDict = onlineDictCache.getValueLabel(onlineDictKey);
+                    fixedDictTrans(t, onlineDict, field.getJavaName());
                 }
             }
         }
