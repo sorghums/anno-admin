@@ -29,6 +29,16 @@
     </dependencyManagement>
 
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
+<!--            <version>${jackson.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.anyline</groupId>-->
+<!--            <artifactId>anyline-data-jdbc-mysql</artifactId>-->
+<!--            <version>8.7.2-20241107</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-warm-flow-solon-plugin</artifactId>
