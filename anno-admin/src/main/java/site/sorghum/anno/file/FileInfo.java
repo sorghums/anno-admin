@@ -50,4 +50,14 @@ public class FileInfo {
         }
         return bytes;
     }
+
+    @Override
+    public String toString() {
+        return "FileInfo{" +
+               "fileName='" + fileName + '\'' +
+               ", originalPath='" + originalPath + '\'' +
+               ", fileUrl='" + fileUrl + '\'' +
+               ", acl='" + acl + '\'' +
+               '}';
+    }
 }
