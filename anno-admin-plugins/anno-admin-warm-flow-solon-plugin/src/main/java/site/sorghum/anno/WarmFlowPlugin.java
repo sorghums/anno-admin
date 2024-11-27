@@ -1,11 +1,15 @@
 package site.sorghum.anno;
 
+import lombok.SneakyThrows;
+import org.dromara.warm.flow.core.service.DefService;
+import org.noear.solon.Solon;
 import org.pf4j.Extension;
 import site.sorghum.anno.ao.FlowDefinitionAo;
 import site.sorghum.anno.ao.FlowHisTaskAo;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,5 +31,13 @@ public class WarmFlowPlugin extends AnnoPlugin {
         list.add(createEntityMenu(FlowDefinitionAo.class, list.get(0).getId(), "layui-icon layui-icon-cart", 200));
         list.add(createEntityMenu(FlowHisTaskAo.class, list.get(0).getId(), "layui-icon layui-icon-note", 210));
         return list;
+    }
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        DefService defService = Solon.context().getBean(DefService.class);
+        defService.importXml(new FileInputStream("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-warm-flow-solon-plugin\\src\\main\\resources\\demo\\leaveFlow-serial1.xml")).getId();
+        super.run();
     }
 }

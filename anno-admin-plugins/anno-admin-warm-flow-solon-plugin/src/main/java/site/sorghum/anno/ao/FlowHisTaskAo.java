@@ -1,8 +1,8 @@
 package site.sorghum.anno.ao;
 
-import com.warm.flow.orm.entity.FlowHisTask;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -120,7 +120,7 @@ public class FlowHisTaskAo extends FlowHisTask {
     @AnnoField(title = "流程状态", tableFieldName = "flow_status",
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(optionEnum = FlowStatusEnum.class), edit = @AnnoEdit)
-    public Integer getFlowStatus() {
+    public String getFlowStatus() {
         return super.getFlowStatus();
     }
 
