@@ -9,7 +9,6 @@ import site.sorghum.anno.ao.FlowHisTaskAo;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,12 @@ public class WarmFlowPlugin extends AnnoPlugin {
     @Override
     public void run() {
         DefService defService = Solon.context().getBean(DefService.class);
-        defService.importXml(new FileInputStream("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-warm-flow-solon-plugin\\src\\main\\resources\\demo\\leaveFlow-serial1.xml")).getId();
+//        Long id = defService.importXml(new FileInputStream("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-warm-flow-solon-plugin\\src\\main\\resources\\demo\\leaveFlow-serial1.xml")).getId();
+//        defService.publish(id);
+//        InsService insService = Solon.context().getBean(InsService.class);
+//        Instance instance = insService.start("1",
+//            new FlowParams().flowCode("leaveFlow-serial1"));
+//        insService.skipByInsId(instance.getId(),new FlowParams().skipType("PASS").flowCode("leaveFlow-serial1").handler("1666356287765979136").permissionFlag(List.of("role:1")));
         super.run();
     }
 }

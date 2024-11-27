@@ -5,24 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>site.sorghum.anno</groupId>
-        <artifactId>anno-admin-parent</artifactId>
+        <artifactId>anno-admin-plugins</artifactId>
         <version>1.2.2.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>anno-admin-plugins</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>anno-admin-flowlong-solon-plugin</artifactId>
+
     <properties>
+        <flowlong.version>1.0.6</flowlong.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <modules>
-        <module>anno-admin-powerjob-server</module>
-        <module>anno-admin-warm-flow-solon-plugin</module>
-        <module>anno-admin-online-meta</module>
-        <module>anno-admin-x-file-storage</module>
-        <module>anno-admin-excel</module>
-        <module>anno-admin-flowlong-solon-plugin</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>site.sorghum.anno</groupId>
+            <artifactId>anno-admin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.aizuda</groupId>
+            <artifactId>flowlong-solon-plugin</artifactId>
+            <version>${flowlong.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>

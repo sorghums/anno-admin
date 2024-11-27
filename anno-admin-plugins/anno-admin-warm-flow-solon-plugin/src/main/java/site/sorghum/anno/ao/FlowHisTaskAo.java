@@ -13,6 +13,7 @@ import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.enums.FlowStatusEnum;
 import site.sorghum.anno.enums.NodeTypeEnum;
+import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.util.Date;
@@ -111,7 +112,10 @@ public class FlowHisTaskAo extends FlowHisTask {
     }
 
     @Override
-    @AnnoField(title = "审批者", tableFieldName = "approver", edit = @AnnoEdit)
+    @AnnoField(title = "审批者", tableFieldName = "approver",
+        dataType = AnnoDataType.CLASS_OPTIONS,
+        optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnUser.class)),
+        edit = @AnnoEdit)
     public String getApprover() {
         return super.getApprover();
     }
