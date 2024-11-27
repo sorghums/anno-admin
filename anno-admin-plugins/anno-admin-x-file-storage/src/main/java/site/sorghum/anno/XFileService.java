@@ -28,7 +28,7 @@ public class XFileService implements AnFileService {
     public static String defaultAcl = Constant.ACL.PUBLIC_READ;
 
     @Override
-    public FileInfo uploadFile(FileInfo fileInfo) {
+    public FileInfo upload(FileInfo fileInfo) {
         if (fileStorageService == null) {
             throw new BizException("fileStorageService未初始化，请手动引入X-File-Storage包，注入FileStorageService的Bean到容器中.");
         }
