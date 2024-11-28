@@ -6,14 +6,14 @@
     <parent>
         <groupId>site.sorghum.anno</groupId>
         <artifactId>anno-admin-plugins</artifactId>
-        <version>1.2.2.1-SNAPSHOT</version>
+        <version>1.2.2.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>anno-admin-warm-flow-solon-plugin</artifactId>
 
     <properties>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
-        <warm-flow.version>1.2.3</warm-flow.version>
+        <warm-flow.version>1.3.4</warm-flow.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,16 +50,14 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>io.github.minliuhua</groupId>
+            <groupId>org.dromara.warm</groupId>
             <artifactId>warm-flow-mybatis-plus-solon-plugin</artifactId>
             <version>${warm-flow.version}</version>
-            <exclusions>
-
-                <exclusion>
-                    <artifactId>mybatis-plus</artifactId>
-                    <groupId>com.baomidou</groupId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.dromara.warm</groupId>
+            <artifactId>warm-flow-plugin-ui-solon-web</artifactId>
+            <version>${warm-flow.version}</version>
         </dependency>
     </dependencies>
 </project>

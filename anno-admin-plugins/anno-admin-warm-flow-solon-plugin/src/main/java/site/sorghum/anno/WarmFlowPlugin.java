@@ -1,5 +1,8 @@
 package site.sorghum.anno;
 
+import lombok.SneakyThrows;
+import org.dromara.warm.flow.core.service.DefService;
+import org.noear.solon.Solon;
 import org.pf4j.Extension;
 import site.sorghum.anno.ao.FlowDefinitionAo;
 import site.sorghum.anno.ao.FlowHisTaskAo;
@@ -27,5 +30,18 @@ public class WarmFlowPlugin extends AnnoPlugin {
         list.add(createEntityMenu(FlowDefinitionAo.class, list.get(0).getId(), "layui-icon layui-icon-cart", 200));
         list.add(createEntityMenu(FlowHisTaskAo.class, list.get(0).getId(), "layui-icon layui-icon-note", 210));
         return list;
+    }
+
+    @SneakyThrows
+    @Override
+    public void run() {
+        DefService defService = Solon.context().getBean(DefService.class);
+//        Long id = defService.importXml(new FileInputStream("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-warm-flow-solon-plugin\\src\\main\\resources\\demo\\leaveFlow-serial1.xml")).getId();
+//        defService.publish(id);
+//        InsService insService = Solon.context().getBean(InsService.class);
+//        Instance instance = insService.start("1",
+//            new FlowParams().flowCode("leaveFlow-serial1"));
+//        insService.skipByInsId(instance.getId(),new FlowParams().skipType("PASS").flowCode("leaveFlow-serial1").handler("1666356287765979136").permissionFlag(List.of("role:1")));
+        super.run();
     }
 }

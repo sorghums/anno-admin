@@ -15,16 +15,17 @@ import site.sorghum.anno.db.PrimaryKeyModel;
     name = "平台信息",
     tableName = "an_platform",
     annoPermission = @AnnoPermission(enable = true, baseCode = "an_platform", baseCodeTranslate = "平台信息"),
-    canRemove = false
+    canRemove = false,
+    formTable = true
 )
 public class AnPlatform extends PrimaryKeyModel {
 
-    @AnnoField(title = "平台名称", tableFieldName = "name", edit = @AnnoEdit(addEnable = false))
+    @AnnoField(title = "平台名称", tableFieldName = "name", edit = @AnnoEdit)
     String name;
 
-    @AnnoField(title = "平台Logo", tableFieldName = "platform_logo", dataType = AnnoDataType.IMAGE, edit = @AnnoEdit(addEnable = false))
+    @AnnoField(title = "平台Logo", tableFieldName = "platform_logo", dataType = AnnoDataType.IMAGE, edit = @AnnoEdit)
     String platformLogo;
 
-    @AnnoField(title = "平台描述", tableFieldName = "description", edit = @AnnoEdit(addEnable = false))
+    @AnnoField(title = "平台描述", tableFieldName = "description", edit = @AnnoEdit)
     String description;
 }

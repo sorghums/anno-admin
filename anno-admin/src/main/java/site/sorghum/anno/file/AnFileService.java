@@ -1,6 +1,10 @@
 package site.sorghum.anno.file;
 
 
+import site.sorghum.anno._common.AnnoBeanUtils;
+
+import java.util.List;
+
 /**
  * An文件服务
  *
@@ -11,7 +15,24 @@ public interface AnFileService {
     /**
      * 上传文件
      */
-    FileInfo uploadFile(FileInfo fileInfo);
+    FileInfo upload(FileInfo fileInfo);
+
+    /**
+     * 上传文件[内部使用 请勿修改]
+     * @param fileInfo 文件信息
+     * @return 文件信息
+     */
+    default FileInfo uploadFile(FileInfo fileInfo){
+        List<FileProxy> beansOfType = AnnoBeanUtils.getBeansOfType(FileProxy.class);
+        for (FileProxy bean : beansOfType) {
+            bean.beforeUpdate(fileInfo);
+        }
+        upload(fileInfo);
+        for (FileProxy bean : beansOfType) {
+            bean.afterUpdate(fileInfo);
+        }
+        return fileInfo;
+    }
 
     /**
      * 获取文件信息

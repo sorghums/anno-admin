@@ -1,8 +1,8 @@
 package site.sorghum.anno.ao;
 
-import com.warm.flow.orm.entity.FlowDefinition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.dromara.warm.flow.orm.entity.FlowDefinition;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoButton;
@@ -91,17 +91,17 @@ public class FlowDefinitionAo extends FlowDefinition {
     }
 
     @Override
-    @AnnoField(title = "审批表单自定义", tableFieldName = "from_custom",
+    @AnnoField(title = "审批表单自定义", tableFieldName = "form_custom",
         dataType = AnnoDataType.RADIO,
         optionType = @AnnoOptionType(optionEnum = TrueFalseCharEnum.class), edit = @AnnoEdit(span = 24), sort = 600)
-    public String getFromCustom() {
-        return super.getFromCustom();
+    public String getFormCustom() {
+        return super.getFormCustom();
     }
 
     @Override
-    @AnnoField(title = "审批表单路径", tableFieldName = "from_path", edit = @AnnoEdit(span = 24), sort = 500)
-    public String getFromPath() {
-        return super.getFromPath();
+    @AnnoField(title = "审批表单路径", tableFieldName = "form_path", edit = @AnnoEdit(span = 24), sort = 500)
+    public String getFormPath() {
+        return super.getFormPath();
     }
 
 

@@ -41,19 +41,21 @@ public class DictController extends BaseDictController {
             @ApiImplicitParam(name = "optionAnnoClazz", value = "[模式三]字典的查询提供类", dataType = "String", paramType = "body"),
             @ApiImplicitParam(name = "treeAnnoClazz", value = "[模式四]字典树的查询提供类", dataType = "String", paramType = "body"),
             @ApiImplicitParam(name = "_extra", value = "额外参数", dataType = "Map<String,Object>", paramType = "body"),
+            @ApiImplicitParam(name = "onlineDictKey", value = "在线字典的key", dataType = "String", paramType = "body")
         }
     )
     public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param String sqlKey,
                                                           @Param String annoClazz,
                                                           @Param String idKey,
                                                           @Param String labelKey,
+                                                          @Param String onlineDictKey,
                                                           @Param String optionAnnoClazz,
                                                           @Param String treeAnnoClazz,
                                                           @Param Map<String,Object> _extra) {
         if (_extra == null) {
             _extra = Collections.emptyMap();
         }
-        return super.loadDict(sqlKey, annoClazz, idKey, labelKey, optionAnnoClazz, treeAnnoClazz, _extra);
+        return super.loadDict(sqlKey, annoClazz, idKey, labelKey,onlineDictKey, optionAnnoClazz, treeAnnoClazz, _extra);
     }
 
 

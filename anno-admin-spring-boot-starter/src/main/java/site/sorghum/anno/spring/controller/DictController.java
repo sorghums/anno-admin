@@ -38,6 +38,7 @@ public class DictController extends BaseDictController {
             @ApiImplicitParam(name = "labelKey", value = "[模式二]标签的key", dataType = "String", paramType = "body"),
             @ApiImplicitParam(name = "optionAnnoClazz", value = "[模式三]字典的查询提供类", dataType = "String", paramType = "body"),
             @ApiImplicitParam(name = "treeAnnoClazz", value = "[模式四]字典树的查询提供类", dataType = "String", paramType = "body"),
+            @ApiImplicitParam(name = "onlineDictKey", value = "[模式五]字典的在线的key", dataType = "String", paramType = "body"),
             @ApiImplicitParam(name = "_extra", value = "额外参数", dataType = "Map<String,Object>", paramType = "body"),
         }
     )
@@ -47,6 +48,7 @@ public class DictController extends BaseDictController {
             MapUtil.getStr(dictParam, "annoClazz"),
             MapUtil.getStr(dictParam, "idKey"),
             MapUtil.getStr(dictParam, "labelKey"),
+            MapUtil.getStr(dictParam, "onlineDictKey"),
             MapUtil.getStr(dictParam, "optionAnnoClazz"),
             MapUtil.getStr(dictParam, "treeAnnoClazz"),
             MapUtil.get(dictParam, "_extra", Map.class, Collections.emptyMap())

@@ -1,8 +1,8 @@
 package site.sorghum.anno.ao;
 
-import com.warm.flow.orm.entity.FlowHisTask;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
@@ -13,6 +13,7 @@ import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.enums.FlowStatusEnum;
 import site.sorghum.anno.enums.NodeTypeEnum;
+import site.sorghum.anno.plugin.ao.AnUser;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
 import java.util.Date;
@@ -111,7 +112,10 @@ public class FlowHisTaskAo extends FlowHisTask {
     }
 
     @Override
-    @AnnoField(title = "审批者", tableFieldName = "approver", edit = @AnnoEdit)
+    @AnnoField(title = "审批者", tableFieldName = "approver",
+        dataType = AnnoDataType.CLASS_OPTIONS,
+        optionType = @AnnoOptionType(optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = AnUser.class)),
+        edit = @AnnoEdit)
     public String getApprover() {
         return super.getApprover();
     }
@@ -120,7 +124,7 @@ public class FlowHisTaskAo extends FlowHisTask {
     @AnnoField(title = "流程状态", tableFieldName = "flow_status",
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(optionEnum = FlowStatusEnum.class), edit = @AnnoEdit)
-    public Integer getFlowStatus() {
+    public String getFlowStatus() {
         return super.getFlowStatus();
     }
 

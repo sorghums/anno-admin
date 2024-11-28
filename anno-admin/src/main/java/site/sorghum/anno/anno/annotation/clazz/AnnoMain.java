@@ -97,4 +97,10 @@ public @interface AnnoMain {
      * @return {@link String}
      */
     String dbName() default "";
+
+    /**
+     * 是否表单
+     * @return {@link boolean}
+     */
+    boolean formTable() default false;
 }

@@ -12,6 +12,7 @@ import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnnoPlugin;
 import site.sorghum.anno.plugin.ao.*;
 import site.sorghum.anno.plugin.dao.AnPlatformDao;
+import site.sorghum.anno.plugin.manager.OnlineDictManager;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,8 @@ public class BaseAnnoPlugin extends AnnoPlugin {
 
     AnnoProperty annoProperty;
 
+    OnlineDictManager onlineDictManager;
+
     public BaseAnnoPlugin() {
         super("管理端插件", "包含B端用户，角色，组织，权限等。");
     }
@@ -48,6 +51,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         dbService = AnnoBeanUtils.getBean(DbService.class);
         anPlatformDao = AnnoBeanUtils.getBean(AnPlatformDao.class);
         annoProperty = AnnoBeanUtils.getBean(AnnoProperty.class);
+        onlineDictManager = AnnoBeanUtils.getBean(OnlineDictManager.class);
         // 权限校验
         CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
             AuthService authService = AnnoBeanUtils.getBean(AuthService.class);
@@ -126,6 +130,10 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             platform.setDescription(annoProperty.getPlatformDesc());
             anPlatformDao.insert(platform);
         }
+
+        // 在线字典初始化
+        onlineDictManager.loadDict();
+
     }
 
     private List<AnPermission> getAnPermissions() {
@@ -198,6 +206,36 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6.setPermissionId("an_org");
         menu6.setParseType("annoMain");
         menu6.setParseData("AnOrg");
+
+        AnAnnoMenu menu6_00 = new AnAnnoMenu();
+        menu6_00.setId("15_00");
+        menu6_00.setParentId("10");
+        menu6_00.setTitle("字典管理");
+        menu6_00.setType(0);
+        menu6_00.setIcon("material-symbols-light:dictionary");
+        menu6_00.setPermissionId("");
+        menu6_00.setParseType("");
+        menu6_00.setParseData(null);
+
+        AnAnnoMenu menu6_01 = new AnAnnoMenu();
+        menu6_01.setId("15_01");
+        menu6_01.setParentId("15_00");
+        menu6_01.setTitle("系统字典");
+        menu6_01.setType(1);
+        menu6_01.setIcon("arcticons:thai-dict");
+        menu6_01.setPermissionId("an_dict_system");
+        menu6_01.setParseType("annoMain");
+        menu6_01.setParseData("AnDictSystem");
+
+        AnAnnoMenu menu6_02 = new AnAnnoMenu();
+        menu6_02.setId("15_02");
+        menu6_02.setParentId("15_00");
+        menu6_02.setTitle("业务字典");
+        menu6_02.setType(1);
+        menu6_02.setIcon("arcticons:thai-dict");
+        menu6_02.setPermissionId("an_dict_biz");
+        menu6_02.setParseType("annoMain");
+        menu6_02.setParseData("AnDictBiz");
 
         AnAnnoMenu menu6_0 = new AnAnnoMenu();
         menu6_0.setId("15_0");
@@ -277,6 +315,9 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu4,
             menu5,
             menu6,
+            menu6_00,
+            menu6_01,
+            menu6_02,
             menu6_0,
             menu6_1,
             menu6_2,

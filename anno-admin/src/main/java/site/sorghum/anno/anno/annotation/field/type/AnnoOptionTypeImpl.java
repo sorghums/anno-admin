@@ -58,6 +58,11 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
      */
     private boolean isMultiple = false;
 
+    /**
+     * 在线字典的key
+     */
+    private String onlineDictKey;
+
     @Override
     public String sql() {
         return sql;
@@ -86,6 +91,11 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
     @Override
     public boolean isMultiple() {
         return isMultiple;
+    }
+
+    @Override
+    public String onlineDictKey() {
+        return this.onlineDictKey;
     }
 
     @Override

@@ -6,7 +6,7 @@
     <parent>
         <groupId>site.sorghum.anno</groupId>
         <artifactId>anno-admin-parent</artifactId>
-        <version>1.2.2.1-SNAPSHOT</version>
+        <version>1.2.2.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>anno-admin-plugins</artifactId>
@@ -23,5 +23,6 @@
         <module>anno-admin-online-meta</module>
         <module>anno-admin-x-file-storage</module>
         <module>anno-admin-excel</module>
+        <module>anno-admin-flowlong-solon-plugin</module>
     </modules>
 </project>

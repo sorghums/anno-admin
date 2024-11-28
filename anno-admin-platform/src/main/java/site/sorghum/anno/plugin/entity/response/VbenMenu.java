@@ -37,6 +37,9 @@ public class VbenMenu {
     @ApiModelProperty("菜单是否隐藏")
     public boolean hideMenu;
 
+    @ApiModelProperty("菜单是否禁用")
+    public boolean disabled;
+
     @ApiModelProperty("菜单元数据")
     public VbenMeta meta;
 

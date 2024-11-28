@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.noear.snack.annotation.ONodeAttr;
 import site.sorghum.anno.anno.tree.TreeDataSupplier;
 
 import java.lang.annotation.Annotation;
@@ -51,6 +50,11 @@ public class AnnoTreeTypeImpl implements AnnoTreeType {
      */
     private boolean isMultiple = false;
 
+    /**
+     * 在线字典key
+     */
+    private String onlineDictKey = "";
+
     @Override
     public String sql() {
         return sql;
@@ -74,6 +78,11 @@ public class AnnoTreeTypeImpl implements AnnoTreeType {
     @Override
     public boolean isMultiple() {
         return isMultiple;
+    }
+
+    @Override
+    public String onlineDictKey() {
+        return this.onlineDictKey;
     }
 
     @Override

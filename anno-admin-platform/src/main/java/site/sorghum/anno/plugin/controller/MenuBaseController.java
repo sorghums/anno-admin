@@ -153,6 +153,13 @@ public class MenuBaseController {
                 }
             }
         }
+        for (VbenMenu vbenMenu : list) {
+            // 如果component="LAYOUT" 且children为空,则不显示
+            if ("LAYOUT".equals(vbenMenu.getComponent()) && vbenMenu.getChildren().isEmpty()) {
+                vbenMenu.setHideMenu(Boolean.TRUE);
+                vbenMenu.setDisabled(Boolean.TRUE);
+            }
+        }
         roots.sort(Comparator.comparing(VbenMenu::getSort).reversed());
         // 加入默认工作台节点
         VbenMenu vbenMenu = new VbenMenu();

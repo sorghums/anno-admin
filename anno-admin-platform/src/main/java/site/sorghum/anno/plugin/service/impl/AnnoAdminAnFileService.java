@@ -23,7 +23,8 @@ import java.util.List;
  * @since 2023/07/28
  */
 @Named
-public class LocalAnFileServiceImpl implements AnFileService {
+public class AnnoAdminAnFileService implements AnFileService {
+
     @Inject
     private AnnoProperty annoProperty;
 
@@ -39,10 +40,10 @@ public class LocalAnFileServiceImpl implements AnFileService {
 
 
     @Override
-    public FileInfo uploadFile(FileInfo fileInfo) {
+    public FileInfo upload(FileInfo fileInfo) {
         findActualService();
         if (actualService != null){
-            return actualService.uploadFile(fileInfo);
+            return actualService.upload(fileInfo);
         }
         String guid = IdUtil.fastUUID();
         String localFilePath = annoProperty.getLocalFilePath();
