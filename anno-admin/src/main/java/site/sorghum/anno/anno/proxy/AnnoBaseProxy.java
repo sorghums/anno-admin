@@ -50,18 +50,18 @@ public interface AnnoBaseProxy<T> {
      * 从数据库条件中获取指定Java属性名的值，并转换为字符串返回
      *
      * @param dbCondition 数据库条件对象
-     * @param javaName Java属性名
+     * @param dbName 数据库属性名
      * @return 转换后的字符串值，若未找到则返回null
      */
-    default String getValueStringFromDbCriteria(DbCondition dbCondition, String javaName) {
-        if (Objects.equals(dbCondition.getField(), javaName)) {
+    default String getValueStringFromDbCriteria(DbCondition dbCondition, String dbName) {
+        if (Objects.equals(dbCondition.getField(), dbName)) {
             for (Object value : dbCondition.getValues()) {
                 return StrUtil.toString(value);
             }
         } else {
             for (Object value : dbCondition.getValues()) {
                 if (value instanceof DbCondition _dbCondition) {
-                    String dbCriteria = getValueStringFromDbCriteria(_dbCondition, javaName);
+                    String dbCriteria = getValueStringFromDbCriteria(_dbCondition, dbName);
                     if (dbCriteria != null) {
                         return dbCriteria;
                     }
@@ -69,6 +69,20 @@ public interface AnnoBaseProxy<T> {
             }
         }
         return null;
+    }
+
+    /**
+     * 从数据库条件中获取指定Java属性名的值，并转换为字符串返回
+     *
+     * @param dbCondition 数据库条件对象
+     * @param javaName java属性名
+     * @return 转换后的字符串值，若未找到则返回null
+     */
+    default String getValueStringFromJavaCriteria(DbCondition dbCondition,
+                                                  Class<?> entityClass,
+                                                  String javaName) {
+        String dbName = AnnoFieldCache.getSqlColumnByJavaName(entityClass, javaName);
+        return getValueStringFromDbCriteria(dbCondition, dbName);
     }
 
     static String clazzToDamiEntityName(Class<?> clazz) {

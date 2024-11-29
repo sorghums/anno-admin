@@ -7,6 +7,7 @@ import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
+import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
@@ -20,14 +21,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@AnnoMain(name = "历史任务记录",
-    tableName = "flow_his_task",
-    annoPermission = @AnnoPermission(baseCode = "flow_his_task", baseCodeTranslate = "历史任务记录"),
-    autoMaintainTable = false
+@AnnoMain(name = "抄送任务",
+    annoPermission = @AnnoPermission(baseCode = "copy_his_task", baseCodeTranslate = "抄送任务"),
+    autoMaintainTable = false,
+    virtualTable = true
 )
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class FlowHisTaskAo extends FlowHisTask {
+public class CopyHisTaskAo extends FlowHisTask {
 
     @Override
     @AnnoField(title = "主键", tableFieldName = "id", show = false, fieldSize = 32, insertWhenNullSet = SnowIdLongSupplier.class, pkField = true)
@@ -118,6 +119,12 @@ public class FlowHisTaskAo extends FlowHisTask {
         edit = @AnnoEdit)
     public String getApprover() {
         return super.getApprover();
+    }
+
+    @Override
+    @AnnoField(title = "审批者", show = false, search = @AnnoSearch)
+    public String getFlowName() {
+        return super.getFlowName();
     }
 
     @Override

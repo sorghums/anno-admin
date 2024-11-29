@@ -127,6 +127,9 @@ public class AnnoUtil {
             // 扫描方法
             Method[] declaredMethods = ClassUtil.getDeclaredMethods(aClass);
             for (Method declaredMethod : declaredMethods) {
+                if (!declaredMethod.getDeclaringClass().equals(aClass)){
+                    continue;
+                }
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredMethod, AnnoField.class);
                 PrimaryKey primaryKey = AnnotationUtil.getAnnotation(declaredMethod, PrimaryKey.class);
                 if (annotation != null) {
