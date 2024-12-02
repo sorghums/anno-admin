@@ -5,12 +5,14 @@ import lombok.EqualsAndHashCode;
 import org.dromara.warm.flow.orm.entity.FlowHisTask;
 import site.sorghum.anno.anno.annotation.clazz.AnnoMain;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermission;
+import site.sorghum.anno.anno.annotation.field.AnnoButton;
 import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
+import site.sorghum.anno.cmd.GetFlowImgCmd;
 import site.sorghum.anno.enums.FlowStatusEnum;
 import site.sorghum.anno.enums.NodeTypeEnum;
 import site.sorghum.anno.plugin.ao.AnUser;
@@ -135,6 +137,10 @@ public class DoneHisTaskAo extends FlowHisTask {
         return super.getMessage();
     }
 
+
+    @AnnoButton(name = "流程图",
+        javaCmd = @AnnoButton.JavaCmd(runSupplier = GetFlowImgCmd.class))
+    Object flowImageMethod;
 
     @JoinResMap
     Map<String, Object> joinResMap = new HashMap<>();

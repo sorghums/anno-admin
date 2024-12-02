@@ -1,6 +1,5 @@
 package site.sorghum.anno.anno.datasupplier;
 
-import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.EntityMetadataLoader;
 
 import java.util.Collections;
@@ -35,7 +34,7 @@ public interface AnnoAddDataSupplier {
      * @param supplier 实例
      */
     static void putInstance(Class<?> entityClass, AnnoAddDataSupplier supplier) {
-        cache.put(AnnoBeanUtils.getBean(EntityMetadataLoader.class).getEntityName(entityClass), supplier);
+        cache.put(EntityMetadataLoader.entityName(entityClass), supplier);
     }
 
     /**

@@ -33,7 +33,7 @@ public class AnnoFlowService {
         DbTableQuery tableQuery = dbContext.table("flow_task As t")
             .leftJoin("flow_definition AS d").on("t.definition_id = d.id")
             .leftJoin("flow_instance AS i").on("t.instance_id = i.id")
-            .where("t.node_type = 1");
+            .where("t.node_type = 1").and("t.del_flag = 0");
         List<String> permissionList = task.getPermissionList();
         if (CollUtil.isNotEmpty(permissionList)) {
             String inStr = permissionList.stream().map(String::trim).map(
@@ -135,7 +135,7 @@ public class AnnoFlowService {
         DbTableQuery tableQuery = dbContext.table("flow_user AS a").leftJoin("flow_instance AS b").on("a.associated = b.id")
             .leftJoin("an_user AS c").on("b.create_by = c.id")
             .leftJoin("flow_definition AS d").on("b.definition_id = d.id")
-            .where("a.type = 4");
+            .where("a.type = 4").and("a.del_flag = 0");
         if (StrUtil.isNotBlank(task.getFlowName())) {
             tableQuery.andLk("c.name", "%" + task.getFlowName() + "%");
         }
