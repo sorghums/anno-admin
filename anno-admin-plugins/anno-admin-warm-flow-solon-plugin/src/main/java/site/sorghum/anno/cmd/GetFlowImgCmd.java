@@ -18,8 +18,8 @@ public class GetFlowImgCmd implements JavaCmdSupplier {
     public String run(CommonParam param) {
         Long instanceId = param.getLong("instanceId");
         String flowChart = defService.flowChart(instanceId);
-        return """
-            iframeDoc://<img src="data:image/gif;base64,%s" style="width: 100%%;">
-            """.formatted(flowChart).trim();
+        return iframeDoc("""
+            <img src="data:image/gif;base64,%s" style="width: 100%%;">
+            """.formatted(flowChart).trim());
     }
 }
