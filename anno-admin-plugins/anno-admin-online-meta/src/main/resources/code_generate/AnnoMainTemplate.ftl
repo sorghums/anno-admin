@@ -22,13 +22,15 @@ import java.util.Map;
     name = "${main.name}",
     tableName = "${main.tableName}",
     <#if main.annoOrder??>
-        annoOrder = {
-        <#list main.annoOrder as order>
-            @AnnoOrder(orderValue = "${order.orderValue}", orderType = "${order.orderType}"),
-        </#list>
-        },
+    annoOrder = {
+    <#list main.annoOrder as order>
+        @AnnoOrder(orderValue = "${order.orderValue}", orderType = "${order.orderType}"),
+    </#list>
+    },
     </#if>
+    <#if main.enablePermission>
     annoPermission = @AnnoPermission(baseCode = "${main.tableName}", baseCodeTranslate = "${main.name}"),
+    </#if>
     canRemove = ${main.canRemove?c},
     autoMaintainTable = ${main.autoMaintainTable?c}
 )
@@ -42,64 +44,64 @@ public class ${main.className} {
         show = ${field.show?c},
         pkField = ${field.pkField?c},
         <#if field.edit??>
-            edit = @AnnoEdit(
-            editEnable = ${field.edit.editEnable?c},
-            addEnable = ${field.edit.addEnable?c}
-            ),
+        edit = @AnnoEdit(
+        editEnable = ${field.edit.editEnable?c},
+        addEnable = ${field.edit.addEnable?c}
+        ),
         </#if>
         <#if field.search??>
-            search = @AnnoSearch(
-            notNull = ${field.search.notNull?c},
-            defaultValue = "${field.search.defaultValue}"
+        search = @AnnoSearch(
+        notNull = ${field.search.notNull?c},
+        defaultValue = "${field.search.defaultValue}"
         ),
         </#if>
         dataType = AnnoDataType.${field.dataType?string},
         <#if field.optionType??>
-            optionType = @AnnoOptionType(
-            <#if field.optionType.value??>
-                value = {
-                <#list field.optionType.value as option>
-                    @AnnoOptionType.OptionData(value = "${option.value}", label = "${option.label}"),
-                </#list>
-                }
-            </#if>
-            <#if field.optionType.optionAnnoClass??>
-                optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = ${field.optionType.optionAnnoClass}.class)
-            </#if>
-            ),
+        optionType = @AnnoOptionType(
+        <#if field.optionType.value??>
+            value = {
+            <#list field.optionType.value as option>
+                @AnnoOptionType.OptionData(value = "${option.value}", label = "${option.label}"),
+            </#list>
+            }
+        </#if>
+        <#if field.optionType.optionAnnoClass??>
+            optionAnno = @AnnoOptionType.OptionAnnoClass(annoClass = ${field.optionType.optionAnnoClass}.class)
+        </#if>
+        ),
         </#if>
         <#if field.imageType??>
-                imageType = @AnnoImageType(
-                enlargeAble = ${field.imageType.enlargeAble?c},
-                width = ${field.imageType.width},
-                height = ${field.imageType.height}
-            ),
+        imageType = @AnnoImageType(
+            enlargeAble = ${field.imageType.enlargeAble?c},
+            width = ${field.imageType.width},
+            height = ${field.imageType.height}
+        ),
         </#if>
         <#if field.codeType??>
-            codeType = @AnnoCodeType(
-                mode = "${field.codeType.mode}"
-            ),
+        codeType = @AnnoCodeType(
+            mode = "${field.codeType.mode}"
+        ),
         </#if>
         <#if field.treeType??>
-            treeType = @AnnoTreeType(
+        treeType = @AnnoTreeType(
             <#if field.treeType.value??>
-                value = {
-                <#list field.treeType.value as treeData>
-                    @AnnoTreeType.TreeData(id = "${treeData.id}", label = "${treeData.label}", pid = "${treeData.pid}"),
-                </#list>
-                }
+            value = {
+            <#list field.treeType.value as treeData>
+                @AnnoTreeType.TreeData(id = "${treeData.id}", label = "${treeData.label}", pid = "${treeData.pid}"),
+            </#list>
+            }
             </#if>
             <#if field.treeType.treeAnnoClass??>
-                treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = ${field.treeType.treeAnnoClass}.class)
+            treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = ${field.treeType.treeAnnoClass}.class)
             </#if>
             ),
         </#if>
         <#if field.fileType??>
-                fileType = @AnnoFileType(
-                fileType = "${field.fileType.fileType}",
-                fileMaxCount = ${field.fileType.fileMaxCount},
-                fileMaxSize = ${field.fileType.fileMaxSize}
-            ),
+        fileType = @AnnoFileType(
+            fileType = "${field.fileType.fileType}",
+            fileMaxCount = ${field.fileType.fileMaxCount},
+            fileMaxSize = ${field.fileType.fileMaxSize}
+        ),
         </#if>
         title = "${field.title}"
     )

@@ -25,6 +25,10 @@ public class AnField extends AnnoFieldImpl {
      */
     private String javaName;
     /**
+     * jsonPath路径
+     */
+    private String jsonPath;
+    /**
      * 列类型
      */
     private Class<?> javaType;

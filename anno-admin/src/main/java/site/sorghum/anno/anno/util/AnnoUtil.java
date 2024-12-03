@@ -127,7 +127,7 @@ public class AnnoUtil {
             // 扫描方法
             Method[] declaredMethods = ClassUtil.getDeclaredMethods(aClass);
             for (Method declaredMethod : declaredMethods) {
-                if (!declaredMethod.getDeclaringClass().equals(aClass)){
+                if (!declaredMethod.getDeclaringClass().equals(aClass)) {
                     continue;
                 }
                 AnnoField annotation = AnnotationUtil.getAnnotation(declaredMethod, AnnoField.class);
@@ -146,7 +146,10 @@ public class AnnoUtil {
                     }
                     Field field = ReflectUtil.getField(aClass, name);
                     if (field == null) {
-                        throw new BizException("%s,未找到对应的field".formatted(annotation.title()));
+                        field = ReflectUtil.getField(clazz, name);
+                    }
+                    if (field == null) {
+                        throw new BizException("can't find field by method:" + declaredMethod.getName());
                     }
                     if (annotation.pkField()) {
                         primaryKey = new PrimaryKey() {
@@ -304,8 +307,12 @@ public class AnnoUtil {
                 break;
             }
             allSuperClass.add(pClazz);
+            // 获取当前所有接口
+            Collections.addAll(allSuperClass, clazz.getInterfaces());
             clazz = pClazz;
         }
+        // 去除重复的
+        allSuperClass = allSuperClass.stream().distinct().collect(Collectors.toList());
         return allSuperClass;
     }
 

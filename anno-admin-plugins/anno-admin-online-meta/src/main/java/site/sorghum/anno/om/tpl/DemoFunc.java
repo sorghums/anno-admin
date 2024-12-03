@@ -16,6 +16,13 @@ public class DemoFunc {
         mainConfig.setClassName("TestMain");
         mainConfig.setCanRemove(true);
         mainConfig.setAutoMaintainTable(true);
+        mainConfig.setEnablePermission(false);
+        mainConfig.setAnnoOrder(List.of(
+            new MainConfig.AnnoOrder(){{
+                setOrderType("desc");
+                setOrderValue("testColumn");
+            }}
+        ));
         mainConfig.setFields(
             List.of(
                 new MainConfig.FieldConfig(){{
@@ -25,13 +32,13 @@ public class DemoFunc {
                     setTableFieldName("test_column");
                     setDataType(AnnoDataType.OPTIONS);
                     setEdit(new MainConfig.EditConfig());
+                    setPkField(true);
                     setFieldSize(256);
                     setSearch(new MainConfig.SearchConfig());
                     setFileType(new MainConfig.FileType());
                     setCodeType(new MainConfig.CodeType());
                     setImageType(new MainConfig.ImageType());
                     setTreeType(new MainConfig.TreeType(){{
-                        setTreeAnnoClass("site.sorghum.anno.om.ao.OnlineMeta");
                         setValue(List.of(
                             new MainConfig.TreeType.TreeData(){{
                                 setId("1");
@@ -48,7 +55,6 @@ public class DemoFunc {
                                     setLabel("测试1");
                                 }}
                             ));
-                            setOptionAnnoClass("site.sorghum.anno.om.ao.OnlineMeta");
                         }}
                     );
                 }}

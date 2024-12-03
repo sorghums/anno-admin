@@ -29,6 +29,8 @@ public class MainConfig {
     private boolean canRemove;
     // 是否自动维护数据库表
     private boolean autoMaintainTable;
+    // 是否启用权限
+    private boolean enablePermission = true;
 
     /**
      * 注解顺序配置类。
