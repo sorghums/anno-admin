@@ -25,10 +25,9 @@ public class AnnoTreeTypeImpl implements AnnoTreeType {
     private String sqlKey;
 
     /**
-     * SQL语句, 优先级高于value
-     * 必须返回三列，列名分别为 id, label, pid
+     * SQL类型
      */
-    private String sql = "";
+    private AnnoSqlImpl anSql = new AnnoSqlImpl();
 
     /**
      * 树形选择数据
@@ -56,8 +55,8 @@ public class AnnoTreeTypeImpl implements AnnoTreeType {
     private String onlineDictKey = "";
 
     @Override
-    public String sql() {
-        return sql;
+    public AnnoSql anSql() {
+        return anSql;
     }
 
     @Override

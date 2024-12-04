@@ -189,17 +189,17 @@ public class MetaClassUtil {
                 }
                 // 重新设置SqlKey
                 AnnoOptionTypeImpl optionType = column.getOptionType();
-                if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), optionType.sql());
+                if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.anSql().sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(optionType.anSql().dbName(), anMeta.getEntityName(), column.getJavaName(), optionType.anSql().sql());
                     optionType.setSqlKey(sqlKey);
-                    QuerySqlCache.put(sqlKey, optionType.sql());
+                    QuerySqlCache.put(sqlKey, optionType.anSql().sql());
                 }
                 // 重新设置SqlKey
                 AnnoTreeTypeImpl treeType = column.getTreeType();
-                if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), treeType.sql());
+                if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.anSql().sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(optionType.anSql().dbName(), anMeta.getEntityName(), column.getJavaName(), treeType.anSql().sql());
                     treeType.setSqlKey(sqlKey);
-                    QuerySqlCache.put(sqlKey, treeType.sql());
+                    QuerySqlCache.put(sqlKey, treeType.anSql().sql());
                 }
                 // 如果optionEnum是支持的枚举，则重新设置optionData
                 Class<? extends Enum> optionEnum = column.getOptionType().optionEnum();

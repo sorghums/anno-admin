@@ -300,6 +300,8 @@ public class AnnoUtil {
 
     public static List<Class<?>> findAllClass(Class<?> clazz) {
         List<Class<?>> allSuperClass = CollUtil.newArrayList(clazz);
+        // 获取当前所有接口
+        Collections.addAll(allSuperClass, clazz.getInterfaces());
         while (true) {
             // 如果父类是Object，就跳出循环
             Class<?> pClazz;
@@ -308,7 +310,7 @@ public class AnnoUtil {
             }
             allSuperClass.add(pClazz);
             // 获取当前所有接口
-            Collections.addAll(allSuperClass, clazz.getInterfaces());
+            Collections.addAll(allSuperClass, pClazz.getInterfaces());
             clazz = pClazz;
         }
         // 去除重复的

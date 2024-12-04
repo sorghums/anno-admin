@@ -38,13 +38,13 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
         data.setDelFlag(0);
         data.setCreateTime(LocalDateTime.now());
         data.setUpdateTime(LocalDateTime.now());
-        data.setCreateBy(getLoginName());
+        data.setCreateBy(getLoginId());
     }
 
     @Override
     public void beforeUpdate(BaseMetaModel data, DbCriteria criteria) {
         data.setUpdateTime(LocalDateTime.now());
-        data.setUpdateBy(getLoginName());
+        data.setUpdateBy(getLoginId());
     }
 
 
@@ -55,6 +55,18 @@ public class BaseAnnoPreProxy implements AnnoBaseProxy<BaseMetaModel> {
                 return null;
             }
             return authUser.getUserName();
+        } catch (Exception e) {
+            return "system";
+        }
+    }
+
+    private String getLoginId() {
+        try {
+            AnnoAuthUser authUser = AnnoStpUtil.getAuthUser(AnnoStpUtil.getTokenValue());
+            if (authUser == null || authUser.getUserId() == null) {
+                return null;
+            }
+            return authUser.getUserId();
         } catch (Exception e) {
             return "system";
         }
