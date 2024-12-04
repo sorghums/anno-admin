@@ -46,7 +46,7 @@ public class Article extends BaseMetaModel {
         tableFieldName = "order",
         search = @AnnoSearch,
         edit = @AnnoEdit(placeHolder = "请输入文章排序"), dataType = AnnoDataType.NUMBER)
-    String order;
+    Integer order;
 
     @AnnoField(
         title = "测试树",

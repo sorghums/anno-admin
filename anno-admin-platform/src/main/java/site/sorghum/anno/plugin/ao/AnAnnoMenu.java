@@ -9,6 +9,7 @@ import site.sorghum.anno.anno.annotation.field.AnnoEdit;
 import site.sorghum.anno.anno.annotation.field.AnnoField;
 import site.sorghum.anno.anno.annotation.field.AnnoSearch;
 import site.sorghum.anno.anno.annotation.field.type.AnnoOptionType;
+import site.sorghum.anno.anno.annotation.field.type.AnnoSql;
 import site.sorghum.anno.anno.annotation.field.type.AnnoTreeType;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 import site.sorghum.anno.db.BaseMetaModel;
@@ -23,9 +24,9 @@ import site.sorghum.anno.db.BaseMetaModel;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "菜单管理",
-        tableName = "an_anno_menu",
-        annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"))
+    tableName = "an_anno_menu",
+    annoTree = @AnnoTree(label = "title", parentKey = "parentId", key = "id", displayAsTree = true),
+    annoPermission = @AnnoPermission(enable = true, baseCode = "an_anno_menu", baseCodeTranslate = "菜单管理"))
 public class AnAnnoMenu extends BaseMetaModel {
     public static class ParseTypeConstant {
         /**
@@ -51,19 +52,19 @@ public class AnAnnoMenu extends BaseMetaModel {
     }
 
     @AnnoField(title = "父菜单", tableFieldName = "parent_id", edit = @AnnoEdit,
-        dataType = AnnoDataType.TREE, treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class,labelKey = "title",pidKey = "parentId")))
+        dataType = AnnoDataType.TREE, treeType = @AnnoTreeType(treeAnno = @AnnoTreeType.TreeAnnoClass(annoClass = AnAnnoMenu.class, labelKey = "title", pidKey = "parentId")))
     private String parentId;
 
     @AnnoField(title = "菜单名称", tableFieldName = "title", edit = @AnnoEdit)
     private String title;
 
     @AnnoField(title = "菜单类型", tableFieldName = "type", search = @AnnoSearch(),
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(value = {
-                    @AnnoOptionType.OptionData(label = "页面", value = "1"),
-                    @AnnoOptionType.OptionData(label = "目录", value = "0")
-            }),
-            edit = @AnnoEdit(placeHolder = "请选择菜单类型", notNull = true))
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(value = {
+            @AnnoOptionType.OptionData(label = "页面", value = "1"),
+            @AnnoOptionType.OptionData(label = "目录", value = "0")
+        }),
+        edit = @AnnoEdit(placeHolder = "请选择菜单类型", notNull = true))
     private Integer type;
 
     @AnnoField(title = "菜单排序", tableFieldName = "sort", edit = @AnnoEdit)
@@ -78,10 +79,12 @@ public class AnAnnoMenu extends BaseMetaModel {
     private String href;
 
     @AnnoField(title = "权限标识", tableFieldName = "permission_id", edit = @AnnoEdit(canClear = true),
-            dataType = AnnoDataType.OPTIONS,
-            optionType = @AnnoOptionType(sql = "select id, name as label from an_permission where del_flag = 0 and parent_id is null order by id desc"))
+        dataType = AnnoDataType.OPTIONS,
+        optionType = @AnnoOptionType(anSql =
+            @AnnoSql(sql = "select id, name as label from an_permission where del_flag = 0 and parent_id is null order by id desc")
+        ))
     private String permissionId;
-
+//
     @AnnoField(title = "解析类型", tableFieldName = "parse_type", edit = @AnnoEdit,
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(value = {

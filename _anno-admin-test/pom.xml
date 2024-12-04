@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.4</version>
         <relativePath/>
     </parent>
     <groupId>site.sorghum.anno</groupId>
@@ -26,7 +26,7 @@
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <anno.admin.version>1.2.2</anno.admin.version>
+        <anno.admin.version>1.2.3-SNAPSHOT</anno.admin.version>
     </properties>
 
     <build>

@@ -15,13 +15,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface AnnoOptionType {
     /**
-     * SQL语句, 优先级高于value
-     * 必须返回两列，列名分别为 label 和 id
-     * 比如 select id, label from table where del_flag = 0 order by id desc
+     * SQL类型
      *
      * @return {@link String}
      */
-    String sql() default "";
+    AnnoSql anSql() default @AnnoSql(sql = "");
 
     /**
      * 选择数据

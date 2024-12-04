@@ -51,6 +51,7 @@ public abstract class ExtraExportExcelCmd implements JavaCmdSupplier {
                     entry -> {
                         AnField anField = new AnField();
                         anField.setJavaName(entry.getKey());
+                        anField.setJsonPath(entry.getKey());
                         anField.setTitle(entry.getValue());
                         return anField;
                     }

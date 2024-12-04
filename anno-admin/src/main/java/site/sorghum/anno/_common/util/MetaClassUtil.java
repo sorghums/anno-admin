@@ -60,6 +60,8 @@ public class MetaClassUtil {
 
     private static final Map<String, Class<?>> DY_TYPE_MAP = new HashMap<>();
 
+    private static final Map<String, Field> FIELD_MAP = new HashMap<>();
+
     @SneakyThrows
     public static Map<TypeDescription, Class<?>> loadSystemClass() {
         // 遍历根目录下所有资源，并过滤保留符合条件的资源
@@ -175,7 +177,7 @@ public class MetaClassUtil {
         List<AnField> columns = anMeta.getColumns();
         if (CollUtil.isNotEmpty(columns)) {
             for (AnField column : columns) {
-                Field field = ReflectUtil.getField(clazz, column.getJavaName());
+                Field field = getField(clazz, column.getJavaName());
                 column.setJavaField(field);
                 if (column.pkField()) {
                     anMeta.setPkColumn(column);
@@ -187,17 +189,17 @@ public class MetaClassUtil {
                 }
                 // 重新设置SqlKey
                 AnnoOptionTypeImpl optionType = column.getOptionType();
-                if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), optionType.sql());
+                if (Objects.nonNull(optionType) && StrUtil.isNotBlank(optionType.anSql().sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(optionType.anSql().dbName(), anMeta.getEntityName(), column.getJavaName(), optionType.anSql().sql());
                     optionType.setSqlKey(sqlKey);
-                    QuerySqlCache.put(sqlKey, optionType.sql());
+                    QuerySqlCache.put(sqlKey, optionType.anSql().sql());
                 }
                 // 重新设置SqlKey
                 AnnoTreeTypeImpl treeType = column.getTreeType();
-                if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.sql())) {
-                    String sqlKey = QuerySqlCache.generateKey(anMeta.getEntityName(), column.getJavaName(), treeType.sql());
+                if (Objects.nonNull(treeType) && StrUtil.isNotBlank(treeType.anSql().sql())) {
+                    String sqlKey = QuerySqlCache.generateKey(optionType.anSql().dbName(), anMeta.getEntityName(), column.getJavaName(), treeType.anSql().sql());
                     treeType.setSqlKey(sqlKey);
-                    QuerySqlCache.put(sqlKey, treeType.sql());
+                    QuerySqlCache.put(sqlKey, treeType.anSql().sql());
                 }
                 // 如果optionEnum是支持的枚举，则重新设置optionData
                 Class<? extends Enum> optionEnum = column.getOptionType().optionEnum();
@@ -289,12 +291,14 @@ public class MetaClassUtil {
         for (FieldAnnoField annoField : annoFields) {
             int nowValue = i++;
             yml.append("columns[%d].javaName=%s\n".formatted(nowValue, annoField.getField().getName()));
+            yml.append("columns[%d].jsonPath=%s\n".formatted(nowValue, annoField.getField().getName()));
             yml.append("columns[%d].javaType=%s\n".formatted(nowValue, annoField.getField().getType().getName()));
             // 手动设置主键
             if (annoField.getPrimaryKey() != null || annoField.getAnnoField().pkField()) {
                 yml.append("columns[%d].pkField=%s\n".formatted(nowValue, true));
             }
             printAnnotation("columns[%d]".formatted(nowValue), annoField.getAnnoField(), yml);
+            putFieldMap(clazz, annoField.getField());
         }
         List<Field> buttonFields = AnnoUtil.getAnnoButtonFields(clazz, false);
         i = 0;
@@ -361,6 +365,14 @@ public class MetaClassUtil {
 
     public static void putDyTypeMap(Class<?> clazz) {
         DY_TYPE_MAP.put(clazz.getName(), clazz);
+    }
+
+    public static void putFieldMap(Class<?> clazz, Field filed) {
+        FIELD_MAP.put(clazz.getName() + filed.getName(), filed);
+    }
+
+    public static Field getField(Class<?> clazz, String name) {
+        return FIELD_MAP.get(clazz.getName() + name);
     }
 
     public static void main(String[] args) {

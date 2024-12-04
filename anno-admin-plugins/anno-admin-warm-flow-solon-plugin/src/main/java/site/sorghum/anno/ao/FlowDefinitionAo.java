@@ -15,6 +15,7 @@ import site.sorghum.anno.anno.proxy.field.SnowIdLongSupplier;
 import site.sorghum.anno.anno.proxy.field.ZeroFiledStringBaseSupplier;
 import site.sorghum.anno.cmd.FlowDefinitionPublishCmd;
 import site.sorghum.anno.cmd.FlowDefinitionUnPublishCmd;
+import site.sorghum.anno.cmd.FlowDesignCmd;
 import site.sorghum.anno.enums.TrueFalseCharEnum;
 import site.sorghum.plugin.join.aop.JoinResMap;
 
@@ -108,7 +109,8 @@ public class FlowDefinitionAo extends FlowDefinition {
     @AnnoButton(
         name = "流程设计",
         permissionCode = "flow_design",
-        icon = "ant-design:delivered-procedure-outlined"
+        icon = "ant-design:delivered-procedure-outlined",
+        javaCmd = @AnnoButton.JavaCmd(runSupplier = FlowDesignCmd.class)
     )
     Object flowDesign;
 

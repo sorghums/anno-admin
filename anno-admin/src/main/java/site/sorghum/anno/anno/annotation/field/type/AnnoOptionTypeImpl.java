@@ -25,11 +25,9 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
     private String sqlKey;
 
     /**
-     * SQL语句, 优先级高于value
-     * 必须返回两列，列名分别为 label 和 id
-     * 比如 select id, label from table where del_flag = 0 order by id desc
+     * SQL类型
      */
-    private String sql = "";
+    private AnnoSqlImpl anSql = new AnnoSqlImpl();
 
     /**
      * 选择数据
@@ -64,8 +62,8 @@ public class AnnoOptionTypeImpl implements AnnoOptionType {
     private String onlineDictKey;
 
     @Override
-    public String sql() {
-        return sql;
+    public AnnoSql anSql() {
+        return anSql;
     }
 
     @Override

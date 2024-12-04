@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 简单的实现：从实体类上获取表结构信息
@@ -32,19 +34,22 @@ public class SampleEntityToTableGetter implements EntityToTableGetter<Class<?>> 
     public TableWrap getTable(Class<?> clazz) {
         String simpleName = clazz.getSimpleName();
         String tableName = StrUtil.toUnderlineCase(simpleName);
-        TableWrap tableWrap = new TableWrap(tableName, null);
-
+        TableWrap tableWrap = new TableWrap(null,tableName,null);
+        ReflectUtil.setFieldValue(tableWrap, "pks", new ArrayList<>());
+        ReflectUtil.setFieldValue(tableWrap, "columns", new HashMap<>());
         Field[] declaredFields = ReflectUtil.getFields(clazz);
         for (Field field : declaredFields) {
             // 默认主键
             if (StrUtil.isNotBlank(defaultPkName) && defaultPkName.equals(field.getName())) {
-                tableWrap.addPk(field.getName());
+//                tableWrap.addPk(field.getName());
+                ReflectUtil.invoke(tableWrap,"addPk",field.getName());
             }
             // 基本类型
             if (columnIsSupport(field)) {
                 ColumnWrap column = getColumn(clazz, tableName, field);
                 if (column != null) {
-                    tableWrap.addColumn(column);
+//                    tableWrap.addColumn(column);
+                    ReflectUtil.invoke(tableWrap,"addColumn",column);
                 }
             }
         }

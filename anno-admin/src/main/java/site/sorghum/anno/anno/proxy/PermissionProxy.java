@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
-import site.sorghum.anno.anno.interfaces.CheckPermissionFunction;
+import site.sorghum.anno.anno.functions.CheckPermissionFunction;
 
 /**
  * 许可代理

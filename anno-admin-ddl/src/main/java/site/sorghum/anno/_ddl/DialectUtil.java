@@ -8,6 +8,7 @@ import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class DialectUtil {
         TableModel tableModel = new TableModel();
         tableModel.setTableName(tableWrap.getName());
         tableModel.setComment(tableWrap.getRemarks());
-        List<ColumnWrap> columns = tableWrap.getColumns();
+        Collection<ColumnWrap> columns = tableWrap.getColumns();
         for (ColumnWrap column : columns) {
             ColumnModel columnModel = getColumnModel(tableModel, tableWrap, column);
             tableModel.addColumn(columnModel);

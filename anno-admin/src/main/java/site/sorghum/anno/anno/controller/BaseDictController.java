@@ -21,6 +21,7 @@ import site.sorghum.anno.anno.util.QuerySqlCache;
 import site.sorghum.anno.anno.util.Utils;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.QueryType;
+import site.sorghum.anno.db.service.context.AnnoDbContext;
 import site.sorghum.anno.trans.OnlineDictCache;
 
 import java.util.Collections;
@@ -66,11 +67,16 @@ public class BaseDictController {
             return AnnoResult.succeed(trees);
         }
         if (StrUtil.isNotBlank(sqlKey)) {
+            String[] split = sqlKey.split(":");
+            String dbName = split[0];
+            String entityName = split[1];
+            AnEntity anEntity = metadataManager.getEntity(entityName);
+            permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
             String actualSql = QuerySqlCache.get(sqlKey);
             if (StrUtil.isEmpty(actualSql)) {
                 return AnnoResult.failure("sql 不存在,请检查相关配置项");
             }
-            List<Map<String, Object>> mapList = baseService.sql2MapList(actualSql);
+            List<Map<String, Object>> mapList = AnnoDbContext.dynamicDbContext(dbName,() -> baseService.sql2MapList(actualSql));
             List<AnnoTreeDTO<String>> trees = AnnoUtil.buildAnnoTree(
                 mapList, "label", "id", "pid"
             );

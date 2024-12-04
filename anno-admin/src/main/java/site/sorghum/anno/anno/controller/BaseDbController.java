@@ -66,10 +66,11 @@ public class BaseDbController {
     public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
         String[] split = sql.split(":");
+        String dbName = split[0];
         String entityName = split[1];
         AnEntity anEntity = metadataManager.getEntity(entityName);
         permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
-        return AnnoDbContext.dynamicDbContext(anEntity.getDbName(),() -> {
+        return AnnoDbContext.dynamicDbContext(dbName,() -> {
             if (StrUtil.isEmpty(actualSql)) {
                 return AnnoResult.failure("sql 不存在,请检查相关配置项");
             }

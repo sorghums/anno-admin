@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.4</version>
         <relativePath/>
     </parent>
 
     <groupId>site.sorghum.anno</groupId>
     <artifactId>anno-admin-parent</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>anno-admin</name>

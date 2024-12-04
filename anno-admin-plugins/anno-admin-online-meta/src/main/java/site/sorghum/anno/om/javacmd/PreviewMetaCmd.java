@@ -45,6 +45,6 @@ public class PreviewMetaCmd implements JavaCmdSupplier {
         // 去除
         pathParam.deleteCharAt(pathParam.length() - 1);
         metadataManager.refresh();
-        return "iframe://#/basic-preview?entityNames=%s".formatted(pathParam);
+        return iframeUrl("#/basic-preview?entityNames=%s".formatted(pathParam));
     }
 }

@@ -1,4 +1,4 @@
-package site.sorghum.anno.anno.interfaces;
+package site.sorghum.anno.anno.functions;
 
 
 import site.sorghum.anno.auth.AnnoStpUtil;

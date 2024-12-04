@@ -23,11 +23,12 @@ import site.sorghum.anno.db.BaseMetaModel;
 @EqualsAndHashCode(callSuper = true)
 @AnnoMain(name = "沃特发表A",
     dbName = "db2Context",
-    annoOrder = @AnnoOrder(orderValue = "id", orderType = "desc"))
+    annoOrder = @AnnoOrder(orderValue = "id", orderType = "desc")
+)
 @Table("wtf_a")
 @AllArgsConstructor
 @NoArgsConstructor
-public class WtfA extends BaseMetaModel {
+public class WtfA extends BaseMetaModel implements WtfCInterfaces {
 
     @AnnoField(
         title = "名称",
@@ -48,4 +49,8 @@ public class WtfA extends BaseMetaModel {
             targetJavaField = "wtfA"))
     private Object wtfB;
 
+    /**
+     * 位置
+     */
+    private String location;
 }
