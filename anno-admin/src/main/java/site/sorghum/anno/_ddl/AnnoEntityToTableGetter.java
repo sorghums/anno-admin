@@ -2,6 +2,7 @@ package site.sorghum.anno._ddl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,9 +35,9 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
 
     @Override
     public TableWrap getTable(AnEntity anEntity) {
-
-        TableWrap tableWrap = new TableWrap(anEntity.getTableName(), anEntity.getName());
-
+        TableWrap tableWrap = new TableWrap(null,anEntity.getTableName(), anEntity.getName());
+        ReflectUtil.setFieldValue(tableWrap, "pks", new ArrayList<>());
+        ReflectUtil.setFieldValue(tableWrap, "columns", new HashMap<>());
         List<AnField> fields = new ArrayList<>(anEntity.getDbAnFields());
 
         // 将 id 字段放到第一位
@@ -101,7 +103,8 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             // 主键
             if (anEntity.getPkField().getJavaName().equals(field.getJavaName())) {
                 defaultValue = "NOT NULL";
-                tableWrap.addPk(columnName);
+                ReflectUtil.invoke(tableWrap,"addPk",columnName);
+//                tableWrap.addPk(columnName);
                 size = 32;
             }
 
@@ -110,7 +113,8 @@ public class AnnoEntityToTableGetter implements EntityToTableGetter<AnEntity> {
             }
 
             ColumnWrap columnWrap = new ColumnWrap(anEntity.getTableName(), columnName, sqlType, size, digit, defaultValue, field.getTitle());
-            tableWrap.addColumn(columnWrap);
+            ReflectUtil.invoke(tableWrap,"addColumn",columnWrap);
+//            tableWrap.addColumn(columnWrap);
         }
 
         return tableWrap;

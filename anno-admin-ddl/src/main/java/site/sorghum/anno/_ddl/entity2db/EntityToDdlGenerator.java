@@ -13,10 +13,7 @@ import site.sorghum.anno._ddl.DialectUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Java 实体类转换为 DDL 语句
@@ -127,7 +124,7 @@ public class EntityToDdlGenerator<T> {
         if (existsTable == null) {
             throw new DdlException("table not exists: " + table.getName());
         }
-        List<ColumnWrap> columns = table.getColumns();
+        Collection<ColumnWrap> columns = table.getColumns();
         List<String> existsTableColumnNames = existsTable.getColumns().stream().map(ColumnWrap::getName).map(String::toLowerCase).toList();
         List<ColumnWrap> addColumnWrap = columns.stream().filter(columnWrap -> !existsTableColumnNames.contains(columnWrap.getName().toLowerCase())).toList();
         if (addColumnWrap.isEmpty()) {
