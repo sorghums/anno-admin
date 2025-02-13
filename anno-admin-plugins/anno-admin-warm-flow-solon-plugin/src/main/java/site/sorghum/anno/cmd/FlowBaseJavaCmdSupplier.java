@@ -19,6 +19,7 @@ public interface FlowBaseJavaCmdSupplier extends JavaCmdSupplier {
         try {
             return supplier.get();
         }catch (FlowException e){
+            e.printStackTrace();
             throw new BizException(e.getMessage(),e);
         }
     };

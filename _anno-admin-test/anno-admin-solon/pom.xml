@@ -49,7 +49,16 @@
         <dependency>
             <groupId>site.sorghum.anno</groupId>
             <artifactId>anno-admin-solon-starter</artifactId>
-            
+            <exclusions>
+                <exclusion>
+                    <artifactId>solon-boot-smarthttp</artifactId>
+                    <groupId>org.noear</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon-boot-jdkhttp</artifactId>
         </dependency>
         <dependency>
             <groupId>site.sorghum.anno</groupId>

@@ -1,8 +1,11 @@
 package site.sorghum.anno;
 
 import lombok.SneakyThrows;
+import org.dromara.warm.flow.core.dto.FlowParams;
+import org.dromara.warm.flow.core.entity.Instance;
 import org.dromara.warm.flow.core.service.DefService;
 import org.dromara.warm.flow.core.service.InsService;
+import org.dromara.warm.flow.orm.entity.FlowInstance;
 import org.noear.solon.Solon;
 import org.pf4j.Extension;
 import site.sorghum.anno.ao.CopyHisTaskAo;
@@ -12,7 +15,6 @@ import site.sorghum.anno.ao.WaitFlowTaskAo;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +44,12 @@ public class WarmFlowPlugin extends AnnoPlugin {
     @Override
     public void run() {
         DefService defService = Solon.context().getBean(DefService.class);
-        Long id = defService.importXml(new FileInputStream("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-warm-flow-solon-plugin\\src\\main\\resources\\demo\\leaveFlow-serial1.xml")).getId();
-        defService.publish(id);
-        Solon.context().getBean(InsService.class);
+        InsService insService = Solon.context().getBean(InsService.class);
+        Instance instance = insService.start("1",
+            new FlowParams().flowCode("leaveFlow-parallel3"));
+        insService.skipByInsId(instance.getId(),new FlowParams().skipType("PASS").flowCode("leaveFlow-serial1").handler("1666356287765979136").permissionFlag(List.of("1")));
+        FlowInstance instances = new FlowInstance();
+        insService.list(instances);
         super.run();
     }
 }
