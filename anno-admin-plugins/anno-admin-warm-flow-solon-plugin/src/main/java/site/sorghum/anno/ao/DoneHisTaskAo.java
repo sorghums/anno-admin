@@ -139,6 +139,7 @@ public class DoneHisTaskAo extends FlowHisTask {
 
 
     @AnnoButton(name = "流程图",
+        icon = "lets-icons:img-rol-light",
         javaCmd = @AnnoButton.JavaCmd(runSupplier = GetFlowImgCmd.class))
     Object flowImageMethod;
 

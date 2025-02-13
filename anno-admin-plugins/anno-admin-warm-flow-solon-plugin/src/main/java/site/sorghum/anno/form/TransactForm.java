@@ -27,7 +27,8 @@ public class TransactForm implements BaseForm {
         title = "审批状态",
         edit = @AnnoEdit(
             editEnable = true,
-            addEnable = true
+            addEnable = true,
+            span = 24
         ),
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(

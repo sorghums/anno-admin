@@ -137,6 +137,7 @@ public class WaitFlowTaskAo extends FlowTask {
 
     @AnnoButton(name = "办理",
             baseForm = TransactForm.class,
+            icon = "eos-icons:database-migration",
             javaCmd = @AnnoButton.JavaCmd(
                     runSupplier = DoneHisTransactCmd.class
             )
@@ -144,7 +145,9 @@ public class WaitFlowTaskAo extends FlowTask {
     Object transactMethod;
 
     @AnnoButton(name = "流程图",
-            javaCmd = @AnnoButton.JavaCmd(runSupplier = GetFlowImgCmd.class))
+            icon = "lets-icons:img-rol-light",
+            javaCmd = @AnnoButton.JavaCmd(runSupplier = GetFlowImgCmd.class)
+    )
     Object flowImageMethod;
 
     @JoinResMap

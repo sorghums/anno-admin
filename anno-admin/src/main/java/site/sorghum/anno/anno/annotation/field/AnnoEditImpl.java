@@ -98,7 +98,10 @@ public class AnnoEditImpl implements AnnoEdit {
      * 展示方式注解
      */
     @Data
-    public class ShowByImpl implements AnnoEdit.ShowBy {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ShowByImpl implements AnnoEdit.ShowBy {
         /**
          * 是否启用展示
          */
