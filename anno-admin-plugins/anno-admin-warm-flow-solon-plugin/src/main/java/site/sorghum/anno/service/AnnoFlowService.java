@@ -156,4 +156,43 @@ public class AnnoFlowService {
                         d.flow_name
             """, CopyHisTaskAo.class);
     }
+
+    @SneakyThrows
+    public WaitFlowTaskAo toDoOne(String id) {
+        DbTableQuery tableQuery = dbContext.table("flow_task As t")
+            .leftJoin("flow_definition AS d").on("t.definition_id = d.id")
+            .leftJoin("flow_instance AS i").on("t.instance_id = i.id")
+            .where("t.node_type = 1").and("t.del_flag = 0");
+        List<String> permissionList = new WaitFlowTaskAo().getPermissionList();
+        if (CollUtil.isNotEmpty(permissionList)) {
+            String inStr = permissionList.stream().map(String::trim).map(
+                "'%s'"::formatted
+            ).collect(Collectors.joining(",", "(", ")"));
+            tableQuery.and("""
+                (select uu.processed_by
+                       from `flow_user` AS uu
+                       where uu.associated = t.id
+                         AND uu.processed_by in ? limit 1) IS NOT NULL
+                """, inStr);
+        }
+        tableQuery.andEq("t.id", id);
+        tableQuery.orderByDesc("t.create_time");
+        return tableQuery.selectItem("""
+                       distinct t.id,
+                       t.node_code,
+                       t.node_name,
+                       t.node_type,
+                       t.definition_id,
+                       t.instance_id,
+                       t.create_time,
+                       t.update_time,
+                       t.tenant_id,
+                       i.business_id,
+                       i.flow_status,
+                       i.activity_status,
+                       d.flow_name,
+                       t.form_custom,
+                       t.form_path
+            """, WaitFlowTaskAo.class);
+    }
 }

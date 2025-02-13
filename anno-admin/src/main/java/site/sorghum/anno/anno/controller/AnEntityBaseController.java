@@ -6,7 +6,7 @@ import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno.anno.datasupplier.AnnoAddDataSupplier;
+import site.sorghum.anno.anno.datasupplier.AnnoDynamicFormAndDataSupplier;
 
 import java.util.List;
 import java.util.Map;
@@ -42,6 +42,6 @@ public class AnEntityBaseController {
      * @return {@link Map }<{@link String },{@link Object }>
      */
     public Map<String,Object> defaultAddData(String entityName, List<String> columnIdList){
-        return AnnoAddDataSupplier.getInstance(entityName).get(entityName, columnIdList);
+        return AnnoDynamicFormAndDataSupplier.getInstance(entityName).execute(entityName, columnIdList);
     }
 }

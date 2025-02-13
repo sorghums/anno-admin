@@ -1,0 +1,303 @@
+{
+  "flowCode": "leaveFlow-parallel3",
+  "flowName": "并行-复杂",
+  "version" : "2",
+  "formCustom" : "N",
+  "formPath" : "system/leave/approve",
+  "nodeList" : [ {
+    "nodeType" : 0,
+    "nodeCode" : "1",
+    "nodeName" : "开始",
+    "nodeRatio" : 0.000,
+    "coordinate" : "140,260|140,260",
+    "skipAnyNode" : "N",
+    "skipList" : [ {
+      "nowNodeCode" : "1",
+      "nextNodeCode" : "6e98f657-71c9-4115-acbb-35dacd60e9c6",
+      "skipType" : "PASS",
+      "coordinate" : "160,260;190,260;190,260;160,260;160,260;190,260"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "6e98f657-71c9-4115-acbb-35dacd60e9c6",
+    "nodeName" : "中间节点-或签1",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "240,260|240,260",
+    "skipList" : [ {
+      "nowNodeCode" : "6e98f657-71c9-4115-acbb-35dacd60e9c6",
+      "nextNodeCode" : "b4724701-6f8d-4104-bb46-554a535e70d4",
+      "skipType" : "PASS",
+      "coordinate" : "290,260;320,260;320,260;305,260;305,260;335,260"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "b4724701-6f8d-4104-bb46-554a535e70d4",
+    "nodeRatio" : 0.000,
+    "coordinate" : "360,260",
+    "skipList" : [ {
+      "nowNodeCode" : "b4724701-6f8d-4104-bb46-554a535e70d4",
+      "nextNodeCode" : "202a244f-89f2-4e7e-9a49-1232392389ed",
+      "skipType" : "PASS",
+      "coordinate" : "360,235;360,160;430,160"
+    }, {
+      "nowNodeCode" : "b4724701-6f8d-4104-bb46-554a535e70d4",
+      "nextNodeCode" : "341962ea-7264-4be2-ad4f-689a91090363",
+      "skipType" : "PASS",
+      "coordinate" : "360,285;360,380;430,380"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "202a244f-89f2-4e7e-9a49-1232392389ed",
+    "nodeName" : "中间节点-或签2",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "480,160|480,160",
+    "skipList" : [ {
+      "nowNodeCode" : "202a244f-89f2-4e7e-9a49-1232392389ed",
+      "nextNodeCode" : "c39074a4-d5c6-41c4-a233-c1e475fd2d5a",
+      "skipType" : "PASS",
+      "coordinate" : "530,160;590,160"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "c39074a4-d5c6-41c4-a233-c1e475fd2d5a",
+    "nodeName" : "中间节点-或签3",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "640,160|640,160",
+    "skipList" : [ {
+      "nowNodeCode" : "c39074a4-d5c6-41c4-a233-c1e475fd2d5a",
+      "nextNodeCode" : "62d0c41d-61a1-44f3-b20c-90eba5bd44b2",
+      "skipType" : "PASS",
+      "coordinate" : "690,160;755,160"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "62d0c41d-61a1-44f3-b20c-90eba5bd44b2",
+    "nodeRatio" : 0.000,
+    "coordinate" : "780,160",
+    "skipList" : [ {
+      "nowNodeCode" : "62d0c41d-61a1-44f3-b20c-90eba5bd44b2",
+      "nextNodeCode" : "4572d80d-c54b-46ab-bedb-852432f13059",
+      "skipType" : "PASS",
+      "coordinate" : "805,160;820,160;820,80;850,80"
+    }, {
+      "nowNodeCode" : "62d0c41d-61a1-44f3-b20c-90eba5bd44b2",
+      "nextNodeCode" : "19cb9a33-6c41-4acb-a44c-8daced3a6578",
+      "skipType" : "PASS",
+      "coordinate" : "805,160;820,160;820,220;850,220"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "4572d80d-c54b-46ab-bedb-852432f13059",
+    "nodeName" : "中间节点-或签4",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "900,80|900,80",
+    "skipList" : [ {
+      "nowNodeCode" : "4572d80d-c54b-46ab-bedb-852432f13059",
+      "nextNodeCode" : "e1c1e7e1-2adb-4ed1-ade8-bbcfae20d2dc",
+      "skipType" : "PASS",
+      "coordinate" : "950,80;1010,80"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "e1c1e7e1-2adb-4ed1-ade8-bbcfae20d2dc",
+    "nodeName" : "中间节点-或签5",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1060,80|1060,80",
+    "skipList" : [ {
+      "nowNodeCode" : "e1c1e7e1-2adb-4ed1-ade8-bbcfae20d2dc",
+      "nextNodeCode" : "0c171443-8237-4848-9177-9cad433bea7a",
+      "skipType" : "PASS",
+      "coordinate" : "1110,80;1180,80;1180,115"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "0c171443-8237-4848-9177-9cad433bea7a",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1180,140",
+    "skipList" : [ {
+      "nowNodeCode" : "0c171443-8237-4848-9177-9cad433bea7a",
+      "nextNodeCode" : "8ae2144c-5645-4118-8081-85154045dfa5",
+      "skipType" : "PASS",
+      "coordinate" : "1205,140;1235,140;1235,140;1220,140;1220,140;1250,140"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "8ae2144c-5645-4118-8081-85154045dfa5",
+    "nodeName" : "中间节点-或签8",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1300,140|1300,140",
+    "skipList" : [ {
+      "nowNodeCode" : "8ae2144c-5645-4118-8081-85154045dfa5",
+      "nextNodeCode" : "7c49b88c-e462-4e40-9db3-fd1cf42061d3",
+      "skipType" : "PASS",
+      "coordinate" : "1350,140;1400,140;1400,475"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "7c49b88c-e462-4e40-9db3-fd1cf42061d3",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1400,500",
+    "skipList" : [ {
+      "nowNodeCode" : "7c49b88c-e462-4e40-9db3-fd1cf42061d3",
+      "nextNodeCode" : "da9544b1-1c81-43cf-a24d-d2a051a012a4",
+      "skipType" : "PASS",
+      "coordinate" : "1400,525;1400,555;1400,555;1400,530;1400,530;1400,560"
+    } ]
+  }, {
+    "nodeType" : 2,
+    "nodeCode" : "da9544b1-1c81-43cf-a24d-d2a051a012a4",
+    "nodeName" : "结束",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1400,580|1400,580"
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "19cb9a33-6c41-4acb-a44c-8daced3a6578",
+    "nodeName" : "中间节点-或签6",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "900,220|900,220",
+    "skipList" : [ {
+      "nowNodeCode" : "19cb9a33-6c41-4acb-a44c-8daced3a6578",
+      "nextNodeCode" : "68bfca7e-69d1-4834-bad8-0d7b775515e0",
+      "skipType" : "PASS",
+      "coordinate" : "950,220;1010,220"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "68bfca7e-69d1-4834-bad8-0d7b775515e0",
+    "nodeName" : "中间节点-或签7",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1060,220|1060,220",
+    "skipList" : [ {
+      "nowNodeCode" : "68bfca7e-69d1-4834-bad8-0d7b775515e0",
+      "nextNodeCode" : "0c171443-8237-4848-9177-9cad433bea7a",
+      "skipType" : "PASS",
+      "coordinate" : "1110,220;1180,220;1180,165"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "341962ea-7264-4be2-ad4f-689a91090363",
+    "nodeName" : "中间节点-或签9",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "480,380|480,380",
+    "skipList" : [ {
+      "nowNodeCode" : "341962ea-7264-4be2-ad4f-689a91090363",
+      "nextNodeCode" : "d1191991-24d4-42e8-bc29-7b535275d37d",
+      "skipType" : "PASS",
+      "coordinate" : "530,380;590,380"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "d1191991-24d4-42e8-bc29-7b535275d37d",
+    "nodeName" : "中间节点-或签10",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "640,380|640,380",
+    "skipList" : [ {
+      "nowNodeCode" : "d1191991-24d4-42e8-bc29-7b535275d37d",
+      "nextNodeCode" : "f7994bfa-e0f9-432b-a77b-690c140b5be1",
+      "skipType" : "PASS",
+      "coordinate" : "690,380;755,380"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "f7994bfa-e0f9-432b-a77b-690c140b5be1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "780,380",
+    "skipList" : [ {
+      "nowNodeCode" : "f7994bfa-e0f9-432b-a77b-690c140b5be1",
+      "nextNodeCode" : "0dc5ee58-6b3b-4f5e-8aa2-59d374ce1327",
+      "skipType" : "PASS",
+      "coordinate" : "780,355;780,321;820,321;820,320;850,320"
+    }, {
+      "nowNodeCode" : "f7994bfa-e0f9-432b-a77b-690c140b5be1",
+      "nextNodeCode" : "00e5c026-d821-4daa-9d4b-b32ffe7f2065",
+      "skipType" : "PASS",
+      "coordinate" : "780,405;780,440;850,440"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "0dc5ee58-6b3b-4f5e-8aa2-59d374ce1327",
+    "nodeName" : "中间节点-或签11",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "900,320|900,320",
+    "skipList" : [ {
+      "nowNodeCode" : "0dc5ee58-6b3b-4f5e-8aa2-59d374ce1327",
+      "nextNodeCode" : "6f193996-ee1e-4931-a31d-dc7e11fb010e",
+      "skipType" : "PASS",
+      "coordinate" : "950,320;1010,320"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "6f193996-ee1e-4931-a31d-dc7e11fb010e",
+    "nodeName" : "中间节点-或签13",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1060,320|1060,320",
+    "skipList" : [ {
+      "nowNodeCode" : "6f193996-ee1e-4931-a31d-dc7e11fb010e",
+      "nextNodeCode" : "786cdf94-7948-49ae-8826-4bb3f7358e52",
+      "skipType" : "PASS",
+      "coordinate" : "1110,320;1180,320;1180,355"
+    } ]
+  }, {
+    "nodeType" : 4,
+    "nodeCode" : "786cdf94-7948-49ae-8826-4bb3f7358e52",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1180,380",
+    "skipList" : [ {
+      "nowNodeCode" : "786cdf94-7948-49ae-8826-4bb3f7358e52",
+      "nextNodeCode" : "62a3fd88-180f-4dc2-a611-5515a48079b5",
+      "skipType" : "PASS",
+      "coordinate" : "1205,380;1235,380;1235,380;1220,380;1220,380;1250,380"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "62a3fd88-180f-4dc2-a611-5515a48079b5",
+    "nodeName" : "中间节点-或签15",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1300,380|1300,380",
+    "skipList" : [ {
+      "nowNodeCode" : "62a3fd88-180f-4dc2-a611-5515a48079b5",
+      "nextNodeCode" : "7c49b88c-e462-4e40-9db3-fd1cf42061d3",
+      "skipType" : "PASS",
+      "coordinate" : "1350,380;1400,380;1400,475"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "00e5c026-d821-4daa-9d4b-b32ffe7f2065",
+    "nodeName" : "中间节点-或签12",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "900,440|900,440",
+    "skipList" : [ {
+      "nowNodeCode" : "00e5c026-d821-4daa-9d4b-b32ffe7f2065",
+      "nextNodeCode" : "89a43c16-53d5-4148-9d6e-65efbbedf85c",
+      "skipType" : "PASS",
+      "coordinate" : "950,440;1010,440"
+    } ]
+  }, {
+    "nodeType" : 1,
+    "nodeCode" : "89a43c16-53d5-4148-9d6e-65efbbedf85c",
+    "nodeName" : "中间节点-或签14",
+    "permissionFlag" : "1",
+    "nodeRatio" : 0.000,
+    "coordinate" : "1060,440|1060,440",
+    "skipList" : [ {
+      "nowNodeCode" : "89a43c16-53d5-4148-9d6e-65efbbedf85c",
+      "nextNodeCode" : "786cdf94-7948-49ae-8826-4bb3f7358e52",
+      "skipType" : "PASS",
+      "coordinate" : "1110,440;1180,440;1180,405"
+    } ]
+  } ]
+}
