@@ -50,8 +50,13 @@ public class TransactDynamicFormAndData implements AnnoDynamicFormAndDataSupplie
         try {
             nextRejectNodeList = nodeService.getNextNodeList(waitFlowTaskAo.getDefinitionId(), waitFlowTaskAo.getNodeCode(), "", "REJECT", null);
         } catch (Exception ignore){}
-        AnField nextPassCodeField = new AnField();
-        nextPassCodeField.setJavaName("nextPassNodeCode");
+        AnField nextPassCodeField = AnField.simpleNew(
+            "nextPassNodeCode",
+            "nextPassNodeCode",
+            "通过节点",
+            true,
+            true
+        );
         nextPassCodeField.setDataType(AnnoDataType.OPTIONS);
         nextPassCodeField.setOptionType(
             AnnoOptionTypeImpl
@@ -66,22 +71,23 @@ public class TransactDynamicFormAndData implements AnnoDynamicFormAndDataSupplie
                 )
                 .build()
         );
-        nextPassCodeField.setTitle("通过节点");
-        nextPassCodeField.setTableFieldName("nextPassNodeId");
-        nextPassCodeField.setEdit(AnnoEditImpl
-            .builder()
-            .addEnable(true)
-                .showBy(AnnoEditImpl
-                    .ShowByImpl
-                    .builder()
-                    .enable(true)
-                    .expr("annoDataForm.status == 1")
-                    .build()
-                )
-            .build());
+        nextPassCodeField.getEdit().setShowBy(
+            AnnoEditImpl
+                .ShowByImpl
+                .builder()
+                .enable(true)
+                .expr("annoDataForm.status == 1")
+                .build()
+        );
 
-        AnField nextRejectCodeField = new AnField();
-        nextRejectCodeField.setJavaName("nextRejectNodeCode");
+
+        AnField nextRejectCodeField = AnField.simpleNew(
+            "nextRejectNodeCode",
+            "nextRejectNodeId",
+            "驳回节点",
+            true,
+            true
+        );
         nextRejectCodeField.setDataType(AnnoDataType.OPTIONS);
         nextRejectCodeField.setOptionType(
             AnnoOptionTypeImpl
@@ -96,19 +102,14 @@ public class TransactDynamicFormAndData implements AnnoDynamicFormAndDataSupplie
                 )
                 .build()
         );
-        nextRejectCodeField.setTitle("驳回节点");
-        nextRejectCodeField.setTableFieldName("nextRejectNodeId");
-        nextRejectCodeField.setEdit(AnnoEditImpl
-            .builder()
-            .addEnable(true)
-            .showBy(AnnoEditImpl
+        nextRejectCodeField.getEdit().setShowBy(
+            AnnoEditImpl
                 .ShowByImpl
                 .builder()
                 .enable(true)
                 .expr("annoDataForm.status == 2")
                 .build()
-            )
-            .build());
+        );
         return List.of(
             nextPassCodeField,
             nextRejectCodeField
