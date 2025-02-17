@@ -143,6 +143,11 @@
             </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-x-file-storage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-db-entity-common</artifactId>
                 <version>${project.version}</version>
             </dependency>

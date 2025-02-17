@@ -4,6 +4,7 @@ package site.sorghum.anno.om;
 import org.pf4j.Extension;
 import site.sorghum.anno.om.ao.OnlineClassMeta;
 import site.sorghum.anno.om.ao.OnlineMeta;
+import site.sorghum.anno.om.ao.OnlineTable;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
@@ -29,6 +30,7 @@ public class OnlineMetaPlugin extends AnnoPlugin {
         list.add(createRootMenu("online_meta", "在线元数据", "wpf:online", 10));
         list.add(createEntityMenu(OnlineClassMeta.class, list.get(0).getId(), "ri:java-line", 100));
         list.add(createEntityMenu(OnlineMeta.class, list.get(0).getId(), "fluent:document-yml-16-filled", 120));
+        list.add(createEntityMenu(OnlineTable.class, list.get(0).getId(), "mdi:jar-16", 140));
         return list;
     }
 }
