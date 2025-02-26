@@ -63,7 +63,7 @@ public class BaseDbController {
     @Inject
     AnChartService anChartService;
 
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
+    public AnnoResult<List<AnnoTreeDTO<String>>> querySqlTree(String sql) {
         String actualSql = QuerySqlCache.get(sql);
         String[] split = sql.split(":");
         String dbName = split[0];
@@ -86,7 +86,7 @@ public class BaseDbController {
     /**
      * 分页查询
      */
-    public <T> AnnoResult<AnnoPage<T>> page(String clazz,
+    public AnnoResult<AnnoPage<Object>> page(String clazz,
                                             AnnoPageRequestAnno pageRequest,
                                             Map<String, Object> param) {
         List<String> nullKeys = pageRequest.getNullKeys();
@@ -116,21 +116,21 @@ public class BaseDbController {
             criteria.condition().create(entity.getField(nullKey).getTableFieldName(), QueryType.IS_NULL);
         }
         criteria.page(pageRequest.getPage(), pageRequest.getPageSize());
-        AnnoPage<T> pageRes = baseService.page(criteria);
+        AnnoPage<Object> pageRes = baseService.page(criteria);
         return AnnoResult.succeed(pageRes);
     }
 
-    public <T> AnnoResult<T> save(String clazz, Map<String, Object> param) {
+    public AnnoResult<Object> save(String clazz, Map<String, Object> param) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
 
-        TableParam<T> tableParam = dbTableContext.getTableParam(clazz);
+        TableParam<Object> tableParam = dbTableContext.getTableParam(clazz);
 
-        T t = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), tableParam.getClazz());
+        Object t = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), tableParam.getClazz());
         baseService.insert(t);
         return AnnoResult.succeed();
     }
 
-    public <T> AnnoResult<T> queryById(String clazz, String pkValue, String _cat) {
+    public AnnoResult<Object> queryById(String clazz, String pkValue, String _cat) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
 
@@ -142,7 +142,7 @@ public class BaseDbController {
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
         }
-        T queryOne = baseService.queryOne(DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), id));
+        Object queryOne = baseService.queryOne(DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), id));
         return AnnoResult.succeed(queryOne);
     }
 
@@ -165,19 +165,19 @@ public class BaseDbController {
     /**
      * 通过ID 更新
      */
-    public <T> AnnoResult<T> updateById(String clazz, Map<String, Object> param) {
+    public AnnoResult<Object> updateById(String clazz, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(anEntity, PermissionProxy.UPDATE);
 
         AnField pkField = anEntity.getPkField();
-        T bean = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
+        Object bean = (Object) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
         baseService.update(bean, DbCriteria.from(anEntity).eq(pkField.getTableFieldName(), param.get(pkField.getJavaName())));
         return AnnoResult.succeed();
     }
 
-    public <T> AnnoResult<T> saveOrUpdate(String clazz, Map<String, Object> param) {
+    public AnnoResult<Object> saveOrUpdate(String clazz, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
-        T data = (T) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
+        Object data = (Object) JSONUtil.toBean(AnnoUtil.emptyStringIgnore(param), anEntity.getThisClass());
         AnField pkField = anEntity.getPkField();
         if (pkField == null) {
             return AnnoResult.failure("未找到主键");
@@ -192,7 +192,7 @@ public class BaseDbController {
         return AnnoResult.succeed(data);
     }
 
-    public <T> AnnoResult<T> removeRelation(String clazz, Map<String, Object> param) throws SQLException {
+    public AnnoResult<Object> removeRelation(String clazz, Map<String, Object> param) throws SQLException {
         AnEntity entity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(entity, PermissionProxy.DELETE);
         return AnnoDbContext.dynamicDbContext(
@@ -213,11 +213,11 @@ public class BaseDbController {
         );
     }
 
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
+    public AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(String clazz,
                                                                AnnoTreesRequestAnno annoTreesRequest,
                                                                AnnoTreeListRequestAnno treeListRequestAnno,
                                                                Map<String, Object> param) {
-        List<T> list = queryTreeList(clazz, treeListRequestAnno, param);
+        List<Object> list = queryTreeList(clazz, treeListRequestAnno, param);
         List<AnnoTreeDTO<String>> annoTreeDTOList = null;
         if (annoTreesRequest.hasFrontSetKey()) {
             annoTreeDTOList = Utils.toTrees(list, annoTreesRequest.getIdKey(), annoTreesRequest.getLabelKey());
@@ -228,7 +228,7 @@ public class BaseDbController {
         return AnnoResult.succeed(annoTreeDTOList);
     }
 
-    private <T> List<T> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, Object> param) {
+    private List<Object> queryTreeList(String clazz, AnnoTreeListRequestAnno annoTreeListRequestAnno, Map<String, Object> param) {
         AnEntity anEntity = metadataManager.getEntity(clazz);
         permissionProxy.checkPermission(anEntity, PermissionProxy.VIEW);
         AnnoButtonImpl.M2MJoinButtonImpl annoMtm = annoTreeListRequestAnno.getAnnoMtm();
@@ -250,7 +250,7 @@ public class BaseDbController {
     }
 
 
-    public <T> AnnoResult<List<Object>> annoTreeSelectData(String clazz,
+    public AnnoResult<List<Object>> annoTreeSelectData(String clazz,
                                                            AnnoTreesRequestAnno annoTreesRequest,
                                                            AnnoTreeListRequestAnno treeListRequestAnno,
                                                            Map<String, Object> param) {
@@ -263,7 +263,7 @@ public class BaseDbController {
         return AnnoResult.succeed(data);
     }
 
-    public <T> AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {
+    public AnnoResult<String> addM2m(String clazz, Map param, boolean clearAll) {
         permissionProxy.checkPermission(metadataManager.getEntity(clazz), PermissionProxy.ADD);
         String annoM2mId = MapUtil.getStr(param, "annoM2mId");
         AnnoButtonImpl.M2MJoinButtonImpl annoMtm = AnnoMtm.annoMtmMap.get(annoM2mId);

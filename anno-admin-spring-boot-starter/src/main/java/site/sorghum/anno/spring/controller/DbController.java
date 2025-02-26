@@ -40,22 +40,22 @@ public class DbController extends BaseDbController {
     /**
      * 分页查询
      *
-     * @return {@link AnnoResult}<{@link IPage}<{@link T}>>
+     * @return {@link AnnoResult}<{@link IPage}<{@link Object}>>
      */
     @PostMapping("/{clazz}/page")
-    public <T> AnnoResult<AnnoPage<T>> page(@PathVariable String clazz,
+    public AnnoResult<AnnoPage<Object>> page(@PathVariable String clazz,
                                             @RequestBody Map<String, Object> body) {
 
         return super.page(clazz, JSONUtil.toBean(body, AnnoPageRequestAnno.class), body);
     }
 
     @PostMapping("/{clazz}/save")
-    public <T> AnnoResult<T> save(@PathVariable String clazz, @RequestBody HashMap param) {
+    public AnnoResult<Object> save(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.save(clazz, param);
     }
 
     @PostMapping("/{clazz}/queryById")
-    public <T> AnnoResult<T> queryById(@PathVariable String clazz,
+    public AnnoResult<Object> queryById(@PathVariable String clazz,
                                        @RequestBody Map<String, Object> params) {
         String pkValue = MapUtil.getStr(params, "pkValue");
         String _cat = MapUtil.getStr(params, "_cat");
@@ -65,7 +65,6 @@ public class DbController extends BaseDbController {
     /**
      * 通过id删除
      *
-     * @param id id
      * @return {@link AnnoResult}
      */
     @PostMapping("/{clazz}/removeById")
@@ -77,22 +76,22 @@ public class DbController extends BaseDbController {
      * 通过ID 更新
      */
     @PostMapping("/{clazz}/updateById")
-    public <T> AnnoResult<T> updateById(@PathVariable String clazz, @RequestBody HashMap param) {
+    public AnnoResult<Object> updateById(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.updateById(clazz, param);
     }
 
     @PostMapping("/{clazz}/saveOrUpdate")
-    public <T> AnnoResult<T> saveOrUpdate(@PathVariable String clazz, @RequestBody HashMap param) {
+    public AnnoResult<Object> saveOrUpdate(@PathVariable String clazz, @RequestBody HashMap param) {
         return super.saveOrUpdate(clazz, param);
     }
 
     @PostMapping("/{clazz}/remove-relation")
-    public <T> AnnoResult<T> removeRelation(@PathVariable String clazz, @RequestBody HashMap param) throws SQLException {
+    public AnnoResult<Object> removeRelation(@PathVariable String clazz, @RequestBody HashMap param) throws SQLException {
         return super.removeRelation(clazz, param);
     }
 
     @RequestMapping("/{clazz}/annoTrees")
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@PathVariable String clazz,
+    public AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@PathVariable String clazz,
                                                                @RequestBody(required = false) HashMap param) {
         if (param == null) {
             param = new HashMap<>();
@@ -101,7 +100,7 @@ public class DbController extends BaseDbController {
     }
 
     @RequestMapping("/{clazz}/annoTreeSelectData")
-    public <T> AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
+    public AnnoResult<List<Object>> annoTreeSelectData(@PathVariable String clazz,
                                                            @RequestBody(required = false) Map<String, Object> param) {
         if (param == null) {
             param = new HashMap<>(0);
@@ -110,7 +109,7 @@ public class DbController extends BaseDbController {
     }
 
     @PostMapping("/{clazz}/addM2m")
-    public <T> AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param) {
+    public AnnoResult<String> addM2m(@PathVariable String clazz, @RequestBody Map param) {
         if (param == null) {
             param = new HashMap<>();
         }
