@@ -57,7 +57,7 @@ public class DbController extends BaseDbController {
     /**
      * 分页查询
      *
-     * @return {@link Result}<{@link IPage}<{@link T}>>
+     * @return {@link Result}<{@link IPage}<{@link}>>
      */
     @Override
     @Mapping("/{clazz}/page")
@@ -68,7 +68,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "[[entity]]", value = "其他查询的表的字段", paramType = "query"),}
     )
-    public <T> AnnoResult<AnnoPage<T>> page(@Path String clazz,
+    public AnnoResult<AnnoPage<Object>> page(@Path String clazz,
                                             @Body AnnoPageRequestAnno pageRequest,
                                             @Body Map<String, Object> param) {
         return super.page(clazz, pageRequest, param);
@@ -82,7 +82,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "[[entity]]", value = "实体类的值", required = true, dataType = "Object", paramType = "query"),}
     )
-    public <T> AnnoResult<T> save(@Path String clazz, @Body Map<String, Object> param) {
+    public AnnoResult<Object> save(@Path String clazz, @Body Map<String, Object> param) {
         return super.save(clazz, param);
     }
 
@@ -94,7 +94,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "pkValue", value = "主键值", required = true, dataType = "String", paramType = "query")}
     )
-    public <T> AnnoResult<T> queryById(@Path String clazz, @Param String pkValue, @Param String _cat) {
+    public AnnoResult<Object> queryById(@Path String clazz, @Param String pkValue, @Param String _cat) {
         return super.queryById(clazz, pkValue, _cat);
     }
 
@@ -127,7 +127,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "[[entity]]", value = "实体类的值", required = true, dataType = "Object", paramType = "query"),}
     )
-    public <T> AnnoResult<T> updateById(@Path String clazz, @Body Map<String, Object> param) {
+    public AnnoResult<Object> updateById(@Path String clazz, @Body Map<String, Object> param) {
         return super.updateById(clazz, param);
     }
 
@@ -139,7 +139,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "[[entity]]", value = "实体类的值", required = true, dataType = "Object", paramType = "query"),}
     )
-    public <T> AnnoResult<T> saveOrUpdate(@Path String clazz, @Body Map<String, Object> param) {
+    public AnnoResult<Object> saveOrUpdate(@Path String clazz, @Body Map<String, Object> param) {
         return super.saveOrUpdate(clazz, param);
     }
 
@@ -153,7 +153,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "thisJoinValue", value = "本表值,是个数组 ['1',['2']]", required = true, dataType = "List", paramType = "query"),}
     )
-    public <T> AnnoResult<T> removeRelation(@Path String clazz, @Body Map<String, Object> param) throws SQLException {
+    public AnnoResult<Object> removeRelation(@Path String clazz, @Body Map<String, Object> param) throws SQLException {
         return super.removeRelation(clazz, param);
     }
 
@@ -171,7 +171,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "idKey", value = "树的value字段"),
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
     )
-    public <T> AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
+    public AnnoResult<List<AnnoTreeDTO<String>>> annoTrees(@Path String clazz,
                                                                @Body AnnoTreesRequestAnno annoTreesRequest,
                                                                @Body AnnoTreeListRequestAnno annoTreeListRequestAnno,
                                                                @Body Map<String, Object> param) {
@@ -192,7 +192,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "idKey", value = "树的value字段"),
             @ApiImplicitParam(name = "labelKey", value = "树的label字段"),}
     )
-    public <T> AnnoResult<List<Object>> annoTreeSelectData(@Path String clazz,
+    public AnnoResult<List<Object>> annoTreeSelectData(@Path String clazz,
                                                            @Body AnnoTreesRequestAnno annoTreesRequest,
                                                            @Body AnnoTreeListRequestAnno treeListRequestAnno,
                                                            @Body Map<String, Object> param) {
@@ -212,7 +212,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "thisJoinValue", value = "本表值", required = true, dataType = "String", paramType = "query"),}
     )
-    public <T> AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
+    public AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
         return super.addM2m(clazz, param, clearAll);
     }
 

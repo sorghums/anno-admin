@@ -1,8 +1,5 @@
 package site.sorghum.anno.file;
 
-import jakarta.inject.Named;
-
-@Named
 public interface FileProxy {
 
     /**

@@ -64,7 +64,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <hutool.version>5.8.25</hutool.version>
         <easyjoin.version>0.0.2-M3</easyjoin.version>
-        <wood.version>1.3.16</wood.version>
         <node.version>v18.16.0</node.version>
         <npm.version>9.5.1</npm.version>
     </properties>
@@ -140,6 +139,11 @@
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-db-entity</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>site.sorghum.anno</groupId>
+                <artifactId>anno-admin-x-file-storage</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

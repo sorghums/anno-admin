@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.dromara.x.file.storage.core.FileStorageService;
 import org.dromara.x.file.storage.core.constant.Constant;
+import org.dromara.x.file.storage.core.upload.UploadPretreatment;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno.file.AnFileService;
 import site.sorghum.anno.file.FileInfo;
@@ -33,11 +34,16 @@ public class XFileService implements AnFileService {
             throw new BizException("fileStorageService未初始化，请手动引入X-File-Storage包，注入FileStorageService的Bean到容器中.");
         }
         String buildKey = buildKey(fileInfo);
-        org.dromara.x.file.storage.core.FileInfo aliFileInfo = fileStorageService
+        UploadPretreatment uploadPretreatment = fileStorageService
             .of(fileInfo.getBytes())
             .setPath(buildKey)
-            .setName(fileInfo.getFileName())
-            .setAcl(StrUtil.isBlank(fileInfo.getAcl()) ? defaultAcl : fileInfo.getAcl())
+            .setName(fileInfo.getFileName());
+        if (fileStorageService.isSupportAcl()){
+            uploadPretreatment = uploadPretreatment.setAcl(
+                StrUtil.isBlank(fileInfo.getAcl()) ? defaultAcl : fileInfo.getAcl()
+            );
+        }
+        org.dromara.x.file.storage.core.FileInfo aliFileInfo = uploadPretreatment
             .upload();
         fileInfo.setFileUrl(removeParam(aliFileInfo.getUrl()));
         return fileInfo;

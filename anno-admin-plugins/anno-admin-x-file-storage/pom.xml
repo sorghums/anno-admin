@@ -12,7 +12,7 @@
     <artifactId>anno-admin-x-file-storage</artifactId>
 
     <properties>
-        <x-file-storage.version>2.1.0</x-file-storage.version>
+        <x-file-storage.version>2.2.1</x-file-storage.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
