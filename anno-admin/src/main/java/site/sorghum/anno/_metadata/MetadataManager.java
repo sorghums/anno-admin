@@ -79,6 +79,17 @@ public class MetadataManager {
         }).toList();
     }
 
+
+    public AnEntity loadEntityByXml(String xmlContent, boolean forceLoad) {
+        AnEntity anEntity = entityMetadataLoader.loadXml(xmlContent);
+        String entityName = anEntity.getEntityName();
+        if (!forceLoad && entityMap.containsKey(entityName)) {
+            return entityMap.get(entityName);
+        }
+        postProcess(anEntity);
+        return anEntity;
+    }
+
     /**
      * 从实体类中加载表单元数据，已存在的实体不会重复加载
      *

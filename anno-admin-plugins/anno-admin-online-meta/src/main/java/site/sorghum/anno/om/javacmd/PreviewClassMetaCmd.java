@@ -23,7 +23,6 @@ public class PreviewClassMetaCmd implements JavaCmdSupplier {
 
     DynamicCompiler dynamicCompiler = new DynamicCompiler(ClassLoader.getSystemClassLoader());
 
-
     /**
      * 预查看缓存
      */

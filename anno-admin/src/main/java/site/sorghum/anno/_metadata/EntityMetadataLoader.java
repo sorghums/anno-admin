@@ -1,6 +1,7 @@
 package site.sorghum.anno._metadata;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.XmlUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno._common.util.MetaClassUtil;
 
@@ -43,6 +44,20 @@ public class EntityMetadataLoader implements MetadataLoader<Class<?>> {
     public AnEntity load(Class<?> clazz) {
         AnEntity anEntity = new AnEntity();
         AnMeta anMeta = MetaClassUtil.class2AnMeta(clazz);
+        BeanUtil.copyProperties(anMeta, anEntity);
+        return anEntity;
+    }
+
+    /**
+     * 加载AnEntity对象
+     *
+     * @param xmlContent XML内容
+     * @return AnEntity对象
+     */
+    @Override
+    public AnEntity loadXml(String xmlContent) {
+        AnEntity anEntity = new AnEntity();
+        AnMeta anMeta = MetaClassUtil.xml2AnMeta(XmlUtil.readXML(xmlContent));
         BeanUtil.copyProperties(anMeta, anEntity);
         return anEntity;
     }

@@ -1,11 +1,19 @@
-package site.sorghum.anno.om.tpl;
+package site.sorghum.anno._common.entity;
 
+import cn.hutool.extra.template.TemplateConfig;
+import cn.hutool.extra.template.TemplateEngine;
+import cn.hutool.extra.template.TemplateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno.anno.enums.AnnoDataType;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 主配置类，用于存储和管理FTL模板中定义的类和字段配置信息。
@@ -13,7 +21,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainConfig {
+@Slf4j
+public class ClassDef {
 
     // 类的名称
     private String name;
@@ -79,7 +88,7 @@ public class MainConfig {
         // 文件类型配置
         private FileType fileType;
         // 字段类型
-        private String type;
+        private TypeClass type;
         // 字段名称
         private String name;
     }
@@ -203,5 +212,47 @@ public class MainConfig {
         private int fileMaxCount = 1;
         // 文件最大大小
         private long fileMaxSize = 5;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class TypeClass {
+        Class<?> type;
+
+        public String toString() {
+            return type.getName();
+        }
+    }
+
+    /**
+     * AnMeta 转 Class
+     *
+     * @param className 类名
+     * @param anMeta    AnMeta
+     * @return Class
+     */
+    public static String anMeta2Class(String className, AnMeta anMeta) {
+        ClassDef classDef = new ClassDef();
+        if (className.contains(".")) {
+            className = className.substring(className.lastIndexOf(".") + 1);
+        }
+        classDef.setClassName(className);
+        classDef.setFields(new ArrayList<>());
+        for (AnField column : anMeta.getColumns()) {
+            classDef.getFields().add(
+                new ClassDef.FieldConfig() {{
+                    setType(new ClassDef.TypeClass(column.getJavaType()));
+                    setName(column.getJavaName());
+                }}
+            );
+        }
+        // freemarker手动渲染 AnnoMainTemplate.ftl 到控制台打印
+        TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("code_generate", TemplateConfig.ResourceMode.CLASSPATH));
+        String render = engine.getTemplate("AnnoClassTemplate.ftl").render(Map.of(
+            "main", classDef
+        ));
+        System.out.println(render);
+        log.info("加载类:{}", render);
+        return render;
     }
 }

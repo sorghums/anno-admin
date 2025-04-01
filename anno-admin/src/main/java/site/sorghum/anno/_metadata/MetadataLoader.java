@@ -23,6 +23,8 @@ public interface MetadataLoader<T> {
      */
     AnEntity load(T entity);
 
+    AnEntity loadXml(String xmlContent);
+
     /**
      * 加载元数据
      *

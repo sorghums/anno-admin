@@ -25,7 +25,7 @@ public class Pf4jOnlineMetaPlugin extends Pf4jLoadEntityPlugin {
     }
 
     @Override
-    public List<String> ymlContents() {
+    public List<String> xmlContents() {
         return List.of();
     }
 

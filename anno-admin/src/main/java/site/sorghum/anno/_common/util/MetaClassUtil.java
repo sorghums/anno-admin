@@ -8,6 +8,7 @@ import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.XmlUtil;
 import cn.hutool.setting.yaml.YamlUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.dynamic.DynamicType;
 import org.noear.wood.annotation.Table;
+import org.w3c.dom.Document;
+import site.sorghum.anno._common.entity.ClassDef;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
@@ -159,25 +162,41 @@ public class MetaClassUtil {
         return JSONUtil.toJsonString(class2Dict(clazz, deepSuper));
     }
 
+    public static AnMeta xml2AnMeta(Document document) {
+        Dict dict = XmlUtil.xmlToBean(document, Dict.class);
+        if (dict.containsKey("document")) {
+            dict = JSONUtil.toBean(dict.get("document"), Dict.class);
+        }
+        return dict2AnMeta(dict);
+    }
+
     @SneakyThrows
-    public static AnMeta class2AnMeta(Class<?> clazz) {
-        Dict classed2Dict = class2Dict(clazz, true);
+    public static AnMeta dict2AnMeta(Dict classed2Dict) {
+        if (classed2Dict.containsKey("document")) {
+            classed2Dict = classed2Dict.getBean("document");
+        }
         // 删除原有thisClass
         String _thisClass = MapUtil.getStr(classed2Dict, THIS_CLASS_KEY);
         classed2Dict.remove(THIS_CLASS_KEY);
+        AnMeta anMeta = JSONUtil.toBean(classed2Dict, AnMeta.class);
         // 获取新的thisClass
         Class<?> thisClass;
         if ((thisClass = DY_TYPE_MAP.get(_thisClass)) == null) {
-            thisClass = Class.forName(_thisClass);
+            try {
+                thisClass = Class.forName(_thisClass);
+            }catch (ClassNotFoundException ignore) {
+                thisClass = DynamicClassGenerator.addClass(_thisClass, ClassDef.anMeta2Class(
+                    _thisClass, anMeta
+                ));
+            }
         }
-        AnMeta anMeta = JSONUtil.toBean(classed2Dict, AnMeta.class);
         // 重新设置 thisClass
         anMeta.setThisClass(thisClass);
         // 重新设置 javaField
         List<AnField> columns = anMeta.getColumns();
         if (CollUtil.isNotEmpty(columns)) {
             for (AnField column : columns) {
-                Field field = getField(clazz, column.getJavaName());
+                Field field = getField(thisClass, column.getJavaName());
                 column.setJavaField(field);
                 if (column.pkField()) {
                     anMeta.setPkColumn(column);
@@ -259,6 +278,12 @@ public class MetaClassUtil {
             }
         }
         return anMeta;
+    }
+
+    @SneakyThrows
+    public static AnMeta class2AnMeta(Class<?> clazz) {
+        Dict classed2Dict = class2Dict(clazz, true);
+        return dict2AnMeta(classed2Dict);
     }
 
 
@@ -372,7 +397,11 @@ public class MetaClassUtil {
     }
 
     public static Field getField(Class<?> clazz, String name) {
-        return FIELD_MAP.get(clazz.getName() + name);
+        Field field = FIELD_MAP.get(clazz.getName() + name);
+        if (field == null) {
+            return ReflectUtil.getField(clazz, name);
+        }
+        return field;
     }
 
     public static void main(String[] args) {

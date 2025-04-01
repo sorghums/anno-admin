@@ -95,7 +95,19 @@ public class AnnoPlugin implements ExtensionPoint {
      * @param icon        菜单图标
      * @param sort        菜单排序
      */
-    protected AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String icon, Integer sort) {
+    public AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String icon, Integer sort) {
+        return createEntityMenu(entityClass, parentId, null, icon, sort);
+    }
+
+    /**
+     * 创建实体菜单（二级）
+     *
+     * @param entityClass 实体类
+     * @param parentId    父级菜单id
+     * @param icon        菜单图标
+     * @param sort        菜单排序
+     */
+    public AnPluginMenu createEntityMenu(String entityClass, String parentId, String icon, Integer sort) {
         return createEntityMenu(entityClass, parentId, null, icon, sort);
     }
 
@@ -108,7 +120,30 @@ public class AnnoPlugin implements ExtensionPoint {
      * @param icon        菜单图标
      * @param sort        菜单排序
      */
-    protected AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String title, String icon, Integer sort) {
+    public AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String title, String icon, Integer sort) {
+        AnPluginMenu anPluginMenu = new AnPluginMenu();
+        anPluginMenu.setTitle(title);
+        if (StrUtil.isBlank(icon)){
+            icon = DEFAULT_ICON;
+        }
+        anPluginMenu.setIcon(icon);
+        anPluginMenu.setSort(sort);
+        anPluginMenu.setType(1);
+        anPluginMenu.setParentId(parentId);
+        anPluginMenu.setEntity(AnnoBeanUtils.getBean(MetadataManager.class).getEntity(entityClass));
+        return anPluginMenu;
+    }
+
+    /**
+     * 创建实体菜单（二级）
+     *
+     * @param entityClass 实体类
+     * @param parentId    父级菜单id
+     * @param title       菜单名称
+     * @param icon        菜单图标
+     * @param sort        菜单排序
+     */
+    public AnPluginMenu createEntityMenu(String entityClass, String parentId, String title, String icon, Integer sort) {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setTitle(title);
         if (StrUtil.isBlank(icon)){
