@@ -17,7 +17,7 @@ import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.method.resource.ResourceFinder;
 import site.sorghum.anno.plugin.PluginRunner;
 import site.sorghum.anno.plugin.service.AnSqlService;
-import site.sorghum.anno.plugin.service.impl.AuthServiceImpl;
+import site.sorghum.anno.plugin.service.AuthService;
 
 /**
  * 初始化数据库表结构和预置数据
@@ -56,8 +56,8 @@ public class InitDdlAndDataService implements EventListener<AppLoadEndEvent> {
         // 初始化插件信息
         Solon.context().getBean(PluginRunner.class).init();
         if (ClassUtil.loadClass("site.sorghum.anno.plugin.service.impl.AuthServiceImpl") != null) {
-            Solon.context().getBean(AuthServiceImpl.class).initPermissions();
-            Solon.context().getBean(AuthServiceImpl.class).initMenus();
+            Solon.context().getBean(AuthService.class).initPermissions();
+            Solon.context().getBean(AuthService.class).initMenus();
         }
 
     }
