@@ -32,6 +32,8 @@ public class ClassDef {
     private List<AnnoOrder> annoOrder;
     // Java类的名称
     private String className;
+    // 继承类
+    private TypeClass extend;
     // 字段配置列表
     private List<FieldConfig> fields;
     // 是否可以删除
@@ -216,11 +218,12 @@ public class ClassDef {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class TypeClass {
-        Class<?> type;
+        Class<?> type = Object.class;
 
         public String toString() {
-            return type.getName();
+            return type == null? Object.class.getName() : type.getName();
         }
     }
 
@@ -237,6 +240,7 @@ public class ClassDef {
             className = className.substring(className.lastIndexOf(".") + 1);
         }
         classDef.setClassName(className);
+        classDef.setExtend(new TypeClass(anMeta.getExtend()));
         classDef.setFields(new ArrayList<>());
         for (AnField column : anMeta.getColumns()) {
             classDef.getFields().add(
@@ -248,11 +252,8 @@ public class ClassDef {
         }
         // freemarker手动渲染 AnnoMainTemplate.ftl 到控制台打印
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("code_generate", TemplateConfig.ResourceMode.CLASSPATH));
-        String render = engine.getTemplate("AnnoClassTemplate.ftl").render(Map.of(
+        return engine.getTemplate("AnnoClassTemplate.ftl").render(Map.of(
             "main", classDef
         ));
-        System.out.println(render);
-        log.info("加载类:{}", render);
-        return render;
     }
 }

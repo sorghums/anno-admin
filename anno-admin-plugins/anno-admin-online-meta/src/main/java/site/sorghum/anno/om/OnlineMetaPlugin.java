@@ -1,17 +1,14 @@
 package site.sorghum.anno.om;
 
 
-import cn.hutool.core.io.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.pf4j.Extension;
-import site.sorghum.anno._common.AnnoBeanUtils;
-import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.anno.om.ao.OnlineClassMeta;
 import site.sorghum.anno.om.ao.OnlineMeta;
 import site.sorghum.anno.om.ao.OnlineTable;
 import site.sorghum.anno.plugin.AnPluginMenu;
 import site.sorghum.anno.plugin.AnnoPlugin;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +19,13 @@ import java.util.List;
  * @since 2024/02/26
  */
 @Extension
+@Slf4j
 public class OnlineMetaPlugin extends AnnoPlugin {
 
     public OnlineMetaPlugin() {
         super("Online元数据插件", "在线管理元数据");
     }
 
-    @Override
-    public void run() {
-        String xmlContent = FileUtil.readString("D:\\Project\\rep\\opensource\\anno-admin\\anno-admin-plugins\\anno-admin-online-meta\\src\\main\\resources\\xml\\demo.xml", StandardCharsets.UTF_8);
-        AnnoBeanUtils.getBean(MetadataManager.class).loadEntityByXml(xmlContent, true);
-        AnnoBeanUtils.getBean(MetadataManager.class).refresh();
-    }
 
     @Override
     public List<AnPluginMenu> initEntityMenus() {
@@ -44,5 +36,10 @@ public class OnlineMetaPlugin extends AnnoPlugin {
         list.add(createEntityMenu(OnlineTable.class, list.get(0).getId(), "mdi:jar-16", 140));
         list.add(createEntityMenu("OOMeta", list.get(0).getId(), "mdi:jar-16", 160));
         return list;
+    }
+
+    @Override
+    public List<String> xmlPath(){
+        return List.of("xml/*.xml");
     }
 }

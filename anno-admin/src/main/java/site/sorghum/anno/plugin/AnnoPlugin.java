@@ -1,6 +1,7 @@
 package site.sorghum.anno.plugin;
 
 
+import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,8 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.pf4j.ExtensionPoint;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.anno.method.resource.ResourceFinder;
 
+import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Anno模块
@@ -20,7 +25,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Slf4j
-public class AnnoPlugin implements ExtensionPoint {
+public abstract class AnnoPlugin implements ExtensionPoint {
 
     /**
      * 模块名称（菜单名称）
@@ -36,6 +41,7 @@ public class AnnoPlugin implements ExtensionPoint {
      * 默认图标
      */
     private static final String DEFAULT_ICON = "ant-design:bars-outlined";
+
     /**
      * 执行顺序，越大越先执行
      */
@@ -78,7 +84,7 @@ public class AnnoPlugin implements ExtensionPoint {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setId(id);
         anPluginMenu.setTitle(title);
-        if (StrUtil.isBlank(icon)){
+        if (StrUtil.isBlank(icon)) {
             icon = DEFAULT_ICON;
         }
         anPluginMenu.setIcon(icon);
@@ -123,7 +129,7 @@ public class AnnoPlugin implements ExtensionPoint {
     public AnPluginMenu createEntityMenu(Class<?> entityClass, String parentId, String title, String icon, Integer sort) {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setTitle(title);
-        if (StrUtil.isBlank(icon)){
+        if (StrUtil.isBlank(icon)) {
             icon = DEFAULT_ICON;
         }
         anPluginMenu.setIcon(icon);
@@ -146,7 +152,7 @@ public class AnnoPlugin implements ExtensionPoint {
     public AnPluginMenu createEntityMenu(String entityClass, String parentId, String title, String icon, Integer sort) {
         AnPluginMenu anPluginMenu = new AnPluginMenu();
         anPluginMenu.setTitle(title);
-        if (StrUtil.isBlank(icon)){
+        if (StrUtil.isBlank(icon)) {
             icon = DEFAULT_ICON;
         }
         anPluginMenu.setIcon(icon);
@@ -172,5 +178,29 @@ public class AnnoPlugin implements ExtensionPoint {
             newString.insert(0, padString);
         }
         return newString.toString();
+    }
+
+    public List<String> xmlPath() {
+        return Collections.emptyList();
+    }
+
+    public void loadXml() {
+        List<String> xmlList = xmlPath();
+        if (xmlList.isEmpty()) {
+            return;
+        }
+        for (String xmlPath : xmlList) {
+            MultiResource multiResource = ResourceFinder.of().find(xmlPath);
+            multiResource.iterator().forEachRemaining(resource -> {
+                try {
+                    log.info("从xml加载配置：{}", resource.getUrl());
+                    String content = resource.getReader(Charset.defaultCharset()).lines().collect(Collectors.joining());
+                    AnnoBeanUtils.getBean(MetadataManager.class).loadEntityByXml(content, true);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                }
+            });
+        }
+        AnnoBeanUtils.getBean(MetadataManager.class).refresh();
     }
 }

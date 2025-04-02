@@ -8,7 +8,7 @@ import java.util.Map;
 <#-- Class definition -->
 <#-- Use @Data annotation from Lombok -->
 @Data
-public class ${main.className} {
+public class ${main.className} extends ${main.extend}{
 
 <#-- Fields definition -->
 <#list main.fields as field>
