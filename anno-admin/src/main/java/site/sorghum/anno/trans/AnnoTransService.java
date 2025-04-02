@@ -61,7 +61,7 @@ public class AnnoTransService {
         List<JoinParam> joinParams = new ArrayList<>();
         AnEntity entity = metadataManager.getEntity(tClass);
         for (AnField field : entity.getFields()) {
-            if (field.noTranslate()){
+            if (field.noTranslate()) {
                 continue;
             }
             AnnoDataType dataType = field.getDataType();

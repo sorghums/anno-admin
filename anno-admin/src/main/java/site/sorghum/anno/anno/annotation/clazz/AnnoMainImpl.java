@@ -62,12 +62,6 @@ public class AnnoMainImpl implements AnnoMain {
      */
     AnnoTableButtonImpl[] annoTableButton = {};
 
-    /**
-     * 组织过滤
-     * 如果继承自BaseOrgMetaModel
-     * 是否[自动过滤] org_id = 当前登录用户的org_id
-     */
-    boolean orgFilter;
 
     /**
      * 是否是虚拟表[将不走数据库]
@@ -132,11 +126,6 @@ public class AnnoMainImpl implements AnnoMain {
     @Override
     public AnnoTableButton[] annoTableButton() {
         return this.annoTableButton;
-    }
-
-    @Override
-    public boolean orgFilter() {
-        return this.orgFilter;
     }
 
     @Override

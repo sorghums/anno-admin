@@ -22,19 +22,18 @@ import site.sorghum.anno.db.BaseMetaModel;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AnnoMain(name = "组织管理",
+@AnnoMain(name = "部门管理",
     tableName = "an_org",
-    orgFilter = true,
-        annoTree = @AnnoTree(label = "orgName", parentKey = "parentOrgId", key = "id", displayAsTree = true),
-        annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
+    annoTree = @AnnoTree(label = "orgName", parentKey = "parentOrgId", key = "id", displayAsTree = true),
+    annoPermission = @AnnoPermission(enable = true, baseCode = "an_org", baseCodeTranslate = "组织管理"))
 public class AnOrg extends BaseMetaModel {
 
     /**
      * 组织描述
      */
     @AnnoField(title = "组织名字", tableFieldName = "org_name",
-            search = @AnnoSearch(),
-            edit = @AnnoEdit(editEnable = true, addEnable = true, placeHolder = "请输入部门名字"))
+        search = @AnnoSearch(),
+        edit = @AnnoEdit(editEnable = true, addEnable = true, placeHolder = "请输入部门名字"))
     private String orgName;
 
     @AnnoField(title = "父组织", tableFieldName = "parent_org_id", search = @AnnoSearch()
@@ -52,6 +51,6 @@ public class AnOrg extends BaseMetaModel {
 
 
     @AnnoButton(name = "组织用户",
-            o2mJoinButton = @AnnoButton.O2MJoinButton(targetClass = AnUser.class, thisJavaField = "id", targetJavaField = "orgId", enable = true))
+        o2mJoinButton = @AnnoButton.O2MJoinButton(targetClass = AnUser.class, thisJavaField = "id", targetJavaField = "orgId", enable = true))
     private Object userButton;
 }
