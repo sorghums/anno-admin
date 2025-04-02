@@ -18,6 +18,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import org.noear.wood.annotation.Table;
 import org.w3c.dom.Document;
 import site.sorghum.anno._common.entity.ClassDef;
+import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.AnMeta;
 import site.sorghum.anno._metadata.AnnoJavaCmd;
@@ -167,29 +168,23 @@ public class MetaClassUtil {
         if (dict.containsKey("document")) {
             dict = JSONUtil.toBean(dict.get("document"), Dict.class);
         }
-        return dict2AnMeta(dict);
+        String extend = dict.getStr("extend");
+        Class<?> extendAClass = loadActClass(extend,null);
+        AnMeta extendAnMeta = class2AnMeta(extendAClass);
+        List<AnField> extendColumns = extendAnMeta.getColumns();
+        AnMeta anMeta = dict2AnMeta(dict);
+        anMeta.getColumns().addAll(0, extendColumns);
+        return anMeta;
     }
 
     @SneakyThrows
     public static AnMeta dict2AnMeta(Dict classed2Dict) {
-        if (classed2Dict.containsKey("document")) {
-            classed2Dict = classed2Dict.getBean("document");
-        }
         // 删除原有thisClass
         String _thisClass = MapUtil.getStr(classed2Dict, THIS_CLASS_KEY);
         classed2Dict.remove(THIS_CLASS_KEY);
         AnMeta anMeta = JSONUtil.toBean(classed2Dict, AnMeta.class);
         // 获取新的thisClass
-        Class<?> thisClass;
-        if ((thisClass = DY_TYPE_MAP.get(_thisClass)) == null) {
-            try {
-                thisClass = Class.forName(_thisClass);
-            }catch (ClassNotFoundException ignore) {
-                thisClass = DynamicClassGenerator.addClass(_thisClass, ClassDef.anMeta2Class(
-                    _thisClass, anMeta
-                ));
-            }
-        }
+        Class<?> thisClass = loadActClass(_thisClass, anMeta);
         // 重新设置 thisClass
         anMeta.setThisClass(thisClass);
         // 重新设置 javaField
@@ -402,6 +397,23 @@ public class MetaClassUtil {
             return ReflectUtil.getField(clazz, name);
         }
         return field;
+    }
+
+    public static Class<?> loadActClass(String _thisClass, AnMeta anMeta) {
+        Class<?> thisClass;
+        if ((thisClass = DY_TYPE_MAP.get(_thisClass)) == null) {
+            try {
+                thisClass = Class.forName(_thisClass);
+            }catch (ClassNotFoundException ignore) {
+                if (anMeta == null){
+                    throw new BizException("找不到类: " + _thisClass);
+                }
+                thisClass = DynamicClassGenerator.addClass(_thisClass, ClassDef.anMeta2Class(
+                    _thisClass, anMeta
+                ));
+            }
+        }
+        return thisClass;
     }
 
     public static void main(String[] args) {
