@@ -39,18 +39,21 @@ public class AnUser extends BaseOrgMetaModel implements Serializable {
         edit = @AnnoEdit(placeHolder = "请上传用户头像"),
         imageType = @AnnoImageType(width = 50, height = 50))
     private String avatar;
+
     /**
      * 手机号
      */
     @AnnoField(title = "手机号", tableFieldName = "mobile", search = @AnnoSearch(),
         edit = @AnnoEdit(placeHolder = "请输入手机号", notNull = true, editEnable = false))
     private String mobile;
+
     /**
      * 密码
      */
     @AnnoField(title = "密码", tableFieldName = "password",
         edit = @AnnoEdit(editEnable = false), show = false)
     private String password;
+
     /**
      * 用户名
      */

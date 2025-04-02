@@ -27,11 +27,6 @@ public abstract class Pf4jLoadEntityPlugin extends Pf4jPlugin {
     }
 
     /**
-     * 加载AnnoMain yml文件内容
-     */
-    public abstract List<String> ymlContents();
-
-    /**
      * 加载AnnoMain java类
      */
     public abstract List<Class<?>> javaClasses();
@@ -55,10 +50,6 @@ public abstract class Pf4jLoadEntityPlugin extends Pf4jPlugin {
         for (Class<?> aClass : classes) {
             metadataManager.loadEntity(aClass, true);
         }
-        List<String> ymlList = ymlContents();
-        for (String ymlContent : ymlList) {
-            metadataManager.loadEntityListByYml(ymlContent, true);
-        }
         metadataManager.refresh();
     }
 
@@ -74,10 +65,6 @@ public abstract class Pf4jLoadEntityPlugin extends Pf4jPlugin {
         List<Class<?>> classes = javaClasses();
         for (Class<?> aClass : classes) {
             metadataManager.removeEntity(aClass);
-        }
-        List<String> ymlList = ymlContents();
-        for (String ymlContent : ymlList) {
-            metadataManager.removeEntityListByYml(ymlContent);
         }
         metadataManager.refresh();
     }

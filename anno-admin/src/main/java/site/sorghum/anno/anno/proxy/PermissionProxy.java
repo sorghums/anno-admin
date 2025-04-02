@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno.anno.annotation.clazz.AnnoPermissionImpl;
-import site.sorghum.anno.anno.functions.CheckPermissionFunction;
+import site.sorghum.anno.anno.functions.AnnoFunction;
 
 /**
  * 许可代理
@@ -47,14 +47,14 @@ public class PermissionProxy {
         String baseCode = annoPermission.baseCode();
         // 校验权限
         String permissionCode = StrUtil.isNotBlank(code) ? baseCode + ":" + code : baseCode;
-        CheckPermissionFunction.permissionCheckFunction.accept(permissionCode);
+        AnnoFunction.permissionCheckFunction.accept(permissionCode);
     }
 
     public void checkLogin() {
         if (isSystemRun()) {
             return;
         }
-        CheckPermissionFunction.loginCheckFunction.run();
+        AnnoFunction.loginCheckFunction.run();
     }
 
     private boolean isSystemRun() {

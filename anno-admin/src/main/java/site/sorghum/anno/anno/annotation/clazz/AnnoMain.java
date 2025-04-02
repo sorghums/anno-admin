@@ -71,13 +71,6 @@ public @interface AnnoMain {
     AnnoTableButton[] annoTableButton() default {};
 
     /**
-     * 组织过滤
-     * 如果继承自BaseOrgMetaModel
-     * 是否[自动过滤] org_id = 当前登录用户的org_id
-     */
-    boolean orgFilter() default false;
-
-    /**
      * 是否是虚拟表[将不走数据库]
      */
     boolean virtualTable() default false;

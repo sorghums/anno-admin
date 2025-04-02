@@ -12,28 +12,30 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
- * 一个文件控制器
- * 【anLocal】
- *
- * @author Sorghum
- * @since 2023/07/31
+ * 文件基础控制器
+ * 提供本地文件获取功能
  */
 @Named
 @Slf4j
 public class AnBaseFileController {
 
     @Inject
-    AnnoProperty annoProperty;
+    private AnnoProperty annoProperty;  // 应用配置属性
 
+    /**
+     * 获取文件输入流
+     * @param path 文件相对路径
+     * @return 文件输入流(文件不存在时返回空流)
+     */
     public InputStream getFile(String path) {
-        String localFilePath = annoProperty.getLocalFilePath();
-        String filePath = AnFileService.joinPath(localFilePath, path);
-        File file = FileUtil.file(filePath);
-        if (file.exists() && file.isFile()) {
-            return FileUtil.getInputStream(file);
-        }else {
-            log.error("文件不存在：{}", filePath);
+        String fullPath = AnFileService.joinPath(annoProperty.getLocalFilePath(), path);
+        File file = FileUtil.file(fullPath);
+
+        if (!file.exists() || !file.isFile()) {
+            log.error("文件不存在：{}", fullPath);
             return new ByteArrayInputStream(new byte[0]);
         }
+
+        return FileUtil.getInputStream(file);
     }
 }

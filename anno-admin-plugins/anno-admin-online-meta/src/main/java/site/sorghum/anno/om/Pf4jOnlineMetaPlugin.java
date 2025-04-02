@@ -1,9 +1,7 @@
 package site.sorghum.anno.om;
 
 
-import site.sorghum.anno.om.ao.OnlineMeta;
-import site.sorghum.anno.om.javacmd.ExportJarCmd;
-import site.sorghum.anno.om.javacmd.PreviewMetaCmd;
+import site.sorghum.anno.om.ao.OnlineClassMeta;
 import site.sorghum.anno.om.proxy.OnlineTableProxy;
 import site.sorghum.anno.om.supplier.DsNameSupplier;
 import site.sorghum.anno.pf4j.Pf4jLoadEntityPlugin;
@@ -24,23 +22,17 @@ public class Pf4jOnlineMetaPlugin extends Pf4jLoadEntityPlugin {
         super(context);
     }
 
-    @Override
-    public List<String> ymlContents() {
-        return List.of();
-    }
 
     @Override
     public List<Class<?>> javaClasses() {
         return List.of(
-            OnlineMeta.class
+            OnlineClassMeta.class
         );
     }
 
     @Override
     public Map<String, Object> registerBeans() {
         return Map.of(
-            "exportJarCmd",new ExportJarCmd(),
-            "previewMetaCmd",new PreviewMetaCmd(),
             "dsNameSupplier", new DsNameSupplier(),
             "onlineTableProxy", new OnlineTableProxy()
         );

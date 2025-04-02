@@ -9,6 +9,7 @@ import site.sorghum.anno.plugin.ao.AnSql;
  */
 @Named
 public class AnSqlDao implements AnnoBaseDao<AnSql> {
+
     /**
      * 按版本查询
      *

@@ -1,6 +1,7 @@
 package site.sorghum.anno.test.config;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.dromara.x.file.storage.solon.SolonFileStorageProperties;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
@@ -37,4 +38,9 @@ public class AnnoConfig {
         return new DbContext(dataSource);
     }
 
+    @Bean
+    public SolonFileStorageProperties solonFileStorageProperties(
+        @Inject("${dromara.x-file-storage}") SolonFileStorageProperties properties) {
+        return properties;
+    }
 }

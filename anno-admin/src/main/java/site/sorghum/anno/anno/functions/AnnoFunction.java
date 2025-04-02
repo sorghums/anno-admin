@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  * @author sorghum
  * @since 2023/09/05
  */
-public class CheckPermissionFunction {
+public class AnnoFunction {
     /**
      * 权限检查函数
      */
