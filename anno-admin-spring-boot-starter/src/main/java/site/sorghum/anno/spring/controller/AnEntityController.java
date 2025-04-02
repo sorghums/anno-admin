@@ -25,17 +25,16 @@ import java.util.Map;
 @RequestMapping(value = AnnoConstants.BASE_URL + "/system/config")
 public class AnEntityController extends AnEntityBaseController {
 
-    @Override
     @RequestMapping(value = "/anEntity/{clazz}")
     @ApiOperation(value = "获取实体信息", notes = "获取实体信息")
-    public AnnoResult<Map<Object,Object>> anEntity(@PathVariable String clazz){
-        return super.anEntity(clazz);
+    public AnnoResult<Map<Object, Object>> anEntity(@PathVariable String clazz) {
+        return super.getEntityMetadata(clazz);
     }
 
     @RequestMapping(value = "/defaultAddData/{clazz}")
     @ApiOperation(value = "获取默认【添加】数据", notes = "获取默认【添加】数据")
     public AnnoResult<Map<String, Object>> defaultAddData(
-        @PathVariable String clazz, @RequestBody Map<String,Object> nvMap
+        @PathVariable String clazz, @RequestBody Map<String, Object> nvMap
     ) {
         List<String> columnDataIdList = new ArrayList<>();
         String columnDataIds = MapUtil.getStr(nvMap, "columnDataIds");
@@ -43,7 +42,7 @@ public class AnEntityController extends AnEntityBaseController {
             columnDataIdList = StrUtil.split(columnDataIds, ",");
         }
         return AnnoResult.succeed(
-            super.defaultAddData(clazz, columnDataIdList)
+            super.getDefaultAddData(clazz, columnDataIdList)
         );
     }
 }

@@ -29,11 +29,10 @@ import java.util.Map;
 @Slf4j
 public class AnEntityController extends AnEntityBaseController {
 
-    @Override
     @Mapping(value = "/anEntity/{clazz}")
     @ApiOperation(value = "获取实体信息", notes = "获取实体信息")
     public AnnoResult<Map<Object, Object>> anEntity(@Path String clazz) {
-        return super.anEntity(clazz);
+        return super.getEntityMetadata(clazz);
     }
 
     @Mapping(value = "/defaultAddData/{clazz}")
@@ -47,7 +46,7 @@ public class AnEntityController extends AnEntityBaseController {
             columnDataIdList = StrUtil.split(columnDataIds, ",");
         }
         return AnnoResult.succeed(
-            super.defaultAddData(clazz, columnDataIdList)
+            super.getDefaultAddData(clazz, columnDataIdList)
         );
     }
 

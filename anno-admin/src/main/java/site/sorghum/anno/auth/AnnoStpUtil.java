@@ -10,6 +10,7 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpLogic;
 import jakarta.inject.Named;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -37,7 +38,13 @@ public class AnnoStpUtil {
 
     /**
      * 底层使用的 StpLogic 对象
+     * -- GETTER --
+     *  获取 StpLogic 对象
+     *
+     * @return /
+
      */
+    @Getter
     public static StpLogic stpLogic = new StpLogic(TYPE){
         {
             SaTokenConfig saTokenConfig = new SaTokenConfig();
@@ -93,15 +100,6 @@ public class AnnoStpUtil {
 
         // 3、$$ 发布事件：更新了 stpLogic 对象
         SaTokenEventCenter.doSetStpLogic(stpLogic);
-    }
-
-    /**
-     * 获取 StpLogic 对象
-     *
-     * @return /
-     */
-    public static StpLogic getStpLogic() {
-        return stpLogic;
     }
 
 

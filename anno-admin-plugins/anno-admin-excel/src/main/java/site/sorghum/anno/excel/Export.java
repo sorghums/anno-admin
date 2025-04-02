@@ -12,41 +12,48 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Excel导出工具类
+ * 提供将数据列表导出到Excel的功能
+ */
 @Slf4j
 public class Export {
 
     /**
-     * 写入输出流
+     * 将数据写入输出流，生成Excel文件
      *
-     * @param datas        数据
-     * @param anEntity     一个实体
-     * @param outputStream 输出流
-     * @param titleName    标题名称
-     * @param ignoreColumns 忽略的列
+     * @param dataList         数据列表
+     * @param anEntity      实体元数据
+     * @param outputStream  输出流
+     * @param titleName     Excel标题名称
+     * @param ignoreColumns 需要忽略的列名
      */
     @SneakyThrows
     public static void writeToOutPutStream(
-        List<Object> datas,
+        List<Object> dataList,
         AnEntity anEntity,
         OutputStream outputStream,
         String titleName,
-        String ...ignoreColumns
-    ){
-        // 获取ExcelWriter
+        String... ignoreColumns
+    ) {
+        // 创建ExcelWriter
         ExcelWriter writer = ExcelUtil.getWriter(true);
-        List<String> ignoreColumnList = Arrays.stream(ignoreColumns).toList();
-        List<AnField> fields = anEntity.getFields();
-        for (AnField field : fields) {
-            // 忽略跳过
-            if (CollUtil.contains(ignoreColumnList, field.getJavaName())) {
-                continue;
+        List<String> ignoreColumnList = Arrays.asList(ignoreColumns);
+
+        // 设置表头别名
+        for (AnField field : anEntity.getFields()) {
+            if (!CollUtil.contains(ignoreColumnList, field.getJavaName())) {
+                writer.addHeaderAlias(field.getJavaName(), field.getTitle());
             }
-            writer.addHeaderAlias(field.getJavaName(), field.getTitle());
         }
+
+        // 写入数据
         writer.setOnlyAlias(true);
         writer.merge(writer.getHeaderAlias().size() - 1, titleName);
-        writer.write(datas,true);
-        writer.flush(outputStream,true);
+        writer.write(dataList, true);
+
+        // 刷新并关闭资源
+        writer.flush(outputStream, true);
         writer.close();
     }
 }

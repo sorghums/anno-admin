@@ -6,46 +6,49 @@ import lombok.Data;
 import java.io.InputStream;
 
 /**
- * An文件
- * @author Administrator
+ * 文件信息封装类
+ * 包含文件元数据和内容数据
  */
 @Data
 public class FileInfo {
     /**
      * 文件名
      */
-    String fileName;
+    private String fileName;
 
     /**
-     * 文件路径
+     * 原始文件路径
      */
-    String originalPath = "";
+    private String originalPath = "";
 
     /**
-     * 文件数据
+     * 文件字节数据
      */
-    byte[] bytes;
+    private byte[] bytes;
 
     /**
-     * 文件网络url
+     * 文件访问URL
      */
-    String fileUrl;
+    private String fileUrl;
 
     /**
-     * 文件流
+     * 文件输入流
      */
-    InputStream inputStream;
+    private transient InputStream inputStream;
 
     /**
-     * 读写权限
+     * 文件访问控制权限
      */
-    String acl;
+    private String acl;
 
     /**
-     * 获取文件数据
+     * 获取文件字节数据
+     * 如果bytes为空，则从inputStream读取
+     *
+     * @return 文件字节数据
      */
     public byte[] getBytes() {
-        if (bytes == null) {
+        if (bytes == null && inputStream != null) {
             bytes = IoUtil.readBytes(inputStream);
         }
         return bytes;
@@ -54,10 +57,11 @@ public class FileInfo {
     @Override
     public String toString() {
         return "FileInfo{" +
-               "fileName='" + fileName + '\'' +
-               ", originalPath='" + originalPath + '\'' +
-               ", fileUrl='" + fileUrl + '\'' +
-               ", acl='" + acl + '\'' +
-               '}';
+            "fileName='" + fileName + '\'' +
+            ", originalPath='" + originalPath + '\'' +
+            ", fileUrl='" + fileUrl + '\'' +
+            ", acl='" + acl + '\'' +
+            ", bytesSize=" + (bytes != null ? bytes.length : 0) +
+            '}';
     }
 }

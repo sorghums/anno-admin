@@ -22,7 +22,11 @@ public class AnnoFieldCache {
      */
     public static Map<Class<?>, BiHashMap<String, String>> clazz2Sql2Field = new HashMap<>();
 
+    /**
+     * 类到主键名的映射
+     */
     public static Map<Class<?>,String> class2PkName = new HashMap<>();
+
     /**
      * 存入缓存
      *
