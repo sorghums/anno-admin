@@ -69,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final static String permissionKey = "permissionList:";
 
+    @Override
     public void initPermissions() {
         // 初始化的时候，进行Db的注入
         List<AnEntity> allEntity = metadataManager.getAllEntity();
