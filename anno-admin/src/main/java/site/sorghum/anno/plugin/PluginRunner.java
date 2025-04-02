@@ -25,7 +25,6 @@ public class PluginRunner {
             AnnoPlugin.class
         );
         annoPlugins.sort(Comparator.comparingInt(AnnoPlugin::runOrder).reversed());
-        annoPlugins.forEach(AnnoPlugin::loadXml);
         annoPlugins.forEach(AnnoPlugin::printPluginInfo);
         annoPlugins.forEach(AnnoPlugin::run);
         init = true;

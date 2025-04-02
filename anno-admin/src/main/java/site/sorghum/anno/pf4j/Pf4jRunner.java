@@ -35,7 +35,6 @@ public class Pf4jRunner {
         log.info("[{}]加载实体类拓展点中", pluginId);
         List<AnnoPlugin> annoPlugins = PLUGIN_MANAGER.getExtensions(AnnoPlugin.class, pluginId);
         annoPlugins.sort(Comparator.comparingInt(AnnoPlugin::runOrder).reversed());
-        annoPlugins.forEach(AnnoPlugin::loadXml);
         annoPlugins.forEach(AnnoPlugin::printPluginInfo);
         annoPlugins.forEach(AnnoPlugin::run);
         log.info("[{}]加载实体类拓展点完成", pluginId);

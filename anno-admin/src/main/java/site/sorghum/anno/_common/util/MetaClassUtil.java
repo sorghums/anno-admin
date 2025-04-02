@@ -2,21 +2,13 @@ package site.sorghum.anno._common.util;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.XmlUtil;
-import cn.hutool.setting.yaml.YamlUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.dynamic.DynamicType;
 import org.noear.wood.annotation.Table;
-import org.w3c.dom.Document;
 import site.sorghum.anno._common.entity.ClassDef;
 import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._metadata.AnField;
@@ -34,19 +26,13 @@ import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.tpl.BaseTplRender;
 import site.sorghum.anno.anno.util.AnnoUtil;
 import site.sorghum.anno.anno.util.QuerySqlCache;
-import site.sorghum.anno.method.resource.ResourceFinder;
 
-import java.io.File;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class MetaClassUtil {
@@ -65,117 +51,6 @@ public class MetaClassUtil {
     private static final Map<String, Class<?>> DY_TYPE_MAP = new HashMap<>();
 
     private static final Map<String, Field> FIELD_MAP = new HashMap<>();
-
-    @SneakyThrows
-    public static Map<TypeDescription, Class<?>> loadSystemClass() {
-        // 遍历根目录下所有资源，并过滤保留符合条件的资源
-        MultiResource multiResource = ResourceFinder.of().find("dynamic/*.yml");
-        Map<TypeDescription, Class<?>> map = new HashMap<>();
-        final DynamicType.Unloaded<?>[] dynamicType = {null};
-        multiResource.iterator().forEachRemaining(resource -> {
-            try {
-                log.info("加载：{}", resource);
-                if (resource.getName().endsWith(".yml")) {
-                    String content = resource.getReader(Charset.defaultCharset()).lines().collect(Collectors.joining());
-                    map.putAll(loadClass(content, false));
-                    ;
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
-            }
-        });
-        return map;
-    }
-
-    @SneakyThrows
-    public static Map<TypeDescription, Class<?>> loadClass(String ymlContent) {
-        return loadClass(ymlContent, false);
-    }
-
-    @SneakyThrows
-    public static Map<TypeDescription, Class<?>> loadClass(String ymlContent, boolean toJar) {
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        final DynamicType.Unloaded<?>[] dynamicType = {null};
-        try {
-            Dict dict = YamlUtil.load(new StringReader(ymlContent));
-            AnMeta anMeta = JSONUtil.toBean(dict, AnMeta.class);
-            DynamicType.Builder<?> builder;
-            ByteBuddy byteBuddy = new ByteBuddy();
-            if (Objects.nonNull(anMeta.getExtend())) {
-                classLoader.loadClass(anMeta.getExtend().getName());
-                builder = byteBuddy.subclass(anMeta.getExtend());
-            } else {
-                builder = byteBuddy.subclass(Object.class);
-            }
-            builder = builder.name("site.sorghum.anno.meta.proxy.%s".formatted(anMeta.getEntityName()));
-            // 定义annoMain
-            builder = builder.annotateType(anMeta);
-            // 定义annoField
-            List<AnField> anMetaColumns = Optional.ofNullable(anMeta.getColumns()).orElse(Collections.emptyList());
-            for (AnField column : anMetaColumns) {
-                builder = builder.defineField(
-                    column.getJavaName(), column.getJavaType(), Modifier.PUBLIC
-                ).annotateField(column);
-            }
-            List<AnnoButtonImpl> columnButtons = Optional.ofNullable(anMeta.getColumnButtons()).orElse(Collections.emptyList());
-            for (AnnoButtonImpl columnBtn : columnButtons) {
-                builder = builder.defineField(
-                    columnBtn.getName(), Object.class, Modifier.PUBLIC
-                ).annotateField(columnBtn);
-            }
-            if (Objects.isNull(dynamicType[0])) {
-                dynamicType[0] = builder.make();
-            } else {
-                dynamicType[0].include(builder.make());
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        if (toJar) {
-            dynamicType[0].
-                toJar(
-                    new File(FileUtil.file("dynamic.jar").
-                        getAbsolutePath())
-                );
-        }
-        Map<TypeDescription, Class<?>> allLoaded = dynamicType[0].
-            load(classLoader).
-            getAllLoaded();
-        allLoaded.forEach((typeDescription, aClass) -> putDyTypeMap(aClass));
-        return allLoaded;
-    }
-
-    @SneakyThrows
-    public static String class2Yml(Class<?> clazz) {
-        Dict dict = class2Dict(clazz, false);
-        StringWriter writer = new StringWriter();
-        YamlUtil.dump(dict, writer);
-        return writer.toString();
-    }
-
-    @SneakyThrows
-    public static String class2Json(Class<?> clazz) {
-        return class2Json(clazz, false);
-    }
-
-    @SneakyThrows
-    public static String class2Json(Class<?> clazz, boolean deepSuper) {
-        return JSONUtil.toJsonString(class2Dict(clazz, deepSuper));
-    }
-
-    public static AnMeta xml2AnMeta(Document document) {
-        Dict dict = XmlUtil.xmlToBean(document, Dict.class);
-        if (dict.containsKey("document")) {
-            dict = JSONUtil.toBean(dict.get("document"), Dict.class);
-        }
-        String extend = dict.getStr("extend");
-        Class<?> extendAClass = loadActClass(extend,null);
-        AnMeta extendAnMeta = class2AnMeta(extendAClass);
-        List<AnField> extendColumns = extendAnMeta.getColumns();
-        AnMeta anMeta = dict2AnMeta(dict);
-        anMeta.getColumns().addAll(0, extendColumns);
-        return anMeta;
-    }
 
     @SneakyThrows
     public static AnMeta dict2AnMeta(Dict classed2Dict) {
@@ -416,7 +291,4 @@ public class MetaClassUtil {
         return thisClass;
     }
 
-    public static void main(String[] args) {
-
-    }
 }

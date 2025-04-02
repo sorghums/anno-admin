@@ -1,7 +1,6 @@
 package site.sorghum.anno.plugin;
 
 
-import cn.hutool.core.io.resource.MultiResource;
 import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,12 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.pf4j.ExtensionPoint;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.MetadataManager;
-import site.sorghum.anno.method.resource.ResourceFinder;
 
-import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Anno模块
@@ -178,29 +173,5 @@ public abstract class AnnoPlugin implements ExtensionPoint {
             newString.insert(0, padString);
         }
         return newString.toString();
-    }
-
-    public List<String> xmlPath() {
-        return Collections.emptyList();
-    }
-
-    public void loadXml() {
-        List<String> xmlList = xmlPath();
-        if (xmlList.isEmpty()) {
-            return;
-        }
-        for (String xmlPath : xmlList) {
-            MultiResource multiResource = ResourceFinder.of().find(xmlPath);
-            multiResource.iterator().forEachRemaining(resource -> {
-                try {
-                    log.info("从xml加载配置：{}", resource.getUrl());
-                    String content = resource.getReader(Charset.defaultCharset()).lines().collect(Collectors.joining());
-                    AnnoBeanUtils.getBean(MetadataManager.class).loadEntityByXml(content, true);
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
-            });
-        }
-        AnnoBeanUtils.getBean(MetadataManager.class).refresh();
     }
 }
