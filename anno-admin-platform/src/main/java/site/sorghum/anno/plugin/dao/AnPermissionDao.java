@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Named
 public class AnPermissionDao implements AnnoBaseDao<AnPermission> {
+
     /**
      * 根据用户id查询系统权限
      *

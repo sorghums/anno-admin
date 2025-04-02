@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 @Named
 public class AnUserDao implements AnnoBaseDao<AnUser> {
+
     /**
      * 根据用户手机号查询用户
      *

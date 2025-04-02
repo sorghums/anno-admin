@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.pf4j.Extension;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._common.config.AnnoProperty;
-import site.sorghum.anno.anno.functions.CheckPermissionFunction;
+import site.sorghum.anno.anno.functions.AnnoFunction;
 import site.sorghum.anno.db.DbCriteria;
 import site.sorghum.anno.db.service.DbService;
 import site.sorghum.anno.plugin.AnnoPlugin;
@@ -53,7 +53,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         annoProperty = AnnoBeanUtils.getBean(AnnoProperty.class);
         onlineDictManager = AnnoBeanUtils.getBean(OnlineDictManager.class);
         // 权限校验
-        CheckPermissionFunction.permissionCheckFunction = (permissionCode) -> {
+        AnnoFunction.permissionCheckFunction = (permissionCode) -> {
             AuthService authService = AnnoBeanUtils.getBean(AuthService.class);
             authService.verifyPermission(permissionCode);
         };

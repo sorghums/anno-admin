@@ -28,7 +28,7 @@ import site.sorghum.anno.plugin.dao.AnPermissionDao;
 import site.sorghum.anno.plugin.dao.AnRoleDao;
 import site.sorghum.anno.plugin.dao.AnUserDao;
 import site.sorghum.anno.plugin.entity.request.UpdatePwdReq;
-import site.sorghum.anno.plugin.interfaces.AuthFunctions;
+import site.sorghum.anno.plugin.function.AuthFunction;
 import site.sorghum.anno.plugin.service.AuthService;
 
 import java.util.Arrays;
@@ -209,7 +209,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BizException("用户不存在");
         }
         // 清除缓存
-        AuthFunctions.removePermRoleCacheList.accept(anUser.getId());
+        AuthFunction.removePermRoleCacheList.accept(anUser.getId());
         if (!anUser.getPassword().equals(MD5Util.digestHex(mobile + ":" + pwd))) {
             throw new BizException("密码错误");
         }
@@ -227,7 +227,7 @@ public class AuthServiceImpl implements AuthService {
         if (CacheUtil.containsCache(key)) {
             return CacheUtil.getCacheList(key, String.class);
         }
-        List<String> roleIds = AuthFunctions.roleList.apply(userId);
+        List<String> roleIds = AuthFunction.roleList.apply(userId);
         List<String> permissionCodes;
         List<AnPermission> anPermissions;
         if (roleIds.contains("admin")) {
@@ -317,7 +317,7 @@ public class AuthServiceImpl implements AuthService {
         updatePwdEntity.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + req.getNewPwd1()));
         anUserDao.updateById(updatePwdEntity);
         // 清楚缓存
-        AuthFunctions.removePermRoleCacheList.accept(anUser.getId());
+        AuthFunction.removePermRoleCacheList.accept(anUser.getId());
     }
 
     /**

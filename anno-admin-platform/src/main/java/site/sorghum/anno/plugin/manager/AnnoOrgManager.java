@@ -40,7 +40,7 @@ public class AnnoOrgManager {
 
     public boolean isIgnoreFilter(String entityName) {
         try {
-            String loginId = AnnoStpUtil.getLoginId("-1");
+            AnnoStpUtil.checkLogin();
             List<String> roleIds = AnnoStpUtil.getRoleList();
             boolean isAdmin = roleIds.stream().anyMatch("admin"::equals);
             AnEntity entity = metadataManager.getEntity(entityName);

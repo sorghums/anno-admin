@@ -4,7 +4,7 @@ import cn.dev33.satoken.stp.StpInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Condition;
-import site.sorghum.anno.plugin.interfaces.AuthFunctions;
+import site.sorghum.anno.plugin.function.AuthFunction;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return AuthFunctions.permissionList.apply(loginId.toString());
+        return AuthFunction.permissionList.apply(loginId.toString());
     }
 
     /**
@@ -32,7 +32,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return AuthFunctions.roleList.apply(loginId.toString());
+        return AuthFunction.roleList.apply(loginId.toString());
     }
 
 }
