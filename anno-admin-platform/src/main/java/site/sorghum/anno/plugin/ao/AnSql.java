@@ -66,7 +66,8 @@ public class AnSql extends PrimaryKeyModel implements Serializable {
      */
     @AnnoField(
         title = "运行时间",
-        tableFieldName = "run_time"
+        tableFieldName = "run_time",
+        fieldSize = 0
     )
     private Date runTime;
 

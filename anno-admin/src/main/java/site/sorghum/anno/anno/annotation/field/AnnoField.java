@@ -34,7 +34,7 @@ public @interface AnnoField {
     String tableFieldName() default "";
 
     /**
-     * 数据库中的字段长度，为 0 时使用 anno 设置的默认长度
+     * 数据库中的字段长度
      */
     int fieldSize() default 0;
 

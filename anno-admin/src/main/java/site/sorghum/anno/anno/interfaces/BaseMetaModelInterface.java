@@ -22,7 +22,11 @@ public interface BaseMetaModelInterface {
 
     ;
 
-    @AnnoField(title = "创建时间", tableFieldName = "create_time", dataType = AnnoDataType.DATETIME, show = false)
+    @AnnoField(title = "创建时间",
+        tableFieldName = "create_time",
+        dataType = AnnoDataType.DATETIME,
+        show = false,
+        fieldSize = 6)
     default void createTime() {
     }
 
@@ -41,7 +45,11 @@ public interface BaseMetaModelInterface {
 
     ;
 
-    @AnnoField(title = "更新时间", tableFieldName = "update_time", dataType = AnnoDataType.DATETIME, show = false)
+    @AnnoField(title = "更新时间",
+        fieldSize = 6,
+        tableFieldName = "update_time",
+        dataType = AnnoDataType.DATETIME,
+        show = false)
     default void updateTime() {
     }
 

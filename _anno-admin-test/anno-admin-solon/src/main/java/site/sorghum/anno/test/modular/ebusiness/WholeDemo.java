@@ -253,7 +253,7 @@ public class WholeDemo {
     @AnnoField(
         title = "日期",
         tableFieldName = "demo_date",
-        fieldSize = 19,
+        fieldSize = 0,
         show = true,
         pkField = false,
         edit = @AnnoEdit(
@@ -268,7 +268,7 @@ public class WholeDemo {
     @AnnoField(
         title = "日期时间",
         tableFieldName = "demo_datetime",
-        fieldSize = 19,
+        fieldSize = 0,
         show = true,
         pkField = false,
         edit = @AnnoEdit(
