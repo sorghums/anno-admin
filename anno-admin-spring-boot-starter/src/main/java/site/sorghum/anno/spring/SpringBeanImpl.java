@@ -14,7 +14,11 @@ import java.util.List;
 public class SpringBeanImpl implements AnnoBean {
     @Override
     public <T> T getBean(String name) {
-        return SpringUtil.getBean(name);
+        try {
+            return SpringUtil.getBean(name);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override
@@ -39,7 +43,11 @@ public class SpringBeanImpl implements AnnoBean {
      * @return 返回指定类型的Bean对象
      */
     private <T> T _getBean(Class<T> type) {
-        return SpringUtil.getBean(type);
+        try {
+            return SpringUtil.getBean(type);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override

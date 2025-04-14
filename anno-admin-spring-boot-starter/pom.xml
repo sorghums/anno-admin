@@ -74,14 +74,8 @@
         </dependency>
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-dao-redisx</artifactId>
-            <version>1.34.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>cn.dev33</groupId>
-                    <artifactId>sa-token-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>sa-token-redisx</artifactId>
+            <version>${sa-token.version}</version>
         </dependency>
 
         <dependency>

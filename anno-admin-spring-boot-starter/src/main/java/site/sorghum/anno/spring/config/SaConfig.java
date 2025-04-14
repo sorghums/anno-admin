@@ -2,7 +2,7 @@ package site.sorghum.anno.spring.config;
 
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.dao.SaTokenDao;
-import cn.dev33.satoken.dao.SaTokenDaoOfRedis;
+import cn.dev33.satoken.dao.SaTokenDaoForRedisx;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,7 +29,7 @@ public class SaConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnClass(name = "org.noear.redisx.RedisClient")
     public SaTokenDao saTokenDaoInit(Properties redisClientProperties) {
-        return new SaTokenDaoOfRedis(redisClientProperties);
+        return new SaTokenDaoForRedisx(redisClientProperties);
     }
 
     @ConditionalOnMissingBean(value = SaTokenDao.class)
