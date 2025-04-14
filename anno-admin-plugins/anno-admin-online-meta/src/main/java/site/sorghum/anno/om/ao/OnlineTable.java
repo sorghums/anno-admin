@@ -21,7 +21,8 @@ import java.util.Map;
 public class OnlineTable {
     @AnnoField(
         title = "主键",
-        pkField = true
+        pkField = true,
+        fieldSize = 256
     )
     String id;
 
@@ -31,13 +32,15 @@ public class OnlineTable {
         dataType = AnnoDataType.OPTIONS,
         optionType = @AnnoOptionType(
             supplier = DsNameSupplier.class
-        )
+        ),
+        fieldSize = 256
     )
     String dsName;
 
     @AnnoField(
         title = "数据表名称",
-        search = @AnnoSearch(enable = true, placeHolder = "请输入数据表名称")
+        search = @AnnoSearch(enable = true, placeHolder = "请输入数据表名称"),
+        fieldSize = 256
     )
     String tableName;
 

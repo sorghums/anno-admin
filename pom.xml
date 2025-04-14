@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.0.8-M2</version>
+        <version>3.1.2</version>
         <relativePath/>
     </parent>
 
@@ -23,8 +23,6 @@
     <modules>
         <!-- 核心包 -->
         <module>anno-admin</module>
-        <!-- 数据库方言包-->
-        <module>anno-admin-jdialects</module>
         <!-- 自动生成表结构 -->
         <module>anno-admin-ddl</module>
         <!-- 基础平台支持模块 -->
@@ -46,6 +44,8 @@
     </modules>
 
     <properties>
+        <sorghum-ddl.ver>2025.04.11-SNAPSHOT</sorghum-ddl.ver>
+
         <spring-boot.version>3.1.1</spring-boot.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

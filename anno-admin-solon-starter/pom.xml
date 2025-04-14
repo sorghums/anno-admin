@@ -54,6 +54,11 @@
             <groupId>org.noear</groupId>
             <artifactId>sa-token-solon-plugin</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redisx</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>
@@ -88,6 +93,18 @@
             <groupId>org.noear</groupId>
             <artifactId>redisx</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>sa-token-solon-plugin</artifactId>
+            <version>3.1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>sa-token-solon-plugin</artifactId>
+            <version>3.1.2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

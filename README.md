@@ -137,7 +137,15 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 新增formTable功能
 + 完善excel导出功能代码
 ### 快照分支
-+ ...
++ 升级Solon版本到3.1.2 wood到1.3.16 等其他依赖版本.
++ 新增新增时默认数据的支持注入 See: ResetPwdDataSupplier.java
++ 支持动态设置按钮的表单结构
++ 完善x-file-storage插件适配
++ 修复因泛型导致的编译问题
++ 去除无用的yml,xml,json代替注解功能[废啦]
++ 去除组织过滤概念[废啦]
++ 支持接口形式的注入AnField元数据,适合接入第三方框架, See: WtfInterfaces.java
++ ddl基础框架改为 sorghum-ddl <a href="https://gitee.com/cmeet/sorghum-ddl">点个start吧</a>
 ## 贡献
 如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
 

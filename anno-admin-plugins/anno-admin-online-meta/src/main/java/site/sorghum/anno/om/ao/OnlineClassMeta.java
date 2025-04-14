@@ -34,6 +34,7 @@ public class OnlineClassMeta {
 
 
     @AnnoField(title = "完整类名",
+        fieldSize = 256,
         tableFieldName = "whole_class_name",
         edit = @AnnoEdit())
     String wholeClassName;
@@ -42,6 +43,7 @@ public class OnlineClassMeta {
     @AnnoField(title = "元数据",
         tableFieldName = "class_content",
         dataType = AnnoDataType.CODE_EDITOR,
+        fieldSize = 256,
         codeType = @AnnoCodeType(mode = "text/x-java"),
         edit = @AnnoEdit())
     String classContent;

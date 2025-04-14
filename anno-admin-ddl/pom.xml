@@ -12,7 +12,6 @@
     <artifactId>anno-admin-ddl</artifactId>
 
     <properties>
-        <jdialects.version>5.0.13.jre8</jdialects.version>
     </properties>
 
     <dependencies>
@@ -21,8 +20,9 @@
             <artifactId>wood</artifactId>
         </dependency>
         <dependency>
-            <groupId>site.sorghum.anno</groupId>
-            <artifactId>anno-admin-jdialects</artifactId>
+            <groupId>site.sorghum.ddl</groupId>
+            <artifactId>sorghum-ddl-wood</artifactId>
+            <version>${sorghum-ddl.ver}</version>
         </dependency>
         <!-- 解析 sql -->
         <dependency>

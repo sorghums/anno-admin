@@ -1,6 +1,6 @@
 package site.sorghum.anno._ddl.entity2db;
 
-import org.noear.wood.wrap.TableWrap;
+import site.sorghum.ddl.entity.DdlTableWrap;
 
 /**
  * 从实体上，获取表结构信息
@@ -11,6 +11,6 @@ import org.noear.wood.wrap.TableWrap;
  */
 public interface EntityToTableGetter<T> {
 
-    TableWrap getTable(T entity);
+    DdlTableWrap getTable(T entity);
 
 }

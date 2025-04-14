@@ -24,6 +24,16 @@ import java.util.List;
 @NoArgsConstructor
 public class Article extends BaseMetaModel {
 
+    String hhName;
+    @AnnoField(
+        title = "文章HH名称",
+        tableFieldName = "hh_name",
+        search = @AnnoSearch,
+        edit = @AnnoEdit)
+    public String getHhName() {
+        return hhName;
+    }
+
     String name;
     @AnnoField(
         title = "文章名称",
