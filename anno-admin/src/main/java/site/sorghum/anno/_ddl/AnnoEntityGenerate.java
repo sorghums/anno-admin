@@ -1,16 +1,14 @@
 package site.sorghum.anno._ddl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.annotation.Column;
 import org.noear.wood.annotation.Exclude;
 import org.noear.wood.annotation.PrimaryKey;
-import site.sorghum.anno._common.exception.BizException;
-import site.sorghum.anno._ddl.entity2db.EntityToTableGetter;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.anno._metadata.MetadataManager;
 import site.sorghum.ddl.entity.DdlColumnWrap;
 import site.sorghum.ddl.entity.DdlTableWrap;
 import site.sorghum.ddl.generate.JavaCoreEntityGenerate;
@@ -22,33 +20,25 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-/**
- * anno 的实体类，转成 table
- *
- * @author songyinyin
- * @since 2023/7/4 22:44
- */
 @Named
-@Slf4j
-public class AnnoEntityToTableGetter extends JavaCoreEntityGenerate implements EntityToTableGetter<AnEntity>{
+public class AnnoEntityGenerate extends JavaCoreEntityGenerate {
 
+    @Inject
+    MetadataManager metadataManager;
 
     /**
      * Java的类 -> 数据库表元数据
      *
      * @param tClass 类名
-     * @Param 实体元数据信息
      * @return 数据库表元数据
      */
-    public DdlTableWrap get(Class<?> tClass,AnEntity managerEntity) {
+    @Override
+    public DdlTableWrap get(Class<?> tClass) {
         DdlTableWrap coreDdlTableWrap = getCoreDdlTableWrap(tClass);
+        AnEntity managerEntity = metadataManager.getEntity(tClass);
         String tableName = managerEntity.tableName();
         if (tableName != null && !tableName.isEmpty()) {
             coreDdlTableWrap.setName(tableName);
-        }
-        String name = managerEntity.getName();
-        if (name != null && !name.isEmpty()) {
-            coreDdlTableWrap.setRemarks(name);
         }
         List<AnField> fields = managerEntity.getFields();
         for (AnField field : fields) {
@@ -101,28 +91,10 @@ public class AnnoEntityToTableGetter extends JavaCoreEntityGenerate implements E
                 }
             }
             coreDdlColumnWrap.setRemarks(field.getTitle());
-            coreDdlColumnWrap.setDefaultValue(null);
+            coreDdlColumnWrap.setDefaultValue(field.title());
             coreDdlTableWrap.getColumns().add(coreDdlColumnWrap);
         }
         return coreDdlTableWrap;
-    }
-
-
-    @Override
-    public DdlTableWrap getTable(AnEntity anEntity) {
-        DdlTableWrap ddlTableWrap = get(anEntity.getClass(), anEntity);
-
-        List<String> pks = ddlTableWrap.getPks();
-        if (pks == null || pks.isEmpty()){
-            throw new BizException("[AnnoAdmin]实体类:%s 无主键配置.".formatted(anEntity.getEntityName()));
-        }
-        if (pks.size() > 1){
-            throw new BizException("[AnnoAdmin]实体类:%s 主键配置错误，只能配置一个主键.".formatted(anEntity.getEntityName()));
-        }
-        DdlColumnWrap idColumnWrap = CollUtil.findOne(ddlTableWrap.getColumns(), i -> pks.contains(i.getName()));
-        ddlTableWrap.getColumns().removeIf(i -> pks.contains(i.getName()));
-        ddlTableWrap.getColumns().add(0, idColumnWrap);
-        return ddlTableWrap;
     }
 
     private boolean columnIsSupport(Class<?> fieldType) {
@@ -134,4 +106,5 @@ public class AnnoEntityToTableGetter extends JavaCoreEntityGenerate implements E
             || LocalDate.class.isAssignableFrom(fieldType)
             || LocalDateTime.class.isAssignableFrom(fieldType);
     }
+
 }

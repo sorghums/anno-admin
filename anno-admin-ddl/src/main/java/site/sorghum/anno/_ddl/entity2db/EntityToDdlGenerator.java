@@ -4,13 +4,11 @@ import cn.hutool.core.util.ArrayUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.wood.DbContext;
-import org.noear.wood.wrap.ColumnWrap;
 import org.noear.wood.wrap.TableWrap;
 import site.sorghum.anno._ddl.DdlException;
-import site.sorghum.ddl.DDLDialect;
-import site.sorghum.ddl.DDLDialectFactory;
 import site.sorghum.ddl.entity.DdlColumnWrap;
 import site.sorghum.ddl.entity.DdlTableWrap;
+import site.sorghum.ddl.wood.WoodDdlWrapper;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +21,7 @@ import java.util.Map;
  * @author songyinyin
  * @since 2023/7/3 22:31
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Slf4j
 @Data
 public class EntityToDdlGenerator<T> {
@@ -31,9 +30,16 @@ public class EntityToDdlGenerator<T> {
 
     protected EntityToTableGetter<T> entityToTableGetter;
 
-    protected DDLDialect dialect =  DDLDialectFactory.getDialect("Mysql");
+    protected WoodDdlWrapper woodDdlWrapper;
 
     private final static Map<String, EntityToDdlGenerator> map = new HashMap<>();
+
+    public EntityToDdlGenerator(DbContext dbContext,
+                                EntityToTableGetter<T> entityToTableGetter) {
+        this.dbContext = dbContext;
+        this.entityToTableGetter = entityToTableGetter;
+        woodDdlWrapper  = new WoodDdlWrapper(dbContext);
+    }
 
     /**
      * 创建一个EntityToDdlGenerator实例
@@ -43,7 +49,8 @@ public class EntityToDdlGenerator<T> {
      * @param <T>                 实体类型
      * @return 返回创建的EntityToDdlGenerator实例
      */
-    public static <T> EntityToDdlGenerator<T> of(DbContext dbContext, EntityToTableGetter<T> entityToTableGetter) {
+    public static <T> EntityToDdlGenerator<T> of(DbContext dbContext,
+                                                 EntityToTableGetter<T> entityToTableGetter) {
         int hashCodeOne = dbContext.hashCode();
         int hashCodeTwo = entityToTableGetter.hashCode();
         String key = hashCodeOne + "_" + hashCodeTwo;
@@ -53,18 +60,6 @@ public class EntityToDdlGenerator<T> {
         EntityToDdlGenerator entityToDdlGenerator = new EntityToDdlGenerator(dbContext, entityToTableGetter);
         map.put(key, entityToDdlGenerator);
         return entityToDdlGenerator;
-    }
-
-    public EntityToDdlGenerator(DbContext dbContext, EntityToTableGetter<T> entityToTableGetter) {
-        this.dbContext = dbContext;
-        this.entityToTableGetter = entityToTableGetter;
-//        try (Connection connection = dbContext.getConnection()) {
-//            this.dialect = Dialect.guessDialect(connection);
-//        } catch (SQLException e) {
-//            log.error("annoAdmin guess Dialect error, default is mysql.");
-//            this.dialect = Dialect.MySQLDialect;
-//        }
-//        Dialect.setGlobalAllowReservedWords(true);
     }
 
     /**
@@ -91,7 +86,7 @@ public class EntityToDdlGenerator<T> {
      */
     public String[] getCreateTableDDL(T entity) {
         DdlTableWrap table = entityToTableGetter.getTable(entity);
-        return new String[]{dialect.generateCreateTableDDL(table)};
+        return new String[]{woodDdlWrapper.dialect().generateCreateTableDDL(table)};
     }
 
     /**
@@ -121,18 +116,17 @@ public class EntityToDdlGenerator<T> {
      */
     public List<String> getTableAddedColumnDDL(T entity) {
         DdlTableWrap table = entityToTableGetter.getTable(entity);
-        TableWrap existsTable = dbContext.getMetaData().getTable(table.getName());
-
-        if (existsTable == null) {
+        DdlTableWrap ddlTableWrap = woodDdlWrapper.fromDataSource(table.getName());
+        if (ddlTableWrap == null) {
             throw new DdlException("table not exists: " + table.getName());
         }
         List<DdlColumnWrap> columns = table.getColumns();
-        List<String> existsTableColumnNames = existsTable.getColumns().stream().map(ColumnWrap::getName).map(String::toLowerCase).toList();
+        List<String> existsTableColumnNames = ddlTableWrap.getColumns().stream().map(DdlColumnWrap::getName).map(String::toLowerCase).toList();
         List<DdlColumnWrap> addColumnWrap = columns.stream().filter(columnWrap -> !existsTableColumnNames.contains(columnWrap.getName().toLowerCase())).toList();
         if (addColumnWrap.isEmpty()) {
             return Collections.emptyList();
         }
-        return addColumnWrap.stream().map(it -> dialect.generateAddColumnDDL(it)).toList();
+        return addColumnWrap.stream().map(it -> woodDdlWrapper.dialect().generateAddColumnDDL(it)).toList();
     }
 
     /**

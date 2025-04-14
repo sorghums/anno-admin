@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>site.sorghum.ddl</groupId>
+            <artifactId>sorghum-ddl-wood</artifactId>
+            <version>${sorghum-ddl.ver}</version>
+        </dependency>
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>snack3</artifactId>
         </dependency>

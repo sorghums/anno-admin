@@ -12,7 +12,6 @@
     <artifactId>anno-admin-ddl</artifactId>
 
     <properties>
-        <sorghum-ddl.ver>2025.04.03</sorghum-ddl.ver>
     </properties>
 
     <dependencies>
@@ -22,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>site.sorghum.ddl</groupId>
-            <artifactId>sorhgum-ddl</artifactId>
+            <artifactId>sorghum-ddl-wood</artifactId>
             <version>${sorghum-ddl.ver}</version>
         </dependency>
         <!-- 解析 sql -->

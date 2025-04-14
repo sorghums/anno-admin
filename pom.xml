@@ -44,6 +44,8 @@
     </modules>
 
     <properties>
+        <sorghum-ddl.ver>2025.04.11-SNAPSHOT</sorghum-ddl.ver>
+
         <spring-boot.version>3.1.1</spring-boot.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
