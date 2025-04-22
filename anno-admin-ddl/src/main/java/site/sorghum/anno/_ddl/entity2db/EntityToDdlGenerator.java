@@ -86,7 +86,7 @@ public class EntityToDdlGenerator<T> {
      */
     public String[] getCreateTableDDL(T entity) {
         DdlTableWrap table = entityToTableGetter.getTable(entity);
-        return new String[]{woodDdlWrapper.dialect().generateCreateTableDDL(table)};
+        return woodDdlWrapper.dialect().generateCreateTableDDL(table).toArray(new String[0]);
     }
 
     /**

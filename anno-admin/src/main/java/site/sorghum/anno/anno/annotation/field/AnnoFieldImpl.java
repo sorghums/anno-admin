@@ -44,6 +44,11 @@ public class AnnoFieldImpl implements AnnoField {
     boolean show = true;
 
     /**
+     * 渲染代码
+     */
+    String render = "";
+
+    /**
      * 搜索信息
      */
     AnnoSearchImpl search = AnnoSearchImpl.builder().enable(false).build();
@@ -134,6 +139,11 @@ public class AnnoFieldImpl implements AnnoField {
     @Override
     public boolean show() {
         return this.show;
+    }
+
+    @Override
+    public String render() {
+        return this.render;
     }
 
     @Override

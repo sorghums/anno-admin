@@ -9,9 +9,9 @@ import org.noear.wood.annotation.PrimaryKey;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
 import site.sorghum.anno._metadata.MetadataManager;
+import site.sorghum.ddl.base.JavaCoreEntityGenerate;
 import site.sorghum.ddl.entity.DdlColumnWrap;
 import site.sorghum.ddl.entity.DdlTableWrap;
-import site.sorghum.ddl.generate.JavaCoreEntityGenerate;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;

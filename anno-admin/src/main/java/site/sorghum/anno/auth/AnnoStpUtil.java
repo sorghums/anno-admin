@@ -10,6 +10,7 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpLogic;
 import jakarta.inject.Named;
 import lombok.Getter;
+import site.sorghum.anno._common.util.JSONUtil;
 
 import java.util.List;
 
@@ -63,7 +64,10 @@ public class AnnoStpUtil {
         if (authUser == null){
             return null;
         }
-        return (AnnoAuthUser) authUser;
+        if (authUser instanceof AnnoAuthUser){
+            return (AnnoAuthUser) authUser;
+        }
+        return JSONUtil.toBean(authUser, AnnoAuthUser.class);
     }
 
     public static AnnoAuthUser setAuthUser(AnnoAuthUser authUser) {
