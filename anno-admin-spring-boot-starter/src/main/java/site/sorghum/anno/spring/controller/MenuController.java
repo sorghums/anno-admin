@@ -7,6 +7,7 @@ import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno.plugin.controller.MenuBaseController;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
+import site.sorghum.anno.plugin.entity.response.NaiveMenu;
 import site.sorghum.anno.plugin.entity.response.VbenMenu;
 
 import java.util.List;
@@ -38,5 +39,11 @@ public class MenuController extends MenuBaseController {
     @GetMapping(value = "/vbenMenu")
     public AnnoResult<List<VbenMenu>> vbenMenu() {
         return super.vbenMenu();
+    }
+
+    @Override
+    @GetMapping(value = "/naiveMenu")
+    public AnnoResult<List<NaiveMenu>> naiveMenu() {
+        return super.naiveMenu();
     }
 }

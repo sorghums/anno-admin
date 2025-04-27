@@ -6,6 +6,7 @@ import org.noear.solon.annotation.SolonMain;
 import org.noear.solon.scheduling.annotation.EnableRetry;
 import org.noear.solon.scheduling.annotation.EnableScheduling;
 import site.sorghum.anno.anno.annotation.global.AnnoScan;
+import site.sorghum.anno.anno.functions.AnnoFunction;
 
 /**
  * Ano 管理入门
@@ -21,5 +22,7 @@ import site.sorghum.anno.anno.annotation.global.AnnoScan;
 public class AnnoSolonAdminStarter {
     public static void main(String[] args) throws Exception {
         Solon.start(AnnoSolonAdminStarter.class, args);
+        AnnoFunction.loginCheckFunction = () ->{};
+        AnnoFunction.permissionCheckFunction = (p) -> {};
     }
 }

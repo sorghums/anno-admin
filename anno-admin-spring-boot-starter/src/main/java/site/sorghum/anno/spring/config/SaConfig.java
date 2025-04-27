@@ -15,7 +15,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno.auth.AnnoStpUtil;
+import site.sorghum.anno.anno.functions.AnnoFunction;
 
 import java.util.Properties;
 
@@ -48,7 +48,7 @@ public class SaConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册 Sa-Token 拦截器，校验规则为 StpUtil.checkLogin() 登录校验。
-        registry.addInterceptor(new SaInterceptor(handle -> AnnoStpUtil.checkLogin()))
+        registry.addInterceptor(new SaInterceptor(handle ->  AnnoFunction.loginCheckFunction.run()))
             .addPathPatterns(AnnoConstants.BASE_URL + "/**")
             .excludePathPatterns(AnnoConstants.BASE_URL + "/favicon.ico")
             .excludePathPatterns(AnnoConstants.BASE_URL + "/_app.config.js")

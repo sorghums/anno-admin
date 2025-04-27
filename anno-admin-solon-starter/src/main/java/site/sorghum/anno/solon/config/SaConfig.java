@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import site.sorghum.anno._common.AnnoConstants;
-import site.sorghum.anno.auth.AnnoStpUtil;
+import site.sorghum.anno.anno.functions.AnnoFunction;
 
 /**
  * @author Sorghum
@@ -38,6 +38,6 @@ public class SaConfig {
             // [放行路由]
             .addExclude("/favicon.ico", "/doc.html", "/swagger-resources", "/swagger/*")
             // 认证函数: 每次请求执行
-            .setAuth(req -> SaRouter.match(AnnoConstants.BASE_URL + "/**", AnnoStpUtil::checkLogin));
+            .setAuth(req -> SaRouter.match(AnnoConstants.BASE_URL + "/**", () -> AnnoFunction.loginCheckFunction.run()));
     }
 }

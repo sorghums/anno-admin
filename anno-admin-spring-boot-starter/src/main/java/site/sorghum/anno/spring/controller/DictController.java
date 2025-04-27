@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.controller.BaseDictController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 
@@ -43,6 +44,8 @@ public class DictController extends BaseDictController {
         }
     )
     public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@RequestBody Map<String, Object> dictParam) {
+        Map extra = MapUtil.get(dictParam, "_extra", Map.class, Collections.emptyMap());
+        AnnoContextUtil.getContext().setRequestParams(extra);
         return super.loadDict(
             MapUtil.getStr(dictParam, "sqlKey"),
             MapUtil.getStr(dictParam, "annoClazz"),
@@ -51,7 +54,7 @@ public class DictController extends BaseDictController {
             MapUtil.getStr(dictParam, "onlineDictKey"),
             MapUtil.getStr(dictParam, "optionAnnoClazz"),
             MapUtil.getStr(dictParam, "treeAnnoClazz"),
-            MapUtil.get(dictParam, "_extra", Map.class, Collections.emptyMap())
+            extra
         );
     }
 

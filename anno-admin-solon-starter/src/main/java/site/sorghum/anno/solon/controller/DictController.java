@@ -10,6 +10,7 @@ import org.noear.solon.annotation.Param;
 import org.noear.solon.annotation.Post;
 import site.sorghum.anno._common.AnnoConstants;
 import site.sorghum.anno._common.response.AnnoResult;
+import site.sorghum.anno._common.util.AnnoContextUtil;
 import site.sorghum.anno.anno.controller.BaseDictController;
 import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 
@@ -55,6 +56,7 @@ public class DictController extends BaseDictController {
         if (_extra == null) {
             _extra = Collections.emptyMap();
         }
+        AnnoContextUtil.getContext().setRequestParams(_extra);
         return super.loadDict(sqlKey, annoClazz, idKey, labelKey,onlineDictKey, optionAnnoClazz, treeAnnoClazz, _extra);
     }
 
