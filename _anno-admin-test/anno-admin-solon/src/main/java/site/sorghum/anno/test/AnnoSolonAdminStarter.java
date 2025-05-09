@@ -22,6 +22,7 @@ import site.sorghum.anno.anno.functions.AnnoFunction;
 public class AnnoSolonAdminStarter {
     public static void main(String[] args) throws Exception {
         Solon.start(AnnoSolonAdminStarter.class, args);
+        System.out.println("Hi AnnoAdmin");
         AnnoFunction.loginCheckFunction = () ->{};
         AnnoFunction.permissionCheckFunction = (p) -> {};
     }
