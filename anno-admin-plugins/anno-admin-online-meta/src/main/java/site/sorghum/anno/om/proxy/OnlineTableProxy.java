@@ -21,7 +21,7 @@ public class OnlineTableProxy implements AnnoBaseProxy<OnlineTable> {
     @Override
     public void afterFetch(DbCriteria criteria, AnnoPage<OnlineTable> page) {
         DbPage criteriaPage = criteria.getPage();
-        String dsName = getValueStringFromJavaCriteria(criteria.getCondition(), OnlineTable.class, "dsName");
+        String dsName = getValueStringFromJavaCriteria(criteria.condition(), OnlineTable.class, "dsName");
         DbContext dbContext = DsNameSupplier.dbContexts.get(dsName);
         if (dbContext == null){
             throw new BizException("dsName: " + dsName + "对应的数据库连接不存在");

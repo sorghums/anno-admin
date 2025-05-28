@@ -12,12 +12,14 @@
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/fork.svg?theme=dark" alt="Gitee fork"></a>
     <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/stars/sorghums/anno-admin?style=social" alt="GitHub stars"></a>
     <a href="https://github.com/sorghums/anno-admin"><img src="https://img.shields.io/github/forks/sorghums/anno-admin?style=social" alt="GitHub forks"></a>
+    <a href="https://gitcode.com/Cmeet/anno-admin"><img src="https://gitcode.com/Cmeet/anno-admin/star/badge.svg" alt="GStar forks"></a>
 </p>
 
 <p align="center">
     <a href="http://anno-admin-demo.sorghum.site/">演示地址</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin-demo">Demo项目</a> &nbsp; | &nbsp;
     <a href="https://gitee.com/cmeet/anno-admin-ant-design-ui">前端仓库(ant-design)</a> &nbsp; | &nbsp;
+    <a href="https://gitcode.com/Cmeet/anno-admin">GitCode仓库</a> &nbsp; | &nbsp; 
     <a href="https://gitee.com/cmeet/anno-admin">码云仓库</a> &nbsp; | &nbsp; 
     <a href="https://github.com/sorghums/anno-admin">Github 仓库</a> &nbsp; | &nbsp; 
     <a href="https://www.yuque.com/sorghums/anno-admin" target="_blank"><b>📕 使用文档</b></a>
@@ -152,7 +154,7 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 开发环境准备：
 ```
 # 1. 打前端包到本地仓库（idea 启动项目前，需要先打包前端）
-地址：https://gitee.com/cmeet/anno-admin-ant-design-ui
+地址：https://gitcode.com/Cmeet/anno-admin-ant-design-ui
 
 # 2. 打包后端代码
 mvn clean package -Dmaven.test.skip=true

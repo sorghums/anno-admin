@@ -1,7 +1,9 @@
 package site.sorghum.anno.db;
 
 import cn.hutool.core.collection.CollUtil;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import site.sorghum.anno._common.AnnoBeanUtils;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.EntityMetadataLoader;
@@ -22,6 +24,7 @@ public class DbCriteria {
     /**
      * 查询条件
      */
+    @Getter(AccessLevel.NONE)
     private DbCondition condition;
 
     /**

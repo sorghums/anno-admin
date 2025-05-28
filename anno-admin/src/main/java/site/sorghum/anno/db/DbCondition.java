@@ -43,6 +43,11 @@ public class DbCondition {
     List<Object> values = new ArrayList<>();
 
 
+    /**
+     * 不执行
+     */
+    boolean noExecute = false;
+
     public List<DbCondition> findCondition(String field) {
         return findCondition0(field, pair -> StrUtil.equals(pair.getKey().getField(), (String) pair.getValue()));
     }
@@ -136,7 +141,7 @@ public class DbCondition {
     }
 
     public DbCondition create(String field, QueryType operator, Object... values) {
-        DbCondition condition = new DbCondition(field, operator, Arrays.asList(values));
+        DbCondition condition = new DbCondition(field, operator, Arrays.asList(values),false);
         this.values.add(condition);
         return this;
     }

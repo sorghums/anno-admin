@@ -46,6 +46,12 @@ public @interface AnnoField {
     boolean show() default true;
 
     /**
+     * 自定义前端渲染代码
+     * @return {@link String}
+     */
+    String render() default "";
+
+    /**
      * 搜索信息
      *
      * @return {@link AnnoSearch}

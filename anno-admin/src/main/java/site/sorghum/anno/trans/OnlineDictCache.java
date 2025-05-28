@@ -5,10 +5,7 @@ import jakarta.inject.Named;
 import lombok.Data;
 import site.sorghum.anno.anno.entity.common.TagEnumLabel;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Named
 public class OnlineDictCache {
@@ -81,6 +78,9 @@ public class OnlineDictCache {
      */
     public List<OnlineDict> getForLoadDict(String dictName) {
         List<OnlineDict> onlineDictList = get(dictName);
+        if (onlineDictList == null){
+            return Collections.emptyList();
+        }
         onlineDictList.stream().filter(it -> Objects.equals(it.getParentValue(),dictName)).forEach(it -> {it.setParentValue(null);});
         return onlineDictList;
     }

@@ -59,7 +59,11 @@ public class DbServiceWood implements DbService {
                 } catch (SQLException e) {
                     throw new BizException(e);
                 }
-                return new AnnoPage<>(true, page.getList(), page.getTotal(), criteria.getPage().getPageSize(), criteria.getPage().getPage());
+                return new AnnoPage<>(true,
+                    page.getList(),
+                    page.getTotal(),
+                    criteria.getPage().getPageSize(),
+                    criteria.getPage().getPage());
             }
         );
     }
@@ -96,7 +100,7 @@ public class DbServiceWood implements DbService {
     public <T> int update(T t, DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
-        return AnnoDbContext.dynamicDbContext(entity.getDbName(),() -> {
+        return AnnoDbContext.dynamicDbContext(entity.getDbName(), () -> {
             DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
             // 执行值
             preProcess(t, entity, false);
@@ -117,7 +121,7 @@ public class DbServiceWood implements DbService {
         TableParam<T> tableParam = dbTableContext.getTableParam(t.getClass());
         DbRemove dbRemove = tableParam.getDbRemove();
         AnEntity entity = metadataManager.getEntity(tableParam.getClazz());
-        return AnnoDbContext.dynamicDbContext(entity.getDbName(),() -> {
+        return AnnoDbContext.dynamicDbContext(entity.getDbName(), () -> {
             preProcess(t, entity, true);
             DbTableQuery dbTableQuery = AnnoDbContext.dbContext().table(tableParam.getTableName())
                 .setEntityIf(t, (k, v) -> filterField(entity, tableParam, k, v));
@@ -142,7 +146,7 @@ public class DbServiceWood implements DbService {
     @Override
     public <T> int delete(DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
-        return AnnoDbContext.dynamicDbContext(tableParam.getDbName(),() -> {
+        return AnnoDbContext.dynamicDbContext(tableParam.getDbName(), () -> {
             DbTableQuery dbTableQuery = buildCommonDbTableQuery(criteria);
             DbRemove dbRemove = tableParam.getDbRemove();
             if (dbRemove.getLogic()) {
@@ -252,7 +256,7 @@ public class DbServiceWood implements DbService {
             criteria.condition().eq(dbRemove.getRemoveColumn(), converted);
         }
 
-        DbCondition condition = criteria.getCondition();
+        DbCondition condition = criteria.condition();
         if (condition != null) {
             dbTableQuery.where("1=1");
             for (Object value : condition.getValues()) {

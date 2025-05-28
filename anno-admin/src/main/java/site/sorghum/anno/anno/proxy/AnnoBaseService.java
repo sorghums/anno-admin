@@ -41,6 +41,10 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
+
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
         mtProxy.beforeFetch(criteria);
 
@@ -57,6 +61,10 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
+
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
         mtProxy.beforeFetch(criteria);
         List<T> list = virtualProcess(tableParam.isVirtualTable(),
@@ -71,6 +79,10 @@ public class AnnoBaseService {
     public <T> T queryOne(DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
+
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
 
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
         mtProxy.beforeFetch(criteria);
@@ -90,6 +102,10 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
+
         // 前置处理
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
         mtProxy.beforeUpdate(t, criteria);
@@ -108,6 +124,10 @@ public class AnnoBaseService {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
 
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
+
         // 前置处理
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());
         mtProxy.beforeAdd(t);
@@ -124,6 +144,10 @@ public class AnnoBaseService {
     public <T> int delete(DbCriteria criteria) {
         TableParam<T> tableParam = dbTableContext.getTableParam(criteria.getEntityName());
         AnEntity managerEntity = metadataManager.getEntity(criteria.getEntityName());
+
+        if (criteria.condition().isNoExecute()){
+            tableParam.setVirtualTable(true);
+        }
 
         // 前置处理
         AnnoBaseProxy<T> mtProxy = getMTProxy(managerEntity.getEntityName());

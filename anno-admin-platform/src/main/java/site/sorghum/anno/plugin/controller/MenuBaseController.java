@@ -13,6 +13,7 @@ import site.sorghum.anno.anno.proxy.PermissionProxy;
 import site.sorghum.anno.auth.AnnoStpUtil;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
 import site.sorghum.anno.plugin.entity.response.AnAnnoMenuResponse;
+import site.sorghum.anno.plugin.entity.response.NaiveMenu;
 import site.sorghum.anno.plugin.entity.response.ReactMenu;
 import site.sorghum.anno.plugin.entity.response.VbenMenu;
 import site.sorghum.anno.plugin.function.AuthFunction;
@@ -89,6 +90,43 @@ public class MenuBaseController {
 
         // 移除无效节点
         tree.removeIf(menu -> LAYOUT_COMPONENT.equals(menu.getComponent()) && menu.getChildren().isEmpty());
+    }
+
+    /**
+     * 处理特殊节点逻辑
+     */
+    private static void processSpecialNaiveNodes(List<NaiveMenu> tree) {
+        tree.forEach(menu -> {
+            if (LAYOUT_COMPONENT.equals(menu.getComponent()) && menu.getChildren().isEmpty()) {
+                menu.setShow(false);
+                menu.setEnable(false);
+            }
+        });
+
+        // 移除无效节点
+        tree.removeIf(menu -> LAYOUT_COMPONENT.equals(menu.getComponent()) && menu.getChildren().isEmpty());
+    }
+
+
+    /**
+     * 将列表转换为树形结构(VbenMenu类型)
+     *
+     * @param list 菜单列表
+     * @return 树形菜单
+     */
+    private static List<NaiveMenu> convertToNaiveTree(List<NaiveMenu> list) {
+        // 确保所有节点都有sort值
+        list.forEach(menu -> menu.setOrder(Optional.ofNullable(menu.getOrder()).orElse(0)));
+
+        // 排序
+        list.sort(Comparator.comparing(NaiveMenu::getOrder).reversed());
+
+        List<NaiveMenu> tree = buildTree(list, NaiveMenu::getId, NaiveMenu::getParentId, NaiveMenu::getChildren);
+
+        // 处理特殊节点
+        processSpecialNaiveNodes(tree);
+
+        return tree;
     }
 
     /**
@@ -208,6 +246,20 @@ public class MenuBaseController {
             .collect(Collectors.toList());
     }
 
+    private static List<NaiveMenu> listToNaiveMenuResponse(List<AnAnnoMenu> menus) {
+        return menus.stream()
+            .filter(Objects::nonNull)
+            .map(menu -> {
+                NaiveMenu naiveMenu = NaiveMenu.toNaiveMenu(menu);
+                naiveMenu.setChildren(new ArrayList<>());
+                if (StrUtil.isNotBlank(naiveMenu.getPath()) && !naiveMenu.getPath().startsWith("/")) {
+                    naiveMenu.setPath("/" + naiveMenu.getPath());
+                }
+                return naiveMenu;
+            })
+            .collect(Collectors.toList());
+    }
+
     /**
      * 判断是否为根节点
      *
@@ -236,6 +288,11 @@ public class MenuBaseController {
     public AnnoResult<List<VbenMenu>> vbenMenu() {
         List<AnAnnoMenu> menuList = getFilteredMenus();
         return AnnoResult.succeed(convertToVbenTree(listToVbenMenuResponse(menuList)));
+    }
+
+    public AnnoResult<List<NaiveMenu>> naiveMenu() {
+        List<AnAnnoMenu> menuList = getFilteredMenus();
+        return AnnoResult.succeed(convertToNaiveTree(listToNaiveMenuResponse(menuList)));
     }
 
     /**

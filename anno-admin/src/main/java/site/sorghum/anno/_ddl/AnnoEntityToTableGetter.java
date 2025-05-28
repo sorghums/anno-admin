@@ -11,9 +11,9 @@ import site.sorghum.anno._common.exception.BizException;
 import site.sorghum.anno._ddl.entity2db.EntityToTableGetter;
 import site.sorghum.anno._metadata.AnEntity;
 import site.sorghum.anno._metadata.AnField;
+import site.sorghum.ddl.base.JavaCoreEntityGenerate;
 import site.sorghum.ddl.entity.DdlColumnWrap;
 import site.sorghum.ddl.entity.DdlTableWrap;
-import site.sorghum.ddl.generate.JavaCoreEntityGenerate;
 
 import java.lang.reflect.Field;
 import java.sql.JDBCType;

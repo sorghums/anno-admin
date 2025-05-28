@@ -44,7 +44,7 @@
     </modules>
 
     <properties>
-        <sorghum-ddl.ver>2025.04.11-SNAPSHOT</sorghum-ddl.ver>
+        <sorghum-ddl.ver>2025.05.21-SNAPSHOT</sorghum-ddl.ver>
 
         <spring-boot.version>3.1.1</spring-boot.version>
 

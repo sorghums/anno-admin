@@ -122,7 +122,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
 
         // 基础平台信息初始化
         List<AnPlatform> list = anPlatformDao.list();
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             AnPlatform platform = new AnPlatform();
             platform.setId("1");
             platform.setName(annoProperty.getPlatformTitle());
@@ -206,6 +206,16 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6.setPermissionId("an_org");
         menu6.setParseType("annoMain");
         menu6.setParseData("AnOrg");
+
+        AnAnnoMenu menu6_001 = new AnAnnoMenu();
+        menu6_001.setId("15_001");
+        menu6_001.setTitle("渲染管理");
+        menu6_001.setParentId("10");
+        menu6_001.setType(1);
+        menu6_001.setIcon("ant-design:trophy-outlined");
+        menu6_001.setPermissionId("an_render");
+        menu6_001.setParseType("annoMain");
+        menu6_001.setParseData("AnRender");
 
         AnAnnoMenu menu6_00 = new AnAnnoMenu();
         menu6_00.setId("15_00");
@@ -315,6 +325,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
             menu4,
             menu5,
             menu6,
+            menu6_001,
             menu6_00,
             menu6_01,
             menu6_02,
@@ -330,7 +341,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         int beginSort = 100000;
         for (int i = 0; i < anAnnoMenus.size(); i++) {
             AnAnnoMenu anAnnoMenu = anAnnoMenus.get(i);
-            if (anAnnoMenu.getSort() == null){
+            if (anAnnoMenu.getSort() == null) {
                 anAnnoMenu.setSort(beginSort + i);
             }
         }
