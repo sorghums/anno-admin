@@ -7,6 +7,12 @@
 <br>
 
 <p align="center">
+   <a target="_blank" href="https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/">
+           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/anno-admin/maven-metadata.xml" />
+       </a>
+   <a target="_blank" href="https://mvnrepository.com/artifact/site.sorghum.anno/anno-admin">
+           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven Central&metadataUrl=https://repo1.maven.org/maven2/site/sorghum/anno/anno-admin/maven-metadata.xml" />
+       </a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/star.svg?theme=dark" alt="Gitee star"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/fork.svg?theme=dark" alt="Gitee fork"></a>
@@ -148,6 +154,7 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 去除组织过滤概念[废啦]
 + 支持接口形式的注入AnField元数据,适合接入第三方框架, See: WtfInterfaces.java
 + ddl基础框架改为 sorghum-ddl <a href="https://gitee.com/cmeet/sorghum-ddl">点个start吧</a>
++ 新增代理类中跳过执行逻辑
 
 ## 参与贡献流程
 

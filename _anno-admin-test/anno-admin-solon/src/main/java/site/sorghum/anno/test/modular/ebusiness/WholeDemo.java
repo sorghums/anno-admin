@@ -42,12 +42,6 @@ public class WholeDemo {
             addEnable = false
         ),
         insertWhenNullSet = SnowIdSupplier.class,
-        search = @AnnoSearch(
-            notNull = false,
-            enable = true,
-            defaultValue = "",
-            defaultValueSupplier = EmptyFieldBaseSupplier.class
-        ),
         dataType = AnnoDataType.STRING,
         optionType = @AnnoOptionType(
             value = {
