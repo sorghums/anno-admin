@@ -7,6 +7,12 @@
 <br>
 
 <p align="center">
+   <a target="_blank" href="https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/">
+           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/anno-admin/maven-metadata.xml" />
+       </a>
+   <a target="_blank" href="https://mvnrepository.com/artifact/site.sorghum.anno/anno-admin">
+           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven Central&metadataUrl=https://repo1.maven.org/maven2/site/sorghum/anno/anno-admin/maven-metadata.xml" />
+       </a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/star.svg?theme=dark" alt="Gitee star"></a>
     <a href="https://gitee.com/cmeet/anno-admin"><img src="https://gitee.com/cmeet/anno-admin/badge/fork.svg?theme=dark" alt="Gitee fork"></a>
@@ -148,8 +154,9 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 + 去除组织过滤概念[废啦]
 + 支持接口形式的注入AnField元数据,适合接入第三方框架, See: WtfInterfaces.java
 + ddl基础框架改为 sorghum-ddl <a href="https://gitee.com/cmeet/sorghum-ddl">点个start吧</a>
-## 贡献
-如果您发现了任何问题或有任何建议，请随时提交issue或pull request。我们非常欢迎您的贡献！
++ 新增代理类中跳过执行逻辑
+
+## 参与贡献流程
 
 开发环境准备：
 ```
@@ -159,6 +166,35 @@ Anno-Admin是一个新兴的开源项目，旨在通过注解生成后台管理�
 # 2. 打包后端代码
 mvn clean package -Dmaven.test.skip=true
 ```
+
+1. **进群讨论**
+    - 可以在群里抛出您遇到的问题，或许已经有人解决了您的问题。
+
+2. **提 Issue**
+    - 如果 Issue 列表中已有相关问题，可直接认领该 Issue。
+    - 若无，请新建一个 Issue 描述问题。
+
+3. **Fork 仓库**
+    - 复制本项目的仓库到您的账号下。
+
+4. **新建分支**
+    - 新特性分支命名格式：`feat/#{issue-id}`
+    - Bug 修复分支命名格式：`fix/#{issue-id}`
+
+5. **本地自测**
+    - 确保通过所有现有单元测试。
+    - 为您解决的问题新增单元测试。
+
+6. **提交代码**
+    - 将修改推送到您的分支。
+
+7. **创建 Pull Request**
+    - 向本项目发起合并请求。
+
+8. **PR 审核**
+    - 我会验证和测试您的 PR，通过后将合并至 `dev` 分支，随新版本发布时同步到 `master`。
+
+🎉 被采纳的 PR 贡献者将列入 README 的贡献者列表！
 
 ## 许可证
 Anno-Admin使用Apache 2.0许可证。详情请参阅LICENSE文件。

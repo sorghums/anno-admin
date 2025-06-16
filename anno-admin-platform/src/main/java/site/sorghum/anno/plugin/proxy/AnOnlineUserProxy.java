@@ -6,6 +6,7 @@ import cn.dev33.satoken.dao.SaTokenDaoDefaultImpl;
 import cn.dev33.satoken.session.SaSession;
 import cn.hutool.core.date.DateUtil;
 import jakarta.inject.Named;
+import site.sorghum.anno._common.util.JSONUtil;
 import site.sorghum.anno.anno.entity.common.AnnoPage;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.auth.AnnoAuthUser;
@@ -37,7 +38,7 @@ public class AnOnlineUserProxy implements AnnoBaseProxy<AnOnlineUser> {
         List<AnOnlineUser> userList = new ArrayList<>();
         for (String actualToken : actualTokens) {
             SaSession session = AnnoStpUtil.getTokenSessionByToken(actualToken);
-            AnnoAuthUser authUser = (AnnoAuthUser) session.get("authUser");
+            AnnoAuthUser authUser = JSONUtil.toBean(session.get("authUser"), AnnoAuthUser.class);
             AnOnlineUser onlineUser = AnOnlineUser.authToOnlineUser(authUser);
             onlineUser.setExpireTime(
                 DateUtil.offsetSecond(now, (int) AnnoStpUtil.getTokenTimeout(actualToken))

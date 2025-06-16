@@ -78,7 +78,7 @@ public class AnnoEntityGenerate extends JavaCoreEntityGenerate {
 
             switch (field.getDataType()) {
                 case RICH_TEXT, CODE_EDITOR, TEXT_AREA, MARK_DOWN -> {
-                    coreDdlColumnWrap.setDdlType(JDBCType.BLOB);
+                    coreDdlColumnWrap.setDdlType(JDBCType.LONGNVARCHAR);
                 }
                 case FILE, IMAGE, LINK -> {
                     coreDdlColumnWrap.setSize(1024);
