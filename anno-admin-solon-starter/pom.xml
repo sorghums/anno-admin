@@ -59,6 +59,11 @@
             <artifactId>sa-token-redisx</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-snack3</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.noear</groupId>

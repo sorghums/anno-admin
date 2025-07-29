@@ -24,7 +24,7 @@ public class PageController {
     }
 
     @Mapping(value = "/annoTpl")
-    public ModelAndView annoTpl(Context ctx, @Param String _tplId, @Param String _tplClassName) {
+    public ModelAndView annoTpl(Context ctx, @Param(required = false) String _tplId, @Param(required = false) String _tplClassName) {
         BaseTplRender render = BaseTplRender.getClone(_tplId, _tplClassName);
         if (render == null) {
             throw new BizException("未找到渲染器");
