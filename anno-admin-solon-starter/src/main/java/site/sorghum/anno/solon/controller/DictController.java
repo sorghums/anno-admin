@@ -45,14 +45,14 @@ public class DictController extends BaseDictController {
             @ApiImplicitParam(name = "onlineDictKey", value = "在线字典的key", dataType = "String", paramType = "body")
         }
     )
-    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param String sqlKey,
-                                                          @Param String annoClazz,
-                                                          @Param String idKey,
-                                                          @Param String labelKey,
-                                                          @Param String onlineDictKey,
-                                                          @Param String optionAnnoClazz,
-                                                          @Param String treeAnnoClazz,
-                                                          @Param Map<String,Object> _extra) {
+    public AnnoResult<List<AnnoTreeDTO<String>>> loadDict(@Param(required = false) String sqlKey,
+                                                          @Param(required = false) String annoClazz,
+                                                          @Param(required = false) String idKey,
+                                                          @Param(required = false) String labelKey,
+                                                          @Param(required = false) String onlineDictKey,
+                                                          @Param(required = false) String optionAnnoClazz,
+                                                          @Param(required = false) String treeAnnoClazz,
+                                                          @Param(required = false) Map<String,Object> _extra) {
         if (_extra == null) {
             _extra = Collections.emptyMap();
         }
@@ -73,7 +73,10 @@ public class DictController extends BaseDictController {
         }
     )
     @Override
-    public AnnoResult<String> transOne(@Param String annoClazz, @Param String idKey, @Param String labelKey, @Param String idValue) {
+    public AnnoResult<String> transOne(@Param(required = false) String annoClazz,
+                                       @Param(required = false) String idKey,
+                                       @Param(required = false) String labelKey,
+                                       @Param(required = false) String idValue) {
         return super.transOne(annoClazz, idKey, labelKey, idValue);
     }
 

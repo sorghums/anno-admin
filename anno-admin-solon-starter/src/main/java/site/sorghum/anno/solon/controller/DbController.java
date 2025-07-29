@@ -94,7 +94,9 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "pkValue", value = "主键值", required = true, dataType = "String", paramType = "query")}
     )
-    public AnnoResult<Object> queryById(@Path String clazz, @Param String pkValue, @Param String _cat) {
+    public AnnoResult<Object> queryById(@Path String clazz,
+                                        @Param(required = false) String pkValue,
+                                        @Param(required = false) String _cat) {
         return super.queryById(clazz, pkValue, _cat);
     }
 
@@ -112,7 +114,7 @@ public class DbController extends BaseDbController {
         value = {
             @ApiImplicitParam(name = "id", value = "主键值", required = true, dataType = "String", paramType = "query")}
     )
-    public AnnoResult<String> removeById(@Path String clazz, @Param("id") String id) {
+    public AnnoResult<String> removeById(@Path String clazz, @Param(value = "id",required = false) String id) {
         return super.removeById(clazz, id);
     }
 
@@ -212,7 +214,7 @@ public class DbController extends BaseDbController {
             @ApiImplicitParam(name = "targetJoinValue", value = "目标值", required = true, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "thisJoinValue", value = "本表值", required = true, dataType = "String", paramType = "query"),}
     )
-    public AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param boolean clearAll) {
+    public AnnoResult<String> addM2m(@Path String clazz, @Body Map param, @Param(required = false) boolean clearAll) {
         return super.addM2m(clazz, param, clearAll);
     }
 
