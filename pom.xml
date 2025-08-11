@@ -13,7 +13,7 @@
 
     <groupId>site.sorghum.anno</groupId>
     <artifactId>anno-admin-parent</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.3</version>
 
     <packaging>pom</packaging>
     <name>anno-admin</name>
@@ -29,8 +29,6 @@
         <module>anno-admin-platform</module>
         <!-- 国际化支持模块 -->
         <module>anno-admin-i18n</module>
-        <!-- 基础JS支持包-->
-        <module>anno-admin-javascript</module>
         <!-- 快速引入包 -->
         <module>anno-admin-solon-starter</module>
         <module>anno-admin-spring-boot-starter</module>
@@ -164,11 +162,6 @@
             </dependency>
             <dependency>
                 <groupId>site.sorghum.anno</groupId>
-                <artifactId>anno-admin-javascript</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>site.sorghum.anno</groupId>
                 <artifactId>anno-admin-platform</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -217,25 +210,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>apache_snapshot</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>tencent</id>
-            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <url>https://gitee.com/cmeet/anno-admin</url>
 
@@ -265,16 +239,6 @@
 
         <!-- 岂无嘉色在，留待后人来 -->
     </developers>
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
     <build>
         <plugins>
             <plugin>
@@ -287,7 +251,6 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
@@ -297,14 +260,15 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
-                        <extensions>true</extensions>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <compilerArgs>
+                                <arg>-parameters</arg>
+                            </compilerArgs>
                         </configuration>
                     </plugin>
                     <!-- 生成java source.jar -->
@@ -323,8 +287,38 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.2</version>
+                        <configuration>
+                            <show>private</show>
+                            <nohelp>true</nohelp>
+                            <charset>UTF-8</charset>
+                            <encoding>UTF-8</encoding>
+                            <docencoding>UTF-8</docencoding>
+                            <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
+                            <additionalOptions>-Xdoclint:none</additionalOptions>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG签名插件，插件是必须的 -->
+                    <!-- gpg sign plugin -->
+                    <!-- https://central.sonatype.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.2.7</version>
+                        <configuration>
+                            <!-- 启用GPG代理以弹出密码窗口 -->
+                            <useAgent>true</useAgent>
+                            <!-- 移除原有gpgArguments配置 -->
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -336,9 +330,52 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <!-- 注意：这类必须要和Maven配置环境中的server id对应上 -->
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>snapshot</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.1</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                            <compilerArgs>
+                                <arg>-parameters</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </plugin>
+                    <!-- 生成java source.jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
+                        <version>3.11.2</version>
                         <configuration>
                             <show>private</show>
                             <nohelp>true</nohelp>
@@ -346,7 +383,7 @@
                             <encoding>UTF-8</encoding>
                             <docencoding>UTF-8</docencoding>
                             <!-- TODO 临时解决不规范的javadoc生成报错,后面要规范化后把这行去掉 -->
-                            <additionalparam>-Xdoclint:none</additionalparam>
+                            <additionalOptions>-Xdoclint:none</additionalOptions>
                         </configuration>
                         <executions>
                             <execution>
@@ -357,8 +394,46 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <!-- 注意：这类必须要和Maven配置环境中的server id对应上 -->
+                            <publishingServerId>central</publishingServerId>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
+
+
+    <!-- 依赖下载加速镜像，可以不用配 -->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>huawei nexus</name>
+            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <!-- 插件依赖下载加速镜像，可以不用配 -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>public</id>
+            <name>huawei nexus</name>
+            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

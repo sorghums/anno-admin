@@ -8,9 +8,9 @@
 
 <p align="center">
    <a target="_blank" href="https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/">
-           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https://s01.oss.sonatype.org/content/repositories/snapshots/site/sorghum/anno/anno-admin/maven-metadata.xml" />
+           <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven%20Central&metadataUrl=https://central.sonatype.com/repository/maven-snapshots/site/sorghum/anno/anno-admin/maven-metadata.xml" />
        </a>
-   <a target="_blank" href="https://mvnrepository.com/artifact/site.sorghum.anno/anno-admin">
+   <a target="_blank" href="https://repo1.maven.org/maven2/site/sorghum/anno/anno-admin/">
            <img src="https://img.shields.io/maven-metadata/v.svg?label=Maven Central&metadataUrl=https://repo1.maven.org/maven2/site/sorghum/anno/anno-admin/maven-metadata.xml" />
        </a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-blue" alt="license Apache 2.0"></a>
