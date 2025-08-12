@@ -42,7 +42,7 @@
     </modules>
 
     <properties>
-        <sorghum-ddl.ver>2025.05.21-SNAPSHOT</sorghum-ddl.ver>
+        <sorghum-ddl.ver>2025.08.11</sorghum-ddl.ver>
 
         <spring-boot.version>3.1.1</spring-boot.version>
 
@@ -414,8 +414,8 @@
     <repositories>
         <repository>
             <id>public</id>
-            <name>huawei nexus</name>
-            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+            <name>tencent nexus</name>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -426,8 +426,8 @@
     <pluginRepositories>
         <pluginRepository>
             <id>public</id>
-            <name>huawei nexus</name>
-            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+            <name>tencent nexus</name>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
