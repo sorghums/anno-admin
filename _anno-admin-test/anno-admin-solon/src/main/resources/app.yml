@@ -82,7 +82,7 @@ anno-admin:
 
 
 # powerjob-server
-powerjob-server-solon.version: @project.version@
+powerjob-server-solon.version: $project.version}
 ###### PowerJob transporter configuration  ######
 # AKKA,HTTP
 oms.transporter.active.protocols: HTTP
