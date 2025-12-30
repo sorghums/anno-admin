@@ -6,6 +6,8 @@ import site.sorghum.anno._annotations.AnnoSerialization;
 import site.sorghum.anno._common.response.AnnoResult;
 import site.sorghum.anno._common.util.JSONUtil;
 
+import java.util.HashMap;
+
 /**
  * anno序列化拦截器
  *
@@ -22,7 +24,7 @@ public class AnnoSerializationInterceptor implements Interceptor {
         if (anno != null){
             Object invoke = inv.invoke();
             if (invoke instanceof AnnoResult<?> annoResult){
-                return JSONUtil.toJsonString(annoResult);
+                return JSONUtil.toBean(annoResult,HashMap.class);
             }
             return invoke;
         }else{

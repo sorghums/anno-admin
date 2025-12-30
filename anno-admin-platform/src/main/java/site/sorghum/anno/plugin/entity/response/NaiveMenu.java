@@ -101,7 +101,7 @@ public class NaiveMenu {
         naiveMenu.setEnable(true);   // 默认启用
 
         // 特殊字段处理
-        naiveMenu.setLayout("empty");  // 根据parseType设置布局组件
+        naiveMenu.setLayout("full");  // 根据parseType设置布局组件
 
         return naiveMenu;
     }

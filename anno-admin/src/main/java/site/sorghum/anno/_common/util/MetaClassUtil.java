@@ -224,6 +224,8 @@ public class MetaClassUtil {
      */
     private static void processFieldAnnotations(Class<?> clazz, boolean deepSuper, StringBuilder yml) {
         List<FieldAnnoField> annoFields = AnnoUtil.getAnnoFields(clazz, deepSuper);
+        // fix sort字段失效的问题
+        annoFields.sort(Comparator.comparingInt(o -> o.getAnnoField().sort()));
         for (int i = 0; i < annoFields.size(); i++) {
             FieldAnnoField annoField = annoFields.get(i);
             yml.append("columns[%d].javaName=%s\n".formatted(i, annoField.getField().getName()));

@@ -17,6 +17,7 @@ public enum QueryType {
     IN("IN"),
     NOT_IN("NOT IN"),
     LIKE("LIKE"),
+    SIMPLE_LIKE("LIKE"),
     NOT_LIKE("NOT LIKE"),
     EQ("="),
     NE("<>"),
