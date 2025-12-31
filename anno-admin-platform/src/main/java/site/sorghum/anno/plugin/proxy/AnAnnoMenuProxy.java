@@ -1,10 +1,14 @@
 package site.sorghum.anno.plugin.proxy;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import jakarta.inject.Named;
 import site.sorghum.anno.anno.proxy.AnnoBaseProxy;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.DbOrderBy;
 import site.sorghum.anno.plugin.ao.AnAnnoMenu;
+
+import java.util.ArrayList;
 
 /**
  * 菜单代理
@@ -34,4 +38,18 @@ public class AnAnnoMenuProxy implements AnnoBaseProxy<AnAnnoMenu> {
         beforeAdd(data);
     }
 
+    @Override
+    public void beforeFetch(DbCriteria criteria) {
+        DbOrderBy order = new DbOrderBy();
+        order.setOrderByItems(new ArrayList<>());
+        if (criteria.getOrder() == null || !CollUtil.isNotEmpty(order.getOrderByItems())) {
+            order.getOrderByItems().add(new DbOrderBy.OrderByItem("desc", "sort"));
+            order.getOrderByItems().add(new DbOrderBy.OrderByItem("desc", "id"));
+            criteria.setOrder(
+                order
+            );
+        }
+
+        AnnoBaseProxy.super.beforeFetch(criteria);
+    }
 }

@@ -323,6 +323,7 @@ public class DbServiceWood implements DbService {
             case LT -> dbTableQuery.andLt(condition.getField(), condition.getValues().get(0));
             case LE -> dbTableQuery.andLte(condition.getField(), condition.getValues().get(0));
             case LIKE -> dbTableQuery.andLk(condition.getField(), (String) condition.getValues().get(0));
+            case SIMPLE_LIKE  -> dbTableQuery.andLk(condition.getField(), "%%%s%%".formatted(condition.getValues().get(0)));
             case NOT_LIKE -> dbTableQuery.andNlk(condition.getField(), (String) condition.getValues().get(0));
             case IN -> {
                 if (!condition.getValues().isEmpty()) {

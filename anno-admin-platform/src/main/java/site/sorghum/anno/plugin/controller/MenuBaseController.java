@@ -64,7 +64,9 @@ public class MenuBaseController {
         list.forEach(menu -> menu.setSort(Optional.ofNullable(menu.getSort()).orElse(0)));
 
         // 排序
-        list.sort(Comparator.comparing(VbenMenu::getSort).reversed());
+        list.sort(Comparator.comparing(VbenMenu::getSort).thenComparing(
+            VbenMenu::getId
+        ).reversed());
 
         List<VbenMenu> tree = buildTree(list, VbenMenu::getId, VbenMenu::getParentId, VbenMenu::getChildren);
 
