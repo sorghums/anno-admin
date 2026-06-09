@@ -142,7 +142,14 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         permission1.setName("接口文档");
         permission1.setCode("an_api_doc");
         permission1.setCreateTime(LocalDateTime.now());
-        return CollUtil.newArrayList(permission1);
+
+        AnPermission dictPerm = new AnPermission();
+        dictPerm.setId("an_dict_base");
+        dictPerm.setName("字典管理");
+        dictPerm.setCode("an_dict_base");
+        dictPerm.setCreateTime(LocalDateTime.now());
+
+        return CollUtil.newArrayList(permission1, dictPerm);
     }
 
     private List<AnAnnoMenu> getAnMenus() {
@@ -223,7 +230,7 @@ public class BaseAnnoPlugin extends AnnoPlugin {
         menu6_00.setTitle("字典管理");
         menu6_00.setType(0);
         menu6_00.setIcon("material-symbols-light:dictionary");
-        menu6_00.setPermissionId("");
+        menu6_00.setPermissionId("an_dict_base");
         menu6_00.setParseType("");
         menu6_00.setParseData(null);
 
