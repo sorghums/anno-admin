@@ -13,6 +13,7 @@ import lombok.Getter;
 @Getter
 public enum AnnoDataType {
     STRING( "字符串"),
+    TAG_INPUT("标签输入"),
     LINK( "链接"),
     FILE("文件"),
     IMAGE( "图片"),
