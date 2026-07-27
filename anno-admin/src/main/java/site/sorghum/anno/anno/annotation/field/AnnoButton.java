@@ -200,9 +200,28 @@ public @interface AnnoButton {
     }
 
     /**
+     * 行数据展示依赖条件
+     * 表达式中的 annoDataForm 代表当前行数据
+     */
+    ShowBy showBy() default @ShowBy(enable = false);
+
+    /**
      * 权限码
      * 默认为空，不进行权限控制
      */
     String permissionCode() default "";
+
+    @interface ShowBy {
+        /**
+         * 是否启用展示条件
+         */
+        boolean enable() default true;
+
+        /**
+         * 展示条件表达式
+         * 必须以 annoDataForm.xx 为变量的取值
+         */
+        String expr() default "true";
+    }
 
 }
