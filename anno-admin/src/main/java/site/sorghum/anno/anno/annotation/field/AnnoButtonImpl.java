@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.noear.snack.annotation.ONodeAttr;
 import site.sorghum.anno.anno.annotation.common.AnnoTpl;
 import site.sorghum.anno.anno.annotation.common.AnnoTplImpl;
 import site.sorghum.anno.anno.form.BaseForm;
@@ -38,6 +37,11 @@ public class AnnoButtonImpl implements AnnoButton {
      * 图标
      */
     private String icon = "ant-design:appstore-filled";
+
+    /**
+     * 行数据展示依赖条件
+     */
+    private ShowByImpl showBy = ShowByImpl.builder().enable(false).build();
 
     /**
      * 按钮大小 	'xs' | 'sm' | 'md' | 'lg'
@@ -134,6 +138,11 @@ public class AnnoButtonImpl implements AnnoButton {
     }
 
     @Override
+    public ShowBy showBy() {
+        return showBy;
+    }
+
+    @Override
     public String permissionCode() {
         return this.permissionCode;
     }
@@ -141,6 +150,33 @@ public class AnnoButtonImpl implements AnnoButton {
     @Override
     public Class<? extends Annotation> annotationType() {
         return AnnoButton.class;
+    }
+
+    /**
+     * 行数据展示依赖条件的内部类
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ShowByImpl implements ShowBy {
+        private boolean enable = false;
+        private String expr = "true";
+
+        @Override
+        public boolean enable() {
+            return enable;
+        }
+
+        @Override
+        public String expr() {
+            return expr;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return ShowBy.class;
+        }
     }
 
     /**
