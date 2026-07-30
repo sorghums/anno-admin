@@ -20,10 +20,18 @@ import java.util.stream.Collectors;
 public class AnUserDao implements AnnoBaseDao<AnUser> {
 
     /**
+     * 只更新用户密码，避免部分实体更新时清空其他字段。
+     */
+    public void updatePassword(String userId, String password) {
+        dbService().executeSql(
+            "UPDATE an_user SET password = ? WHERE id = ? AND del_flag = 0",
+            password,
+            userId
+        );
+    }
+
+    /**
      * 根据用户手机号查询用户
-     *
-     * @param mobile 手机号
-     * @return {@link AnUser}
      */
     public AnUser queryByMobile(String mobile) {
         return sqlOne("SELECT * FROM an_user WHERE mobile = ? and del_flag = 0 limit 1", mobile);

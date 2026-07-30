@@ -313,10 +313,8 @@ public class AuthServiceImpl implements AuthService {
             throw new BizException("新密码不一致");
         }
         // 更新密码
-        AnUser updatePwdEntity = new AnUser();
-        updatePwdEntity.setId(req.getUserId());
-        updatePwdEntity.setPassword(MD5Util.digestHex(anUser.getMobile() + ":" + req.getNewPwd1()));
-        anUserDao.updateById(updatePwdEntity);
+        String password = MD5Util.digestHex(anUser.getMobile() + ":" + req.getNewPwd1());
+        anUserDao.updatePassword(req.getUserId(), password);
         // 清楚缓存
         AuthFunction.removePermRoleCacheList.accept(anUser.getId());
     }
