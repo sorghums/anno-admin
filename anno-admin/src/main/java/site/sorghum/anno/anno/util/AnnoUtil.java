@@ -25,6 +25,7 @@ import site.sorghum.anno.anno.entity.common.AnnoTreeDTO;
 import site.sorghum.anno.anno.entity.common.FieldAnnoField;
 import site.sorghum.anno.anno.entity.common.TagEnumLabel;
 import site.sorghum.anno.db.DbCriteria;
+import site.sorghum.anno.db.QueryType;
 import site.sorghum.plugin.join.util.InvokeUtil;
 
 import java.lang.annotation.Annotation;
@@ -280,17 +281,17 @@ public class AnnoUtil {
                                                                    String key,
                                                                    String parentKey) {
         return datas.stream().map(
-            d -> {
-                AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
-                annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
-                annoTreeDto.setLabel(simpleToString(reflectGetLabel(d, label)));
-                annoTreeDto.setTitle(simpleToString(reflectGetLabel(d, label)));
-                annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
-                annoTreeDto.setKey(simpleToString(reflectGetValue(d, key)));
-                annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
-                annoTreeDto.setChildren(new ArrayList<>());
-                return annoTreeDto;
-            }
+                d -> {
+                    AnnoTreeDTO<String> annoTreeDto = new AnnoTreeDTO<>();
+                    annoTreeDto.setId(simpleToString(reflectGetValue(d, key)));
+                    annoTreeDto.setLabel(simpleToString(reflectGetLabel(d, label)));
+                    annoTreeDto.setTitle(simpleToString(reflectGetLabel(d, label)));
+                    annoTreeDto.setValue(simpleToString(reflectGetValue(d, key)));
+                    annoTreeDto.setKey(simpleToString(reflectGetValue(d, key)));
+                    annoTreeDto.setParentId(simpleToString(reflectGetValue(d, parentKey)));
+                    annoTreeDto.setChildren(new ArrayList<>());
+                    return annoTreeDto;
+                }
         ).collect(Collectors.toList());
     }
 
@@ -364,7 +365,34 @@ public class AnnoUtil {
     public static DbCriteria simpleEntity2conditions(AnEntity entity, Map<String, Object> params) {
         DbCriteria criteria = DbCriteria.from(entity);
         Class<?> entityClazz = entity.getThisClass();
-        Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(params), entityClazz);
+
+        // 兼容区间查询条件
+        Map<String, List<?>> rangeValues = new HashMap<>();
+        Map<String, QueryType> rangeFields = entity.getDbAnFields().stream()
+                .filter(
+                        f -> f.getSearch().getQueryType() == QueryType.BETWEEN
+                                || f.getSearch().getQueryType() == QueryType.NOT_BETWEEN
+                )
+                .collect(
+                        Collectors.toMap(
+                                AnField::getJavaName,
+                                f -> f.getSearch().getQueryType(),
+                                (left, right) -> left
+                        )
+                );
+
+        Map<String, Object> convertParams = new HashMap<>(params.size());
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            Object entryValue = entry.getValue();
+            if (rangeFields.containsKey(entry.getKey())
+                    && entryValue instanceof List<?> list && list.size() >= 2) {
+                rangeValues.put(entry.getKey(), list);
+            } else {
+                convertParams.put(entry.getKey(), entryValue);
+            }
+        }
+
+        Object eObject = JSONUtil.toBean(AnnoUtil.emptyStringIgnore(convertParams), entityClazz);
         List<AnField> anFields = entity.getDbAnFields();
         for (AnField anField : anFields) {
             String sqlColumn = anField.getTableFieldName().trim();
@@ -374,9 +402,21 @@ public class AnnoUtil {
             if (sqlColumn.contains(" as ")) {
                 sqlColumn = sqlColumn.split("as")[0].trim();
             }
+            QueryType queryType = anField.getSearch().getQueryType();
             Object value = InvokeUtil.invokeGetter(eObject, anField.getJavaField());
             if (value != null) {
-                criteria.condition().create(sqlColumn, anField.getSearch().getQueryType(), value);
+                // 区间字段只收到单个值时按首尾相同处理
+                if (queryType == QueryType.BETWEEN || queryType == QueryType.NOT_BETWEEN) {
+                    criteria.condition().create(sqlColumn, queryType, value, value);
+                } else {
+                    criteria.condition().create(sqlColumn, queryType, value);
+                }
+                continue;
+            }
+            // 实体转换为 null，原始参数生成条件
+            List<?> rangeList = rangeValues.get(anField.getJavaName());
+            if (rangeList != null && rangeList.size() >= 2) {
+                criteria.condition().create(sqlColumn, queryType, rangeList.get(0), rangeList.get(1));
             }
         }
         return criteria;
