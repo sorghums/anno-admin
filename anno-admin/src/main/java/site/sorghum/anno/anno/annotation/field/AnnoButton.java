@@ -45,6 +45,11 @@ public @interface AnnoButton {
      */
     Class<? extends BaseForm> baseForm() default DefaultBaseForm.class;
 
+    /**
+     * 行数据回显：点击行按钮打开 baseForm 表单时，将当前行数据按映射回显到表单字段
+     */
+    RowDataEcho rowDataEcho() default @RowDataEcho(enable = false);
+
     //----------------------- 以下为按钮事件 -----------------------
 
     /**
@@ -222,6 +227,52 @@ public @interface AnnoButton {
          * 必须以 annoDataForm.xx 为变量的取值
          */
         String expr() default "true";
+    }
+
+    /**
+     * 行数据回显配置
+     */
+    @interface RowDataEcho {
+        /**
+         * 是否启用回显
+         */
+        boolean enable() default true;
+
+        /**
+         * 回显字段映射
+         *
+         * @return {@link EchoField}[]
+         */
+        EchoField[] fields() default {};
+
+        /**
+         * 映射字段默认只读（可在 {@link EchoField#readonly()} 上按字段覆盖）
+         */
+        boolean readonly() default false;
+    }
+
+    /**
+     * 回显字段映射：将当前行【父表】字段值回显到 baseForm 表单字段
+     */
+    @interface EchoField {
+        /**
+         * 父表（当前行）字段名
+         *
+         * @return {@link String}
+         */
+        String thisField();
+
+        /**
+         * 表单字段名，默认与 thisField 同名
+         *
+         * @return {@link String}
+         */
+        String formField() default "";
+
+        /**
+         * 该字段是否只读展示，未配置时取 {@link RowDataEcho#readonly()}
+         */
+        boolean readonly() default false;
     }
 
 }

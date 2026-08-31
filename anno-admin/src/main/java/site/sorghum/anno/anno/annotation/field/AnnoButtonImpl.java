@@ -53,6 +53,11 @@ public class AnnoButtonImpl implements AnnoButton {
      */
     private Class<? extends BaseForm> baseForm = DefaultBaseForm.class;
 
+    /**
+     * 行数据回显
+     */
+    private RowDataEchoImpl rowDataEcho = RowDataEchoImpl.builder().enable(false).build();
+
     //----------------------- 以下为按钮事件 -----------------------
 
     /**
@@ -107,6 +112,11 @@ public class AnnoButtonImpl implements AnnoButton {
     }
 
     @Override
+    public RowDataEcho rowDataEcho() {
+        return rowDataEcho;
+    }
+
+    @Override
     public String jsCmd() {
         return jsCmd;
     }
@@ -150,6 +160,72 @@ public class AnnoButtonImpl implements AnnoButton {
     @Override
     public Class<? extends Annotation> annotationType() {
         return AnnoButton.class;
+    }
+
+    /**
+     * 行数据回显的内部类
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RowDataEchoImpl implements RowDataEcho {
+        private boolean enable = false;
+        private EchoFieldImpl[] fields = new EchoFieldImpl[0];
+        private boolean readonly = false;
+
+        @Override
+        public boolean enable() {
+            return enable;
+        }
+
+        @Override
+        public EchoField[] fields() {
+            return fields;
+        }
+
+        @Override
+        public boolean readonly() {
+            return readonly;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return RowDataEcho.class;
+        }
+    }
+
+    /**
+     * 回显字段映射的内部类
+     */
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class EchoFieldImpl implements EchoField {
+        private String thisField = "";
+        private String formField = "";
+        private boolean readonly = false;
+
+        @Override
+        public String thisField() {
+            return thisField;
+        }
+
+        @Override
+        public String formField() {
+            return formField;
+        }
+
+        @Override
+        public boolean readonly() {
+            return readonly;
+        }
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+            return EchoField.class;
+        }
     }
 
     /**
