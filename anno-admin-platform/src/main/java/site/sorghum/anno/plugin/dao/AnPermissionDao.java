@@ -23,7 +23,7 @@ public class AnPermissionDao implements AnnoBaseDao<AnPermission> {
      */
     public List<AnPermission> querySysPermissionByUserId(String uid){
         return this.sqlList(
-            "select * from an_permission where id in (select permission_id from an_role_permission where role_id in (select role_id from an_user_role where user_id = ?  and del_flag = 0 ) and del_flag = 0)",
+            "select * from an_permission where del_flag = 0 and id in (select permission_id from an_role_permission where role_id in (select role_id from an_user_role where user_id = ? and del_flag = 0) and role_id in (select id from an_role where del_flag = 0) and del_flag = 0)",
             uid
         );
     }
